@@ -1,6 +1,7 @@
 package com.geNAZt.RegionShop;
 
 import com.geNAZt.RegionShop.Command.Shop;
+import com.geNAZt.RegionShop.Event.JoinEvent;
 import com.geNAZt.RegionShop.Event.LeaveEvent;
 import com.geNAZt.RegionShop.Event.RegionEntered;
 import com.geNAZt.RegionShop.Model.ShopItems;
@@ -28,6 +29,7 @@ public class RegionShopPlugin extends JavaPlugin {
         //Event
         getServer().getPluginManager().registerEvents(new RegionEntered(this), this);
         getServer().getPluginManager().registerEvents(new LeaveEvent(this), this);
+        getServer().getPluginManager().registerEvents(new JoinEvent(this), this);
 
         //Commands
         getCommand("shop").setExecutor(new Shop(this));
