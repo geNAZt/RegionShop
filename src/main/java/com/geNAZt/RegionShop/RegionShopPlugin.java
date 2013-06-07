@@ -6,6 +6,7 @@ import com.geNAZt.RegionShop.Event.LeaveEvent;
 import com.geNAZt.RegionShop.Event.RegionEntered;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.Util.Chat;
+import com.geNAZt.RegionShop.Util.VaultBridge;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.persistence.PersistenceException;
@@ -23,6 +24,12 @@ public class RegionShopPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         getLogger().info("[RegionShop] Enabled");
+
+        //Check for economy plugin
+        if (!VaultBridge.setupEconomy(this)) {
+            getLogger().warning("No Economy Plugin found.");
+            setEnabled(false);
+        }
 
         //Database
         checkForDatabase();

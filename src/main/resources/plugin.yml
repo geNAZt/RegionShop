@@ -3,6 +3,7 @@ main: com.geNAZt.RegionShop.RegionShopPlugin
 database: true
 description: A Shop which uses Regions as Shop Basement
 version: 0.1.0
+softdepend: [Vault, WorldGuard]
 commands:
     shop:
        description: RegionShops - Use the WorldGuard Regions as Shopping ground.
