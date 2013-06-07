@@ -4,6 +4,7 @@ import com.geNAZt.RegionShop.Command.Shop;
 import com.geNAZt.RegionShop.Event.JoinEvent;
 import com.geNAZt.RegionShop.Event.LeaveEvent;
 import com.geNAZt.RegionShop.Event.RegionEntered;
+import com.geNAZt.RegionShop.Model.ShopItemEnchantmens;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.VaultBridge;
@@ -50,12 +51,14 @@ public class RegionShopPlugin extends JavaPlugin {
     public List<Class<?>> getDatabaseClasses() {
         List<Class<?>> list = new ArrayList<Class<?>>();
         list.add(ShopItems.class);
+        list.add(ShopItemEnchantmens.class);
         return list;
     }
 
     private void checkForDatabase() {
         try {
             getDatabase().find(ShopItems.class).findRowCount();
+            getDatabase().find(ShopItemEnchantmens.class).findRowCount();
         } catch (PersistenceException ex) {
             getLogger().info("[RegionShop] Database hasn't setup.");
             installDDL();

@@ -1,6 +1,7 @@
 package com.geNAZt.RegionShop.Command;
 
 import com.avaje.ebean.*;
+import com.geNAZt.RegionShop.Model.ShopItemEnchantmens;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
@@ -76,11 +77,22 @@ public class ShopList {
                     String niceItemName = ItemName.nicer(iStack.getType().toString());
                     String itemName = ItemName.getDataName(iStack) + niceItemName;
 
-                    if (item.isStackable()) {
-                        p.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + amount + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + item.getSell() + "$/" + item.getUnitAmount() + " Unit(s) " + ChatColor.GRAY + "#" + item.getId());
-                    } else {
-                        p.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + amount + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + item.getSell() + "$/" + item.getUnitAmount() + " Unit(s) " + ChatColor.GRAY + "#" + item.getId() + " " + ChatColor.RED + dmg);
+                    String message = Chat.getPrefix() + ChatColor.DARK_GREEN + amount + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + item.getSell() + "$/" + item.getUnitAmount() + " Unit(s) " + ChatColor.GRAY + "#" + item.getId();
+
+                    Integer enchant = plugin.getDatabase().find(ShopItemEnchantmens.class).
+                            where().
+                                eq("shop_item_id", item.getId()).
+                            findRowCount();
+
+                    if (!item.isStackable()) {
+                        message += " " + ChatColor.RED + dmg;
                     }
+
+                    if (enchant > 0) {
+                        message += " " + ChatColor.GREEN + ench;
+                    }
+
+                    p.sendMessage(message);
                 }
 
                 if (qryPage.hasNext()) {
