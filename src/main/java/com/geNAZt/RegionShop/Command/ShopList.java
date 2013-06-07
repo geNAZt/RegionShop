@@ -63,7 +63,9 @@ public class ShopList {
             String dmg = Character.toString((char)0x26A0);
             String name = Character.toString((char)0x270E);
 
-            p.sendMessage("Legend: " + ChatColor.RED + dmg + ChatColor.RESET + " Damaged Item, " + ChatColor.GREEN + ench + ChatColor.RESET + " Enchanted Item, " + ChatColor.YELLOW + name + ChatColor.RESET + " Custom Name | /shop detail <id> to show details");
+            p.sendMessage("Legend: " + ChatColor.RED + dmg + ChatColor.RESET + " Damaged Item, " + ChatColor.GREEN + ench + ChatColor.RESET + " Enchanted Item, " + ChatColor.YELLOW + name + ChatColor.RESET + " Custom Name");
+            p.sendMessage(ChatColor.YELLOW + "/shop detail " + ChatColor.RESET + ChatColor.AQUA + "id" + ChatColor.RESET + " to show details");
+            p.sendMessage(" ");
             if(itemList.size() > 0) {
                 for(ShopItems item : itemList) {
                     ItemStack iStack = new ItemStack(Material.getMaterial(item.getItemID()), 1, item.getDurability());
@@ -73,7 +75,7 @@ public class ShopList {
                     String niceItemName = ItemName.nicer(iStack.getType().toString());
                     String itemName = ItemName.getDataName(iStack) + niceItemName;
 
-                    p.sendMessage("ID " + item.getId() + ": " + ChatColor.GREEN + amount + ChatColor.RESET + " " + ChatColor.DARK_GREEN + itemName + ChatColor.RESET + " for " + ChatColor.GREEN + item.getSell() + "$/" + item.getUnitAmount() + " Unit(s)");
+                    p.sendMessage("#" + ChatColor.AQUA + item.getId() + ChatColor.RESET + " " + ChatColor.GREEN + amount + ChatColor.RESET + " " + ChatColor.DARK_GREEN + itemName + ChatColor.RESET + " for " + ChatColor.GREEN + item.getSell() + "$/" + item.getUnitAmount() + " Unit(s)");
                 }
 
                 if (qryPage.hasNext()) {
