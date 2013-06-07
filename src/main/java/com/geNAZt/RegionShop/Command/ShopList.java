@@ -65,7 +65,7 @@ public class ShopList {
             String name = Character.toString((char)0x270E);
 
             p.sendMessage(Chat.getPrefix() + "Legend: " + ChatColor.RED + dmg + ChatColor.RESET + " Damaged Item, " + ChatColor.GREEN + ench + ChatColor.RESET + " Enchanted Item, " + ChatColor.YELLOW + name + ChatColor.RESET + " Custom Name");
-            p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "/shop detail " + ChatColor.RESET + ChatColor.GRAY + "id" + ChatColor.RESET + " to show details");
+            p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "/shop detail " + ChatColor.GRAY + "id" + ChatColor.RESET + " to show details - " + ChatColor.YELLOW + "/shop buy " + ChatColor.GRAY + "id" + ChatColor.RESET + " <amount> to buy an item");
             p.sendMessage(Chat.getPrefix() + " ");
             if(itemList.size() > 0) {
                 for(ShopItems item : itemList) {

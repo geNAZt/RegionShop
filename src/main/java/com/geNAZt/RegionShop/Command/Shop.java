@@ -23,6 +23,7 @@ public class Shop implements CommandExecutor {
     private ShopList shopList;
     private ShopSelect shopSelect;
     private ShopAdd shopAdd;
+    private ShopDetail shopDetail;
 
     public Shop(RegionShopPlugin pl) {
         this.plugin = pl;
@@ -30,6 +31,7 @@ public class Shop implements CommandExecutor {
         this.shopList = new ShopList(pl);
         this.shopSelect = new ShopSelect(pl);
         this.shopAdd = new ShopAdd(pl);
+        this.shopDetail = new ShopDetail(pl);
     }
 
     @Override
@@ -82,6 +84,19 @@ public class Shop implements CommandExecutor {
                         }
 
                         shopAdd.execute(p, buy, sell, amount);
+                    }
+                } else if(args[0].equalsIgnoreCase("detail")) {
+                    if (args.length > 1) {
+                        Integer itemId;
+
+                        try {
+                            itemId = Integer.parseInt(args[1]);
+                        } catch (NumberFormatException e) {
+                            p.sendMessage(Chat.getPrefix() + "Only Numbers as detail ItemID");
+                            return true;
+                        }
+
+                        shopDetail.execute(p, itemId);
                     }
                 } else {
                     showHelp(p);
