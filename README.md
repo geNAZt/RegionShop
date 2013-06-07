@@ -1,7 +1,7 @@
 RegionShop
 ==========
 
-RegionShop is a WorldGuard depending player shop plugin which was built to offer comfort and simplicity for the main part. Players create a WorldGuard region, follow our naming convention for the region name and that's it. The shop is ready to get stocked with items! 
+RegionShop is a WorldGuard depending player shop plugin which was built to offer comfort and simplicity for the main part. Create a WorldGuard region, follow our naming convention for the region name and that's it. The shop is ready to get stocked with items!
 
 This can be easily done with the innovative "quick equip mode" to bulk add several items in one step and quote them afterwards. Of course you can use the good ol' command method as well. 
 
@@ -15,14 +15,13 @@ Feel free to try out this plugin to convince yourself. For more informations tak
     rs.list             # /shop list
     rs.warp.owner       # /shop warp <owner>
     rs.warp.region      # /shop warp <region>
-    rs.select.owner     # /shop select <owner>
-    rs.select.region    # /shop select <region>
     rs.stock.add        # /shop add <sell> <buy> <amount>
     rs.stock.set        # /shop set <shopitemid> <sell> <buy> <amount>
     rs.stock.remove     # /shop remove <shopitemid>
     rs.stock.equip      # /shop equip 
     rs.detail           # /shop detail <shopitemid>
     rs.search           # /shop search <itemname/itemid>
+  
 
 # config.yml
 
