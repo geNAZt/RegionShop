@@ -87,6 +87,8 @@ public class ShopAdd {
                     }
 
                     p.sendMessage(Chat.getPrefix() + "Added "+ ItemName.nicer(itemName) + " to the shop.");
+                } else {
+                    p.sendMessage(Chat.getPrefix() + "Item already added. /shop change "+ item.getId() + " to change it.");
                 }
             } else {
                 p.sendMessage(Chat.getPrefix() + "You aren't a owner in this Shop. You can't add items to it.");

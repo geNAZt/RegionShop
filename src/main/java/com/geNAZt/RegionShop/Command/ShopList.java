@@ -8,6 +8,8 @@ import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemName;
 import com.geNAZt.RegionShop.Util.WorldGuardBridge;
 
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -64,12 +66,26 @@ public class ShopList {
             String ench = Character.toString((char)0x2692);
             String dmg = Character.toString((char)0x26A0);
             String name = Character.toString((char)0x270E);
+            String notrdy = Character.toString((char)0x2716);
 
-            p.sendMessage(Chat.getPrefix() + "Legend: " + ChatColor.RED + dmg + ChatColor.RESET + " Damaged Item, " + ChatColor.GREEN + ench + ChatColor.RESET + " Enchanted Item, " + ChatColor.YELLOW + name + ChatColor.RESET + " Custom Name");
+            String legend = Chat.getPrefix() + "Legend: " + ChatColor.RED + dmg + ChatColor.RESET + " Damaged Item, " + ChatColor.GREEN + ench + ChatColor.RESET + " Enchanted Item, " + ChatColor.YELLOW + name + ChatColor.RESET + " Custom Name";
+
+            RegionManager rgMngr = WorldGuardBridge.getRegionManager(p.getWorld());
+            ProtectedRegion regionObj = rgMngr.getRegion(region);
+
+            if (regionObj.isOwner(p.getName())) {
+                legend += ", " + ChatColor.LIGHT_PURPLE + notrdy + " Item isn't ready to be sold";
+            }
+
+            p.sendMessage(legend);
             p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "/shop detail " + ChatColor.GRAY + "id" + ChatColor.RESET + " to show details - " + ChatColor.YELLOW + "/shop buy " + ChatColor.GRAY + "id" + ChatColor.RESET + " <amount> to buy an item");
             p.sendMessage(Chat.getPrefix() + " ");
             if(itemList.size() > 0) {
                 for(ShopItems item : itemList) {
+                    if(((item.getSell() == 0 && item.getBuy() == 0) || item.getUnitAmount() == 0) && !regionObj.isOwner(p.getName())) {
+                        continue;
+                    }
+
                     ItemStack iStack = new ItemStack(Material.getMaterial(item.getItemID()), 1, item.getDurability());
                     iStack.getData().setData(item.getDataID());
 
@@ -90,6 +106,10 @@ public class ShopList {
 
                     if (enchant > 0) {
                         message += " " + ChatColor.GREEN + ench;
+                    }
+
+                    if((item.getSell() == 0 && item.getBuy() == 0) || item.getUnitAmount() == 0) {
+                        message += " " + ChatColor.LIGHT_PURPLE + notrdy;
                     }
 
                     p.sendMessage(message);

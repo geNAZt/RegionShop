@@ -21,17 +21,17 @@ public class Shop implements CommandExecutor {
     private RegionShopPlugin plugin;
     private ShopWarp shopWarp;
     private ShopList shopList;
-    private ShopSelect shopSelect;
     private ShopAdd shopAdd;
     private ShopDetail shopDetail;
+    private ShopEquip shopEquip;
 
     public Shop(RegionShopPlugin pl) {
         this.plugin = pl;
         this.shopWarp = new ShopWarp(pl);
         this.shopList = new ShopList(pl);
-        this.shopSelect = new ShopSelect(pl);
         this.shopAdd = new ShopAdd(pl);
         this.shopDetail = new ShopDetail(pl);
+        this.shopEquip = new ShopEquip(pl);
     }
 
     @Override
@@ -59,13 +59,6 @@ public class Shop implements CommandExecutor {
                 } else if(args[0].equalsIgnoreCase("warp")) {
                     if (args.length > 1) {
                         shopWarp.execute(p, args[1]);
-                    } else {
-                        p.sendMessage(Chat.getPrefix() + "No second argument given");
-                        showHelp(p);
-                    }
-                } else if(args[0].equalsIgnoreCase("select")) {
-                    if (args.length > 1) {
-                        shopSelect.execute(p, args[1]);
                     } else {
                         p.sendMessage(Chat.getPrefix() + "No second argument given");
                         showHelp(p);
@@ -98,6 +91,12 @@ public class Shop implements CommandExecutor {
 
                         shopDetail.execute(p, itemId);
                     }
+                } else if(args[0].equalsIgnoreCase("equip")) {
+                    if (args.length > 1) {
+                        shopEquip.execute(p, args[1]);
+                    } else {
+                        shopEquip.execute(p, null);
+                    }
                 } else {
                     showHelp(p);
                 }
@@ -113,12 +112,16 @@ public class Shop implements CommandExecutor {
 
     private void showHelp(Player sender) {
         sender.sendMessage(Chat.getPrefix() + "RegionShop help");
+        sender.sendMessage(Chat.getPrefix() + ChatColor.RED + "Things in red must be given    " + ChatColor.GREEN + "Things in green are optional");
         sender.sendMessage(Chat.getPrefix() + "----------------------------------------");
+        sender.sendMessage(Chat.getPrefix() + "Consumer Commands: ");
         sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop list -> " + ChatColor.RESET + " Show all Items in a Shop");
-        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop warp <owner> -> " + ChatColor.RESET + " Warp to the Shop of Player <owner>");
-        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop warp <region> -> " + ChatColor.RESET + " Warp to the <region> of a Shop");
-        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop select <owner/region> -> " + ChatColor.RESET + " Select the Shop <owner/region> as current Shop");
-        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop add <sell> <buy> <amount> -> " + ChatColor.RESET + " Adds the current in Hand Item to the Shop.");
-        sender.sendMessage(Chat.getPrefix() + "<sell> - Amount of $ which you want to sell; <buy> - Amount of $ you want to buy; <amount> - Amount of Items which will be dealt");
+        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop detail "+ ChatColor.RED +"shopItemID"+ ChatColor.AQUA +"-> " + ChatColor.RESET + " Show details of an Item");
+        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop warp "+ ChatColor.RED +"owner"+ ChatColor.AQUA +" -> " + ChatColor.RESET + " Warp to the Shop of Player <owner>");
+        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop warp "+ ChatColor.RED +"region"+ ChatColor.AQUA +" -> " + ChatColor.RESET + " Warp to the <region> of a Shop");
+        sender.sendMessage(Chat.getPrefix() + " ");
+        sender.sendMessage(Chat.getPrefix() + "Shop Owner Commands: ");
+        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop add "+ ChatColor.RED +"sell buy amount"+ ChatColor.AQUA +"-> " + ChatColor.RESET + " Adds the current in Hand Item to the Shop. <sell> - Amount of $ which you want to sell this Item for; <buy> - Amount of $ you want to buy this Item for; <amount> - Amount of Items which will be dealt");
+        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop equip "+ ChatColor.GREEN +"region"+ ChatColor.AQUA +" -> " + ChatColor.RESET + " Toggle if dropped items will be added into the Shop. If you have multiple shop select via <region>");
     }
 }

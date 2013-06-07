@@ -1,21 +1,14 @@
 package com.geNAZt.RegionShop.Event;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Util.DropStorage;
 import com.geNAZt.RegionShop.Util.PlayerStorage;
-import com.geNAZt.RegionShop.Util.WorldGuardBridge;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import org.bukkit.ChatColor;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.Plugin;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,6 +28,10 @@ public class LeaveEvent implements Listener {
     public void onPlayerDisconnect(PlayerQuitEvent e) {
         if (PlayerStorage.getPlayer(e.getPlayer()) != null) {
            PlayerStorage.removerPlayer(e.getPlayer());
+        }
+
+        if (DropStorage.getPlayer(e.getPlayer()) != null) {
+            DropStorage.removerPlayer(e.getPlayer());
         }
     }
 }
