@@ -10,3 +10,52 @@ commands:
        usage: /shop
        permission: regionshop.use
        permission-message: You don't have Permissions to use the RegionShop
+
+permissions:
+  rs.use:
+    description: Wildcard permission set for RegionShop
+    children:
+      rs.help: true
+      rs.list: true
+      rs.warp.region: true
+      rs.warp.owner: true
+      rs.detail: true
+      rs.stock.add: true
+      rs.stock.set: true
+      rs.stock.remove: true
+      rs.stock.equip: true
+      rs.detail: true
+      rs.search: true
+  rs.help:
+    description: Permission for /shop help
+    default: true
+  rs.list:
+    description: Explore the shop catalogue
+    default: true
+  rs.warp.region:
+    description: Allows the usage of the warp command based on a region name
+    default: true
+  rs.warp.owner:
+    description: Allows the usage of the warp command based on a shop owner
+    default: true
+  rs.detail:
+    description: Get more information based on a shop item id
+    default: true
+  rs.stock.add:
+    description: Add item in hand to your shop stock
+    default: true
+  rs.stock.set:
+    description: Adjust the price or the amount of a specific shop item id
+    default: true
+  rs.stock.remove:
+    description: Remove a specific shop item id out of your shop catalogue
+    default: true
+  rs.stock.equip:
+    description: Toggle the quick equip mode
+    default: true
+  rs.detail:
+    description: Get additional informations about an shop item
+    default: true
+  rs.search:
+    description: Search for a specific item on the whole marketplace 
+    default: true
