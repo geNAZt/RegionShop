@@ -1,6 +1,7 @@
 package com.geNAZt.RegionShop.Command;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.PlayerStorage;
 
 import org.bukkit.ChatColor;
@@ -37,7 +38,7 @@ public class Shop implements CommandExecutor {
         Player p = (isPlayer) ? (Player) sender : null;
 
         if(!isPlayer) {
-            sender.sendMessage("No shop for you Console!");
+            sender.sendMessage(Chat.getPrefix() + "No shop for you Console!");
             return true;
         }
 
@@ -57,14 +58,14 @@ public class Shop implements CommandExecutor {
                     if (args.length > 1) {
                         shopWarp.execute(p, args[1]);
                     } else {
-                        p.sendMessage("No second argument given");
+                        p.sendMessage(Chat.getPrefix() + "No second argument given");
                         showHelp(p);
                     }
                 } else if(args[0].equalsIgnoreCase("select")) {
                     if (args.length > 1) {
                         shopSelect.execute(p, args[1]);
                     } else {
-                        p.sendMessage("No second argument given");
+                        p.sendMessage(Chat.getPrefix() + "No second argument given");
                         showHelp(p);
                     }
                 } else if(args[0].equalsIgnoreCase("add")) {
@@ -76,7 +77,7 @@ public class Shop implements CommandExecutor {
                             sell = Integer.parseInt(args[1]);
                             amount = Integer.parseInt(args[3]);
                         } catch (NumberFormatException e) {
-                            p.sendMessage("Only Numbers as sell, buy and amount values");
+                            p.sendMessage(Chat.getPrefix() + "Only Numbers as sell, buy and amount values");
                             return true;
                         }
 
@@ -96,13 +97,13 @@ public class Shop implements CommandExecutor {
     }
 
     private void showHelp(Player sender) {
-        sender.sendMessage("RegionShop help");
-        sender.sendMessage("----------------------------------------");
-        sender.sendMessage(ChatColor.AQUA + "/shop list -> " + ChatColor.RESET + " Show all Items in a Shop");
-        sender.sendMessage(ChatColor.AQUA + "/shop warp <owner> -> " + ChatColor.RESET + " Warp to the Shop of Player <owner>");
-        sender.sendMessage(ChatColor.AQUA + "/shop warp <region> -> " + ChatColor.RESET + " Warp to the <region> of a Shop");
-        sender.sendMessage(ChatColor.AQUA + "/shop select <owner/region> -> " + ChatColor.RESET + " Select the Shop <owner/region> as current Shop");
-        sender.sendMessage(ChatColor.AQUA + "/shop add <sell> <buy> <amount> -> " + ChatColor.RESET + " Adds the current in Hand Item to the Shop.");
-        sender.sendMessage("<sell> - Amount of $ which you want to sell; <buy> - Amount of $ you want to buy; <amount> - Amount of Items which will be dealt");
+        sender.sendMessage(Chat.getPrefix() + "RegionShop help");
+        sender.sendMessage(Chat.getPrefix() + "----------------------------------------");
+        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop list -> " + ChatColor.RESET + " Show all Items in a Shop");
+        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop warp <owner> -> " + ChatColor.RESET + " Warp to the Shop of Player <owner>");
+        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop warp <region> -> " + ChatColor.RESET + " Warp to the <region> of a Shop");
+        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop select <owner/region> -> " + ChatColor.RESET + " Select the Shop <owner/region> as current Shop");
+        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop add <sell> <buy> <amount> -> " + ChatColor.RESET + " Adds the current in Hand Item to the Shop.");
+        sender.sendMessage(Chat.getPrefix() + "<sell> - Amount of $ which you want to sell; <buy> - Amount of $ you want to buy; <amount> - Amount of Items which will be dealt");
     }
 }

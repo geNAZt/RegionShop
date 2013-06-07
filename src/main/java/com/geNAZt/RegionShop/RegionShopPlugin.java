@@ -5,6 +5,7 @@ import com.geNAZt.RegionShop.Event.JoinEvent;
 import com.geNAZt.RegionShop.Event.LeaveEvent;
 import com.geNAZt.RegionShop.Event.RegionEntered;
 import com.geNAZt.RegionShop.Model.ShopItems;
+import com.geNAZt.RegionShop.Util.Chat;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.persistence.PersistenceException;
@@ -25,6 +26,9 @@ public class RegionShopPlugin extends JavaPlugin {
 
         //Database
         checkForDatabase();
+
+        //Statics init
+        Chat.init(this);
 
         //Event
         getServer().getPluginManager().registerEvents(new RegionEntered(this), this);

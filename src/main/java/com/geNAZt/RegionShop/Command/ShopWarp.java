@@ -1,6 +1,7 @@
 package com.geNAZt.RegionShop.Command;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.WorldGuardBridge;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
@@ -30,7 +31,7 @@ public class ShopWarp {
         if (plugin.getServer().getPlayer(playerOrRegion) != null) {
             HashSet<ProtectedRegion> foundRegions = WorldGuardBridge.searchRegionsByOwner(playerOrRegion, p);
             if (foundRegions.size() > 1) {
-                p.sendMessage("This player has more than one Shop. Please select one out of the list /shop warp <region>");
+                p.sendMessage(Chat.getPrefix() + "This player has more than one Shop. Please select one out of the list /shop warp <region>");
                 for(ProtectedRegion region : foundRegions) {
                     p.sendMessage(region.getId());
                 }
@@ -56,7 +57,7 @@ public class ShopWarp {
         }
 
         //Nothing of all
-        p.sendMessage("Invalid Player or Region");
+        p.sendMessage(Chat.getPrefix() + "Invalid Player or Region");
         return false;
     }
 }

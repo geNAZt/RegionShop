@@ -2,6 +2,7 @@ package com.geNAZt.RegionShop.Command;
 
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemName;
 import com.geNAZt.RegionShop.Util.PlayerStorage;
 import com.geNAZt.RegionShop.Util.WorldGuardBridge;
@@ -69,10 +70,10 @@ public class ShopAdd {
                         itemName = itemInHand.getType().toString();
                     }
 
-                    p.sendMessage("Added "+ ItemName.nicer(itemName) + " to the shop.");
+                    p.sendMessage(Chat.getPrefix() + "Added "+ ItemName.nicer(itemName) + " to the shop.");
                 }
             } else {
-                p.sendMessage("You aren't a owner in this Shop. You can't add items to it.");
+                p.sendMessage(Chat.getPrefix() + "You aren't a owner in this Shop. You can't add items to it.");
             }
 
             return true;
@@ -81,7 +82,7 @@ public class ShopAdd {
 
 
         //Nothing of all
-        p.sendMessage("You haven't selected an Shop.");
+        p.sendMessage(Chat.getPrefix() + "You haven't selected an Shop.");
         return false;
     }
 }

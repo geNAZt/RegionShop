@@ -1,6 +1,7 @@
 package com.geNAZt.RegionShop.Command;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.PlayerStorage;
 import com.geNAZt.RegionShop.Util.WorldGuardBridge;
 import com.sk89q.worldedit.Vector;
@@ -32,7 +33,7 @@ public class ShopSelect {
         if (plugin.getServer().getPlayer(playerOrRegion) != null) {
             HashSet<ProtectedRegion> foundRegions = WorldGuardBridge.searchRegionsByOwner(playerOrRegion, p);
             if (foundRegions.size() > 1) {
-                p.sendMessage("This player has more than one Shop. Please select one out of the list /shop select <region>");
+                p.sendMessage(Chat.getPrefix() + "This player has more than one Shop. Please select one out of the list /shop select <region>");
                 for(ProtectedRegion region : foundRegions) {
                     p.sendMessage(region.getId());
                 }
@@ -48,7 +49,7 @@ public class ShopSelect {
                     }
 
                     PlayerStorage.setPlayer(p, region.getId());
-                    p.sendMessage("Shop " + playerOrRegion + " selected");
+                    p.sendMessage(Chat.getPrefix() + "Shop " + playerOrRegion + " selected");
 
                     return true;
                 }
@@ -66,13 +67,13 @@ public class ShopSelect {
             }
 
             PlayerStorage.setPlayer(p, region.getId());
-            p.sendMessage("Shop " + playerOrRegion + " selected");
+            p.sendMessage(Chat.getPrefix() + "Shop " + playerOrRegion + " selected");
 
             return true;
         }
 
         //Nothing of all
-        p.sendMessage("You havent given an Shop to select");
+        p.sendMessage(Chat.getPrefix() + "You havent given an Shop to select");
         return false;
     }
 }
