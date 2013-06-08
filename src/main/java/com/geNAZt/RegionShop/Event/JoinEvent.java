@@ -66,7 +66,7 @@ public class JoinEvent implements Listener {
                     }
 
                     e.getPlayer().sendMessage(Chat.getPrefix() + ChatColor.GOLD + "You have entered " + ChatColor.DARK_GREEN + shopName +  ChatColor.GOLD + ". Type " + ChatColor.GREEN + "/shop list " + ChatColor.GOLD + "to list the items");
-                    plugin.getLogger().info("[RegionShop] Player " + e.getPlayer().getDisplayName() + " entered WG Region " + region.getId());
+                    plugin.getLogger().info("[RegionShop] Player " + e.getPlayer().getDisplayName() + " entered WorldGuard region " + region.getId());
                 } else {
                     if (plugin.getConfig().getBoolean("debug")) {
                         plugin.getLogger().info("[RegionShop] No ShopRegion " + region.getId());

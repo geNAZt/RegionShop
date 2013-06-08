@@ -60,7 +60,7 @@ public class ListStorage {
 
                 shopList.put(wrld, wrldRegions);
 
-                plugin.getLogger().info("Found " + wrldRegions.size() + " Shops in World " + wrld.getName());
+                plugin.getLogger().info("Found " + wrldRegions.size() + " shops in world " + wrld.getName());
             }
         }
 
