@@ -300,7 +300,7 @@ public class Shop implements CommandExecutor {
 
     private void showHelp(Player sender, Integer page) {
         if (page == 1) {
-            sender.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Help: RegionShop " + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Page " + ChatColor.RED + "1" + ChatColor.GOLD + "/" + ChatColor.RED + "2 " + ChatColor.YELLOW + "--");
+            sender.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "RegionShop: Help" + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Page " + ChatColor.RED + "1" + ChatColor.GOLD + "/" + ChatColor.RED + "2 " + ChatColor.YELLOW + "--");
             sender.sendMessage(Chat.getPrefix() + ChatColor.RED + "Necessary arguments");
             sender.sendMessage(Chat.getPrefix() + ChatColor.GREEN + "Optional arguments");
             sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop list" + ChatColor.RESET + ": List items in the shop (inside a shopregion)");
@@ -315,7 +315,7 @@ public class Shop implements CommandExecutor {
         }
 
         if (page == 2) {
-            sender.sendMessage(Chat.getPrefix() +ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Help: RegionShop " + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Page " + ChatColor.RED + "2" + ChatColor.GOLD + "/" + ChatColor.RED + "2 " + ChatColor.YELLOW + "--");
+            sender.sendMessage(Chat.getPrefix() +ChatColor.YELLOW + "-- " + ChatColor.GOLD + "RegionShop: Help" + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Page " + ChatColor.RED + "2" + ChatColor.GOLD + "/" + ChatColor.RED + "2 " + ChatColor.YELLOW + "--");
             sender.sendMessage(Chat.getPrefix() +ChatColor.RED + "Necessary arguments");
             sender.sendMessage(Chat.getPrefix() +ChatColor.GREEN + "Optional arguments");
         }
