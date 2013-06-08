@@ -25,10 +25,10 @@ Feel free to try out this plugin to convince yourself. For more informations tak
   
 
 # config.yml
+    debug: false        # Debug for finding or reporting Errors
+    chat:
+        prefix: '[RS] ' # Prefix for Chatmessages
 
-    bla:
-      - bla
-      - blabla
 
 # Depencies
 
