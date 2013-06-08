@@ -39,7 +39,7 @@ public class ShopSell {
                             eq("item_id", itemInHand.getType().getId()).
                             eq("data_id", itemInHand.getData().getData()).
                             eq("durability", itemInHand.getDurability()).
-                            eq("custom_name", (itemInHand.getItemMeta().hasDisplayName()) ? itemInHand.getItemMeta().getDisplayName() : "").
+                            eq("custom_name", (itemInHand.getItemMeta().hasDisplayName()) ? itemInHand.getItemMeta().getDisplayName() : null).
                         endJunction().
                     findUnique();
 
@@ -53,7 +53,7 @@ public class ShopSell {
                     }
 
                     eco.withdrawPlayer(item.getOwner(), itemInHand.getAmount() * item.getBuy());
-                    eco.depositPlayer(item.getOwner(), itemInHand.getAmount() * item.getBuy());
+                    eco.depositPlayer(p.getName(), itemInHand.getAmount() * item.getBuy());
                     plugin.getServer().getPlayer(item.getOwner()).sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + " for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getBuy()) + "$" + ChatColor.DARK_GREEN + " to Shop");
 
                     p.getInventory().remove(itemInHand);

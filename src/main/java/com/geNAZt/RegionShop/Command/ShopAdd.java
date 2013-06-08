@@ -46,7 +46,7 @@ public class ShopAdd {
                             eq("item_id", itemInHand.getType().getId()).
                             eq("data_id", itemInHand.getData().getData()).
                             eq("durability", itemInHand.getDurability()).
-                            eq("custom_name", (itemInHand.getItemMeta().hasDisplayName()) ? itemInHand.getItemMeta().getDisplayName() : "").
+                            eq("custom_name", (itemInHand.getItemMeta().hasDisplayName()) ? itemInHand.getItemMeta().getDisplayName() : null).
                         endJunction().findUnique();
 
                 if (item == null) {
@@ -59,7 +59,7 @@ public class ShopAdd {
                     newItem.setRegion(region);
                     newItem.setDataID(itemInHand.getData().getData());
                     newItem.setStackable(itemInHand.getMaxStackSize() != 1);
-                    newItem.setCustomName((itemInHand.getItemMeta().hasDisplayName()) ? itemInHand.getItemMeta().getDisplayName() : "");
+                    newItem.setCustomName((itemInHand.getItemMeta().hasDisplayName()) ? itemInHand.getItemMeta().getDisplayName() : null);
 
                     newItem.setBuy(buy);
                     newItem.setSell(sell);

@@ -127,7 +127,14 @@ public class ShopList {
                                 eq("shop_item_id", item.getId()).
                             findRowCount();
 
-                    if (!item.isStackable() && item.getItemID() != 373) {
+                    Integer perDmg = 0;
+
+                    if (iStack.getDurability() > 0 && item.getItemID() != 373) {
+                        Float divide = ((float)iStack.getDurability() / (float)iStack.getType().getMaxDurability());
+                        perDmg = Math.round(divide * 100);
+                    }
+
+                    if (!item.isStackable() && perDmg > 0) {
                         message += " " + ChatColor.RED + dmg;
                     }
 
@@ -137,6 +144,10 @@ public class ShopList {
 
                     if((item.getSell() == 0 && item.getBuy() == 0) || item.getUnitAmount() == 0) {
                         message += " " + ChatColor.LIGHT_PURPLE + notrdy;
+                    }
+
+                    if(item.getCustomName() != null) {
+                        message += " " + ChatColor.YELLOW + name;
                     }
 
                     p.sendMessage(message);

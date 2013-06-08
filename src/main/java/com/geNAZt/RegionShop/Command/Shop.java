@@ -25,6 +25,7 @@ public class Shop implements CommandExecutor {
     private ShopEquip shopEquip;
     private ShopSet shopSet;
     private ShopSell shopSell;
+    private ShopBuy shopBuy;
 
     public Shop(RegionShopPlugin pl) {
         this.shopWarp = new ShopWarp(pl);
@@ -34,6 +35,7 @@ public class Shop implements CommandExecutor {
         this.shopEquip = new ShopEquip(pl);
         this.shopSet = new ShopSet(pl);
         this.shopSell = new ShopSell(pl);
+        this.shopBuy = new ShopBuy(pl);
     }
 
     @Override
@@ -142,7 +144,7 @@ public class Shop implements CommandExecutor {
                                 sell = Integer.parseInt(args[2]);
                                 amount = Integer.parseInt(args[4]);
                             } catch (NumberFormatException e) {
-                                p.sendMessage(Chat.getPrefix() + "Only Numbers as sell, buy and amount values");
+                                p.sendMessage(Chat.getPrefix() + "Only Numbers as shopItemId, buy, sell and amount values");
                                 return true;
                             }
 
@@ -161,6 +163,40 @@ public class Shop implements CommandExecutor {
                         shopSell.execute(p);
                     } else {
                         p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.sell");
+                    }
+                } else if(args[0].equalsIgnoreCase("buy")) {
+                    if (p.hasPermission("rs.buy")) {
+                        if (args.length > 2) {
+                            Integer shopItemId, amount;
+
+                            try {
+                                shopItemId = Integer.parseInt(args[1]);
+                                amount = Integer.parseInt(args[2]);
+                            } catch (NumberFormatException e) {
+                                p.sendMessage(Chat.getPrefix() + "Only Numbers as shopItemId and amount values");
+                                return true;
+                            }
+
+                            shopBuy.execute(p, shopItemId, amount);
+                        } else if (args.length > 1) {
+                            Integer shopItemId;
+
+                            try {
+                                shopItemId = Integer.parseInt(args[1]);
+                            } catch (NumberFormatException e) {
+                                p.sendMessage(Chat.getPrefix() + "Only Numbers as shopItemId value");
+                                return true;
+                            }
+
+                            shopBuy.execute(p, shopItemId, -1);
+                        } else {
+                            p.sendMessage(Chat.getPrefix() + "Not enough Arguments given");
+                            showHelp(p);
+
+                            return true;
+                        }
+                    } else {
+                        p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.buy");
                     }
                 } else {
                     showHelp(p);

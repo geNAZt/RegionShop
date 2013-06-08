@@ -1,17 +1,24 @@
 package com.geNAZt.RegionShop.Command;
 
+import com.geNAZt.RegionShop.Model.ShopItemEnchantmens;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-import com.geNAZt.RegionShop.Util.Chat;
-import com.geNAZt.RegionShop.Util.ItemName;
-import com.geNAZt.RegionShop.Util.PlayerStorage;
-import com.geNAZt.RegionShop.Util.VaultBridge;
+import com.geNAZt.RegionShop.Util.*;
 
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.enchantments.EnchantmentTarget;
+import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,7 +39,6 @@ public class ShopBuy {
         if (PlayerStorage.getPlayer(p) != null) {
             String region = PlayerStorage.getPlayer(p);
 
-            ItemStack itemInHand = p.getItemInHand();
             ShopItems item = plugin.getDatabase().find(ShopItems.class).
                     where().
                         conjunction().
@@ -42,23 +48,79 @@ public class ShopBuy {
                         endJunction().
                     findUnique();
 
-            if (item.getBuy() > 0) {
+            if (item.getSell() > 0) {
+                if (wishAmount > item.getCurrentAmount() && wishAmount != -1) {
+                    p.sendMessage(Chat.getPrefix() + "This Shop hasn't so much of this Item");
+                    return true;
+                }
+
+                if (wishAmount == -1) {
+                    wishAmount = item.getCurrentAmount();
+                }
+
+                ItemStack iStack = new ItemStack(Material.getMaterial(item.getItemID()), wishAmount);
+                iStack.getData().setData(item.getDataID());
+                iStack.setDurability(item.getDurability());
+
+                List<ShopItemEnchantmens> enchants = plugin.getDatabase().find(ShopItemEnchantmens.class).
+                        where().
+                            eq("shop_item_id", item.getId()).
+                        findList();
+
+                if(enchants.size() > 0) {
+                    for(ShopItemEnchantmens ench : enchants) {
+                        Enchantment enchObj = new EnchantmentWrapper(ench.getEnchId()).getEnchantment();
+                        iStack.addEnchantment(enchObj, ench.getEnchLvl());
+                    }
+                }
+
+                if(item.getCustomName() != null) {
+                    ItemMeta iMeta = iStack.getItemMeta();
+                    iMeta.setDisplayName(item.getCustomName());
+                    iStack.setItemMeta(iMeta);
+                }
+
                 Economy eco = VaultBridge.economy;
 
-                if (eco.has(item.getOwner(), itemInHand.getAmount() * item.getBuy())) {
-                    plugin.getServer().getPlayer(item.getOwner()).sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + p.getDisplayName() + ChatColor.DARK_GREEN + " has sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + ChatColor.DARK_GREEN + " to your Shop (" + ChatColor.GREEN + region + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getBuy()) + "$");
-                    eco.withdrawPlayer(item.getOwner(), itemInHand.getAmount() * item.getBuy());
-                    eco.depositPlayer(item.getOwner(), itemInHand.getAmount() * item.getBuy());
-                    plugin.getServer().getPlayer(item.getOwner()).sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + " for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getBuy()) + "$" + ChatColor.DARK_GREEN + " to Shop");
+                if (eco.has(p.getName(), ((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell())) {
+                    HashMap<Integer, ItemStack> notFitItems = p.getInventory().addItem(iStack);
+                    if (!notFitItems.isEmpty()) {
+                        for(Map.Entry<Integer, ItemStack> notFitItem : notFitItems.entrySet()) {
+                            wishAmount -= notFitItem.getValue().getAmount();
+                        }
+                    }
 
-                    p.getInventory().remove(itemInHand);
-                    item.setCurrentAmount(item.getCurrentAmount() + itemInHand.getAmount());
-                    plugin.getDatabase().update(item);
+                    Player owner = plugin.getServer().getPlayer(item.getOwner());
+                    if (owner != null) {
+                        if (owner.isOnline()) {
+                            owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + p.getDisplayName() + ChatColor.DARK_GREEN + " bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " from your Shop (" + ChatColor.GREEN + region + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
+                        }
+                    }
+
+                    eco.withdrawPlayer(p.getName(), ((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell());
+                    eco.depositPlayer(item.getOwner(), ((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell());
+                    p.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + " for " + ChatColor.GREEN + (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$" + ChatColor.DARK_GREEN + " from Shop");
+
+                    item.setCurrentAmount(item.getCurrentAmount() - wishAmount);
+
+                    if (item.getCurrentAmount() > 0) {
+                        plugin.getDatabase().update(item);
+                    } else {
+                        if (owner != null) {
+                            if (owner.isOnline()) {
+                                owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " is empty. It has been removed from your Shop (" + ChatColor.GREEN + region + ChatColor.DARK_GREEN + ")");
+                            } else {
+                                EssentialBridge.sendMail(Chat.getPrefix(), owner, ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " is empty. It has been removed from your Shop (" + ChatColor.GREEN + region + ChatColor.DARK_GREEN + ")");
+                            }
+                        }
+
+                        plugin.getDatabase().delete(item);
+                    }
                 } else {
-                    p.sendMessage(Chat.getPrefix() + "This ShopItem Owner hasn't enough money");
+                    p.sendMessage(Chat.getPrefix() + "You haven't enough money for this. You need "+ (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
                 }
             } else {
-                p.sendMessage(Chat.getPrefix() + "This Shop doesn't buy this Item");
+                p.sendMessage(Chat.getPrefix() + "This Shop doesn't sell this Item");
             }
 
             return true;

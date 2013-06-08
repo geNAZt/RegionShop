@@ -46,7 +46,7 @@ public class DropItemEvent implements Listener {
                         eq("item_id", droppedItem.getType().getId()).
                         eq("data_id", droppedItem.getData().getData()).
                         eq("durability", droppedItem.getDurability()).
-                        eq("custom_name", (droppedItem.getItemMeta().hasDisplayName()) ? droppedItem.getItemMeta().getDisplayName() : "").
+                        eq("custom_name", (droppedItem.getItemMeta().hasDisplayName()) ? droppedItem.getItemMeta().getDisplayName() : null).
                     endJunction().
                     findUnique();
 
@@ -66,7 +66,7 @@ public class DropItemEvent implements Listener {
                 newItem.setRegion(region);
                 newItem.setDataID(droppedItem.getData().getData());
                 newItem.setStackable(droppedItem.getMaxStackSize() != 1);
-                newItem.setCustomName((droppedItem.getItemMeta().hasDisplayName()) ? droppedItem.getItemMeta().getDisplayName() : "");
+                newItem.setCustomName((droppedItem.getItemMeta().hasDisplayName()) ? droppedItem.getItemMeta().getDisplayName() : null);
 
                 newItem.setBuy(0);
                 newItem.setSell(0);
