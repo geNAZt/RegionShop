@@ -59,7 +59,7 @@ public class ShopResult {
 
         RegionManager rgMngr = WorldGuardBridge.getRegionManager(p.getWorld());
 
-        p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Result for Search: " + ChatColor.GREEN + searchQry + ChatColor.YELLOW + " -- " + ChatColor.GOLD + "Page " + ChatColor.RED + page + ChatColor.GOLD + "/" + ChatColor.RED + maxPage + ChatColor.YELLOW + " --" );
+        p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Result for search: " + ChatColor.GREEN + searchQry + ChatColor.YELLOW + " -- " + ChatColor.GOLD + "Page " + ChatColor.RED + page + ChatColor.GOLD + "/" + ChatColor.RED + maxPage + ChatColor.YELLOW + " --" );
         p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "Legend: " + ChatColor.RED + dmg + ChatColor.YELLOW + " damaged, " + ChatColor.RED + ench + ChatColor.YELLOW + " enchanted, " + ChatColor.RED + name + ChatColor.YELLOW + " renamed");
         p.sendMessage(Chat.getPrefix() + " ");
         for(Map.Entry<ShopItems, ItemStack> entry : result.entrySet()) {
