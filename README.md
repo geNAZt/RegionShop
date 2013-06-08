@@ -22,7 +22,8 @@ Feel free to try out this plugin to convince yourself. For more informations tak
     rs.detail           # /shop detail <shopitemid>
     rs.search           # /shop search <itemname/itemid>
     rs.sell             # /shop sell
-  
+    rs.buy              # /shop buy <shopitemid> <amount>
+
 
 # config.yml
     debug: false        # Debug for finding or reporting Errors
