@@ -21,6 +21,7 @@ Feel free to try out this plugin to convince yourself. For more informations tak
     rs.stock.equip      # /shop equip 
     rs.detail           # /shop detail <shopitemid>
     rs.search           # /shop search <itemname/itemid>
+    rs.sell             # /shop sell
   
 
 # config.yml

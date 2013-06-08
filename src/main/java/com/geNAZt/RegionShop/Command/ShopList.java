@@ -34,14 +34,44 @@ public class ShopList {
     @SuppressWarnings("unchecked")
     public boolean execute(Player p, String region, String page) {
         if (WorldGuardBridge.isRegion(region, p)) {
-            PagingList<ShopItems> shopItems = plugin.getDatabase().
-                    find(ShopItems.class).
-                    where().
-                        conjunction().
-                            eq("world", p.getWorld().getName()).
-                            eq("region", region).
-                        endJunction().
-                    findPagingList(10);
+            RegionManager rgMngr = WorldGuardBridge.getRegionManager(p.getWorld());
+            ProtectedRegion regionObj = rgMngr.getRegion(region);
+            PagingList<ShopItems> shopItems;
+
+            if (regionObj.isOwner(p.getName())) {
+                shopItems = plugin.getDatabase().
+                        find(ShopItems.class).
+                        where().
+                            conjunction().
+                                eq("world", p.getWorld().getName()).
+                                eq("region", region).
+                                disjunction().
+                                    conjunction().
+                                        gt("unit_amount", 0).
+                                        disjunction().
+                                            gt("sell", 0).
+                                            gt("buy", 0).
+                                        endJunction().
+                                    endJunction().
+                                    eq("owner", p.getName()).
+                                endJunction().
+                            endJunction().
+                        findPagingList(10);
+            } else {
+                shopItems= plugin.getDatabase().
+                        find(ShopItems.class).
+                        where().
+                            conjunction().
+                                eq("world", p.getWorld().getName()).
+                                eq("region", region).
+                                gt("unit_amount", 0).
+                                disjunction().
+                                    gt("sell", 0).
+                                    gt("buy", 0).
+                                endJunction().
+                            endJunction().
+                        findPagingList(10);
+            }
 
             Integer curPage;
 
@@ -70,11 +100,8 @@ public class ShopList {
 
             String legend = Chat.getPrefix() + "Legend: " + ChatColor.RED + dmg + ChatColor.RESET + " Damaged Item, " + ChatColor.GREEN + ench + ChatColor.RESET + " Enchanted Item, " + ChatColor.YELLOW + name + ChatColor.RESET + " Custom Name";
 
-            RegionManager rgMngr = WorldGuardBridge.getRegionManager(p.getWorld());
-            ProtectedRegion regionObj = rgMngr.getRegion(region);
-
             if (regionObj.isOwner(p.getName())) {
-                legend += ", " + ChatColor.LIGHT_PURPLE + notrdy + " Item isn't ready to be sold";
+                legend += ", " + ChatColor.LIGHT_PURPLE + notrdy + ChatColor.RESET + " Item isn't ready to be sold";
             }
 
             p.sendMessage(legend);
@@ -100,7 +127,7 @@ public class ShopList {
                                 eq("shop_item_id", item.getId()).
                             findRowCount();
 
-                    if (!item.isStackable()) {
+                    if (!item.isStackable() && item.getItemID() != 373) {
                         message += " " + ChatColor.RED + dmg;
                     }
 

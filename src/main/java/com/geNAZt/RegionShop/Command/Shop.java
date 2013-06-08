@@ -18,20 +18,22 @@ import org.bukkit.entity.Player;
  * To change this template use File | Settings | File Templates.
  */
 public class Shop implements CommandExecutor {
-    private RegionShopPlugin plugin;
     private ShopWarp shopWarp;
     private ShopList shopList;
     private ShopAdd shopAdd;
     private ShopDetail shopDetail;
     private ShopEquip shopEquip;
+    private ShopSet shopSet;
+    private ShopSell shopSell;
 
     public Shop(RegionShopPlugin pl) {
-        this.plugin = pl;
         this.shopWarp = new ShopWarp(pl);
         this.shopList = new ShopList(pl);
         this.shopAdd = new ShopAdd(pl);
         this.shopDetail = new ShopDetail(pl);
         this.shopEquip = new ShopEquip(pl);
+        this.shopSet = new ShopSet(pl);
+        this.shopSell = new ShopSell(pl);
     }
 
     @Override
@@ -47,55 +49,118 @@ public class Shop implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("shop")) {
             if (args.length > 0) {
                 if (args[0].equalsIgnoreCase("list")) {
-                    if (PlayerStorage.getPlayer(p) != null) {
-                        String regString = PlayerStorage.getPlayer(p);
+                    if (p.hasPermission("rs.list")) {
+                        if (PlayerStorage.getPlayer(p) != null) {
+                            String regString = PlayerStorage.getPlayer(p);
 
-                        if (args.length > 1) {
-                            shopList.execute(p, regString, args[1]);
-                        } else {
-                            shopList.execute(p, regString, "1");
+                            if (args.length > 1) {
+                                shopList.execute(p, regString, args[1]);
+                            } else {
+                                shopList.execute(p, regString, "1");
+                            }
                         }
+                    } else {
+                        p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.list");
                     }
                 } else if(args[0].equalsIgnoreCase("warp")) {
-                    if (args.length > 1) {
-                        shopWarp.execute(p, args[1]);
+                    if (p.hasPermission("rs.warp")) {
+                        if (args.length > 1) {
+                            shopWarp.execute(p, args[1]);
+                        } else {
+                            p.sendMessage(Chat.getPrefix() + "Not enough Arguments given");
+                            showHelp(p);
+
+                            return true;
+                        }
                     } else {
-                        p.sendMessage(Chat.getPrefix() + "No second argument given");
-                        showHelp(p);
+                        p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.warp");
                     }
                 } else if(args[0].equalsIgnoreCase("add")) {
-                    if (args.length > 3) {
-                        Integer buy, sell, amount;
+                    if (p.hasPermission("rs.stock.add")) {
+                        if (args.length > 3) {
+                            Integer buy, sell, amount;
 
-                        try {
-                            buy = Integer.parseInt(args[2]);
-                            sell = Integer.parseInt(args[1]);
-                            amount = Integer.parseInt(args[3]);
-                        } catch (NumberFormatException e) {
-                            p.sendMessage(Chat.getPrefix() + "Only Numbers as sell, buy and amount values");
+                            try {
+                                buy = Integer.parseInt(args[2]);
+                                sell = Integer.parseInt(args[1]);
+                                amount = Integer.parseInt(args[3]);
+                            } catch (NumberFormatException e) {
+                                p.sendMessage(Chat.getPrefix() + "Only Numbers as sell, buy and amount values");
+                                return true;
+                            }
+
+                            shopAdd.execute(p, buy, sell, amount);
+                        } else {
+                            p.sendMessage(Chat.getPrefix() + "Not enough Arguments given");
+                            showHelp(p);
+
                             return true;
                         }
-
-                        shopAdd.execute(p, buy, sell, amount);
+                    } else {
+                        p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.stock.add");
                     }
                 } else if(args[0].equalsIgnoreCase("detail")) {
-                    if (args.length > 1) {
-                        Integer itemId;
+                    if (p.hasPermission("rs.detail")) {
+                        if (args.length > 1) {
+                            Integer itemId;
 
-                        try {
-                            itemId = Integer.parseInt(args[1]);
-                        } catch (NumberFormatException e) {
-                            p.sendMessage(Chat.getPrefix() + "Only Numbers as detail ItemID");
+                            try {
+                                itemId = Integer.parseInt(args[1]);
+                            } catch (NumberFormatException e) {
+                                p.sendMessage(Chat.getPrefix() + "Only Numbers as detail ItemID");
+                                return true;
+                            }
+
+                            shopDetail.execute(p, itemId);
+                        } else {
+                            p.sendMessage(Chat.getPrefix() + "Not enough Arguments given");
+                            showHelp(p);
+
                             return true;
                         }
-
-                        shopDetail.execute(p, itemId);
+                    } else {
+                        p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.detail");
                     }
                 } else if(args[0].equalsIgnoreCase("equip")) {
-                    if (args.length > 1) {
-                        shopEquip.execute(p, args[1]);
+                    if (p.hasPermission("rs.stock.equip")) {
+                        if (args.length > 1) {
+                            shopEquip.execute(p, args[1]);
+                        } else {
+                            shopEquip.execute(p, null);
+                        }
                     } else {
-                        shopEquip.execute(p, null);
+                        p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.stock.equip");
+                    }
+                } else if(args[0].equalsIgnoreCase("set")) {
+                    if (p.hasPermission("rs.stock.set")) {
+                        if (args.length > 4) {
+                            Integer buy, sell, amount, shopItemId;
+
+                            try {
+                                shopItemId = Integer.parseInt(args[1]);
+                                buy = Integer.parseInt(args[3]);
+                                sell = Integer.parseInt(args[2]);
+                                amount = Integer.parseInt(args[4]);
+                            } catch (NumberFormatException e) {
+                                p.sendMessage(Chat.getPrefix() + "Only Numbers as sell, buy and amount values");
+                                return true;
+                            }
+
+                            shopSet.execute(p, shopItemId, sell, buy, amount);
+                        } else {
+                            p.sendMessage(Chat.getPrefix() + "Not enough Arguments given");
+                            showHelp(p);
+
+                            return true;
+                        }
+                    } else {
+                        p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.stock.set");
+                    }
+                } else if(args[0].equalsIgnoreCase("sell")) {
+                    if (p.hasPermission("rs.sell")) {
+                        shopSell.execute(p);
+                    } else {
+                        p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.sell");
                     }
                 } else {
                     showHelp(p);

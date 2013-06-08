@@ -5,13 +5,17 @@ import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemName;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -36,7 +40,7 @@ public class ShopDetail {
                 eq("id", itemID).
                 findUnique();
 
-        if (item != null) {
+        if (item != null && (((item.getSell() != 0 || item.getBuy() != 0) && item.getUnitAmount() > 0) || item.getOwner().equalsIgnoreCase(p.getName()))) {
             ItemStack iStack = new ItemStack(Material.getMaterial(item.getItemID()), 1);
             iStack.getData().setData(item.getDataID());
             iStack.setDurability(item.getDurability());
@@ -46,13 +50,17 @@ public class ShopDetail {
 
             Integer dmg = 0;
 
-            if (iStack.getDurability() > 0) {
+            if (iStack.getDurability() > 0 && item.getItemID() != 373) {
                 Float divide = ((float)iStack.getDurability() / (float)iStack.getType().getMaxDurability());
                 dmg = Math.round(divide * 100);
             }
 
             p.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Detail View of Item " + ChatColor.GREEN + itemName + " " + ChatColor.GRAY + "#" + item.getId());
-            p.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Selling for " + ChatColor.GREEN + item.getSell() + "$ " + ChatColor.DARK_GREEN + " - " + ChatColor.RED + dmg + "% "+ ChatColor.DARK_GREEN + "Damaged");
+            p.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Selling for " + ChatColor.GREEN + item.getSell() + "$ " + ChatColor.DARK_GREEN + " - " + ChatColor.RED + dmg + "% "+ ChatColor.DARK_GREEN + "Damaged - Item Owner: " + ChatColor.GREEN + item.getOwner());
+
+            if (item.getCustomName() != "") {
+                p.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Custom Name: " + ChatColor.GREEN + item.getCustomName());
+            }
 
             List<ShopItemEnchantmens> enchants = plugin.getDatabase().find(ShopItemEnchantmens.class).
                     where().
@@ -67,6 +75,27 @@ public class ShopDetail {
                     Enchantment enchObj = new EnchantmentWrapper(ench.getEnchId()).getEnchantment();
 
                     p.sendMessage(Chat.getPrefix() + "    " + ChatColor.DARK_GREEN + ItemName.nicer(enchObj.getName()) + " Level " + ChatColor.GREEN + ench.getEnchLvl());
+                }
+            }
+
+            if (item.getItemID() == 373) {
+                Potion ptn = Potion.fromItemStack(iStack);
+                Collection<PotionEffect> ptnEffects = ptn.getEffects();
+
+                if (ptnEffects.size() > 0) {
+                    p.sendMessage(Chat.getPrefix() + " ");
+                    p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + "Potion Effects:");
+
+                    for(PotionEffect ptnEffect : ptnEffects) {
+                        Integer duration = 0;
+
+                        if (ptnEffect.getDuration() >= 20) {
+                            Float divide = ((float)ptnEffect.getDuration() / (float)20);
+                            duration = Math.round(divide);
+                        }
+
+                        p.sendMessage(Chat.getPrefix() + "    " + ChatColor.DARK_GREEN + ItemName.nicer(ptnEffect.getType().getName()) + ": Amplifier " + ChatColor.GREEN + ptnEffect.getAmplifier() + ChatColor.DARK_GREEN + ", Duration " + ChatColor.GREEN + duration + "s" );
+                    }
                 }
             }
 

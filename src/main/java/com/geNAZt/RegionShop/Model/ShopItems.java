@@ -23,6 +23,7 @@ public class ShopItems {
     private Integer sell;
     private Integer unitAmount;
     private Integer itemID;
+    private String customName;
     private Byte dataID;
     private Short durability;
     private boolean stackable;
@@ -121,5 +122,13 @@ public class ShopItems {
 
     public String getWorld() {
         return this.world;
+    }
+
+    public String getCustomName() {
+        return customName;
+    }
+
+    public void setCustomName(String customName) {
+        this.customName = customName;
     }
 }

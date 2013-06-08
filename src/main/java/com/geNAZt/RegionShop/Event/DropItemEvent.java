@@ -6,6 +6,7 @@ import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.DropStorage;
 import com.geNAZt.RegionShop.Util.ItemName;
+
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -45,6 +46,7 @@ public class DropItemEvent implements Listener {
                         eq("item_id", droppedItem.getType().getId()).
                         eq("data_id", droppedItem.getData().getData()).
                         eq("durability", droppedItem.getDurability()).
+                        eq("custom_name", (droppedItem.getItemMeta().hasDisplayName()) ? droppedItem.getItemMeta().getDisplayName() : "").
                     endJunction().
                     findUnique();
 
@@ -64,6 +66,7 @@ public class DropItemEvent implements Listener {
                 newItem.setRegion(region);
                 newItem.setDataID(droppedItem.getData().getData());
                 newItem.setStackable(droppedItem.getMaxStackSize() != 1);
+                newItem.setCustomName((droppedItem.getItemMeta().hasDisplayName()) ? droppedItem.getItemMeta().getDisplayName() : "");
 
                 newItem.setBuy(0);
                 newItem.setSell(0);
@@ -87,9 +90,9 @@ public class DropItemEvent implements Listener {
 
                 String itemName;
                 if (droppedItem.getItemMeta().hasDisplayName()) {
-                    itemName = droppedItem.getItemMeta().getDisplayName();
+                    itemName = ItemName.getDataName(droppedItem) + droppedItem.getItemMeta().getDisplayName();
                 } else {
-                    itemName = droppedItem.getType().toString();
+                    itemName = ItemName.getDataName(droppedItem) + droppedItem.getType().toString();
                 }
 
                 e.getPlayer().sendMessage(Chat.getPrefix() + "Added "+ ItemName.nicer(itemName) + " to the shop.");

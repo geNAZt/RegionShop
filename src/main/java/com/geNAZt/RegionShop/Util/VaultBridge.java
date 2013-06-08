@@ -1,7 +1,9 @@
 package com.geNAZt.RegionShop.Util;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
+
 import net.milkbowl.vault.economy.Economy;
+
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 /**

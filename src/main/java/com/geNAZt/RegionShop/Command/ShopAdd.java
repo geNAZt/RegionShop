@@ -7,8 +7,9 @@ import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemName;
 import com.geNAZt.RegionShop.Util.PlayerStorage;
 import com.geNAZt.RegionShop.Util.WorldGuardBridge;
+
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import org.bukkit.Material;
+
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -45,7 +46,7 @@ public class ShopAdd {
                             eq("item_id", itemInHand.getType().getId()).
                             eq("data_id", itemInHand.getData().getData()).
                             eq("durability", itemInHand.getDurability()).
-
+                            eq("custom_name", (itemInHand.getItemMeta().hasDisplayName()) ? itemInHand.getItemMeta().getDisplayName() : "").
                         endJunction().findUnique();
 
                 if (item == null) {
@@ -58,6 +59,7 @@ public class ShopAdd {
                     newItem.setRegion(region);
                     newItem.setDataID(itemInHand.getData().getData());
                     newItem.setStackable(itemInHand.getMaxStackSize() != 1);
+                    newItem.setCustomName((itemInHand.getItemMeta().hasDisplayName()) ? itemInHand.getItemMeta().getDisplayName() : "");
 
                     newItem.setBuy(buy);
                     newItem.setSell(sell);
@@ -79,11 +81,9 @@ public class ShopAdd {
 
                     p.getInventory().remove(itemInHand);
 
-                    String itemName;
+                    String itemName = ItemName.getDataName(itemInHand) + itemInHand.getType().toString();
                     if (itemInHand.getItemMeta().hasDisplayName()) {
-                        itemName = itemInHand.getItemMeta().getDisplayName();
-                    } else {
-                        itemName = itemInHand.getType().toString();
+                        itemName = "(" + itemInHand.getItemMeta().getDisplayName() + ")";
                     }
 
                     p.sendMessage(Chat.getPrefix() + "Added "+ ItemName.nicer(itemName) + " to the shop.");

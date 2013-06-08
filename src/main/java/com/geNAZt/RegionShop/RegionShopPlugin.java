@@ -8,7 +8,9 @@ import com.geNAZt.RegionShop.Event.RegionEntered;
 import com.geNAZt.RegionShop.Model.ShopItemEnchantmens;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.Util.Chat;
+import com.geNAZt.RegionShop.Util.EssentialBridge;
 import com.geNAZt.RegionShop.Util.VaultBridge;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.persistence.PersistenceException;
@@ -38,6 +40,7 @@ public class RegionShopPlugin extends JavaPlugin {
 
         //Statics init
         Chat.init(this);
+        EssentialBridge.init(this);
 
         //Event
         getServer().getPluginManager().registerEvents(new RegionEntered(this), this);
