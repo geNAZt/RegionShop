@@ -40,7 +40,7 @@ public class ShopAdd {
                 ItemStack itemInHand = p.getItemInHand();
 
                 if(itemInHand == null || itemInHand.getType().getId() == 0) {
-                    p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You have no Item in the Hand");
+                    p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You have no item in the hand");
                     return true;
                 }
 
@@ -98,7 +98,7 @@ public class ShopAdd {
                     p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Item already added. /shop set "+ item.getId() + " <sell> <buy> <amount> to change it.");
                 }
             } else {
-                p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You aren't a owner in this Shop. You can't add items to it.");
+                p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You aren't a owner in this shop. You can't add items to it.");
             }
 
             return true;

@@ -49,14 +49,14 @@ public class ShopName {
                     }
 
                     if (shopName.equalsIgnoreCase(name)) {
-                        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This name is already given to another Shop.");
+                        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This name is already given to another shop");
                         return true;
                     }
                 }
 
                 if(plugin.getConfig().getBoolean("only-ascii") == true) {
                     if (!CharMatcher.ASCII.matchesAllOf(name)) {
-                        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You only can use ASCII Chars for the name.");
+                        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You can only use ASCII characters for the name");
                         return true;
                     }
                 }
@@ -82,17 +82,17 @@ public class ShopName {
                     plugin.getDatabase().save(newShpRegion);
                 }
 
-                p.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "This Shop has the Name: " + ChatColor.GREEN + name);
+                p.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "This shop has the name: " + ChatColor.GREEN + name);
                 ListStorage.reload();
                 return true;
             } else {
-                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You aren't owner in this Shop");
+                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You are not an owner in this shop");
                 return false;
             }
         }
 
         //Nothing of all
-        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You are not inside a Shop");
+        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You are not inside a shop");
         return false;
     }
 }

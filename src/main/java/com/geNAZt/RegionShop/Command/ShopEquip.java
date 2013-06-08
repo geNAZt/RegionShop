@@ -53,7 +53,7 @@ public class ShopEquip {
                 }
 
                 if (foundRegions.size() > 1) {
-                    p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Shop Selector" + ChatColor.YELLOW + " -- To select a Shop: " + ChatColor.GOLD +"/shop equip <shopname>");
+                    p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Shop Selector" + ChatColor.YELLOW + " -- To select a shop: " + ChatColor.GOLD +"/shop equip <shopname>");
                     p.sendMessage(Chat.getPrefix() + " ");
 
                     for(ProtectedRegion region : foundRegions) {
@@ -99,7 +99,7 @@ public class ShopEquip {
 
         if (region != null) {
             if (!region.isOwner(p.getName())) {
-                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You aren't a owner of this Shop");
+                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You are not an owner of this shop");
                 return true;
             }
 
@@ -115,7 +115,7 @@ public class ShopEquip {
             return true;
         }
 
-        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This Region couldn't be found");
+        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This region could not be found");
         return false;
     }
 }

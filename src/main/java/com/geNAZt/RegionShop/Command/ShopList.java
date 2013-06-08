@@ -54,7 +54,7 @@ public class ShopList {
             p.sendMessage(Chat.getPrefix() + " ");
 
             if(pRC == null) {
-                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "No Shops available");
+                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "No shops available");
                 return true;
             }
 
@@ -125,7 +125,7 @@ public class ShopList {
             Integer curPage = page - 1;
 
             if (curPage < 0 || (curPage > shopItems.getTotalPageCount() - 1 && shopItems.getTotalPageCount() != 0)) {
-                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid Page");
+                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid page");
                 return false;
             }
 
@@ -201,7 +201,7 @@ public class ShopList {
                 }
 
                 if (qryPage.hasNext()) {
-                    p.sendMessage(Chat.getPrefix() + ChatColor.GREEN +"/shop list "+ (curPage+2) + ChatColor.GOLD + " for the next Page");
+                    p.sendMessage(Chat.getPrefix() + ChatColor.GREEN +"/shop list "+ (curPage+2) + ChatColor.GOLD + " for the next page");
                 }
             } else {
                 p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This shop has no items");
@@ -211,7 +211,7 @@ public class ShopList {
         }
 
         //Nothing of all
-        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid Region");
+        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid region");
         return false;
     }
 }

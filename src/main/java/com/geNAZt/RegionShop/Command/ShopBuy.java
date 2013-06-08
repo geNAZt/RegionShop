@@ -50,7 +50,7 @@ public class ShopBuy {
 
             if (item.getSell() > 0) {
                 if (wishAmount > item.getCurrentAmount() && wishAmount != -1) {
-                    p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "This Shop hasn't so much of this Item");
+                    p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "This shop has not enough items in stock");
                     return true;
                 }
 
@@ -95,13 +95,13 @@ public class ShopBuy {
                     Player owner = plugin.getServer().getPlayer(item.getOwner());
                     if (owner != null) {
                         if (owner.isOnline()) {
-                            owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + p.getDisplayName() + ChatColor.DARK_GREEN + " bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " from your Shop (" + ChatColor.GREEN + WorldGuardBridge.convertRegionToShopName(rgMngr.getRegion(region), p.getWorld()) + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
+                            owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + p.getDisplayName() + ChatColor.DARK_GREEN + " bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " from your shop (" + ChatColor.GREEN + WorldGuardBridge.convertRegionToShopName(rgMngr.getRegion(region), p.getWorld()) + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
                         }
                     }
 
                     eco.withdrawPlayer(p.getName(), ((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell());
                     eco.depositPlayer(item.getOwner(), ((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell());
-                    p.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + " for " + ChatColor.GREEN + (((float) wishAmount / (float) item.getUnitAmount()) * (float) item.getSell()) + "$" + ChatColor.DARK_GREEN + " from Shop");
+                    p.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + " for " + ChatColor.GREEN + (((float) wishAmount / (float) item.getUnitAmount()) * (float) item.getSell()) + "$" + ChatColor.DARK_GREEN + " from shop");
 
                     item.setCurrentAmount(item.getCurrentAmount() - wishAmount);
 
@@ -112,16 +112,16 @@ public class ShopBuy {
 
 
                             if (owner.isOnline()) {
-                                owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " is empty. It has been removed from your Shop (" + ChatColor.GREEN + WorldGuardBridge.convertRegionToShopName(rgMngr.getRegion(region), p.getWorld()) + ChatColor.DARK_GREEN + ")");
+                                owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + WorldGuardBridge.convertRegionToShopName(rgMngr.getRegion(region), p.getWorld()) + ChatColor.DARK_GREEN + ")");
                             } else {
-                                EssentialBridge.sendMail(Chat.getPrefix(), owner, ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " is empty. It has been removed from your Shop (" + ChatColor.GREEN + WorldGuardBridge.convertRegionToShopName(rgMngr.getRegion(region), p.getWorld()) + ChatColor.DARK_GREEN + ")");
+                                EssentialBridge.sendMail(Chat.getPrefix(), owner, ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + WorldGuardBridge.convertRegionToShopName(rgMngr.getRegion(region), p.getWorld()) + ChatColor.DARK_GREEN + ")");
                             }
                         }
 
                         plugin.getDatabase().delete(item);
                     }
                 } else {
-                    p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You haven't enough money for this. You need "+ (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
+                    p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You have not enough money for this. You need "+ (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
                 }
             } else {
                 p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "This Shop doesn't sell this Item");
@@ -131,7 +131,7 @@ public class ShopBuy {
         }
 
         //Nothing of all
-        p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You aren't inside a Shop");
+        p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You are not inside a shop");
         return false;
     }
 }

@@ -87,7 +87,7 @@ public class ShopDetail {
 
                 if (ptnEffects.size() > 0) {
                     p.sendMessage(Chat.getPrefix() + " ");
-                    p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + "Potion Effects:");
+                    p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + "Potion effects:");
 
                     for(PotionEffect ptnEffect : ptnEffects) {
                         Integer duration = 0;
@@ -105,7 +105,7 @@ public class ShopDetail {
             return true;
         }
 
-        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This Shopitem couldn't be found");
+        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This Shopitem could not be found");
         return false;
     }
 }

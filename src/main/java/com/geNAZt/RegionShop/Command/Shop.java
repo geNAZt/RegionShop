@@ -71,7 +71,7 @@ public class Shop implements CommandExecutor {
                                 try {
                                     page = Integer.parseInt(args[1]);
                                 } catch (NumberFormatException e) {
-                                    p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Only Numbers as page value");
+                                    p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Only numbers as page value");
                                     return true;
                                 }
 
@@ -86,7 +86,7 @@ public class Shop implements CommandExecutor {
                             return true;
                         }
                     } else {
-                        p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.list");
+                        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You don't have the permission " + ChatColor.DARK_RED + "rs.list");
                         return true;
                     }
                 } else if(args[0].equalsIgnoreCase("warp")) {
@@ -96,11 +96,11 @@ public class Shop implements CommandExecutor {
                             shopWarp.execute(p, StringUtils.join(nameParts, " "));
                             return true;
                         } else {
-                            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Not enough Arguments given. Type /shop help for help.");
+                            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Not enough arguments given. Type " + ChatColor.DARK_RED + "/shop help" + ChatColor.RED + " for more informations.");
                             return true;
                         }
                     } else {
-                        p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.warp");
+                        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You don't have the permission " + ChatColor.DARK_RED + "rs.warp");
                         return true;
                     }
                 } else if(args[0].equalsIgnoreCase("add")) {
@@ -113,18 +113,18 @@ public class Shop implements CommandExecutor {
                                 sell = Integer.parseInt(args[1]);
                                 amount = Integer.parseInt(args[3]);
                             } catch (NumberFormatException e) {
-                                p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only Numbers as sell, buy and amount values");
+                                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Only numbers as sell, buy and amount values allowed");
                                 return true;
                             }
 
                             shopAdd.execute(p, buy, sell, amount);
                             return true;
                         } else {
-                            p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Not enough Arguments given. Type /shop help for help.");
+                            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Not enough arguments given. Type " + ChatColor.DARK_RED + "/shop help" + ChatColor.RED + " for more informations");
                             return true;
                         }
                     } else {
-                        p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You don't have the permission " + ChatColor.RED + "rs.stock.add");
+                        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You don't have the permission " + ChatColor.DARK_RED + "rs.stock.add");
                         return true;
                     }
                 } else if(args[0].equalsIgnoreCase("detail")) {
@@ -135,18 +135,18 @@ public class Shop implements CommandExecutor {
                             try {
                                 itemId = Integer.parseInt(args[1]);
                             } catch (NumberFormatException e) {
-                                p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only Numbers as detail ItemID");
+                                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Only numbers as argument allowed");
                                 return true;
                             }
 
                             shopDetail.execute(p, itemId);
                             return true;
                         } else {
-                            p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Not enough Arguments given. Type /shop help for help.");
+                            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Not enough arguments given. Type " + ChatColor.DARK_RED + "/shop help" + ChatColor.RED + " for more informations");
                             return true;
                         }
                     } else {
-                        p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.detail");
+                        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You don't have the permission " + ChatColor.DARK_RED + "rs.detail");
                         return true;
                     }
                 } else if(args[0].equalsIgnoreCase("equip")) {
@@ -160,7 +160,7 @@ public class Shop implements CommandExecutor {
                             return true;
                         }
                     } else {
-                        p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.stock.equip");
+                        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You don't have the permission " + ChatColor.DARK_RED + "rs.stock.equip");
                         return true;
                     }
                 } else if(args[0].equalsIgnoreCase("set")) {
@@ -174,18 +174,18 @@ public class Shop implements CommandExecutor {
                                 sell = Integer.parseInt(args[2]);
                                 amount = Integer.parseInt(args[4]);
                             } catch (NumberFormatException e) {
-                                p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only Numbers as shopItemId, buy, sell and amount values");
+                                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Only numbers as shopItemId, buy, sell and amount values allowed");
                                 return true;
                             }
 
                             shopSet.execute(p, shopItemId, sell, buy, amount);
                             return true;
                         } else {
-                            p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Not enough Arguments given. Type /shop help for help.");
+                            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Not enough arguments given. Type " + ChatColor.DARK_RED + "/shop help" + ChatColor.RED + " for more informations");
                             return true;
                         }
                     } else {
-                        p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.stock.set");
+                        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You don't have the permission " + ChatColor.DARK_RED + "rs.stock.set");
                         return true;
                     }
                 } else if(args[0].equalsIgnoreCase("sell")) {
@@ -193,7 +193,7 @@ public class Shop implements CommandExecutor {
                         shopSell.execute(p);
                         return true;
                     } else {
-                        p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.sell");
+                        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You don't have the permission " + ChatColor.DARK_RED + "rs.sell");
                         return true;
                     }
                 } else if(args[0].equalsIgnoreCase("buy")) {
@@ -205,7 +205,7 @@ public class Shop implements CommandExecutor {
                                 shopItemId = Integer.parseInt(args[1]);
                                 amount = Integer.parseInt(args[2]);
                             } catch (NumberFormatException e) {
-                                p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only Numbers as shopItemId and amount values");
+                                p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only numbers as shopItemId and amount values allowed");
                                 return true;
                             }
 
@@ -217,14 +217,14 @@ public class Shop implements CommandExecutor {
                             try {
                                 shopItemId = Integer.parseInt(args[1]);
                             } catch (NumberFormatException e) {
-                                p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only Numbers as shopItemId value");
+                                p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only numbers as shopItemId value allowed");
                                 return true;
                             }
 
                             shopBuy.execute(p, shopItemId, -1);
                             return true;
                         } else {
-                            p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Not enough Arguments given. Type /shop help for help.");
+                            p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Not enough arguments given. Type " + ChatColor.DARK_RED + "/shop help" + ChatColor.RED + " for more informations");
                             return true;
                         }
                     } else {
@@ -238,7 +238,7 @@ public class Shop implements CommandExecutor {
                         shopName.execute(p, StringUtils.join(nameParts, " "));
                         return true;
                     } else {
-                        p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Not enough Arguments given. Type /shop help for help.");
+                        p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Not enough arguments given. Type " + ChatColor.DARK_RED + "/shop help" + ChatColor.RED + " for more informations");
                         return true;
                     }
                 } else if(args[0].equalsIgnoreCase("search")) {
@@ -248,7 +248,7 @@ public class Shop implements CommandExecutor {
                         shopSearch.execute(p, ItemName.nicer(StringUtils.join(nameParts, "_")));
                         return true;
                     } else {
-                        p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Not enough Arguments given. Type /shop help for help.");
+                        p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Not enough arguments given. Type " + ChatColor.DARK_RED + "/shop help" + ChatColor.RED + " for more informations");
                         return true;
                     }
                 } else if(args[0].equalsIgnoreCase("result")) {
@@ -258,14 +258,14 @@ public class Shop implements CommandExecutor {
                         try {
                             page = Integer.parseInt(args[1]);
                         } catch (NumberFormatException e) {
-                            p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only Numbers as page value");
+                            p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only numbers as page value allowed");
                             return true;
                         }
 
                         shopResult.execute(p, page);
                         return true;
                     } else {
-                        p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Not enough Arguments given. Type /shop help for help.");
+                        p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Not enough arguments given. Type " + ChatColor.DARK_RED + "/shop help" + ChatColor.RED + " for more informations");
                         return true;
                     }
                 } else if(args[0].equalsIgnoreCase("help")) {
@@ -275,7 +275,7 @@ public class Shop implements CommandExecutor {
                         try {
                             page = Integer.parseInt(args[1]);
                         } catch (NumberFormatException e) {
-                            p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only Numbers as page value");
+                            p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only numbers as page value allowed");
                             return true;
                         }
 

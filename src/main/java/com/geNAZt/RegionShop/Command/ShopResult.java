@@ -36,7 +36,7 @@ public class ShopResult {
         if (SearchStorage.hasPlayer(p)) {
             ShopResult.printResultPage(p, SearchStorage.getSearchQuery(p), SearchStorage.getSearchResult(p), page);
         } else {
-            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You have no Results");
+            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You have no results");
         }
 
         return true;
@@ -53,7 +53,7 @@ public class ShopResult {
         String name = Character.toString((char)0x270E);
 
         if (skip > result.size()) {
-            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid Page");
+            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid page");
             return;
         }
 

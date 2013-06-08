@@ -71,7 +71,7 @@ public class ShopWarp {
         }
 
         //Nothing of all
-        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid Player or Shopname");
+        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid player or shop name");
         return false;
     }
 }

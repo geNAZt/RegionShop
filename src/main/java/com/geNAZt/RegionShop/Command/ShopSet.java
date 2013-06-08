@@ -35,7 +35,7 @@ public class ShopSet {
                 findUnique();
 
         if (item == null) {
-            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This item could not be found or you aren't the Owner of it.");
+            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This item could not be found or you aren't the owner of it.");
         } else {
             item.setBuy(buy);
             item.setSell(sell);
@@ -54,7 +54,7 @@ public class ShopSet {
                 itemName = ItemName.getDataName(itemStack) + itemStack.getType().toString();
             }
 
-            p.sendMessage(Chat.getPrefix() + "Item " + ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.RESET + " now sells for " + ChatColor.GREEN + item.getSell() + ChatColor.RESET + ", buys for " + ChatColor.GREEN + item.getBuy() + ChatColor.RESET + ", per " + ChatColor.GREEN + item.getUnitAmount() + ChatColor.RESET + " Unit(s)");
+            p.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Item " + ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.GOLD + " now sells for " + ChatColor.GREEN + item.getSell() + ChatColor.GOLD + ", buys for " + ChatColor.GREEN + item.getBuy() + ChatColor.GOLD + ", per " + ChatColor.GREEN + item.getUnitAmount() + ChatColor.GOLD + " unit(s)");
         }
 
         return false;

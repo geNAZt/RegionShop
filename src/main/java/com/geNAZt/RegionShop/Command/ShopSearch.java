@@ -59,10 +59,10 @@ public class ShopSearch {
                 SearchStorage.putSearchResults(p, search, result);
                 ShopResult.printResultPage(p, search, result, 1);
             } else {
-                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "No items found for your Search");
+                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "No items found for your search");
             }
         } else {
-            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "No items in Shops");
+            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "No items in shops");
         }
 
         return true;

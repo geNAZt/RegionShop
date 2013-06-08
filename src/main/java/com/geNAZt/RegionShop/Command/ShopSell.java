@@ -54,28 +54,28 @@ public class ShopSell {
                 if (eco.has(item.getOwner(), itemInHand.getAmount() * item.getBuy())) {
                     Player owner = plugin.getServer().getPlayer(item.getOwner());
                     if (owner != null) {
-                        owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + p.getDisplayName() + ChatColor.DARK_GREEN + " has sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + ChatColor.DARK_GREEN + " to your Shop (" + ChatColor.GREEN + region + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getBuy()) + "$");
+                        owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + p.getDisplayName() + ChatColor.DARK_GREEN + " has sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + ChatColor.DARK_GREEN + " to your shop (" + ChatColor.GREEN + region + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getBuy()) + "$");
                     }
 
                     eco.withdrawPlayer(item.getOwner(), itemInHand.getAmount() * item.getBuy());
                     eco.depositPlayer(p.getName(), itemInHand.getAmount() * item.getBuy());
-                    plugin.getServer().getPlayer(item.getOwner()).sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + " for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getBuy()) + "$" + ChatColor.DARK_GREEN + " to Shop");
+                    plugin.getServer().getPlayer(item.getOwner()).sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + " for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getBuy()) + "$" + ChatColor.DARK_GREEN + " to shop");
 
                     p.getInventory().remove(itemInHand);
                     item.setCurrentAmount(item.getCurrentAmount() + itemInHand.getAmount());
                     plugin.getDatabase().update(item);
                 } else {
-                    p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This ShopItem Owner hasn't enough money");
+                    p.sendMessage(Chat.getPrefix() + ChatColor.RED + "The owner of this shop has not enough money");
                 }
             } else {
-                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This Shop doesn't buy this Item");
+                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This shop does not buy this item");
             }
 
             return true;
         }
 
         //Nothing of all
-        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You aren't inside a Shop");
+        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You are not inside a shop");
         return false;
     }
 }
