@@ -50,7 +50,7 @@ public class ShopDetail {
 
             Integer dmg = 0;
 
-            if (iStack.getDurability() > 0 && item.getItemID() != 373) {
+            if (iStack.getDurability() > 0 && item.getItemID() != 373 && !item.isStackable()) {
                 Float divide = ((float)iStack.getDurability() / (float)iStack.getType().getMaxDurability());
                 dmg = Math.round(divide * 100);
             }
@@ -105,7 +105,7 @@ public class ShopDetail {
             return true;
         }
 
-        p.sendMessage(Chat.getPrefix() + "This Shopitem couldn't be found");
+        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This Shopitem couldn't be found");
         return false;
     }
 }

@@ -7,6 +7,7 @@ import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.DropStorage;
 import com.geNAZt.RegionShop.Util.ItemName;
 
+import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -95,7 +96,7 @@ public class DropItemEvent implements Listener {
                     itemName = ItemName.getDataName(droppedItem) + droppedItem.getType().toString();
                 }
 
-                e.getPlayer().sendMessage(Chat.getPrefix() + "Added "+ ItemName.nicer(itemName) + " to the shop.");
+                e.getPlayer().sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Added "+ ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.GOLD + " to the shop.");
             }
         }
     }

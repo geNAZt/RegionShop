@@ -50,7 +50,7 @@ public class ShopBuy {
 
             if (item.getSell() > 0) {
                 if (wishAmount > item.getCurrentAmount() && wishAmount != -1) {
-                    p.sendMessage(Chat.getPrefix() + "This Shop hasn't so much of this Item");
+                    p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "This Shop hasn't so much of this Item");
                     return true;
                 }
 
@@ -121,17 +121,17 @@ public class ShopBuy {
                         plugin.getDatabase().delete(item);
                     }
                 } else {
-                    p.sendMessage(Chat.getPrefix() + "You haven't enough money for this. You need "+ (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
+                    p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You haven't enough money for this. You need "+ (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
                 }
             } else {
-                p.sendMessage(Chat.getPrefix() + "This Shop doesn't sell this Item");
+                p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "This Shop doesn't sell this Item");
             }
 
             return true;
         }
 
         //Nothing of all
-        p.sendMessage(Chat.getPrefix() + "You aren't inside a Shop");
+        p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You aren't inside a Shop");
         return false;
     }
 }

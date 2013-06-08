@@ -1,6 +1,7 @@
 package com.geNAZt.RegionShop.Event;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.PlayerStorage;
 import com.geNAZt.RegionShop.Util.WorldGuardBridge;
 
@@ -58,7 +59,12 @@ public class RegionEntered implements Listener {
                 if(m.matches()) {
                     PlayerStorage.setPlayer(e.getPlayer(), region.getId());
 
-                    e.getPlayer().sendMessage("You have entered a Shop. Type " + ChatColor.AQUA +"/shop list" + ChatColor.RESET +" to see the items.");
+                    String shopName = WorldGuardBridge.convertRegionToShopName(region, e.getPlayer().getWorld());
+                    if(shopName == null) {
+                        shopName = region.getId();
+                    }
+
+                    e.getPlayer().sendMessage(Chat.getPrefix() + ChatColor.GOLD + "You have entered " + ChatColor.DARK_GREEN + shopName +  ChatColor.GOLD + ". Type " + ChatColor.GREEN + "/shop list " + ChatColor.GOLD + "to list the items");
                     plugin.getLogger().info("[RegionShop] Player " + e.getPlayer().getDisplayName() + " entered WG Region " + region.getId());
                 } else {
                     if (plugin.getConfig().getBoolean("debug")) {
@@ -69,7 +75,14 @@ public class RegionEntered implements Listener {
         }
 
         if (storedRegion != null && found == false) {
-            e.getPlayer().sendMessage("You have left the Shop. Bye.");
+            ProtectedRegion region = rgMngr.getRegion(storedRegion);
+
+            String shopName = WorldGuardBridge.convertRegionToShopName(region, e.getPlayer().getWorld());
+            if(shopName == null) {
+                shopName = region.getId();
+            }
+
+            e.getPlayer().sendMessage(Chat.getPrefix() + ChatColor.GOLD + "You have left " + ChatColor.DARK_GREEN + shopName +  ChatColor.GOLD + ". Bye!");
             plugin.getLogger().info("[RegionShop] Player "+ e.getPlayer().getDisplayName() + " left WG Region " + storedRegion);
             PlayerStorage.removerPlayer(e.getPlayer());
         }

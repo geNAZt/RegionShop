@@ -67,9 +67,13 @@ public class ListStorage {
     }
 
     public static HashMap<World, ArrayList<ProtectedRegion>> shopList = new HashMap<World, ArrayList<ProtectedRegion>>();
+    private static BukkitTask task;
+    private static RegionShopPlugin plugin;
 
     public static void init(RegionShopPlugin pl) {
-        BukkitTask task = new ShopListRegenerate(pl).runTaskTimer(pl, 20, 300 * 20);
+        plugin = pl;
+
+        task = new ShopListRegenerate(pl).runTaskTimer(pl, 20, 300 * 20);
     }
 
     public static ArrayList<ProtectedRegion> getShopList(World wrld) {
@@ -78,5 +82,10 @@ public class ListStorage {
         } else {
             return null;
         }
+    }
+
+    public static void reload() {
+        task.cancel();
+        task = new ShopListRegenerate(plugin).runTaskTimer(plugin, 20, 300 * 20);
     }
 }

@@ -27,6 +27,7 @@ Feel free to try out this plugin to convince yourself. For more informations tak
 
 # config.yml
     debug: false        # Debug for finding or reporting Errors
+    only-ascii: false   # Users can only give ASCII valid names for their Shops
     chat:
         prefix: '[RS] ' # Prefix for Chatmessages
 

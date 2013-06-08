@@ -10,6 +10,7 @@ import com.geNAZt.RegionShop.Util.WorldGuardBridge;
 
 import com.sk89q.worldguard.protection.managers.RegionManager;
 
+import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -38,8 +39,9 @@ public class ShopAdd {
             if (rgMngr.getRegion(region).isOwner(p.getName())) {
                 ItemStack itemInHand = p.getItemInHand();
 
-                if(itemInHand == null) {
-                    p.sendMessage(Chat.getPrefix() + "You have no Item in the Hand");
+                if(itemInHand == null || itemInHand.getType().getId() == 0) {
+                    p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You have no Item in the Hand");
+                    return true;
                 }
 
 
@@ -91,12 +93,12 @@ public class ShopAdd {
                         itemName = "(" + itemInHand.getItemMeta().getDisplayName() + ")";
                     }
 
-                    p.sendMessage(Chat.getPrefix() + "Added "+ ItemName.nicer(itemName) + " to the shop.");
+                    p.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Added "+ ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.GOLD + " to the shop.");
                 } else {
-                    p.sendMessage(Chat.getPrefix() + "Item already added. /shop change "+ item.getId() + " to change it.");
+                    p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Item already added. /shop set "+ item.getId() + " <sell> <buy> <amount> to change it.");
                 }
             } else {
-                p.sendMessage(Chat.getPrefix() + "You aren't a owner in this Shop. You can't add items to it.");
+                p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You aren't a owner in this Shop. You can't add items to it.");
             }
 
             return true;
@@ -105,7 +107,7 @@ public class ShopAdd {
 
 
         //Nothing of all
-        p.sendMessage(Chat.getPrefix() + "You haven't selected an Shop.");
+        p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You are not inside a shop region.");
         return false;
     }
 }

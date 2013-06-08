@@ -33,7 +33,7 @@ public class ShopSell {
             ItemStack itemInHand = p.getItemInHand();
 
             if(!itemInHand.getEnchantments().isEmpty() || itemInHand.getItemMeta().hasDisplayName()) {
-                p.sendMessage(Chat.getPrefix() + "You can't sell enchanted / custom renamed Items into a shop");
+                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You can't sell enchanted / custom renamed Items into a shop");
             }
 
             ShopItems item = plugin.getDatabase().find(ShopItems.class).
@@ -65,17 +65,17 @@ public class ShopSell {
                     item.setCurrentAmount(item.getCurrentAmount() + itemInHand.getAmount());
                     plugin.getDatabase().update(item);
                 } else {
-                    p.sendMessage(Chat.getPrefix() + "This ShopItem Owner hasn't enough money");
+                    p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This ShopItem Owner hasn't enough money");
                 }
             } else {
-                p.sendMessage(Chat.getPrefix() + "This Shop doesn't buy this Item");
+                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This Shop doesn't buy this Item");
             }
 
             return true;
         }
 
         //Nothing of all
-        p.sendMessage(Chat.getPrefix() + "You aren't inside a Shop");
+        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You aren't inside a Shop");
         return false;
     }
 }

@@ -31,14 +31,24 @@ public class ShopEquip {
         //Player warp
         if (regionStr == null) {
             if (DropStorage.getPlayer(p) != null) {
+                regionStr = DropStorage.getPlayer(p);
                 DropStorage.removerPlayer(p);
-                p.sendMessage(Chat.getPrefix() + "You don't drop items into Shop from now on.");
+
+                RegionManager rgMngr = WorldGuardBridge.getRegionManager(p.getWorld());
+                ProtectedRegion region = rgMngr.getRegion(regionStr);
+
+                String shopName = WorldGuardBridge.convertRegionToShopName(region, p.getWorld());
+                if(shopName == null) {
+                    shopName = region.getId();
+                }
+
+                p.sendMessage(Chat.getPrefix() + ChatColor.GRAY + "Quick add " + ChatColor.GOLD + "mode for " + ChatColor.GREEN + shopName + ChatColor.GOLD + " disabled.");
                 return true;
             } else {
                 HashSet<ProtectedRegion> foundRegions = WorldGuardBridge.searchRegionsByOwner(p.getName(), p);
 
                 if (foundRegions.size() == 0) {
-                    p.sendMessage(Chat.getPrefix() + "No Shops found.");
+                    p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "No Shops found.");
                     return true;
                 }
 
@@ -66,7 +76,12 @@ public class ShopEquip {
                         }
 
                         DropStorage.setPlayer(p, region.getId());
-                        p.sendMessage(Chat.getPrefix() + "Shop "+ p.getName() +" selected");
+                        String shopName = WorldGuardBridge.convertRegionToShopName(region, p.getWorld());
+                        if(shopName == null) {
+                            shopName = region.getId();
+                        }
+
+                        p.sendMessage(Chat.getPrefix() + ChatColor.GRAY + "Quick add " + ChatColor.GOLD + "mode for " + ChatColor.GREEN + shopName + ChatColor.GOLD + " enabled. Drop items to add them to your shop stock");
 
                         return true;
                     }
@@ -84,7 +99,7 @@ public class ShopEquip {
 
         if (region != null) {
             if (!region.isOwner(p.getName())) {
-                p.sendMessage(Chat.getPrefix() + "You aren't a owner of this Shop");
+                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You aren't a owner of this Shop");
                 return true;
             }
 
@@ -95,12 +110,12 @@ public class ShopEquip {
             }
 
             DropStorage.setPlayer(p, region.getId());
-            p.sendMessage(Chat.getPrefix() + "Shop " + regionStr + " selected");
+            p.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Shop " + ChatColor.GREEN + regionStr + ChatColor.GOLD + " selected");
 
             return true;
         }
 
-        p.sendMessage(Chat.getPrefix() + "This Region couldn't be found");
+        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This Region couldn't be found");
         return false;
     }
 }

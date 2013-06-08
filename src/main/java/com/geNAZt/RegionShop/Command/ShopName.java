@@ -3,15 +3,19 @@ package com.geNAZt.RegionShop.Command;
 import com.geNAZt.RegionShop.Model.ShopRegion;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
+import com.geNAZt.RegionShop.Util.ListStorage;
 import com.geNAZt.RegionShop.Util.PlayerStorage;
 import com.geNAZt.RegionShop.Util.WorldGuardBridge;
+import com.google.common.base.CharMatcher;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -36,6 +40,29 @@ public class ShopName {
             ProtectedRegion rgn = rgMngr.getRegion(region);
 
             if (rgn.isOwner(p.getName())) {
+                ArrayList<ProtectedRegion> regions = ListStorage.getShopList(p.getWorld());
+
+                for(ProtectedRegion wRegion : regions) {
+                    String shopName = WorldGuardBridge.convertRegionToShopName(wRegion, p.getWorld());
+                    if(shopName == null) {
+                        shopName = wRegion.getId();
+                    }
+
+                    if (shopName.equalsIgnoreCase(name)) {
+                        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This name is already given to another Shop.");
+                        return true;
+                    }
+                }
+
+                if(plugin.getConfig().getBoolean("only-ascii") == true) {
+                    if (!CharMatcher.ASCII.matchesAllOf(name)) {
+                        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You only can use ASCII Chars for the name.");
+                        return true;
+                    }
+                }
+
+
+
                 ShopRegion shpRegion = plugin.getDatabase().find(ShopRegion.class).
                         where().
                             conjunction().
@@ -55,16 +82,17 @@ public class ShopName {
                     plugin.getDatabase().save(newShpRegion);
                 }
 
-                p.sendMessage(Chat.getPrefix() + "This Shop has the Name: " + name);
+                p.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "This Shop has the Name: " + ChatColor.GREEN + name);
+                ListStorage.reload();
                 return true;
             } else {
-                p.sendMessage(Chat.getPrefix() + "You aren't owner in this Shop");
+                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You aren't owner in this Shop");
                 return false;
             }
         }
 
         //Nothing of all
-        p.sendMessage(Chat.getPrefix() + "You are not inside a Shop");
+        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You are not inside a Shop");
         return false;
     }
 }

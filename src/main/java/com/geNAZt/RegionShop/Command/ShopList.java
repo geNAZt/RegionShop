@@ -124,8 +124,8 @@ public class ShopList {
 
             Integer curPage = page - 1;
 
-            if (curPage < 0 || curPage > shopItems.getTotalPageCount() - 1) {
-                p.sendMessage(Chat.getPrefix() + "Invalid Page");
+            if (curPage < 0 || (curPage > shopItems.getTotalPageCount() - 1 && shopItems.getTotalPageCount() != 0)) {
+                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid Page");
                 return false;
             }
 
@@ -134,7 +134,12 @@ public class ShopList {
 
             plugin.getLogger().info("Got " + itemList.size() + " items in this shop");
 
-            p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "List of items " + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Page " + ChatColor.RED + (curPage+1) + ChatColor.GOLD + "/" + ChatColor.RED + shopItems.getTotalPageCount() + ChatColor.YELLOW + " --");
+            String shopName = WorldGuardBridge.convertRegionToShopName(regionObj, p.getWorld());
+            if(shopName == null) {
+                shopName = regionObj.getId();
+            }
+
+            p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "List of items in " + ChatColor.GREEN + shopName + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Page " + ChatColor.RED + (curPage+1) + ChatColor.GOLD + "/" + ChatColor.RED + shopItems.getTotalPageCount() + ChatColor.YELLOW + " --");
 
             String ench = Character.toString((char)0x2692);
             String dmg = Character.toString((char)0x26A0);
@@ -206,7 +211,7 @@ public class ShopList {
         }
 
         //Nothing of all
-        p.sendMessage(Chat.getPrefix() + "Invalid Region");
+        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid Region");
         return false;
     }
 }
