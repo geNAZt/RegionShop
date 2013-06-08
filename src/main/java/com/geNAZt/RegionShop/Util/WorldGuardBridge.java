@@ -1,5 +1,7 @@
 package com.geNAZt.RegionShop.Util;
 
+import com.geNAZt.RegionShop.Model.ShopRegion;
+import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.sk89q.worldguard.bukkit.WGBukkit;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
@@ -21,8 +23,10 @@ import java.util.regex.Pattern;
  * To change this template use File | Settings | File Templates.
  */
 public class WorldGuardBridge {
-    private WorldGuardBridge() {
-        throw new AssertionError();
+    private static RegionShopPlugin plugin;
+
+    public static void init(RegionShopPlugin pl) {
+        plugin = pl;
     }
 
     public static RegionManager getRegionManager(World wld) {
@@ -50,5 +54,29 @@ public class WorldGuardBridge {
         RegionManager rgMngr = getRegionManager(p.getWorld());
 
         return (rgMngr.getRegion(region) != null);
+    }
+
+    public static ProtectedRegion convertShopNameToRegion(String shopName) {
+        ShopRegion shpRegion = plugin.getDatabase().find(ShopRegion.class).
+                where().
+                    eq("name", shopName).
+                findUnique();
+
+        World wrld = plugin.getServer().getWorld(shpRegion.getWorld());
+        RegionManager rgMngr = getRegionManager(wrld);
+
+        return rgMngr.getRegion(shpRegion.getRegion());
+    }
+
+    public static String convertRegionToShopName(ProtectedRegion region, World wrld) {
+        ShopRegion shpRegion = plugin.getDatabase().find(ShopRegion.class).
+                where().
+                    conjunction().
+                        eq("region", region.getId()).
+                        eq("world", wrld.getName()).
+                    endJunction().
+                findUnique();
+
+        return (shpRegion != null) ? shpRegion.getName() : null;
     }
 }

@@ -4,11 +4,14 @@ import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.PlayerStorage;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,6 +29,7 @@ public class Shop implements CommandExecutor {
     private ShopSet shopSet;
     private ShopSell shopSell;
     private ShopBuy shopBuy;
+    private ShopName shopName;
 
     public Shop(RegionShopPlugin pl) {
         this.shopWarp = new ShopWarp(pl);
@@ -36,6 +40,7 @@ public class Shop implements CommandExecutor {
         this.shopSet = new ShopSet(pl);
         this.shopSell = new ShopSell(pl);
         this.shopBuy = new ShopBuy(pl);
+        this.shopName = new ShopName(pl);
     }
 
     @Override
@@ -197,6 +202,17 @@ public class Shop implements CommandExecutor {
                         }
                     } else {
                         p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.buy");
+                    }
+                } else if(args[0].equalsIgnoreCase("name")) {
+                    if (args.length > 1) {
+                        String[] nameParts = Arrays.copyOfRange(args, 1, args.length);
+
+                        shopName.execute(p, StringUtils.join(nameParts, " "));
+                    } else {
+                        p.sendMessage(Chat.getPrefix() + "Not enough Arguments given");
+                        showHelp(p);
+
+                        return true;
                     }
                 } else {
                     showHelp(p);

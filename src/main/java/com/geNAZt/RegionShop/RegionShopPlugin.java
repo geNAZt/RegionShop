@@ -7,10 +7,12 @@ import com.geNAZt.RegionShop.Event.LeaveEvent;
 import com.geNAZt.RegionShop.Event.RegionEntered;
 import com.geNAZt.RegionShop.Model.ShopItemEnchantmens;
 import com.geNAZt.RegionShop.Model.ShopItems;
+import com.geNAZt.RegionShop.Model.ShopRegion;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.EssentialBridge;
 import com.geNAZt.RegionShop.Util.VaultBridge;
 
+import com.geNAZt.RegionShop.Util.WorldGuardBridge;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.persistence.PersistenceException;
@@ -39,6 +41,7 @@ public class RegionShopPlugin extends JavaPlugin {
         checkForDatabase();
 
         //Statics init
+        WorldGuardBridge.init(this);
         Chat.init(this);
         EssentialBridge.init(this);
 
@@ -57,6 +60,7 @@ public class RegionShopPlugin extends JavaPlugin {
         List<Class<?>> list = new ArrayList<Class<?>>();
         list.add(ShopItems.class);
         list.add(ShopItemEnchantmens.class);
+        list.add(ShopRegion.class);
         return list;
     }
 
@@ -64,6 +68,7 @@ public class RegionShopPlugin extends JavaPlugin {
         try {
             getDatabase().find(ShopItems.class).findRowCount();
             getDatabase().find(ShopItemEnchantmens.class).findRowCount();
+            getDatabase().find(ShopRegion.class).findRowCount();
         } catch (PersistenceException ex) {
             getLogger().info("[RegionShop] Database hasn't setup.");
             installDDL();

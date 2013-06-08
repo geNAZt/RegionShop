@@ -35,7 +35,7 @@ public class ShopSet {
                 findUnique();
 
         if (item == null) {
-            p.sendMessage(Chat.getPrefix() + "This item could not be found or you arent the Owner of it.");
+            p.sendMessage(Chat.getPrefix() + "This item could not be found or you aren't the Owner of it.");
         } else {
             item.setBuy(buy);
             item.setSell(sell);

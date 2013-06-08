@@ -31,9 +31,15 @@ public class ShopWarp {
         if (plugin.getServer().getPlayer(playerOrRegion) != null) {
             HashSet<ProtectedRegion> foundRegions = WorldGuardBridge.searchRegionsByOwner(playerOrRegion, p);
             if (foundRegions.size() > 1) {
-                p.sendMessage(Chat.getPrefix() + "This player has more than one Shop. Please select one out of the list /shop warp <region>");
+                p.sendMessage(Chat.getPrefix() + "This player has more than one Shop. Please select one out of the list /shop warp <shopname>");
                 for(ProtectedRegion region : foundRegions) {
-                    p.sendMessage(region.getId());
+                    String name = WorldGuardBridge.convertRegionToShopName(region, p.getWorld());
+
+                    if(name == null) {
+                        name = region.getId();
+                    }
+
+                    p.sendMessage(Chat.getPrefix() + name);
                 }
 
                 return true;
@@ -48,16 +54,22 @@ public class ShopWarp {
         }
 
         //Region warp
-        if (WorldGuardBridge.isRegion(playerOrRegion, p)) {
+        ProtectedRegion region = WorldGuardBridge.convertShopNameToRegion(playerOrRegion);
+
+        if(region == null) {
             RegionManager rgMngr = WorldGuardBridge.getRegionManager(p.getWorld());
-            plugin.getLogger().info("[RegionShop] Player "+ p.getDisplayName() +" was teleported to "+  rgMngr.getRegion(playerOrRegion).getId());
-            Vector tpVector = rgMngr.getRegion(playerOrRegion).getFlag(DefaultFlag.TELE_LOC).getPosition();
+            region = rgMngr.getRegion(playerOrRegion);
+        }
+
+        if (region != null) {
+            plugin.getLogger().info("[RegionShop] Player "+ p.getDisplayName() +" was teleported to "+  region.getId());
+            Vector tpVector = region.getFlag(DefaultFlag.TELE_LOC).getPosition();
             p.teleport(new Location(p.getWorld(), tpVector.getX(), tpVector.getY(), tpVector.getZ()));
             return true;
         }
 
         //Nothing of all
-        p.sendMessage(Chat.getPrefix() + "Invalid Player or Region");
+        p.sendMessage(Chat.getPrefix() + "Invalid Player or Shopname");
         return false;
     }
 }

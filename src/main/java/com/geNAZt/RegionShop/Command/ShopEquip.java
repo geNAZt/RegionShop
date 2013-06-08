@@ -31,20 +31,26 @@ public class ShopEquip {
         if (regionStr == null) {
             if (DropStorage.getPlayer(p) != null) {
                 DropStorage.removerPlayer(p);
-                p.sendMessage("You don't drop items into Shop from now on.");
+                p.sendMessage(Chat.getPrefix() + "You don't drop items into Shop from now on.");
                 return true;
             } else {
                 HashSet<ProtectedRegion> foundRegions = WorldGuardBridge.searchRegionsByOwner(p.getName(), p);
 
                 if (foundRegions.size() == 0) {
-                    p.sendMessage("No Regions found.");
+                    p.sendMessage(Chat.getPrefix() + "No Shops found.");
                     return true;
                 }
 
                 if (foundRegions.size() > 1) {
-                    p.sendMessage(Chat.getPrefix() + "This player has more than one Shop. Please select one out of the list /shop toggle <region>");
+                    p.sendMessage(Chat.getPrefix() + "This player has more than one Shop. Please select one out of the list /shop toggle <shopname>");
                     for(ProtectedRegion region : foundRegions) {
-                        p.sendMessage(region.getId());
+                        String name = WorldGuardBridge.convertRegionToShopName(region, p.getWorld());
+
+                        if(name == null) {
+                            name = region.getId();
+                        }
+
+                        p.sendMessage(Chat.getPrefix() + name);
                     }
 
                     return true;
@@ -66,17 +72,16 @@ public class ShopEquip {
         }
 
         //Region warp
-        if (WorldGuardBridge.isRegion(regionStr, p)) {
+        ProtectedRegion region = WorldGuardBridge.convertShopNameToRegion(regionStr);
+
+        if(region == null) {
             RegionManager rgMngr = WorldGuardBridge.getRegionManager(p.getWorld());
-            ProtectedRegion region = rgMngr.getRegion(regionStr);
+            region = rgMngr.getRegion(regionStr);
+        }
 
-            if (region == null) {
-                p.sendMessage("No Regions found.");
-                return true;
-            }
-
+        if (region != null) {
             if (!region.isOwner(p.getName())) {
-                p.sendMessage("You aren't a owner of this Shop");
+                p.sendMessage(Chat.getPrefix() + "You aren't a owner of this Shop");
                 return true;
             }
 
