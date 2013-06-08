@@ -4,6 +4,7 @@ import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.DropStorage;
 import com.geNAZt.RegionShop.Util.PlayerStorage;
 
+import com.geNAZt.RegionShop.Util.SearchStorage;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -33,5 +34,7 @@ public class LeaveEvent implements Listener {
         if (DropStorage.getPlayer(e.getPlayer()) != null) {
             DropStorage.removerPlayer(e.getPlayer());
         }
+
+        SearchStorage.removeAllPlayer(e.getPlayer());
     }
 }

@@ -7,6 +7,7 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -28,10 +29,11 @@ public class ShopWarp {
 
     public boolean execute(Player p, String playerOrRegion) {
         //Player warp
-        if (plugin.getServer().getPlayer(playerOrRegion) != null) {
-            HashSet<ProtectedRegion> foundRegions = WorldGuardBridge.searchRegionsByOwner(playerOrRegion, p);
+        HashSet<ProtectedRegion> foundRegions;
+        if ((foundRegions = WorldGuardBridge.searchRegionsByOwner(playerOrRegion, p)) != null) {
             if (foundRegions.size() > 1) {
-                p.sendMessage(Chat.getPrefix() + "This player has more than one Shop. Please select one out of the list /shop warp <shopname>");
+                p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Shop Selector" + ChatColor.YELLOW + " -- To select a Shop: " + ChatColor.GOLD +"/shop warp <shopname>");
+                p.sendMessage(Chat.getPrefix() + " ");
                 for(ProtectedRegion region : foundRegions) {
                     String name = WorldGuardBridge.convertRegionToShopName(region, p.getWorld());
 
@@ -39,7 +41,7 @@ public class ShopWarp {
                         name = region.getId();
                     }
 
-                    p.sendMessage(Chat.getPrefix() + name);
+                    p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + name);
                 }
 
                 return true;

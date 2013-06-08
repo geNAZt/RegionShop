@@ -31,6 +31,11 @@ public class ShopSell {
             String region = PlayerStorage.getPlayer(p);
 
             ItemStack itemInHand = p.getItemInHand();
+
+            if(!itemInHand.getEnchantments().isEmpty() || itemInHand.getItemMeta().hasDisplayName()) {
+                p.sendMessage(Chat.getPrefix() + "You can't sell enchanted / custom renamed Items into a shop");
+            }
+
             ShopItems item = plugin.getDatabase().find(ShopItems.class).
                     where().
                         conjunction().

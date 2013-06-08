@@ -8,11 +8,8 @@ import com.geNAZt.RegionShop.Event.RegionEntered;
 import com.geNAZt.RegionShop.Model.ShopItemEnchantmens;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.Model.ShopRegion;
-import com.geNAZt.RegionShop.Util.Chat;
-import com.geNAZt.RegionShop.Util.EssentialBridge;
-import com.geNAZt.RegionShop.Util.VaultBridge;
+import com.geNAZt.RegionShop.Util.*;
 
-import com.geNAZt.RegionShop.Util.WorldGuardBridge;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.persistence.PersistenceException;
@@ -44,6 +41,7 @@ public class RegionShopPlugin extends JavaPlugin {
         WorldGuardBridge.init(this);
         Chat.init(this);
         EssentialBridge.init(this);
+        ListStorage.init(this);
 
         //Event
         getServer().getPluginManager().registerEvents(new RegionEntered(this), this);

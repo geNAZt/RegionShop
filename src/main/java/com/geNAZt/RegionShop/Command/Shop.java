@@ -2,6 +2,7 @@ package com.geNAZt.RegionShop.Command;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
+import com.geNAZt.RegionShop.Util.ItemName;
 import com.geNAZt.RegionShop.Util.PlayerStorage;
 
 import org.apache.commons.lang.StringUtils;
@@ -30,6 +31,8 @@ public class Shop implements CommandExecutor {
     private ShopSell shopSell;
     private ShopBuy shopBuy;
     private ShopName shopName;
+    private ShopSearch shopSearch;
+    private ShopResult shopResult;
 
     public Shop(RegionShopPlugin pl) {
         this.shopWarp = new ShopWarp(pl);
@@ -41,6 +44,8 @@ public class Shop implements CommandExecutor {
         this.shopSell = new ShopSell(pl);
         this.shopBuy = new ShopBuy(pl);
         this.shopName = new ShopName(pl);
+        this.shopSearch = new ShopSearch(pl);
+        this.shopResult = new ShopResult(pl);
     }
 
     @Override
@@ -61,26 +66,42 @@ public class Shop implements CommandExecutor {
                             String regString = PlayerStorage.getPlayer(p);
 
                             if (args.length > 1) {
-                                shopList.execute(p, regString, args[1]);
+                                Integer page;
+
+                                try {
+                                    page = Integer.parseInt(args[1]);
+                                } catch (NumberFormatException e) {
+                                    p.sendMessage(Chat.getPrefix() + "Only Numbers as page value");
+                                    return true;
+                                }
+
+                                shopList.execute(p, regString, page);
+                                return true;
                             } else {
-                                shopList.execute(p, regString, "1");
+                                shopList.execute(p, regString, 1);
+                                return true;
                             }
+                        } else {
+                            shopList.execute(p, null, 1);
+                            return true;
                         }
                     } else {
                         p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.list");
+                        return true;
                     }
                 } else if(args[0].equalsIgnoreCase("warp")) {
                     if (p.hasPermission("rs.warp")) {
                         if (args.length > 1) {
-                            shopWarp.execute(p, args[1]);
+                            String[] nameParts = Arrays.copyOfRange(args, 1, args.length);
+                            shopWarp.execute(p, StringUtils.join(nameParts, " "));
+                            return true;
                         } else {
-                            p.sendMessage(Chat.getPrefix() + "Not enough Arguments given");
-                            showHelp(p);
-
+                            p.sendMessage(Chat.getPrefix() + "Not enough Arguments given. Type /shop help for help.");
                             return true;
                         }
                     } else {
                         p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.warp");
+                        return true;
                     }
                 } else if(args[0].equalsIgnoreCase("add")) {
                     if (p.hasPermission("rs.stock.add")) {
@@ -97,14 +118,14 @@ public class Shop implements CommandExecutor {
                             }
 
                             shopAdd.execute(p, buy, sell, amount);
+                            return true;
                         } else {
-                            p.sendMessage(Chat.getPrefix() + "Not enough Arguments given");
-                            showHelp(p);
-
+                            p.sendMessage(Chat.getPrefix() + "Not enough Arguments given. Type /shop help for help.");
                             return true;
                         }
                     } else {
                         p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.stock.add");
+                        return true;
                     }
                 } else if(args[0].equalsIgnoreCase("detail")) {
                     if (p.hasPermission("rs.detail")) {
@@ -119,24 +140,28 @@ public class Shop implements CommandExecutor {
                             }
 
                             shopDetail.execute(p, itemId);
+                            return true;
                         } else {
-                            p.sendMessage(Chat.getPrefix() + "Not enough Arguments given");
-                            showHelp(p);
-
+                            p.sendMessage(Chat.getPrefix() + "Not enough Arguments given. Type /shop help for help.");
                             return true;
                         }
                     } else {
                         p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.detail");
+                        return true;
                     }
                 } else if(args[0].equalsIgnoreCase("equip")) {
                     if (p.hasPermission("rs.stock.equip")) {
                         if (args.length > 1) {
-                            shopEquip.execute(p, args[1]);
+                            String[] nameParts = Arrays.copyOfRange(args, 1, args.length);
+                            shopEquip.execute(p, StringUtils.join(nameParts, " "));
+                            return true;
                         } else {
                             shopEquip.execute(p, null);
+                            return true;
                         }
                     } else {
                         p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.stock.equip");
+                        return true;
                     }
                 } else if(args[0].equalsIgnoreCase("set")) {
                     if (p.hasPermission("rs.stock.set")) {
@@ -154,20 +179,22 @@ public class Shop implements CommandExecutor {
                             }
 
                             shopSet.execute(p, shopItemId, sell, buy, amount);
+                            return true;
                         } else {
-                            p.sendMessage(Chat.getPrefix() + "Not enough Arguments given");
-                            showHelp(p);
-
+                            p.sendMessage(Chat.getPrefix() + "Not enough Arguments given. Type /shop help for help.");
                             return true;
                         }
                     } else {
                         p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.stock.set");
+                        return true;
                     }
                 } else if(args[0].equalsIgnoreCase("sell")) {
                     if (p.hasPermission("rs.sell")) {
                         shopSell.execute(p);
+                        return true;
                     } else {
                         p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.sell");
+                        return true;
                     }
                 } else if(args[0].equalsIgnoreCase("buy")) {
                     if (p.hasPermission("rs.buy")) {
@@ -183,6 +210,7 @@ public class Shop implements CommandExecutor {
                             }
 
                             shopBuy.execute(p, shopItemId, amount);
+                            return true;
                         } else if (args.length > 1) {
                             Integer shopItemId;
 
@@ -194,51 +222,102 @@ public class Shop implements CommandExecutor {
                             }
 
                             shopBuy.execute(p, shopItemId, -1);
+                            return true;
                         } else {
-                            p.sendMessage(Chat.getPrefix() + "Not enough Arguments given");
-                            showHelp(p);
-
+                            p.sendMessage(Chat.getPrefix() + "Not enough Arguments given. Type /shop help for help.");
                             return true;
                         }
                     } else {
                         p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.buy");
+                        return true;
                     }
                 } else if(args[0].equalsIgnoreCase("name")) {
                     if (args.length > 1) {
                         String[] nameParts = Arrays.copyOfRange(args, 1, args.length);
 
                         shopName.execute(p, StringUtils.join(nameParts, " "));
+                        return true;
                     } else {
-                        p.sendMessage(Chat.getPrefix() + "Not enough Arguments given");
-                        showHelp(p);
+                        p.sendMessage(Chat.getPrefix() + "Not enough Arguments given. Type /shop help for help.");
+                        return true;
+                    }
+                } else if(args[0].equalsIgnoreCase("search")) {
+                    if (args.length > 1) {
+                        String[] nameParts = Arrays.copyOfRange(args, 1, args.length);
 
+                        shopSearch.execute(p, ItemName.nicer(StringUtils.join(nameParts, "_")));
+                        return true;
+                    } else {
+                        p.sendMessage(Chat.getPrefix() + "Not enough Arguments given. Type /shop help for help.");
+                        return true;
+                    }
+                } else if(args[0].equalsIgnoreCase("result")) {
+                    if (args.length > 1) {
+                        Integer page;
+
+                        try {
+                            page = Integer.parseInt(args[1]);
+                        } catch (NumberFormatException e) {
+                            p.sendMessage(Chat.getPrefix() + "Only Numbers as page value");
+                            return true;
+                        }
+
+                        shopResult.execute(p, page);
+                        return true;
+                    } else {
+                        p.sendMessage(Chat.getPrefix() + "Not enough Arguments given. Type /shop help for help.");
+                        return true;
+                    }
+                } else if(args[0].equalsIgnoreCase("help")) {
+                    if (args.length > 1) {
+                        Integer page;
+
+                        try {
+                            page = Integer.parseInt(args[1]);
+                        } catch (NumberFormatException e) {
+                            p.sendMessage(Chat.getPrefix() + "Only Numbers as page value");
+                            return true;
+                        }
+
+                        showHelp(p, page);
+                        return true;
+                    } else {
+                        showHelp(p, 1);
                         return true;
                     }
                 } else {
-                    showHelp(p);
+                    showHelp(p, 1);
+                    return true;
                 }
             } else {
-                showHelp(p);
+                showHelp(p, 1);
+                return true;
             }
-
-            return true;
         }
 
         return false;
     }
 
-    private void showHelp(Player sender) {
-        sender.sendMessage(Chat.getPrefix() + "RegionShop help");
-        sender.sendMessage(Chat.getPrefix() + ChatColor.RED + "Things in red must be given    " + ChatColor.GREEN + "Things in green are optional");
-        sender.sendMessage(Chat.getPrefix() + "----------------------------------------");
-        sender.sendMessage(Chat.getPrefix() + "Consumer Commands: ");
-        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop list -> " + ChatColor.RESET + " Show all Items in a Shop");
-        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop detail "+ ChatColor.RED +"shopItemID"+ ChatColor.AQUA +"-> " + ChatColor.RESET + " Show details of an Item");
-        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop warp "+ ChatColor.RED +"owner"+ ChatColor.AQUA +" -> " + ChatColor.RESET + " Warp to the Shop of Player <owner>");
-        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop warp "+ ChatColor.RED +"region"+ ChatColor.AQUA +" -> " + ChatColor.RESET + " Warp to the <region> of a Shop");
-        sender.sendMessage(Chat.getPrefix() + " ");
-        sender.sendMessage(Chat.getPrefix() + "Shop Owner Commands: ");
-        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop add "+ ChatColor.RED +"sell buy amount"+ ChatColor.AQUA +"-> " + ChatColor.RESET + " Adds the current in Hand Item to the Shop. <sell> - Amount of $ which you want to sell this Item for; <buy> - Amount of $ you want to buy this Item for; <amount> - Amount of Items which will be dealt");
-        sender.sendMessage(Chat.getPrefix() + ChatColor.AQUA + "/shop equip "+ ChatColor.GREEN +"region"+ ChatColor.AQUA +" -> " + ChatColor.RESET + " Toggle if dropped items will be added into the Shop. If you have multiple shop select via <region>");
+    private void showHelp(Player sender, Integer page) {
+        if (page == 1) {
+            sender.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Help: RegionShop " + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Page " + ChatColor.RED + "1" + ChatColor.GOLD + "/" + ChatColor.RED + "2 " + ChatColor.YELLOW + "--");
+            sender.sendMessage(Chat.getPrefix() + ChatColor.RED + "Necessary arguments");
+            sender.sendMessage(Chat.getPrefix() + ChatColor.GREEN + "Optional arguments");
+            sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop list" + ChatColor.RESET + ": List items in the shop (inside a shopregion)");
+            sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop list" + ChatColor.RESET + ": List all available shops (outside a shopregion)");
+            sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop search " + ChatColor.RED + "ItemID/ItemName" + ChatColor.RESET + ": Search for " + ChatColor.RED + "ItemID/ItemName");
+            sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop warp " + ChatColor.RED + "owner" + ChatColor.RESET + ": Warp to " + ChatColor.RED + "owner" + ChatColor.RESET + "'s shop");
+            sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop warp " + ChatColor.RED + "shopname" + ChatColor.RESET + ": Warp to the shop called " + ChatColor.RED + "shopname");
+            sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop detail " + ChatColor.RED + "shopItemID" + ChatColor.RESET + ": Display details of " + ChatColor.RED + "shopItemID");
+            sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop add " + ChatColor.RED + "sellprice buyprice amount" + ChatColor.RESET + ": Add current item in hand to the shop stock");
+            sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop buy " + ChatColor.RED + "shopItemID" +  ChatColor.GREEN + "amount" + ChatColor.RESET + ": Buy (" + ChatColor.GREEN + "amount" + ChatColor.RESET + " pcs. of) " + ChatColor.RED + "shopItemID " + ChatColor.RESET + "from the shop");
+            sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop sell " + ChatColor.RED + "shopItemID " + ChatColor.GREEN + "amount" + ChatColor.RESET + ": sell (" + ChatColor.GREEN + "amount" + ChatColor.RESET + " pcs. of) " + ChatColor.RED + "shopItemID " + ChatColor.RESET + "to the shop");
+        }
+
+        if (page == 2) {
+            sender.sendMessage(Chat.getPrefix() +ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Help: RegionShop " + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Page " + ChatColor.RED + "2" + ChatColor.GOLD + "/" + ChatColor.RED + "2 " + ChatColor.YELLOW + "--");
+            sender.sendMessage(Chat.getPrefix() +ChatColor.RED + "Necessary arguments");
+            sender.sendMessage(Chat.getPrefix() +ChatColor.GREEN + "Optional arguments");
+        }
     }
 }

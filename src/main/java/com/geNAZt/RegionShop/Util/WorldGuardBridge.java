@@ -10,6 +10,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -37,8 +38,11 @@ public class WorldGuardBridge {
         HashSet<ProtectedRegion> proRegionCollection = new HashSet<ProtectedRegion>();
         RegionManager rgMngr = getRegionManager(p.getWorld());
         Pattern r = Pattern.compile("(.*)regionshop(.*)");
+        Map<String, ProtectedRegion> pRC = rgMngr.getRegions();
 
-        for( Map.Entry<String, ProtectedRegion> regionEntry : rgMngr.getRegions().entrySet()) {
+        if(pRC.isEmpty()) return null;
+
+        for( Map.Entry<String, ProtectedRegion> regionEntry : pRC.entrySet()) {
             Matcher m = r.matcher(regionEntry.getKey());
 
             ProtectedRegion region = regionEntry.getValue();
@@ -61,6 +65,8 @@ public class WorldGuardBridge {
                 where().
                     eq("name", shopName).
                 findUnique();
+
+        if (shpRegion == null) return null;
 
         World wrld = plugin.getServer().getWorld(shpRegion.getWorld());
         RegionManager rgMngr = getRegionManager(wrld);

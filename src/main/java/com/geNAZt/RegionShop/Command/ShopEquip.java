@@ -6,6 +6,7 @@ import com.geNAZt.RegionShop.Util.DropStorage;
 import com.geNAZt.RegionShop.Util.WorldGuardBridge;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
@@ -42,7 +43,9 @@ public class ShopEquip {
                 }
 
                 if (foundRegions.size() > 1) {
-                    p.sendMessage(Chat.getPrefix() + "This player has more than one Shop. Please select one out of the list /shop toggle <shopname>");
+                    p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Shop Selector" + ChatColor.YELLOW + " -- To select a Shop: " + ChatColor.GOLD +"/shop equip <shopname>");
+                    p.sendMessage(Chat.getPrefix() + " ");
+
                     for(ProtectedRegion region : foundRegions) {
                         String name = WorldGuardBridge.convertRegionToShopName(region, p.getWorld());
 
@@ -50,7 +53,7 @@ public class ShopEquip {
                             name = region.getId();
                         }
 
-                        p.sendMessage(Chat.getPrefix() + name);
+                        p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + name);
                     }
 
                     return true;

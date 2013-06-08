@@ -55,11 +55,14 @@ public class ShopDetail {
                 dmg = Math.round(divide * 100);
             }
 
-            p.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Detail View of Item " + ChatColor.GREEN + itemName + " " + ChatColor.GRAY + "#" + item.getId());
-            p.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Selling for " + ChatColor.GREEN + item.getSell() + "$ " + ChatColor.DARK_GREEN + " - " + ChatColor.RED + dmg + "% "+ ChatColor.DARK_GREEN + "Damaged - Item Owner: " + ChatColor.GREEN + item.getOwner());
+            p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Detail view " + ChatColor.YELLOW + "-- " + ChatColor.RED + item.getOwner() + "'s " + ChatColor.GREEN + itemName + ChatColor.GRAY + "#" + item.getId());
+            p.sendMessage(Chat.getPrefix() + " ");
+            p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + item.getSell() + "$ " + ChatColor.GOLD + "selling price");
+            p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + item.getBuy() + "$ " + ChatColor.GOLD + "buying price");
+            p.sendMessage(Chat.getPrefix() + ChatColor.RED + dmg + "% " + ChatColor.GOLD + "damaged");
 
-            if (item.getCustomName() != "") {
-                p.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Custom Name: " + ChatColor.GREEN + item.getCustomName());
+            if (item.getCustomName() != null) {
+                p.sendMessage(Chat.getPrefix() + "     " + ChatColor.GOLD + "Custom name: " + ChatColor.GRAY + item.getCustomName());
             }
 
             List<ShopItemEnchantmens> enchants = plugin.getDatabase().find(ShopItemEnchantmens.class).

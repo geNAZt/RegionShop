@@ -38,6 +38,11 @@ public class ShopAdd {
             if (rgMngr.getRegion(region).isOwner(p.getName())) {
                 ItemStack itemInHand = p.getItemInHand();
 
+                if(itemInHand == null) {
+                    p.sendMessage(Chat.getPrefix() + "You have no Item in the Hand");
+                }
+
+
                 ShopItems item = plugin.getDatabase().find(ShopItems.class).
                         where().
                             conjunction().
