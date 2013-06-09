@@ -15,25 +15,22 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
- * Time: 19:09
- * To change this template use File | Settings | File Templates.
  */
-public class ShopName {
-    private RegionShopPlugin plugin;
+class ShopName {
+    private final RegionShopPlugin plugin;
 
     public ShopName(RegionShopPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public boolean execute(Player p, String name) {
+    public void execute(Player p, String name) {
         if(PlayerStorage.getPlayer(p) != null) {
             String region = PlayerStorage.getPlayer(p);
 
-            RegionManager rgMngr = WorldGuardBridge.getRegionManager(p.getWorld());
-            ProtectedRegion rgn = rgMngr.getRegion(region);
+            ProtectedRegion rgn = WorldGuardBridge.getRegionByString(region, p.getWorld());
 
             if (rgn.isOwner(p.getName())) {
                 ArrayList<ProtectedRegion> regions = ListStorage.getShopList(p.getWorld());
@@ -46,18 +43,16 @@ public class ShopName {
 
                     if (shopName.equalsIgnoreCase(name)) {
                         p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This name is already given to another shop");
-                        return true;
+                        return;
                     }
                 }
 
-                if(plugin.getConfig().getBoolean("only-ascii") == true) {
+                if(plugin.getConfig().getBoolean("only-ascii")) {
                     if (!CharMatcher.ASCII.matchesAllOf(name)) {
                         p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You can only use ASCII characters for the name");
-                        return true;
+                        return;
                     }
                 }
-
-
 
                 ShopRegion shpRegion = plugin.getDatabase().find(ShopRegion.class).
                         where().
@@ -80,15 +75,14 @@ public class ShopName {
 
                 p.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "This shop has the name: " + ChatColor.GREEN + name);
                 ListStorage.reload();
-                return true;
+                return;
             } else {
                 p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You are not an owner in this shop");
-                return false;
+                return;
             }
         }
 
         //Nothing of all
         p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You are not inside a shop");
-        return false;
     }
 }

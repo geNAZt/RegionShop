@@ -2,6 +2,7 @@ package com.geNAZt.RegionShop.Bridges;
 
 import com.geNAZt.RegionShop.Model.ShopRegion;
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Storages.ListStorage;
 import com.sk89q.worldguard.bukkit.WGBukkit;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
@@ -10,6 +11,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -17,11 +19,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 05.06.13
- * Time: 20:02
- * To change this template use File | Settings | File Templates.
  */
 public class WorldGuardBridge {
     private static RegionShopPlugin plugin;
@@ -30,23 +30,20 @@ public class WorldGuardBridge {
         plugin = pl;
     }
 
-    public static RegionManager getRegionManager(World wld) {
-        return WGBukkit.getRegionManager(wld);
+    private static RegionManager getRegionManager(World world) {
+        return WGBukkit.getRegionManager(world);
     }
 
-    public static HashSet<ProtectedRegion> searchRegionsByOwner(String owner, Player p) {
+    //Get all Regions that have the owner inside
+    public static HashSet<ProtectedRegion> searchRegionsByOwner(String owner, World world) {
         HashSet<ProtectedRegion> proRegionCollection = new HashSet<ProtectedRegion>();
-        RegionManager rgMngr = getRegionManager(p.getWorld());
-        Pattern r = Pattern.compile("(.*)regionshop(.*)");
-        Map<String, ProtectedRegion> pRC = rgMngr.getRegions();
+        ArrayList<ProtectedRegion> pRC = ListStorage.getShopList(world);
 
         if(pRC.isEmpty()) return null;
 
-        for( Map.Entry<String, ProtectedRegion> regionEntry : pRC.entrySet()) {
-            Matcher m = r.matcher(regionEntry.getKey());
+        for (ProtectedRegion region : pRC) {
 
-            ProtectedRegion region = regionEntry.getValue();
-            if (region.isOwner(owner) && region.getFlag(DefaultFlag.TELE_LOC) != null && m.matches()) {
+            if (region.isOwner(owner)) {
                 proRegionCollection.add(region);
             }
         }
@@ -54,12 +51,14 @@ public class WorldGuardBridge {
         return proRegionCollection;
     }
 
-    public static boolean isRegion(String region, Player p) {
-        RegionManager rgMngr = getRegionManager(p.getWorld());
+    //Checks if string is a valid Region
+    public static boolean isRegion(String region, World world) {
+        RegionManager rgMngr = getRegionManager(world);
 
         return (rgMngr.getRegion(region) != null);
     }
 
+    //Converts a ShopName into a region
     public static ProtectedRegion convertShopNameToRegion(String shopName) {
         ShopRegion shpRegion = plugin.getDatabase().find(ShopRegion.class).
                 where().
@@ -74,15 +73,26 @@ public class WorldGuardBridge {
         return rgMngr.getRegion(shpRegion.getRegion());
     }
 
-    public static String convertRegionToShopName(ProtectedRegion region, World wrld) {
+    //Converts a region (with world) into a ShopName
+    public static String convertRegionToShopName(ProtectedRegion region, World world) {
         ShopRegion shpRegion = plugin.getDatabase().find(ShopRegion.class).
                 where().
                     conjunction().
                         eq("region", region.getId()).
-                        eq("world", wrld.getName()).
+                        eq("world", world.getName()).
                     endJunction().
                 findUnique();
 
         return (shpRegion != null) ? shpRegion.getName() : null;
+    }
+
+    //Gets the Region with the string
+    public static ProtectedRegion getRegionByString(String region, World world) {
+        return getRegionManager(world).getRegion(region);
+    }
+
+    //Get all Regions of a World
+    public static Map<String, ProtectedRegion> getAllRegions(World world) {
+        return getRegionManager(world).getRegions();
     }
 }

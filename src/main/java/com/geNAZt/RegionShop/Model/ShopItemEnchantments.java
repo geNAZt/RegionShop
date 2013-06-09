@@ -1,15 +1,13 @@
 package com.geNAZt.RegionShop.Model;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 05.06.13
- * Time: 19:46
- * To change this template use File | Settings | File Templates.
  */
-
 import javax.persistence.*;
 
+@SuppressWarnings("UnusedDeclaration")
 @Entity()
 @Table(name = "ShopItemEnchantments")
 public class ShopItemEnchantments {

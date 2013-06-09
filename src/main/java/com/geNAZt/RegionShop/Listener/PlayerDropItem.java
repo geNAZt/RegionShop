@@ -5,6 +5,7 @@ import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Storages.DropStorage;
+import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.geNAZt.RegionShop.Util.ItemName;
 
 import org.bukkit.ChatColor;
@@ -19,14 +20,12 @@ import java.util.Map;
 
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 05.06.13
- * Time: 22:01
- * To change this template use File | Settings | File Templates.
  */
 public class PlayerDropItem implements Listener {
-    private RegionShopPlugin plugin;
+    private final RegionShopPlugin plugin;
 
     public PlayerDropItem(RegionShopPlugin pl) {
         this.plugin = pl;
@@ -58,35 +57,7 @@ public class PlayerDropItem implements Listener {
 
                 e.getItemDrop().remove();
             } else {
-                ShopItems newItem = new ShopItems();
-                newItem.setWorld(e.getPlayer().getWorld().getName());
-                newItem.setCurrentAmount(droppedItem.getAmount());
-                newItem.setItemID(droppedItem.getType().getId());
-                newItem.setDurability(droppedItem.getDurability());
-                newItem.setOwner(e.getPlayer().getName());
-                newItem.setRegion(region);
-                newItem.setDataID(droppedItem.getData().getData());
-                newItem.setStackable(droppedItem.getMaxStackSize() != 1);
-                newItem.setCustomName((droppedItem.getItemMeta().hasDisplayName()) ? droppedItem.getItemMeta().getDisplayName() : null);
-
-                newItem.setBuy(0);
-                newItem.setSell(0);
-                newItem.setUnitAmount(0);
-
-                plugin.getDatabase().save(newItem);
-
-                Map<Enchantment, Integer> itemEnch = droppedItem.getEnchantments();
-                if(itemEnch != null) {
-                    for(Map.Entry<Enchantment, Integer> entry : itemEnch.entrySet()) {
-                        ShopItemEnchantments ench = new ShopItemEnchantments();
-                        ench.setEnchId(entry.getKey().getId());
-                        ench.setEnchLvl(entry.getValue());
-                        ench.setShopItemId(newItem.getId());
-
-                        plugin.getDatabase().save(ench);
-                    }
-                }
-
+                ItemConverter.toDBItem(droppedItem, e.getPlayer().getWorld(), e.getPlayer().getName(), region, 0, 0, 0);
                 e.getItemDrop().remove();
 
                 String itemName;

@@ -15,27 +15,25 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
- * Time: 16:11
- * To change this template use File | Settings | File Templates.
  */
 public class Shop implements CommandExecutor {
-    private ShopWarp shopWarp;
-    private ShopList shopList;
-    private ShopAdd shopAdd;
-    private ShopDetail shopDetail;
-    private ShopEquip shopEquip;
-    private ShopSet shopSet;
-    private ShopSell shopSell;
-    private ShopBuy shopBuy;
-    private ShopName shopName;
-    private ShopSearch shopSearch;
-    private ShopResult shopResult;
-    private ShopReload shopReload;
+    private final ShopWarp shopWarp;
+    private final ShopList shopList;
+    private final ShopAdd shopAdd;
+    private final ShopDetail shopDetail;
+    private final ShopEquip shopEquip;
+    private final ShopSet shopSet;
+    private final ShopSell shopSell;
+    private final ShopBuy shopBuy;
+    private final ShopName shopName;
+    private final ShopSearch shopSearch;
+    private final ShopResult shopResult;
+    private final ShopReload shopReload;
 
-    private RegionShopPlugin plugin;
+    private final RegionShopPlugin plugin;
 
     public Shop(RegionShopPlugin pl) {
         this.shopWarp = new ShopWarp(pl);

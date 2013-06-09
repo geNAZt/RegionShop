@@ -14,23 +14,21 @@ import org.bukkit.entity.Player;
 import java.util.HashSet;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
- * Time: 19:09
- * To change this template use File | Settings | File Templates.
  */
-public class ShopWarp {
-    private RegionShopPlugin plugin;
+class ShopWarp {
+    private final RegionShopPlugin plugin;
 
     public ShopWarp(RegionShopPlugin plugin) {
         this.plugin = plugin;
     }
 
-    public boolean execute(Player p, String playerOrRegion) {
+    public void execute(Player p, String playerOrRegion) {
         //Player warp
         HashSet<ProtectedRegion> foundRegions;
-        if ((foundRegions = WorldGuardBridge.searchRegionsByOwner(playerOrRegion, p)) != null) {
+        if ((foundRegions = WorldGuardBridge.searchRegionsByOwner(playerOrRegion, p.getWorld())) != null) {
             if (foundRegions.size() > 1) {
                 p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Shop Selector" + ChatColor.YELLOW + " -- To select a Shop: " + ChatColor.GOLD +"/shop warp <shopname>");
                 p.sendMessage(Chat.getPrefix() + " ");
@@ -44,14 +42,14 @@ public class ShopWarp {
                     p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + name);
                 }
 
-                return true;
+                return;
             } else {
-                for(ProtectedRegion region : foundRegions) {
-                    plugin.getLogger().info("[RegionShop] Player "+ p.getDisplayName() +" was teleported to "+ region.getId());
-                    Vector tpVector = region.getFlag(DefaultFlag.TELE_LOC).getPosition();
-                    p.teleport(new Location(p.getWorld(), tpVector.getX(), tpVector.getY(), tpVector.getZ()));
-                    return true;
-                }
+                ProtectedRegion region = foundRegions.iterator().next();
+
+                plugin.getLogger().info("[RegionShop] Player "+ p.getDisplayName() +" was teleported to "+ region.getId());
+                Vector tpVector = region.getFlag(DefaultFlag.TELE_LOC).getPosition();
+                p.teleport(new Location(p.getWorld(), tpVector.getX(), tpVector.getY(), tpVector.getZ()));
+                return;
             }
         }
 
@@ -59,19 +57,17 @@ public class ShopWarp {
         ProtectedRegion region = WorldGuardBridge.convertShopNameToRegion(playerOrRegion);
 
         if(region == null) {
-            RegionManager rgMngr = WorldGuardBridge.getRegionManager(p.getWorld());
-            region = rgMngr.getRegion(playerOrRegion);
+            region = WorldGuardBridge.getRegionByString(playerOrRegion, p.getWorld());
         }
 
         if (region != null) {
             plugin.getLogger().info("[RegionShop] Player "+ p.getDisplayName() +" was teleported to "+  region.getId());
             Vector tpVector = region.getFlag(DefaultFlag.TELE_LOC).getPosition();
             p.teleport(new Location(p.getWorld(), tpVector.getX(), tpVector.getY(), tpVector.getZ()));
-            return true;
+            return;
         }
 
         //Nothing of all
         p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid player or shop name");
-        return false;
     }
 }

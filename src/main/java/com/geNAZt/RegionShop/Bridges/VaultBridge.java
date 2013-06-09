@@ -7,11 +7,9 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 07.06.13
- * Time: 18:10
- * To change this template use File | Settings | File Templates.
  */
 public class VaultBridge {
     public static Economy economy = null;

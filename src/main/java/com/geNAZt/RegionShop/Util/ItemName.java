@@ -10,11 +10,9 @@ import org.bukkit.material.Wool;
 import org.bukkit.potion.Potion;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 07.06.13
- * Time: 14:35
- * To change this template use File | Settings | File Templates.
  */
 public class ItemName {
     public static String nicer(String itemName) {

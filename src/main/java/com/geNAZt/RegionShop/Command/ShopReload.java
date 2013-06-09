@@ -8,26 +8,22 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
- * Time: 19:09
- * To change this template use File | Settings | File Templates.
  */
-public class ShopReload {
-    private RegionShopPlugin plugin;
+class ShopReload {
+    private final RegionShopPlugin plugin;
 
     public ShopReload(RegionShopPlugin plugin) {
         this.plugin = plugin;
     }
 
     @SuppressWarnings("unchecked")
-    public boolean execute(Player p) {
+    public void execute(Player p) {
         ListStorage.reload();
         plugin.reloadConfig();
 
         p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "Reloaded " + ChatColor.GOLD + "Config/ShopList");
-
-        return false;
     }
 }

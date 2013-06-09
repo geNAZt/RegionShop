@@ -1,6 +1,7 @@
 package com.geNAZt.RegionShop.Listener;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Storages.ListStorage;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
@@ -15,18 +16,17 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 05.06.13
- * Time: 22:01
- * To change this template use File | Settings | File Templates.
  */
 public class PlayerMove implements Listener {
-    private RegionShopPlugin plugin;
+    private final RegionShopPlugin plugin;
 
     public PlayerMove(RegionShopPlugin pl) {
         this.plugin = pl;
@@ -45,18 +45,15 @@ public class PlayerMove implements Listener {
             storedRegion = PlayerStorage.getPlayer(e.getPlayer());
         }
 
-        RegionManager rgMngr = WorldGuardBridge.getRegionManager(e.getPlayer().getWorld());
-        ApplicableRegionSet rgSet = rgMngr.getApplicableRegions(e.getTo());
-        Pattern r = Pattern.compile("(.*)regionshop(.*)");
+        ArrayList<ProtectedRegion> regions = ListStorage.getShopList(e.getPlayer().getWorld());
 
-        for (ProtectedRegion region : rgSet) {
-            if (storedRegion != null) {
-                if (region.getId() == storedRegion) {
-                    found = true;
-                }
-            } else {
-                Matcher m = r.matcher(region.getId());
-                if(m.matches()) {
+        for (ProtectedRegion region : regions) {
+            if(region.contains(e.getPlayer().getLocation().getBlockX(), e.getPlayer().getLocation().getBlockY(), e.getPlayer().getLocation().getBlockZ())) {
+                if (storedRegion != null) {
+                    if (region.getId().equals(storedRegion)) {
+                        found = true;
+                    }
+                } else {
                     PlayerStorage.setPlayer(e.getPlayer(), region.getId());
 
                     String shopName = WorldGuardBridge.convertRegionToShopName(region, e.getPlayer().getWorld());
@@ -65,25 +62,21 @@ public class PlayerMove implements Listener {
                     }
 
                     e.getPlayer().sendMessage(Chat.getPrefix() + ChatColor.GOLD + "You have entered " + ChatColor.DARK_GREEN + shopName +  ChatColor.GOLD + ". Type " + ChatColor.GREEN + "/shop list " + ChatColor.GOLD + "to list the items");
-                    plugin.getLogger().info("[RegionShop] Player " + e.getPlayer().getDisplayName() + " entered WG Region " + region.getId());
-                } else {
-                    if (plugin.getConfig().getBoolean("debug")) {
-                        plugin.getLogger().info("[RegionShop] No ShopRegion " + region.getId());
-                    }
+                    plugin.getLogger().info("Player " + e.getPlayer().getDisplayName() + " entered WG Region " + region.getId());
                 }
             }
         }
 
-        if (storedRegion != null && found == false) {
-            ProtectedRegion region = rgMngr.getRegion(storedRegion);
-
+        if (storedRegion != null && !found) {
+            ProtectedRegion region = WorldGuardBridge.getRegionByString(storedRegion, e.getPlayer().getWorld());
             String shopName = WorldGuardBridge.convertRegionToShopName(region, e.getPlayer().getWorld());
+
             if(shopName == null) {
                 shopName = region.getId();
             }
 
             e.getPlayer().sendMessage(Chat.getPrefix() + ChatColor.GOLD + "You have left " + ChatColor.DARK_GREEN + shopName +  ChatColor.GOLD + ". Bye!");
-            plugin.getLogger().info("[RegionShop] Player "+ e.getPlayer().getDisplayName() + " left WG Region " + storedRegion);
+            plugin.getLogger().info("Player "+ e.getPlayer().getDisplayName() + " left WG Region " + storedRegion);
             PlayerStorage.removerPlayer(e.getPlayer());
         }
     }

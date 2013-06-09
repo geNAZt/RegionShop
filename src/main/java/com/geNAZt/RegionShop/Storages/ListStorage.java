@@ -18,11 +18,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 08.06.13
- * Time: 21:01
- * To change this template use File | Settings | File Templates.
  */
 public class ListStorage {
     private static class ShopListRegenerate extends BukkitRunnable {
@@ -34,7 +32,7 @@ public class ListStorage {
         }
 
         public void run() {
-            if (plugin.getConfig().getBoolean("debug") == true) {
+            if (plugin.getConfig().getBoolean("debug")) {
                 plugin.getLogger().info("Generating new ShopList");
             }
 
@@ -43,8 +41,7 @@ public class ListStorage {
             List <World> wrldList = plugin.getServer().getWorlds();
 
             for(World wrld : wrldList) {
-                RegionManager rgMngr = WorldGuardBridge.getRegionManager(wrld);
-                Map<String, ProtectedRegion> pRC = rgMngr.getRegions();
+                Map<String, ProtectedRegion> pRC = WorldGuardBridge.getAllRegions(wrld);
                 ArrayList<ProtectedRegion> wrldRegions = new ArrayList<ProtectedRegion>();
 
                 if(pRC.isEmpty()) {
@@ -67,7 +64,7 @@ public class ListStorage {
 
     }
 
-    public static HashMap<World, ArrayList<ProtectedRegion>> shopList = new HashMap<World, ArrayList<ProtectedRegion>>();
+    private static HashMap<World, ArrayList<ProtectedRegion>> shopList = new HashMap<World, ArrayList<ProtectedRegion>>();
     private static BukkitTask task;
     private static RegionShopPlugin plugin;
 
@@ -83,6 +80,20 @@ public class ListStorage {
         } else {
             return null;
         }
+    }
+
+    public static ProtectedRegion getShopByRegion(String region, World wrld) {
+        ArrayList<ProtectedRegion> regionsInWorld = getShopList(wrld);
+
+        if (regionsInWorld == null) return null;
+
+        for(ProtectedRegion regionObj : regionsInWorld) {
+            if (regionObj.getId().equals(region)) {
+                return regionObj;
+            }
+        }
+
+        return null;
     }
 
     public static void reload() {

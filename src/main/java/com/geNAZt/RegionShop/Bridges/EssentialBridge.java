@@ -7,29 +7,20 @@ import com.earth2me.essentials.User;
 
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 08.06.13
- * Time: 10:56
- * To change this template use File | Settings | File Templates.
  */
 public class EssentialBridge {
-    private static RegionShopPlugin plugin;
     private static Essentials essentials = null;
 
-    public static void init(RegionShopPlugin pl) {
-        plugin = pl;
-
+    public static void init(RegionShopPlugin plugin) {
         if (plugin.getServer().getPluginManager().isPluginEnabled("Essentials")) {
             essentials = (Essentials) plugin.getServer().getPluginManager().getPlugin("Essentials");
         }
     }
 
-    public  static boolean hasEssentials() {
-        return (essentials != null);
-    }
-
-    public static Essentials getEssentials() {
+    private static Essentials getEssentials() {
         return essentials;
     }
 

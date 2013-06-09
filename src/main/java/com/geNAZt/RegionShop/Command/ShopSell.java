@@ -14,21 +14,19 @@ import org.bukkit.inventory.ItemStack;
 
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
- * Time: 19:09
- * To change this template use File | Settings | File Templates.
  */
-public class ShopSell {
-    private RegionShopPlugin plugin;
+class ShopSell {
+    private final RegionShopPlugin plugin;
 
     public ShopSell(RegionShopPlugin plugin) {
         this.plugin = plugin;
     }
 
     @SuppressWarnings("unchecked")
-    public boolean execute(Player p) {
+    public void execute(Player p) {
         if (PlayerStorage.getPlayer(p) != null) {
             String region = PlayerStorage.getPlayer(p);
 
@@ -73,11 +71,10 @@ public class ShopSell {
                 p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This shop does not buy this item");
             }
 
-            return true;
+            return;
         }
 
         //Nothing of all
         p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You are not inside a shop");
-        return false;
     }
 }

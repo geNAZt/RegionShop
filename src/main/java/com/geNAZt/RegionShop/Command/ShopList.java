@@ -5,6 +5,7 @@ import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
+import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.geNAZt.RegionShop.Util.ItemName;
 import com.geNAZt.RegionShop.Storages.ListStorage;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
@@ -22,21 +23,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
- * Time: 19:09
- * To change this template use File | Settings | File Templates.
  */
-public class ShopList {
-    private RegionShopPlugin plugin;
+class ShopList {
+    private final RegionShopPlugin plugin;
 
     public ShopList(RegionShopPlugin plugin) {
         this.plugin = plugin;
     }
 
     @SuppressWarnings("unchecked")
-    public boolean execute(Player p, String region, Integer page) {
+    public void execute(Player p, String region, Integer page) {
         if (region == null) {
             Integer skip = (page - 1) * 7;
             Integer current = 0;
@@ -54,7 +53,7 @@ public class ShopList {
 
             if(pRC == null) {
                 p.sendMessage(Chat.getPrefix() + ChatColor.RED + "No shops available");
-                return true;
+                return;
             }
 
             for( ProtectedRegion rg : pRC) {
@@ -67,7 +66,7 @@ public class ShopList {
                 }
 
                 if(current - skip > 7) {
-                    return true;
+                    return;
                 }
 
                 String shopName = WorldGuardBridge.convertRegionToShopName(rg, p.getWorld());
@@ -78,12 +77,11 @@ public class ShopList {
                 p.setDisplayName(Chat.getPrefix() + ChatColor.GREEN + "/shop list " + (page+1) + ChatColor.GOLD + "for the next page");
             }
 
-            return true;
+            return;
         }
 
-        if (WorldGuardBridge.isRegion(region, p)) {
-            RegionManager rgMngr = WorldGuardBridge.getRegionManager(p.getWorld());
-            ProtectedRegion regionObj = rgMngr.getRegion(region);
+        if (WorldGuardBridge.isRegion(region, p.getWorld())) {
+            ProtectedRegion regionObj = WorldGuardBridge.getRegionByString(region, p.getWorld());
             PagingList<ShopItems> shopItems;
 
             if (regionObj.isOwner(p.getName())) {
@@ -125,7 +123,7 @@ public class ShopList {
 
             if (curPage < 0 || (curPage > shopItems.getTotalPageCount() - 1 && shopItems.getTotalPageCount() != 0)) {
                 p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid page");
-                return false;
+                return;
             }
 
             Page qryPage = shopItems.getPage(curPage);
@@ -159,19 +157,13 @@ public class ShopList {
                         continue;
                     }
 
-                    ItemStack iStack = new ItemStack(Material.getMaterial(item.getItemID()), 1, item.getDurability());
-                    iStack.getData().setData(item.getDataID());
+                    ItemStack iStack = ItemConverter.fromDBItem(item);
 
                     String amount = item.getCurrentAmount().toString();
                     String niceItemName = ItemName.nicer(iStack.getType().toString());
                     String itemName = ItemName.getDataName(iStack) + niceItemName;
 
                     String message = Chat.getPrefix() + ChatColor.DARK_GREEN + amount + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + item.getSell() + "$/" + item.getUnitAmount() + " Unit(s) " + ChatColor.GRAY + "#" + item.getId();
-
-                    Integer enchant = plugin.getDatabase().find(ShopItemEnchantments.class).
-                            where().
-                                eq("shop_item_id", item.getId()).
-                            findRowCount();
 
                     Integer perDmg = 0;
 
@@ -180,11 +172,11 @@ public class ShopList {
                         perDmg = Math.round(divide * 100);
                     }
 
-                    if (!item.isStackable() && perDmg > 0) {
+                    if (item.isStackable() && perDmg > 0) {
                         message += " " + ChatColor.RED + dmg;
                     }
 
-                    if (enchant > 0) {
+                    if (!iStack.getEnchantments().isEmpty()) {
                         message += " " + ChatColor.GREEN + ench;
                     }
 
@@ -206,11 +198,10 @@ public class ShopList {
                 p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This shop has no items");
             }
 
-            return true;
+            return;
         }
 
         //Nothing of all
         p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid region");
-        return false;
     }
 }

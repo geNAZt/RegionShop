@@ -18,14 +18,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import java.util.ArrayList;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 05.06.13
- * Time: 22:01
- * To change this template use File | Settings | File Templates.
  */
 public class PlayerJoin implements Listener {
-    private RegionShopPlugin plugin;
+    private final RegionShopPlugin plugin;
 
     public PlayerJoin(RegionShopPlugin pl) {
         this.plugin = pl;

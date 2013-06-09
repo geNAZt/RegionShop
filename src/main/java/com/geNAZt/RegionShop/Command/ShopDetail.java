@@ -1,56 +1,50 @@
 package com.geNAZt.RegionShop.Command;
 
-import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
+import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.geNAZt.RegionShop.Util.ItemName;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
- * Time: 19:09
- * To change this template use File | Settings | File Templates.
  */
-public class ShopDetail {
-    private RegionShopPlugin plugin;
+class ShopDetail {
+    private final RegionShopPlugin plugin;
 
     public ShopDetail(RegionShopPlugin plugin) {
         this.plugin = plugin;
     }
 
     @SuppressWarnings("unchecked")
-    public boolean execute(Player p, Integer itemID) {
+    public void execute(Player p, Integer itemID) {
         ShopItems item = plugin.getDatabase().
                 find(ShopItems.class).
                 where().
-                eq("id", itemID).
+                    eq("id", itemID).
                 findUnique();
 
         if (item != null && (((item.getSell() != 0 || item.getBuy() != 0) && item.getUnitAmount() > 0) || item.getOwner().equalsIgnoreCase(p.getName()))) {
-            ItemStack iStack = new ItemStack(Material.getMaterial(item.getItemID()), 1);
-            iStack.getData().setData(item.getDataID());
-            iStack.setDurability(item.getDurability());
+            ItemStack iStack = ItemConverter.fromDBItem(item);
 
             String niceItemName = ItemName.nicer(iStack.getType().toString());
             String itemName = ItemName.getDataName(iStack) + niceItemName;
 
             Integer dmg = 0;
 
-            if (iStack.getDurability() > 0 && item.getItemID() != 373 && !item.isStackable()) {
+            if (iStack.getDurability() > 0 && item.getItemID() != 373 && item.isStackable()) {
                 Float divide = ((float)iStack.getDurability() / (float)iStack.getType().getMaxDurability());
                 dmg = Math.round(divide * 100);
             }
@@ -65,19 +59,12 @@ public class ShopDetail {
                 p.sendMessage(Chat.getPrefix() + "     " + ChatColor.GOLD + "Custom name: " + ChatColor.GRAY + item.getCustomName());
             }
 
-            List<ShopItemEnchantments> enchants = plugin.getDatabase().find(ShopItemEnchantments.class).
-                    where().
-                        eq("shop_item_id", item.getId()).
-                    findList();
-
-            if(enchants.size() > 0) {
+            if(!iStack.getEnchantments().isEmpty()) {
                 p.sendMessage(Chat.getPrefix() + " ");
                 p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + "Enchantments:");
 
-                for(ShopItemEnchantments ench : enchants) {
-                    Enchantment enchObj = new EnchantmentWrapper(ench.getEnchId()).getEnchantment();
-
-                    p.sendMessage(Chat.getPrefix() + "    " + ChatColor.DARK_GREEN + ItemName.nicer(enchObj.getName()) + " Level " + ChatColor.GREEN + ench.getEnchLvl());
+                for(Map.Entry<Enchantment, Integer> ench : iStack.getEnchantments().entrySet()) {
+                   p.sendMessage(Chat.getPrefix() + "    " + ChatColor.DARK_GREEN + ItemName.nicer(ench.getKey().getName()) + " Level " + ChatColor.GREEN + ench.getValue());
                 }
             }
 
@@ -102,10 +89,9 @@ public class ShopDetail {
                 }
             }
 
-            return true;
+            return;
         }
 
         p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This Shopitem could not be found");
-        return false;
     }
 }

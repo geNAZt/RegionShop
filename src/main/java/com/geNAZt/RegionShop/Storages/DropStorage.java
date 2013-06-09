@@ -5,14 +5,12 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
- * Time: 14:21
- * To change this template use File | Settings | File Templates.
  */
 public class DropStorage {
-    private static HashMap<Player, String> playersDropTo = new HashMap<Player, String>();
+    private static final HashMap<Player, String> playersDropTo = new HashMap<Player, String>();
 
     public static String getPlayer(Player plyr) {
         if (!playersDropTo.containsKey(plyr)) {

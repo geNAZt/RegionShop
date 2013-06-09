@@ -1,90 +1,57 @@
 package com.geNAZt.RegionShop.Command;
 
-import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Storages.ListStorage;
 import com.geNAZt.RegionShop.Util.Chat;
+import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.geNAZt.RegionShop.Util.ItemName;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
-import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
-
-import com.sk89q.worldguard.protection.managers.RegionManager;
 
 import org.bukkit.ChatColor;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
- * Time: 19:09
- * To change this template use File | Settings | File Templates.
  */
-public class ShopAdd {
-    private RegionShopPlugin plugin;
+class ShopAdd {
+    private final RegionShopPlugin plugin;
 
     public ShopAdd(RegionShopPlugin plugin) {
         this.plugin = plugin;
     }
 
     @SuppressWarnings("unchecked")
-    public boolean execute(Player p, Integer buy, Integer sell, Integer amount) {
+    public void execute(Player p, Integer buy, Integer sell, Integer amount) {
         if (PlayerStorage.getPlayer(p) != null) {
             String region = PlayerStorage.getPlayer(p);
-            RegionManager rgMngr = WorldGuardBridge.getRegionManager(p.getWorld());
-            if (rgMngr.getRegion(region).isOwner(p.getName())) {
+
+            if (ListStorage.getShopByRegion(region, p.getWorld()).isOwner(p.getName())) {
                 ItemStack itemInHand = p.getItemInHand();
 
                 if(itemInHand == null || itemInHand.getType().getId() == 0) {
                     p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You have no item in the hand");
-                    return true;
+                    return;
                 }
-
 
                 ShopItems item = plugin.getDatabase().find(ShopItems.class).
                         where().
                             conjunction().
-                            eq("world", p.getWorld().getName()).
-                            eq("region", region).
-                            eq("item_id", itemInHand.getType().getId()).
-                            eq("data_id", itemInHand.getData().getData()).
-                            eq("durability", itemInHand.getDurability()).
-                            eq("custom_name", (itemInHand.getItemMeta().hasDisplayName()) ? itemInHand.getItemMeta().getDisplayName() : null).
-                        endJunction().findUnique();
+                                eq("world", p.getWorld().getName()).
+                                eq("region", region).
+                                eq("item_id", itemInHand.getType().getId()).
+                                eq("data_id", itemInHand.getData().getData()).
+                                eq("durability", itemInHand.getDurability()).
+                                eq("custom_name", (itemInHand.getItemMeta().hasDisplayName()) ? itemInHand.getItemMeta().getDisplayName() : null).
+                            endJunction().
+                        findUnique();
 
                 if (item == null) {
-                    ShopItems newItem = new ShopItems();
-                    newItem.setWorld(p.getWorld().getName());
-                    newItem.setCurrentAmount(itemInHand.getAmount());
-                    newItem.setItemID(itemInHand.getType().getId());
-                    newItem.setDurability(itemInHand.getDurability());
-                    newItem.setOwner(p.getName());
-                    newItem.setRegion(region);
-                    newItem.setDataID(itemInHand.getData().getData());
-                    newItem.setStackable(itemInHand.getMaxStackSize() != 1);
-                    newItem.setCustomName((itemInHand.getItemMeta().hasDisplayName()) ? itemInHand.getItemMeta().getDisplayName() : null);
-
-                    newItem.setBuy(buy);
-                    newItem.setSell(sell);
-                    newItem.setUnitAmount(amount);
-
-                    plugin.getDatabase().save(newItem);
-
-                    Map<Enchantment, Integer> itemEnch = itemInHand.getEnchantments();
-                    if(itemEnch != null) {
-                        for(Map.Entry<Enchantment, Integer> entry : itemEnch.entrySet()) {
-                            ShopItemEnchantments ench = new ShopItemEnchantments();
-                            ench.setEnchId(entry.getKey().getId());
-                            ench.setEnchLvl(entry.getValue());
-                            ench.setShopItemId(newItem.getId());
-
-                            plugin.getDatabase().save(ench);
-                        }
-                    }
+                    ItemConverter.toDBItem(itemInHand, p.getWorld(), p.getName(), region, buy, sell, amount);
 
                     p.getInventory().remove(itemInHand);
 
@@ -100,14 +67,9 @@ public class ShopAdd {
             } else {
                 p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You aren't a owner in this shop. You can't add items to it.");
             }
-
-            return true;
         }
-
-
 
         //Nothing of all
         p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You are not inside a shop region.");
-        return false;
     }
 }

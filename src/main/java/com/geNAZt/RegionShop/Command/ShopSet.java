@@ -3,6 +3,7 @@ package com.geNAZt.RegionShop.Command;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
+import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.geNAZt.RegionShop.Util.ItemName;
 
 import org.bukkit.ChatColor;
@@ -12,21 +13,19 @@ import org.bukkit.inventory.ItemStack;
 
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
- * Time: 19:09
- * To change this template use File | Settings | File Templates.
  */
-public class ShopSet {
-    private RegionShopPlugin plugin;
+class ShopSet {
+    private final RegionShopPlugin plugin;
 
     public ShopSet(RegionShopPlugin plugin) {
         this.plugin = plugin;
     }
 
     @SuppressWarnings("unchecked")
-    public boolean execute(Player p, Integer shopItemId, Integer sell, Integer buy, Integer amount) {
+    public void execute(Player p, Integer shopItemId, Integer sell, Integer buy, Integer amount) {
         ShopItems item = plugin.getDatabase().
                 find(ShopItems.class).
                 where().
@@ -43,9 +42,7 @@ public class ShopSet {
 
             plugin.getDatabase().update(item);
 
-            ItemStack itemStack = new ItemStack(Material.getMaterial(item.getItemID()), 1);
-            itemStack.getData().setData(item.getDataID());
-            itemStack.setDurability(item.getDurability());
+            ItemStack itemStack = ItemConverter.fromDBItem(item);
 
             String itemName;
             if (itemStack.getItemMeta().hasDisplayName()) {
@@ -56,7 +53,5 @@ public class ShopSet {
 
             p.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Item " + ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.GOLD + " now sells for " + ChatColor.GREEN + item.getSell() + ChatColor.GOLD + ", buys for " + ChatColor.GREEN + item.getBuy() + ChatColor.GOLD + ", per " + ChatColor.GREEN + item.getUnitAmount() + ChatColor.GOLD + " unit(s)");
         }
-
-        return false;
     }
 }

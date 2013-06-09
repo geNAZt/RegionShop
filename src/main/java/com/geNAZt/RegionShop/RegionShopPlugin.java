@@ -6,10 +6,7 @@ import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 
 import com.geNAZt.RegionShop.Command.Shop;
 
-import com.geNAZt.RegionShop.Listener.PlayerDropItem;
-import com.geNAZt.RegionShop.Listener.PlayerJoin;
-import com.geNAZt.RegionShop.Listener.PlayerMove;
-import com.geNAZt.RegionShop.Listener.PlayerQuit;
+import com.geNAZt.RegionShop.Listener.*;
 
 import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
@@ -19,7 +16,7 @@ import com.geNAZt.RegionShop.Storages.ListStorage;
 
 import com.geNAZt.RegionShop.Util.Chat;
 
-import com.intellij.openapi.vfs.impl.local.FileWatcher;
+import com.geNAZt.RegionShop.Util.ItemConverter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.persistence.PersistenceException;
@@ -27,11 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 05.06.13
- * Time: 19:27
- * To change this template use File | Settings | File Templates.
  */
 public class RegionShopPlugin extends JavaPlugin {
     @Override
@@ -51,11 +46,17 @@ public class RegionShopPlugin extends JavaPlugin {
 
         //Utils
         Chat.init(this);
+        ItemConverter.init(this);
 
         //Listener
         getServer().getPluginManager().registerEvents(new PlayerMove(this), this);
-        getServer().getPluginManager().registerEvents(new PlayerQuit(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoin(this), this);
+
+
+        getServer().getPluginManager().registerEvents(new SignChange(this), this);
+        getServer().getPluginManager().registerEvents(new BlockDestroy(this), this);
+
 
         if(getConfig().getBoolean("features.addToShopViaDropItem")) getServer().getPluginManager().registerEvents(new PlayerDropItem(this), this);
 

@@ -12,19 +12,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 05.06.13
- * Time: 22:01
- * To change this template use File | Settings | File Templates.
  */
 public class PlayerQuit implements Listener {
-    private RegionShopPlugin plugin;
-
-    public PlayerQuit(RegionShopPlugin pl) {
-        this.plugin = pl;
-    }
-
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerQuit(PlayerQuitEvent e) {
         if (PlayerStorage.getPlayer(e.getPlayer()) != null) {

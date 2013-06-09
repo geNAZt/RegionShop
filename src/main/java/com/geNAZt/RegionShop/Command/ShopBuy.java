@@ -3,43 +3,35 @@ package com.geNAZt.RegionShop.Command;
 import com.geNAZt.RegionShop.Bridges.EssentialBridge;
 import com.geNAZt.RegionShop.Bridges.VaultBridge;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
-import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Util.*;
 
-import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
- * Time: 19:09
- * To change this template use File | Settings | File Templates.
  */
-public class ShopBuy {
-    private RegionShopPlugin plugin;
+class ShopBuy {
+    private final RegionShopPlugin plugin;
 
     public ShopBuy(RegionShopPlugin plugin) {
         this.plugin = plugin;
     }
 
     @SuppressWarnings("unchecked")
-    public boolean execute(Player p, Integer shopItemId, Integer wishAmount) {
+    public void execute(Player p, Integer shopItemId, Integer wishAmount) {
         if (PlayerStorage.getPlayer(p) != null) {
             String region = PlayerStorage.getPlayer(p);
 
@@ -55,34 +47,15 @@ public class ShopBuy {
             if (item.getSell() > 0) {
                 if (wishAmount > item.getCurrentAmount() && wishAmount != -1) {
                     p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "This shop has not enough items in stock");
-                    return true;
+                    return;
                 }
 
                 if (wishAmount == -1) {
                     wishAmount = item.getCurrentAmount();
                 }
 
-                ItemStack iStack = new ItemStack(Material.getMaterial(item.getItemID()), wishAmount);
-                iStack.getData().setData(item.getDataID());
-                iStack.setDurability(item.getDurability());
-
-                List<ShopItemEnchantments> enchants = plugin.getDatabase().find(ShopItemEnchantments.class).
-                        where().
-                            eq("shop_item_id", item.getId()).
-                        findList();
-
-                if(enchants.size() > 0) {
-                    for(ShopItemEnchantments ench : enchants) {
-                        Enchantment enchObj = new EnchantmentWrapper(ench.getEnchId()).getEnchantment();
-                        iStack.addEnchantment(enchObj, ench.getEnchLvl());
-                    }
-                }
-
-                if(item.getCustomName() != null) {
-                    ItemMeta iMeta = iStack.getItemMeta();
-                    iMeta.setDisplayName(item.getCustomName());
-                    iStack.setItemMeta(iMeta);
-                }
+                ItemStack iStack = ItemConverter.fromDBItem(item);
+                iStack.setAmount(wishAmount);
 
                 Economy eco = VaultBridge.economy;
 
@@ -94,12 +67,12 @@ public class ShopBuy {
                         }
                     }
 
-                    RegionManager rgMngr = WorldGuardBridge.getRegionManager(p.getWorld());
+                    ProtectedRegion regionObj = WorldGuardBridge.getRegionByString(region, p.getWorld());
 
                     Player owner = plugin.getServer().getPlayer(item.getOwner());
                     if (owner != null) {
                         if (owner.isOnline()) {
-                            owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + p.getDisplayName() + ChatColor.DARK_GREEN + " bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " from your shop (" + ChatColor.GREEN + WorldGuardBridge.convertRegionToShopName(rgMngr.getRegion(region), p.getWorld()) + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
+                            owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + p.getDisplayName() + ChatColor.DARK_GREEN + " bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " from your shop (" + ChatColor.GREEN + WorldGuardBridge.convertRegionToShopName(regionObj, p.getWorld()) + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
                         }
                     }
 
@@ -116,9 +89,9 @@ public class ShopBuy {
 
 
                             if (owner.isOnline()) {
-                                owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + WorldGuardBridge.convertRegionToShopName(rgMngr.getRegion(region), p.getWorld()) + ChatColor.DARK_GREEN + ")");
+                                owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + WorldGuardBridge.convertRegionToShopName(regionObj, p.getWorld()) + ChatColor.DARK_GREEN + ")");
                             } else {
-                                EssentialBridge.sendMail(Chat.getPrefix(), owner, ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + WorldGuardBridge.convertRegionToShopName(rgMngr.getRegion(region), p.getWorld()) + ChatColor.DARK_GREEN + ")");
+                                EssentialBridge.sendMail(Chat.getPrefix(), owner, ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + WorldGuardBridge.convertRegionToShopName(regionObj, p.getWorld()) + ChatColor.DARK_GREEN + ")");
                             }
                         }
 
@@ -131,11 +104,10 @@ public class ShopBuy {
                 p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "This Shop doesn't sell this Item");
             }
 
-            return true;
+            return;
         }
 
         //Nothing of all
         p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You are not inside a shop");
-        return false;
     }
 }

@@ -18,13 +18,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
- * Time: 19:09
- * To change this template use File | Settings | File Templates.
  */
-public class ShopResult {
+class ShopResult {
     private static RegionShopPlugin plugin;
 
     public ShopResult(RegionShopPlugin pl) {
@@ -32,14 +30,12 @@ public class ShopResult {
 
     }
 
-    public boolean execute(Player p, Integer page) {
+    public void execute(Player p, Integer page) {
         if (SearchStorage.hasPlayer(p)) {
             ShopResult.printResultPage(p, SearchStorage.getSearchQuery(p), SearchStorage.getSearchResult(p), page);
         } else {
             p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You have no results");
         }
-
-        return true;
     }
 
     public static void printResultPage(Player p, String searchQry, HashMap<ShopItems, ItemStack> result, Integer page) {
@@ -57,7 +53,6 @@ public class ShopResult {
             return;
         }
 
-        RegionManager rgMngr = WorldGuardBridge.getRegionManager(p.getWorld());
 
         p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Result for search: " + ChatColor.GREEN + searchQry + ChatColor.YELLOW + " -- " + ChatColor.GOLD + "Page " + ChatColor.RED + page + ChatColor.GOLD + "/" + ChatColor.RED + maxPage + ChatColor.YELLOW + " --" );
         p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "Legend: " + ChatColor.RED + dmg + ChatColor.YELLOW + " damaged, " + ChatColor.RED + ench + ChatColor.YELLOW + " enchanted, " + ChatColor.RED + name + ChatColor.YELLOW + " renamed");
@@ -80,7 +75,7 @@ public class ShopResult {
             String niceItemName = ItemName.nicer(iStack.getType().toString());
             String itemName = ItemName.getDataName(iStack) + niceItemName;
 
-            String message = Chat.getPrefix() + ChatColor.DARK_GREEN + amount + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + item.getSell() + "$/" + item.getUnitAmount() + " Unit(s)" + ChatColor.DARK_GREEN + " at " + ChatColor.GREEN + WorldGuardBridge.convertRegionToShopName(rgMngr.getRegion(item.getRegion()), plugin.getServer().getWorld(item.getWorld())) + " " + ChatColor.GRAY + "#" + item.getId();
+            String message = Chat.getPrefix() + ChatColor.DARK_GREEN + amount + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + item.getSell() + "$/" + item.getUnitAmount() + " Unit(s)" + ChatColor.DARK_GREEN + " at " + ChatColor.GREEN + WorldGuardBridge.convertRegionToShopName(WorldGuardBridge.getRegionByString(item.getRegion(), plugin.getServer().getWorld(item.getWorld())), plugin.getServer().getWorld(item.getWorld())) + " " + ChatColor.GRAY + "#" + item.getId();
 
             Integer enchant = plugin.getDatabase().find(ShopItemEnchantments.class).
                     where().
@@ -94,7 +89,7 @@ public class ShopResult {
                 perDmg = Math.round(divide * 100);
             }
 
-            if (!item.isStackable() && perDmg > 0) {
+            if (item.isStackable() && perDmg > 0) {
                 message += " " + ChatColor.RED + dmg;
             }
 

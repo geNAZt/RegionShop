@@ -8,11 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: geNAZt
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
- * Time: 14:21
- * To change this template use File | Settings | File Templates.
  */
 public class SearchStorage {
     private static class SearchItem {
@@ -20,7 +18,7 @@ public class SearchStorage {
         public String searchQry;
     }
 
-    private static HashMap<SearchItem, HashMap<ShopItems, ItemStack>> playerSearchQuery = new HashMap<SearchItem, HashMap<ShopItems, ItemStack>>();
+    private static final HashMap<SearchItem, HashMap<ShopItems, ItemStack>> playerSearchQuery = new HashMap<SearchItem, HashMap<ShopItems, ItemStack>>();
 
     public static boolean hasPlayer(Player plyr) {
         for(Map.Entry<SearchItem, HashMap<ShopItems, ItemStack>> item : playerSearchQuery.entrySet()) {
