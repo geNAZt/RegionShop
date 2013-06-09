@@ -276,7 +276,7 @@ public class Shop implements CommandExecutor {
                     }
                 } else if(args[0].equalsIgnoreCase("reload")) {
                     if (p.hasPermission("rs.admin.reload")) {
-                        shopReload.execute();
+                        shopReload.execute(p);
                         return true;
                     } else {
                         p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.admin.reload");
