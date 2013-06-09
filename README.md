@@ -18,7 +18,7 @@ Feel free to try out this plugin to convince yourself. For more informations tak
     rs.stock.add        # /shop add <sell> <buy> <amount>
     rs.stock.set        # /shop set <shopitemid> <sell> <buy> <amount>
     rs.stock.remove     # /shop remove <shopitemid>
-    rs.stock.equip      # /shop equip 
+    rs.stock.equip      # /shop equip
     rs.detail           # /shop detail <shopitemid>
     rs.search           # /shop search <itemname/itemid>
     rs.sell             # /shop sell
@@ -26,10 +26,14 @@ Feel free to try out this plugin to convince yourself. For more informations tak
 
 
 # config.yml
-    debug: false        # Debug for finding or reporting Errors
-    only-ascii: false   # Users can only give ASCII valid names for their Shops
+    debug: false                    # Debug for finding or reporting Errors
+    only-ascii: false               # Users can only give ASCII valid names for their Shops
+
     chat:
-        prefix: '[RS] ' # Prefix for Chatmessages
+        prefix: '[RS] '             # Prefix for Chatmessages
+
+    features:
+        addToShopViaDropItem: true  # Allows to be able to drop items into a Shop
 
 
 # Depencies
