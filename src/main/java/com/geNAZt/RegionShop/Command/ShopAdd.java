@@ -46,6 +46,7 @@ class ShopAdd {
                                 eq("item_id", itemInHand.getType().getId()).
                                 eq("data_id", itemInHand.getData().getData()).
                                 eq("durability", itemInHand.getDurability()).
+                                eq("owner", p.getName()).
                                 eq("custom_name", (itemInHand.getItemMeta().hasDisplayName()) ? itemInHand.getItemMeta().getDisplayName() : null).
                             endJunction().
                         findUnique();
@@ -61,11 +62,14 @@ class ShopAdd {
                     }
 
                     p.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Added "+ ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.GOLD + " to the shop.");
+                    return;
                 } else {
                     p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Item already added. /shop set "+ item.getId() + " <sell> <buy> <amount> to change it.");
+                    return;
                 }
             } else {
                 p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You aren't a owner in this shop. You can't add items to it.");
+                return;
             }
         }
 

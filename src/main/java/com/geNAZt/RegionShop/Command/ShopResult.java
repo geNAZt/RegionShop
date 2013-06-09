@@ -75,7 +75,12 @@ class ShopResult {
             String niceItemName = ItemName.nicer(iStack.getType().toString());
             String itemName = ItemName.getDataName(iStack) + niceItemName;
 
-            String message = Chat.getPrefix() + ChatColor.DARK_GREEN + amount + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + item.getSell() + "$/" + item.getUnitAmount() + " Unit(s)" + ChatColor.DARK_GREEN + " at " + ChatColor.GREEN + WorldGuardBridge.convertRegionToShopName(WorldGuardBridge.getRegionByString(item.getRegion(), plugin.getServer().getWorld(item.getWorld())), plugin.getServer().getWorld(item.getWorld())) + " " + ChatColor.GRAY + "#" + item.getId();
+            String shopName = WorldGuardBridge.convertRegionToShopName(WorldGuardBridge.getRegionByString(item.getRegion(), plugin.getServer().getWorld(item.getWorld())), plugin.getServer().getWorld(item.getWorld()));
+            if(shopName == null) {
+                shopName = item.getRegion();
+            }
+
+            String message = Chat.getPrefix() + ChatColor.DARK_GREEN + amount + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for (S)" + ChatColor.GREEN + item.getSell() + "$" + ChatColor.DARK_GREEN + " (B)" + ChatColor.GREEN + item.getBuy() + "$/" + item.getUnitAmount() + " Unit(s)" + ChatColor.DARK_GREEN + " at " + ChatColor.GREEN + shopName + " " + ChatColor.GRAY + "#" + item.getId();
 
             Integer enchant = plugin.getDatabase().find(ShopItemEnchantments.class).
                     where().
@@ -84,7 +89,7 @@ class ShopResult {
 
             Integer perDmg = 0;
 
-            if (iStack.getDurability() > 0 && item.getItemID() != 373) {
+            if (iStack.getDurability() > 0 && item.getItemID() != 373 && !item.isStackable()) {
                 Float divide = ((float)iStack.getDurability() / (float)iStack.getType().getMaxDurability());
                 perDmg = Math.round(divide * 100);
             }

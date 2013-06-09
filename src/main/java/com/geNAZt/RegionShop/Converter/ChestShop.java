@@ -1,17 +1,15 @@
 package com.geNAZt.RegionShop.Converter;
 
+import com.Acrobot.ChestShop.Events.PreTransactionEvent;
+
+import com.Acrobot.ChestShop.Events.TransactionEvent;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Util.Chat;
-import com.geNAZt.RegionShop.Util.ChestUtil;
 import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.geNAZt.RegionShop.Util.ItemName;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
-import org.bukkit.block.DoubleChest;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,16 +18,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.block.Sign;
-import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.HashMap;
 
 /**
  * Created for YEAHWH.AT
@@ -38,18 +30,22 @@ import java.util.regex.Pattern;
  */
 public class ChestShop implements Listener {
     private static class ConvertStorage {
-        private static final HashSet<Player> playersInConvert = new HashSet<Player>();
+        private static final HashMap<Player, HashMap<Integer, Integer>> playersInConvert = new HashMap<Player, HashMap<Integer, Integer>>();
 
         public static boolean hasPlayer(Player plyr) {
-            if (!playersInConvert.contains(plyr)) {
+            if (!playersInConvert.containsKey(plyr)) {
                 return false;
             }
 
             return true;
         }
 
-        public static void setPlayer(Player plyr) {
-            playersInConvert.add(plyr);
+        public static void setPlayer(Player plyr, HashMap<Integer, Integer> map) {
+            playersInConvert.put(plyr, map);
+        }
+
+        public static HashMap<Integer, Integer> getPlayer(Player player) {
+            return playersInConvert.get(player);
         }
 
         public static void removerPlayer(Player plyr) {
@@ -78,7 +74,10 @@ public class ChestShop implements Listener {
                 }
 
                 if (PlayerStorage.getPlayer(p) != null) {
-                    ConvertStorage.setPlayer(p);
+                    HashMap<Integer, Integer> hMap = new HashMap<Integer, Integer>();
+                    hMap.put(-1, -1);
+
+                    ConvertStorage.setPlayer(p, hMap);
                     p.sendMessage(Chat.getPrefix() + "Hit the ChestSign to convert. (Left click).");
                 } else {
                     p.sendMessage(Chat.getPrefix() + "Can't convert. You aren't in a Shop Region.");
@@ -101,128 +100,55 @@ public class ChestShop implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onSignClick(PlayerInteractEvent event) {
-        Player p = event.getPlayer();
+    public void onSignClick(PreTransactionEvent event) {
+        Player p = event.getClient();
 
         if (ConvertStorage.hasPlayer(p)) {
+            event.setCancelled(PreTransactionEvent.TransactionOutcome.OTHER);
 
-            if(PlayerStorage.getPlayer(p) != null) {
+            HashMap<Integer, Integer> buySell = ConvertStorage.getPlayer(p);
+            if(event.getTransactionType() == TransactionEvent.TransactionType.BUY) {
+                if (buySell.entrySet().iterator().next().getKey() < 0) {
+                    ConvertStorage.removerPlayer(p);
 
-                if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-                    Block b = event.getClickedBlock();
+                    HashMap<Integer, Integer> hMap = new HashMap<Integer, Integer>();
+                    hMap.put((int)event.getPrice(), buySell.entrySet().iterator().next().getValue());
 
-                    if (b == null) {
-                        return;
-                    }
+                    ConvertStorage.setPlayer(p, hMap);
+                }
+            } else {
+                if (buySell.entrySet().iterator().next().getValue() < 0) {
+                    ConvertStorage.removerPlayer(p);
 
-                    if (b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST) {
-                        Sign s = (Sign) b.getState();
+                    HashMap<Integer, Integer> hMap = new HashMap<Integer, Integer>();
+                    hMap.put(buySell.entrySet().iterator().next().getKey(), (int)event.getPrice());
 
-                        String owner = s.getLine(0);
+                    ConvertStorage.setPlayer(p, hMap);
+                }
+            }
 
-                        if (plugin.getServer().getPlayer(owner) == null) {
-                            p.sendMessage(Chat.getPrefix() + "Invalid ChestShop sign. Owner failure");
+            buySell = ConvertStorage.getPlayer(p);
+            if(PlayerStorage.getPlayer(p) != null && buySell.entrySet().iterator().next().getValue() > -1 && buySell.entrySet().iterator().next().getKey() > -1) {
+                Inventory chestInv = event.getOwnerInventory();
 
-                            return;
-                        }
+                if(chestInv != null) {
+                    convertInventory(chestInv, event.getStock()[0], p, event.getOwner().getName(), buySell.entrySet().iterator().next().getValue(), buySell.entrySet().iterator().next().getKey(), event.getStock()[0].getAmount());
 
-                        String amount = s.getLine(1);
-                        Integer amt = 0;
+                    ConvertStorage.removerPlayer(p);
 
-                        try {
-                            amt = Integer.parseInt(amount);
-                        } catch(NumberFormatException e) {
-                            p.sendMessage(Chat.getPrefix() + "Invalid ChestShop sign. Amount is not a number");
+                    HashMap<Integer, Integer> hMap = new HashMap<Integer, Integer>();
+                    hMap.put(-1, -1);
 
-                            return;
-                        }
-
-                        if (amt < 0) {
-                            p.sendMessage(Chat.getPrefix() + "Invalid ChestShop sign. Amount is a negative number");
-
-                            return;
-                        }
-
-                        String buySell = s.getLine(2);
-                        Pattern regex = Pattern.compile("B (\\d+): S (\\d+)");
-                        Integer buy, sell;
-                        Matcher regexMatcher = regex.matcher(buySell);
-
-                        if(regexMatcher.matches()) {
-                            String sellStr = regexMatcher.group(1);
-                            String buyStr = regexMatcher.group(2);
-
-                            try {
-                                buy = Integer.parseInt(buyStr);
-                                sell = Integer.parseInt(sellStr);
-                            } catch(NumberFormatException e) {
-                                p.sendMessage(Chat.getPrefix() + "Invalid ChestShop sign. 3rd line Buy/Sell isn't a number");
-
-                                return;
-                            }
-                        } else {
-                            regex = Pattern.compile("B (\\d+):(\\d+) S");
-                            regexMatcher = regex.matcher(buySell);
-
-                            if(regexMatcher.matches()) {
-                                String sellStr = regexMatcher.group(1);
-                                String buyStr = regexMatcher.group(2);
-
-                                try {
-                                    buy = Integer.parseInt(buyStr);
-                                    sell = Integer.parseInt(sellStr);
-                                } catch(NumberFormatException e) {
-                                    p.sendMessage(Chat.getPrefix() + "Invalid ChestShop sign. 3rd line Buy/Sell isn't a number");
-
-                                    return;
-                                }
-                            } else {
-                                p.sendMessage(Chat.getPrefix() + "Invalid ChestShop sign. 3rd line Format is wrong");
-                                return;
-                            }
-                        }
-
-                        if (buy < 0 || sell < 0) {
-                            p.sendMessage(Chat.getPrefix() + "Invalid ChestShop sign. 3rd line Buy or Sell under 0");
-                            return;
-                        }
-
-                        String item = s.getLine(3);
-                        Material mat = Material.matchMaterial(item);
-
-                        if(mat == null) {
-                            p.sendMessage(Chat.getPrefix() + "Invalid ChestShop sign. Item is invalid");
-                            return;
-                        }
-
-                        for(Integer y = -1; y<2; y++) {
-                            for(Integer x = -1; x<2; x++) {
-                                for(Integer z = -1; z<2; z++) {
-                                    Block rl = b.getRelative(x, y, z);
-
-                                    if (rl.getType().equals(Material.CHEST)) {
-                                        if (ChestUtil.checkForDblChest(rl)) {
-                                            convertInventory(((Chest) rl.getState()).getInventory(), mat, p, owner, buy, sell, amt);
-                                        } else {
-                                            convertInventory(((Chest) rl.getState()).getInventory(), mat, p, owner, buy, sell, amt);
-                                        }
-
-                                        b.breakNaturally();
-                                        return;
-                                    }
-                                }
-                            }
-                        }
-
-                        p.sendMessage(Chat.getPrefix() + "Invalid ChestShop sign. No Chest found.");
-                        return;
-                    }
+                    ConvertStorage.setPlayer(p, hMap);
+                } else {
+                    p.sendMessage(Chat.getPrefix() + "Invalid ChestShop");
+                    return;
                 }
             }
         }
     }
 
-    private void convertInventory(Inventory inv, Material find, Player p, String owner, Integer buy, Integer sell, Integer amount) {
+    private void convertInventory(Inventory inv, ItemStack find, Player p, String owner, Integer buy, Integer sell, Integer amount) {
         ItemStack[] invItems = inv.getContents();
         boolean first = true;
         Integer converted = 0;
@@ -234,7 +160,7 @@ public class ChestShop implements Listener {
                 continue;
             }
 
-            if (item.getType() == find) {
+            if (item.getType().toString().contains(find.getType().toString())) {
                 converted += item.getAmount();
 
                 if(first) {
@@ -248,6 +174,7 @@ public class ChestShop implements Listener {
                                     eq("item_id", item.getType().getId()).
                                     eq("data_id", item.getData().getData()).
                                     eq("durability", item.getDurability()).
+                                    eq("owner", owner).
                                     eq("custom_name", (item.getItemMeta().hasDisplayName()) ? item.getItemMeta().getDisplayName() : null).
                                 endJunction().
                             findUnique();

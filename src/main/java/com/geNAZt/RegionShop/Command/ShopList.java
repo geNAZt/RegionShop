@@ -70,7 +70,7 @@ class ShopList {
                 }
 
                 String shopName = WorldGuardBridge.convertRegionToShopName(rg, p.getWorld());
-                p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + ((shopName != null) ? shopName : rg.getId()) + ChatColor.GOLD + " - Owners: " + ChatColor.GRAY + StringUtils.join(owners.getPlayers().toArray()));
+                p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + ((shopName != null) ? shopName : rg.getId()) + ChatColor.GOLD + " - Owners: " + ChatColor.GRAY + StringUtils.join(owners.getPlayers().toArray(), ", "));
             }
 
             if(page < maxPage) {
@@ -163,11 +163,11 @@ class ShopList {
                     String niceItemName = ItemName.nicer(iStack.getType().toString());
                     String itemName = ItemName.getDataName(iStack) + niceItemName;
 
-                    String message = Chat.getPrefix() + ChatColor.DARK_GREEN + amount + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + item.getSell() + "$/" + item.getUnitAmount() + " Unit(s) " + ChatColor.GRAY + "#" + item.getId();
+                    String message = Chat.getPrefix() + ChatColor.DARK_GREEN + amount + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for (S)" + ChatColor.GREEN + item.getSell() + "$" + ChatColor.DARK_GREEN + " (B)" + ChatColor.GREEN + item.getBuy() + "$/" + item.getUnitAmount() + " Unit(s) from " + ChatColor.GREEN + item.getOwner() + ChatColor.GRAY + " #" + item.getId();
 
                     Integer perDmg = 0;
 
-                    if (iStack.getDurability() > 0 && item.getItemID() != 373) {
+                    if (iStack.getDurability() > 0 && item.getItemID() != 373 && !item.isStackable()) {
                         Float divide = ((float)iStack.getDurability() / (float)iStack.getType().getMaxDurability());
                         perDmg = Math.round(divide * 100);
                     }

@@ -38,10 +38,6 @@ public class PlayerMove implements Listener {
         Boolean found = false;
 
         if (PlayerStorage.getPlayer(e.getPlayer()) != null) {
-            if (plugin.getConfig().getBoolean("debug")) {
-                plugin.getLogger().info("[RegionShop] Player found in the storage");
-            }
-
             storedRegion = PlayerStorage.getPlayer(e.getPlayer());
         }
 
@@ -52,6 +48,7 @@ public class PlayerMove implements Listener {
                 if (storedRegion != null) {
                     if (region.getId().equals(storedRegion)) {
                         found = true;
+                        break;
                     }
                 } else {
                     PlayerStorage.setPlayer(e.getPlayer(), region.getId());

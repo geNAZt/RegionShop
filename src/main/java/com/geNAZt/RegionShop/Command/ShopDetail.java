@@ -44,12 +44,12 @@ class ShopDetail {
 
             Integer dmg = 0;
 
-            if (iStack.getDurability() > 0 && item.getItemID() != 373 && item.isStackable()) {
+            if (iStack.getDurability() > 0 && item.getItemID() != 373 && !item.isStackable()) {
                 Float divide = ((float)iStack.getDurability() / (float)iStack.getType().getMaxDurability());
                 dmg = Math.round(divide * 100);
             }
 
-            p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Detail view " + ChatColor.YELLOW + "-- " + ChatColor.RED + item.getOwner() + "'s " + ChatColor.GREEN + itemName + ChatColor.GRAY + "#" + item.getId());
+            p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Detail view " + ChatColor.YELLOW + "-- " + ChatColor.RED + item.getOwner() + "'s " + ChatColor.GREEN + itemName + ChatColor.GRAY + " #" + item.getId());
             p.sendMessage(Chat.getPrefix() + " ");
             p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + item.getSell() + "$ " + ChatColor.GOLD + "selling price");
             p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + item.getBuy() + "$ " + ChatColor.GOLD + "buying price");

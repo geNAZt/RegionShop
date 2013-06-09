@@ -1,11 +1,13 @@
 package com.geNAZt.RegionShop.Command;
 
 import com.geNAZt.RegionShop.Bridges.VaultBridge;
+import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Util.*;
 
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.ChatColor;
@@ -32,6 +34,11 @@ class ShopSell {
 
             ItemStack itemInHand = p.getItemInHand();
 
+            if(itemInHand == null || itemInHand.getType().getId() == 0) {
+                p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You have no item in the hand");
+                return;
+            }
+
             if(!itemInHand.getEnchantments().isEmpty() || itemInHand.getItemMeta().hasDisplayName()) {
                 p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You can't sell enchanted / custom renamed Items into a shop");
             }
@@ -48,13 +55,19 @@ class ShopSell {
                         endJunction().
                     findUnique();
 
-            if (item.getBuy() > 0) {
+            if (item != null && item.getBuy() > 0) {
                 Economy eco = VaultBridge.economy;
 
                 if (eco.has(item.getOwner(), itemInHand.getAmount() * item.getBuy())) {
+                    ProtectedRegion regionObj = WorldGuardBridge.getRegionByString(region, p.getWorld());
+                    String shopName = WorldGuardBridge.convertRegionToShopName(regionObj, p.getWorld());
+                    if(shopName == null) {
+                        shopName = regionObj.getId();
+                    }
+
                     Player owner = plugin.getServer().getPlayer(item.getOwner());
                     if (owner != null) {
-                        owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + p.getDisplayName() + ChatColor.DARK_GREEN + " has sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + ChatColor.DARK_GREEN + " to your shop (" + ChatColor.GREEN + region + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getBuy()) + "$");
+                        owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + p.getDisplayName() + ChatColor.DARK_GREEN + " has sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + ChatColor.DARK_GREEN + " to your shop (" + ChatColor.GREEN + shopName + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getBuy()) + "$");
                     }
 
                     eco.withdrawPlayer(item.getOwner(), itemInHand.getAmount() * item.getBuy());

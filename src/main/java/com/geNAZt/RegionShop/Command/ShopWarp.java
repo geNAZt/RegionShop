@@ -28,7 +28,7 @@ class ShopWarp {
     public void execute(Player p, String playerOrRegion) {
         //Player warp
         HashSet<ProtectedRegion> foundRegions;
-        if ((foundRegions = WorldGuardBridge.searchRegionsByOwner(playerOrRegion, p.getWorld())) != null) {
+        if (!(foundRegions = WorldGuardBridge.searchRegionsByOwner(playerOrRegion, p.getWorld())).isEmpty()) {
             if (foundRegions.size() > 1) {
                 p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Shop Selector" + ChatColor.YELLOW + " -- To select a Shop: " + ChatColor.GOLD +"/shop warp <shopname>");
                 p.sendMessage(Chat.getPrefix() + " ");
