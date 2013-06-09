@@ -19,6 +19,7 @@ import com.geNAZt.RegionShop.Storages.ListStorage;
 
 import com.geNAZt.RegionShop.Util.Chat;
 
+import com.intellij.openapi.vfs.impl.local.FileWatcher;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.persistence.PersistenceException;

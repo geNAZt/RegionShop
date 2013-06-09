@@ -33,6 +33,7 @@ public class Shop implements CommandExecutor {
     private ShopName shopName;
     private ShopSearch shopSearch;
     private ShopResult shopResult;
+    private ShopReload shopReload;
 
     private RegionShopPlugin plugin;
 
@@ -48,6 +49,7 @@ public class Shop implements CommandExecutor {
         this.shopName = new ShopName(pl);
         this.shopSearch = new ShopSearch(pl);
         this.shopResult = new ShopResult(pl);
+        this.shopReload = new ShopReload(pl);
 
         this.plugin = pl;
     }
@@ -270,6 +272,13 @@ public class Shop implements CommandExecutor {
                         return true;
                     } else {
                         p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Not enough arguments given. Type " + ChatColor.DARK_RED + "/shop help" + ChatColor.RED + " for more informations");
+                        return true;
+                    }
+                } else if(args[0].equalsIgnoreCase("reload")) {
+                    if (p.hasPermission("rs.admin.reload")) {
+                        shopReload.execute();
+                    } else {
+                        p.sendMessage(Chat.getPrefix() + "You don't have the permission " + ChatColor.RED + "rs.admin.reload");
                         return true;
                     }
                 } else if(args[0].equalsIgnoreCase("help")) {
