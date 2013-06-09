@@ -1,4 +1,4 @@
-package com.geNAZt.RegionShop.Util;
+package com.geNAZt.RegionShop.Storages;
 
 import com.geNAZt.RegionShop.Model.ShopItems;
 import org.bukkit.entity.Player;

@@ -1,12 +1,12 @@
 package com.geNAZt.RegionShop.Command;
 
-import com.geNAZt.RegionShop.Model.ShopItemEnchantmens;
+import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemName;
-import com.geNAZt.RegionShop.Util.PlayerStorage;
-import com.geNAZt.RegionShop.Util.WorldGuardBridge;
+import com.geNAZt.RegionShop.Storages.PlayerStorage;
+import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 
 import com.sk89q.worldguard.protection.managers.RegionManager;
 
@@ -77,7 +77,7 @@ public class ShopAdd {
                     Map<Enchantment, Integer> itemEnch = itemInHand.getEnchantments();
                     if(itemEnch != null) {
                         for(Map.Entry<Enchantment, Integer> entry : itemEnch.entrySet()) {
-                            ShopItemEnchantmens ench = new ShopItemEnchantmens();
+                            ShopItemEnchantments ench = new ShopItemEnchantments();
                             ench.setEnchId(entry.getKey().getId());
                             ench.setEnchLvl(entry.getValue());
                             ench.setShopItemId(newItem.getId());

@@ -5,13 +5,12 @@ import com.geNAZt.RegionShop.RegionShopPlugin;
 
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemName;
-import com.geNAZt.RegionShop.Util.SearchStorage;
+import com.geNAZt.RegionShop.Storages.SearchStorage;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;

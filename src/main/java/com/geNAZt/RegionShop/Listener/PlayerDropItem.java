@@ -1,10 +1,10 @@
-package com.geNAZt.RegionShop.Event;
+package com.geNAZt.RegionShop.Listener;
 
-import com.geNAZt.RegionShop.Model.ShopItemEnchantmens;
+import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
-import com.geNAZt.RegionShop.Util.DropStorage;
+import com.geNAZt.RegionShop.Storages.DropStorage;
 import com.geNAZt.RegionShop.Util.ItemName;
 
 import org.bukkit.ChatColor;
@@ -25,10 +25,10 @@ import java.util.Map;
  * Time: 22:01
  * To change this template use File | Settings | File Templates.
  */
-public class DropItemEvent implements Listener {
+public class PlayerDropItem implements Listener {
     private RegionShopPlugin plugin;
 
-    public DropItemEvent(RegionShopPlugin pl) {
+    public PlayerDropItem(RegionShopPlugin pl) {
         this.plugin = pl;
     }
 
@@ -78,7 +78,7 @@ public class DropItemEvent implements Listener {
                 Map<Enchantment, Integer> itemEnch = droppedItem.getEnchantments();
                 if(itemEnch != null) {
                     for(Map.Entry<Enchantment, Integer> entry : itemEnch.entrySet()) {
-                        ShopItemEnchantmens ench = new ShopItemEnchantmens();
+                        ShopItemEnchantments ench = new ShopItemEnchantments();
                         ench.setEnchId(entry.getKey().getId());
                         ench.setEnchLvl(entry.getValue());
                         ench.setShopItemId(newItem.getId());

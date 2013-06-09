@@ -1,10 +1,10 @@
-package com.geNAZt.RegionShop.Event;
+package com.geNAZt.RegionShop.Listener;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
-import com.geNAZt.RegionShop.Util.DropStorage;
-import com.geNAZt.RegionShop.Util.PlayerStorage;
+import com.geNAZt.RegionShop.Storages.DropStorage;
+import com.geNAZt.RegionShop.Storages.PlayerStorage;
 
-import com.geNAZt.RegionShop.Util.SearchStorage;
+import com.geNAZt.RegionShop.Storages.SearchStorage;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -18,15 +18,15 @@ import org.bukkit.event.player.PlayerQuitEvent;
  * Time: 22:01
  * To change this template use File | Settings | File Templates.
  */
-public class LeaveEvent implements Listener {
+public class PlayerQuit implements Listener {
     private RegionShopPlugin plugin;
 
-    public LeaveEvent(RegionShopPlugin pl) {
+    public PlayerQuit(RegionShopPlugin pl) {
         this.plugin = pl;
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onPlayerDisconnect(PlayerQuitEvent e) {
+    public void onPlayerQuit(PlayerQuitEvent e) {
         if (PlayerStorage.getPlayer(e.getPlayer()) != null) {
            PlayerStorage.removerPlayer(e.getPlayer());
         }

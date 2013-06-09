@@ -2,8 +2,8 @@ package com.geNAZt.RegionShop.Command;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
-import com.geNAZt.RegionShop.Util.DropStorage;
-import com.geNAZt.RegionShop.Util.WorldGuardBridge;
+import com.geNAZt.RegionShop.Storages.DropStorage;
+import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.ChatColor;

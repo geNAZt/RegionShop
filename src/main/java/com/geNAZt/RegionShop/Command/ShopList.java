@@ -1,16 +1,15 @@
 package com.geNAZt.RegionShop.Command;
 
 import com.avaje.ebean.*;
-import com.geNAZt.RegionShop.Model.ShopItemEnchantmens;
+import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemName;
-import com.geNAZt.RegionShop.Util.ListStorage;
-import com.geNAZt.RegionShop.Util.WorldGuardBridge;
+import com.geNAZt.RegionShop.Storages.ListStorage;
+import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 
 import com.sk89q.worldguard.domains.DefaultDomain;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.apache.commons.lang.StringUtils;
@@ -169,7 +168,7 @@ public class ShopList {
 
                     String message = Chat.getPrefix() + ChatColor.DARK_GREEN + amount + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + item.getSell() + "$/" + item.getUnitAmount() + " Unit(s) " + ChatColor.GRAY + "#" + item.getId();
 
-                    Integer enchant = plugin.getDatabase().find(ShopItemEnchantmens.class).
+                    Integer enchant = plugin.getDatabase().find(ShopItemEnchantments.class).
                             where().
                                 eq("shop_item_id", item.getId()).
                             findRowCount();

@@ -1,8 +1,12 @@
 package com.geNAZt.RegionShop.Command;
 
-import com.geNAZt.RegionShop.Model.ShopItemEnchantmens;
+import com.geNAZt.RegionShop.Bridges.EssentialBridge;
+import com.geNAZt.RegionShop.Bridges.VaultBridge;
+import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
+import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Util.*;
 
 import com.sk89q.worldguard.protection.managers.RegionManager;
@@ -62,13 +66,13 @@ public class ShopBuy {
                 iStack.getData().setData(item.getDataID());
                 iStack.setDurability(item.getDurability());
 
-                List<ShopItemEnchantmens> enchants = plugin.getDatabase().find(ShopItemEnchantmens.class).
+                List<ShopItemEnchantments> enchants = plugin.getDatabase().find(ShopItemEnchantments.class).
                         where().
                             eq("shop_item_id", item.getId()).
                         findList();
 
                 if(enchants.size() > 0) {
-                    for(ShopItemEnchantmens ench : enchants) {
+                    for(ShopItemEnchantments ench : enchants) {
                         Enchantment enchObj = new EnchantmentWrapper(ench.getEnchId()).getEnchantment();
                         iStack.addEnchantment(enchObj, ench.getEnchLvl());
                     }

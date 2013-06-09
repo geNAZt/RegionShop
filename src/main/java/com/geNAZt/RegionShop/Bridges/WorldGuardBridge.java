@@ -1,4 +1,4 @@
-package com.geNAZt.RegionShop.Util;
+package com.geNAZt.RegionShop.Bridges;
 
 import com.geNAZt.RegionShop.Model.ShopRegion;
 import com.geNAZt.RegionShop.RegionShopPlugin;

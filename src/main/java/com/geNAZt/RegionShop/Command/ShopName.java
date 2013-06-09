@@ -3,20 +3,16 @@ package com.geNAZt.RegionShop.Command;
 import com.geNAZt.RegionShop.Model.ShopRegion;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
-import com.geNAZt.RegionShop.Util.ListStorage;
-import com.geNAZt.RegionShop.Util.PlayerStorage;
-import com.geNAZt.RegionShop.Util.WorldGuardBridge;
+import com.geNAZt.RegionShop.Storages.ListStorage;
+import com.geNAZt.RegionShop.Storages.PlayerStorage;
+import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.google.common.base.CharMatcher;
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * Created with IntelliJ IDEA.

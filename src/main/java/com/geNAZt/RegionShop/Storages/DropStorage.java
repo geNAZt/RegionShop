@@ -1,4 +1,4 @@
-package com.geNAZt.RegionShop.Util;
+package com.geNAZt.RegionShop.Storages;
 
 import org.bukkit.entity.Player;
 
@@ -11,22 +11,22 @@ import java.util.HashMap;
  * Time: 14:21
  * To change this template use File | Settings | File Templates.
  */
-public class PlayerStorage {
-    private static HashMap<Player, String> playersInRegions = new HashMap<Player, String>();
+public class DropStorage {
+    private static HashMap<Player, String> playersDropTo = new HashMap<Player, String>();
 
     public static String getPlayer(Player plyr) {
-        if (!playersInRegions.containsKey(plyr)) {
+        if (!playersDropTo.containsKey(plyr)) {
             return null;
         }
 
-        return playersInRegions.get(plyr);
+        return playersDropTo.get(plyr);
     }
 
     public static void setPlayer(Player plyr, String region) {
-        playersInRegions.put(plyr, region);
+        playersDropTo.put(plyr, region);
     }
 
     public static void removerPlayer(Player plyr) {
-        playersInRegions.remove(plyr);
+        playersDropTo.remove(plyr);
     }
 }

@@ -1,4 +1,4 @@
-package com.geNAZt.RegionShop.Util;
+package com.geNAZt.RegionShop.Bridges;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
 
@@ -16,13 +16,15 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 public class VaultBridge {
     public static Economy economy = null;
 
-    public static boolean setupEconomy(RegionShopPlugin plugin)
-    {
+    public static void init(RegionShopPlugin plugin) {
         RegisteredServiceProvider<Economy> economyProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
         if (economyProvider != null) {
             economy = economyProvider.getProvider();
         }
 
-        return (economy != null);
+        if (economy == null) {
+            plugin.getLogger().warning("No Economy Plugin found.");
+            plugin.disable();
+        }
     }
 }

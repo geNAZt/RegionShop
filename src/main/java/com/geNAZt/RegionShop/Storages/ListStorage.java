@@ -1,6 +1,7 @@
-package com.geNAZt.RegionShop.Util;
+package com.geNAZt.RegionShop.Storages;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;

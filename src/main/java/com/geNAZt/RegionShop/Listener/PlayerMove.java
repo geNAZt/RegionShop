@@ -1,9 +1,9 @@
-package com.geNAZt.RegionShop.Event;
+package com.geNAZt.RegionShop.Listener;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
-import com.geNAZt.RegionShop.Util.PlayerStorage;
-import com.geNAZt.RegionShop.Util.WorldGuardBridge;
+import com.geNAZt.RegionShop.Storages.PlayerStorage;
+import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
@@ -13,8 +13,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-
+import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,15 +25,15 @@ import java.util.regex.Pattern;
  * Time: 22:01
  * To change this template use File | Settings | File Templates.
  */
-public class JoinEvent implements Listener {
+public class PlayerMove implements Listener {
     private RegionShopPlugin plugin;
 
-    public JoinEvent(RegionShopPlugin pl) {
+    public PlayerMove(RegionShopPlugin pl) {
         this.plugin = pl;
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onPlayerJoin(PlayerJoinEvent e) {
+    public void onPlayerMove(PlayerMoveEvent e) {
         String storedRegion = null;
         Boolean found = false;
 
@@ -47,7 +46,7 @@ public class JoinEvent implements Listener {
         }
 
         RegionManager rgMngr = WorldGuardBridge.getRegionManager(e.getPlayer().getWorld());
-        ApplicableRegionSet rgSet = rgMngr.getApplicableRegions(e.getPlayer().getLocation());
+        ApplicableRegionSet rgSet = rgMngr.getApplicableRegions(e.getTo());
         Pattern r = Pattern.compile("(.*)regionshop(.*)");
 
         for (ProtectedRegion region : rgSet) {
@@ -66,13 +65,26 @@ public class JoinEvent implements Listener {
                     }
 
                     e.getPlayer().sendMessage(Chat.getPrefix() + ChatColor.GOLD + "You have entered " + ChatColor.DARK_GREEN + shopName +  ChatColor.GOLD + ". Type " + ChatColor.GREEN + "/shop list " + ChatColor.GOLD + "to list the items");
-                    plugin.getLogger().info("[RegionShop] Player " + e.getPlayer().getDisplayName() + " entered WorldGuard region " + region.getId());
+                    plugin.getLogger().info("[RegionShop] Player " + e.getPlayer().getDisplayName() + " entered WG Region " + region.getId());
                 } else {
                     if (plugin.getConfig().getBoolean("debug")) {
                         plugin.getLogger().info("[RegionShop] No ShopRegion " + region.getId());
                     }
                 }
             }
+        }
+
+        if (storedRegion != null && found == false) {
+            ProtectedRegion region = rgMngr.getRegion(storedRegion);
+
+            String shopName = WorldGuardBridge.convertRegionToShopName(region, e.getPlayer().getWorld());
+            if(shopName == null) {
+                shopName = region.getId();
+            }
+
+            e.getPlayer().sendMessage(Chat.getPrefix() + ChatColor.GOLD + "You have left " + ChatColor.DARK_GREEN + shopName +  ChatColor.GOLD + ". Bye!");
+            plugin.getLogger().info("[RegionShop] Player "+ e.getPlayer().getDisplayName() + " left WG Region " + storedRegion);
+            PlayerStorage.removerPlayer(e.getPlayer());
         }
     }
 }

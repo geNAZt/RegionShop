@@ -1,6 +1,6 @@
 package com.geNAZt.RegionShop.Command;
 
-import com.geNAZt.RegionShop.Model.ShopItemEnchantmens;
+import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
@@ -65,7 +65,7 @@ public class ShopDetail {
                 p.sendMessage(Chat.getPrefix() + "     " + ChatColor.GOLD + "Custom name: " + ChatColor.GRAY + item.getCustomName());
             }
 
-            List<ShopItemEnchantmens> enchants = plugin.getDatabase().find(ShopItemEnchantmens.class).
+            List<ShopItemEnchantments> enchants = plugin.getDatabase().find(ShopItemEnchantments.class).
                     where().
                         eq("shop_item_id", item.getId()).
                     findList();
@@ -74,7 +74,7 @@ public class ShopDetail {
                 p.sendMessage(Chat.getPrefix() + " ");
                 p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + "Enchantments:");
 
-                for(ShopItemEnchantmens ench : enchants) {
+                for(ShopItemEnchantments ench : enchants) {
                     Enchantment enchObj = new EnchantmentWrapper(ench.getEnchId()).getEnchantment();
 
                     p.sendMessage(Chat.getPrefix() + "    " + ChatColor.DARK_GREEN + ItemName.nicer(enchObj.getName()) + " Level " + ChatColor.GREEN + ench.getEnchLvl());

@@ -3,7 +3,7 @@ package com.geNAZt.RegionShop.Command;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemName;
-import com.geNAZt.RegionShop.Util.PlayerStorage;
+import com.geNAZt.RegionShop.Storages.PlayerStorage;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;

@@ -11,8 +11,8 @@ package com.geNAZt.RegionShop.Model;
 import javax.persistence.*;
 
 @Entity()
-@Table(name = "ShopItemEnchantmens")
-public class ShopItemEnchantmens {
+@Table(name = "ShopItemEnchantments")
+public class ShopItemEnchantments {
     @Id
     private Integer id;
     private Integer shopItemId;

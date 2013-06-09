@@ -1,14 +1,23 @@
 package com.geNAZt.RegionShop;
 
+import com.geNAZt.RegionShop.Bridges.EssentialBridge;
+import com.geNAZt.RegionShop.Bridges.VaultBridge;
+import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
+
 import com.geNAZt.RegionShop.Command.Shop;
-import com.geNAZt.RegionShop.Event.DropItemEvent;
-import com.geNAZt.RegionShop.Event.JoinEvent;
-import com.geNAZt.RegionShop.Event.LeaveEvent;
-import com.geNAZt.RegionShop.Event.RegionEntered;
-import com.geNAZt.RegionShop.Model.ShopItemEnchantmens;
+
+import com.geNAZt.RegionShop.Listener.PlayerDropItem;
+import com.geNAZt.RegionShop.Listener.PlayerJoin;
+import com.geNAZt.RegionShop.Listener.PlayerMove;
+import com.geNAZt.RegionShop.Listener.PlayerQuit;
+
+import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.Model.ShopRegion;
-import com.geNAZt.RegionShop.Util.*;
+
+import com.geNAZt.RegionShop.Storages.ListStorage;
+
+import com.geNAZt.RegionShop.Util.Chat;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,36 +37,39 @@ public class RegionShopPlugin extends JavaPlugin {
     public void onEnable() {
         getLogger().info("[RegionShop] Enabled");
 
-        //Check for economy plugin
-        if (!VaultBridge.setupEconomy(this)) {
-            getLogger().warning("No Economy Plugin found.");
-            setEnabled(false);
-        }
-
         //Database
         checkForDatabase();
 
-        //Statics init
+        //Bridge init
+        VaultBridge.init(this);
         WorldGuardBridge.init(this);
-        Chat.init(this);
         EssentialBridge.init(this);
+
+        //Storages
         ListStorage.init(this);
 
-        //Event
-        getServer().getPluginManager().registerEvents(new RegionEntered(this), this);
-        getServer().getPluginManager().registerEvents(new LeaveEvent(this), this);
-        getServer().getPluginManager().registerEvents(new JoinEvent(this), this);
-        getServer().getPluginManager().registerEvents(new DropItemEvent(this), this);
+        //Utils
+        Chat.init(this);
+
+        //Listener
+        getServer().getPluginManager().registerEvents(new PlayerMove(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerQuit(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoin(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerDropItem(this), this);
 
         //Commands
         getCommand("shop").setExecutor(new Shop(this));
+    }
+
+    public void disable() {
+        setEnabled(false);
     }
 
     @Override
     public List<Class<?>> getDatabaseClasses() {
         List<Class<?>> list = new ArrayList<Class<?>>();
         list.add(ShopItems.class);
-        list.add(ShopItemEnchantmens.class);
+        list.add(ShopItemEnchantments.class);
         list.add(ShopRegion.class);
         return list;
     }
@@ -65,7 +77,7 @@ public class RegionShopPlugin extends JavaPlugin {
     private void checkForDatabase() {
         try {
             getDatabase().find(ShopItems.class).findRowCount();
-            getDatabase().find(ShopItemEnchantmens.class).findRowCount();
+            getDatabase().find(ShopItemEnchantments.class).findRowCount();
             getDatabase().find(ShopRegion.class).findRowCount();
         } catch (PersistenceException ex) {
             getLogger().info("[RegionShop] Database hasn't setup.");
