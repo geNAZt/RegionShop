@@ -62,6 +62,12 @@ public class Shop implements CommandExecutor {
             return true;
         }
 
+        if(p.getGameMode().getValue() == 1) {
+            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You can not use the Shop if you are in Creative Mode");
+
+            return true;
+        }
+
         if (cmd.getName().equalsIgnoreCase("shop")) {
             if (args.length > 0) {
                 if (args[0].equalsIgnoreCase("list")) {

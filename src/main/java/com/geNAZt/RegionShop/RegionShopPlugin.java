@@ -6,6 +6,7 @@ import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 
 import com.geNAZt.RegionShop.Command.Shop;
 
+import com.geNAZt.RegionShop.Converter.ChestShop;
 import com.geNAZt.RegionShop.Listener.*;
 
 import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
@@ -54,14 +55,17 @@ public class RegionShopPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerJoin(this), this);
 
 
-        getServer().getPluginManager().registerEvents(new SignChange(this), this);
-        getServer().getPluginManager().registerEvents(new BlockDestroy(this), this);
+        //getServer().getPluginManager().registerEvents(new SignChange(this), this);
+        //getServer().getPluginManager().registerEvents(new BlockDestroy(this), this);
 
 
         if(getConfig().getBoolean("features.addToShopViaDropItem")) getServer().getPluginManager().registerEvents(new PlayerDropItem(this), this);
 
         //Commands
         getCommand("shop").setExecutor(new Shop(this));
+
+        //Converter
+        if(getConfig().getBoolean("converter.chestshop")) new ChestShop(this);
     }
 
     public void disable() {

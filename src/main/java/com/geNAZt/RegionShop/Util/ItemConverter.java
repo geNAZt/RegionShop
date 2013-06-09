@@ -52,7 +52,7 @@ public class ItemConverter {
         return iStack;
     }
 
-    public static void toDBItem(ItemStack item, World world, String owner, String region, Integer buy, Integer sell, Integer amount) {
+    public static ShopItems toDBItem(ItemStack item, World world, String owner, String region, Integer buy, Integer sell, Integer amount) {
         ShopItems newItem = new ShopItems();
         newItem.setWorld(world.getName());
         newItem.setCurrentAmount(item.getAmount());
@@ -81,5 +81,7 @@ public class ItemConverter {
                 plugin.getDatabase().save(ench);
             }
         }
+
+        return newItem;
     }
 }

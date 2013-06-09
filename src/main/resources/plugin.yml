@@ -10,6 +10,11 @@ commands:
        usage: /shop
        permission: rs.use
        permission-message: You don't have Permissions to use the RegionShop
+    convert:
+       description: RegionShops - Use the WorldGuard Regions as Shopping ground.
+       usage: /convert
+       permission: rs.convert
+       permission-message: You don't have Permissions to convert to RegionShop
 
 permissions:
   rs.use:

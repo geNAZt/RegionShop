@@ -23,6 +23,7 @@ Feel free to try out this plugin to convince yourself. For more informations tak
     rs.search           # /shop search <itemname/itemid>
     rs.sell             # /shop sell
     rs.buy              # /shop buy <shopitemid> <amount>
+    rs.convert          # /convert
 
 
 # config.yml
@@ -34,6 +35,9 @@ Feel free to try out this plugin to convince yourself. For more informations tak
 
     features:
         addToShopViaDropItem: true  # Allows to be able to drop items into a Shop
+
+    converter:
+        chestshop: false            # Converter for ChestShop into RegionShop
 
 
 # Depencies
