@@ -15,6 +15,7 @@ import com.geNAZt.RegionShop.Model.ShopRegion;
 
 import com.geNAZt.RegionShop.Storages.ListStorage;
 
+import com.geNAZt.RegionShop.Storages.SignStorage;
 import com.geNAZt.RegionShop.Util.Chat;
 
 import com.geNAZt.RegionShop.Util.ItemConverter;
@@ -54,6 +55,7 @@ public class RegionShopPlugin extends JavaPlugin {
 
         //Storages
         ListStorage.init(this);
+        SignStorage.init(this);
 
         //Utils
         Chat.init(this);

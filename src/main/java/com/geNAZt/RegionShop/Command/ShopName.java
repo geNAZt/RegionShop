@@ -56,6 +56,11 @@ class ShopName {
                     }
                 }
 
+                if(name.length() > 30) {
+                    p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Name length must be under 30 chars");
+                    return;
+                }
+
                 ShopRegion shpRegion = plugin.getDatabase().find(ShopRegion.class).
                         where().
                             conjunction().

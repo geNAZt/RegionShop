@@ -1,11 +1,10 @@
 package com.geNAZt.RegionShop.Listener;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Sign.Equip;
 import com.geNAZt.RegionShop.Util.Chat;
-import com.geNAZt.RegionShop.Util.ChestUtil;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import org.bukkit.entity.Player;
@@ -21,16 +20,19 @@ import org.bukkit.event.block.SignChangeEvent;
  */
 public class SignChange implements Listener {
     private final RegionShopPlugin plugin;
+    private final Equip signEquip;
 
     public SignChange(RegionShopPlugin pl) {
         plugin = pl;
+
+        signEquip = new Equip(pl);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onSignChange(SignChangeEvent e) {
         Player p = e.getPlayer();
 
-        Block signBlock= e.getBlock();
+        Block signBlock = e.getBlock();
         if (signBlock == null) {
             plugin.getLogger().warning("Player " + p.getName() + " tried to generate a fake sign.");
             return;
@@ -38,28 +40,10 @@ public class SignChange implements Listener {
 
         if(e.getLine(0).contains("[RegionShop]")) {
             if(e.getLine(1).contains("equip")) {
-
+                signEquip.execute(p, signBlock, e.getLines());
             } else {
                 p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid RegionShop Sign");
                 e.getBlock().breakNaturally();
-            }
-
-            for(Integer y = -1; y<2; y++) {
-                for(Integer x = -1; x<2; x++) {
-                    for(Integer z = -1; z<2; z++) {
-                        Block rl = signBlock.getRelative(x, y, z);
-
-                        if (rl.getType().equals(Material.CHEST)) {
-                            if (ChestUtil.checkForDblChest(rl)) {
-                                p.sendMessage("Found Dbl ChestUtil at " + rl.getLocation().toString());
-                            } else {
-                                p.sendMessage("Found ChestUtil at " + rl.getLocation().toString());
-                            }
-
-                            return;
-                        }
-                    }
-                }
             }
         }
     }
