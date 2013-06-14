@@ -1,11 +1,13 @@
 package com.geNAZt.RegionShop.Listener;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ChestUtil;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -28,16 +30,19 @@ public class SignChange implements Listener {
     public void onSignChange(SignChangeEvent e) {
         Player p = e.getPlayer();
 
+        Block signBlock= e.getBlock();
+        if (signBlock == null) {
+            plugin.getLogger().warning("Player " + p.getName() + " tried to generate a fake sign.");
+            return;
+        }
+
         if(e.getLine(0).contains("[RegionShop]")) {
-            //Check if it is a real sign
-            Block signBlock= e.getBlock();
-            if (signBlock == null) {
-                plugin.getLogger().warning("Player " + p.getName() + " tried to generate a fake sign.");
-                return;
+            if(e.getLine(1).contains("equip")) {
+
+            } else {
+                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid RegionShop Sign");
+                e.getBlock().breakNaturally();
             }
-
-            //Check if inside a Shop
-
 
             for(Integer y = -1; y<2; y++) {
                 for(Integer x = -1; x<2; x++) {

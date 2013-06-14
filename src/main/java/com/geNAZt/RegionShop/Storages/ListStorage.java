@@ -2,9 +2,13 @@ package com.geNAZt.RegionShop.Storages;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
+import com.sk89q.worldedit.BlockVector;
+import com.sk89q.worldedit.Location;
+import com.sk89q.worldedit.Vector;
+import com.sk89q.worldedit.bukkit.BukkitUtil;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -51,7 +55,17 @@ public class ListStorage {
                 for( Map.Entry<String, ProtectedRegion> regionEntry : pRC.entrySet()) {
                     Matcher m = r.matcher(regionEntry.getKey());
 
-                    if (regionEntry.getValue().getFlag(DefaultFlag.TELE_LOC) != null && m.matches()) {
+                    if (m.matches()) {
+                        if (regionEntry.getValue().getFlag(DefaultFlag.TELE_LOC) == null) {
+                            BlockVector maxPoints = regionEntry.getValue().getMaximumPoint();
+                            BlockVector minPoints = regionEntry.getValue().getMinimumPoint();
+
+                            Vector loc = BlockVector.getMidpoint(maxPoints, minPoints);
+                            loc = loc.setY(minPoints.getY());
+
+                            regionEntry.getValue().setFlag(DefaultFlag.TELE_LOC, new Location(BukkitUtil.getLocalWorld(wrld), loc));
+                        }
+
                         wrldRegions.add(regionEntry.getValue());
                     }
                 }

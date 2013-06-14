@@ -19,8 +19,10 @@ import com.geNAZt.RegionShop.Util.Chat;
 
 import com.geNAZt.RegionShop.Util.ItemConverter;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.MetricsLite;
 
 import javax.persistence.PersistenceException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,14 @@ public class RegionShopPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         getLogger().info("[RegionShop] Enabled");
+
+        try {
+            MetricsLite metrics = new MetricsLite(this);
+            metrics.start();
+            getLogger().info("[Metrics] Started profiling...");
+        } catch (IOException e) {
+            getLogger().warning(e.getMessage());// Failed to submit the stats :-(
+        }
 
         //Database
         checkForDatabase();
@@ -55,8 +65,8 @@ public class RegionShopPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerJoin(this), this);
 
 
-        //getServer().getPluginManager().registerEvents(new SignChange(this), this);
-        //getServer().getPluginManager().registerEvents(new BlockDestroy(this), this);
+        getServer().getPluginManager().registerEvents(new SignChange(this), this);
+        getServer().getPluginManager().registerEvents(new BlockDestroy(this), this);
 
 
         if(getConfig().getBoolean("features.addToShopViaDropItem")) getServer().getPluginManager().registerEvents(new PlayerDropItem(this), this);

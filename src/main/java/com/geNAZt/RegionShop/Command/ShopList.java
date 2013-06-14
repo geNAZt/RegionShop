@@ -51,7 +51,7 @@ class ShopList {
             p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "List of shops " + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Page " + ChatColor.RED + page + ChatColor.GOLD + "/" + ChatColor.RED + maxPage + ChatColor.YELLOW + " --");
             p.sendMessage(Chat.getPrefix() + " ");
 
-            if(pRC == null) {
+            if(pRC.isEmpty()) {
                 p.sendMessage(Chat.getPrefix() + ChatColor.RED + "No shops available");
                 return;
             }

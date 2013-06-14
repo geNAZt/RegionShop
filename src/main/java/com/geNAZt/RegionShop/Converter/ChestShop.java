@@ -1,8 +1,8 @@
 package com.geNAZt.RegionShop.Converter;
 
 import com.Acrobot.ChestShop.Events.PreTransactionEvent;
-
 import com.Acrobot.ChestShop.Events.TransactionEvent;
+
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
@@ -10,6 +10,8 @@ import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.geNAZt.RegionShop.Util.ItemName;
 
+import org.bukkit.Chunk;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,10 +20,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created for YEAHWH.AT
@@ -29,8 +36,30 @@ import java.util.HashMap;
  * Date: 09.06.13
  */
 public class ChestShop implements Listener {
+    protected static RegionShopPlugin plugin;
+
     private static class ConvertStorage {
-        private static final HashMap<Player, HashMap<Integer, Integer>> playersInConvert = new HashMap<Player, HashMap<Integer, Integer>>();
+        private static class PlayerResetTask extends BukkitRunnable {
+            private Player plyr = null;
+
+            public PlayerResetTask(Player player) {
+                plyr = player;
+            }
+
+            public void run() {
+                ArrayList<Integer> aList = new ArrayList<Integer>();
+                aList.add(-1);
+                aList.add(-1);
+
+                if(ConvertStorage.hasPlayer(plyr)) {
+                    ConvertStorage.setPlayer(plyr, aList);
+                    plyr.sendMessage(Chat.getPrefix() + "Your convert status has been reseted");
+                }
+            }
+        }
+
+        private static final HashMap<Player, ArrayList<Integer>> playersInConvert = new HashMap<Player, ArrayList<Integer>>();
+        private static final HashMap<Player, BukkitTask> playerReset = new HashMap<Player, BukkitTask>();
 
         public static boolean hasPlayer(Player plyr) {
             if (!playersInConvert.containsKey(plyr)) {
@@ -40,15 +69,28 @@ public class ChestShop implements Listener {
             return true;
         }
 
-        public static void setPlayer(Player plyr, HashMap<Integer, Integer> map) {
+        public static void setPlayer(Player plyr, ArrayList<Integer> map) {
+            if(map.get(0) != -1 || map.get(1) != -1) {
+                if(!playerReset.containsKey(plyr)) {
+                    playerReset.put(plyr, new PlayerResetTask(plyr).runTaskLater(plugin, 40));
+                }
+            }
+
             playersInConvert.put(plyr, map);
         }
 
-        public static HashMap<Integer, Integer> getPlayer(Player player) {
+        public static ArrayList<Integer> getPlayer(Player player) {
             return playersInConvert.get(player);
         }
 
         public static void removerPlayer(Player plyr) {
+            if(playerReset.containsKey(plyr)) {
+                BukkitTask task = playerReset.get(plyr);
+                task.cancel();
+
+                playerReset.remove(plyr);
+            }
+
             playersInConvert.remove(plyr);
         }
     }
@@ -74,11 +116,12 @@ public class ChestShop implements Listener {
                 }
 
                 if (PlayerStorage.getPlayer(p) != null) {
-                    HashMap<Integer, Integer> hMap = new HashMap<Integer, Integer>();
-                    hMap.put(-1, -1);
+                    ArrayList<Integer> aList = new ArrayList<Integer>();
+                    aList.add(-1);
+                    aList.add(-1);
 
-                    ConvertStorage.setPlayer(p, hMap);
-                    p.sendMessage(Chat.getPrefix() + "Hit the ChestSign to convert. (Left click).");
+                    ConvertStorage.setPlayer(p, aList);
+                    p.sendMessage(Chat.getPrefix() + "You must click the ChestShop twice (once with the right and once with the left key)");
                 } else {
                     p.sendMessage(Chat.getPrefix() + "Can't convert. You aren't in a Shop Region.");
                 }
@@ -90,13 +133,18 @@ public class ChestShop implements Listener {
         }
     }
 
-    private RegionShopPlugin plugin;
-
     public ChestShop(RegionShopPlugin pl) {
         plugin = pl;
 
         plugin.getCommand("convert").setExecutor(new ConvertCommandExecutor());
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onPlayerQuit(PlayerQuitEvent e) {
+        if(ConvertStorage.hasPlayer(e.getPlayer())) {
+            ConvertStorage.removerPlayer(e.getPlayer());
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -106,40 +154,40 @@ public class ChestShop implements Listener {
         if (ConvertStorage.hasPlayer(p)) {
             event.setCancelled(PreTransactionEvent.TransactionOutcome.OTHER);
 
-            HashMap<Integer, Integer> buySell = ConvertStorage.getPlayer(p);
+            ArrayList<Integer> buySell = ConvertStorage.getPlayer(p);
             if(event.getTransactionType() == TransactionEvent.TransactionType.BUY) {
-                if (buySell.entrySet().iterator().next().getKey() < 0) {
+                //Buy Value
+                if (buySell.get(1) < 0) {
                     ConvertStorage.removerPlayer(p);
 
-                    HashMap<Integer, Integer> hMap = new HashMap<Integer, Integer>();
-                    hMap.put((int)event.getPrice(), buySell.entrySet().iterator().next().getValue());
+                    buySell.set(1, (int)event.getPrice());
 
-                    ConvertStorage.setPlayer(p, hMap);
+                    ConvertStorage.setPlayer(p, buySell);
                 }
             } else {
-                if (buySell.entrySet().iterator().next().getValue() < 0) {
+                //Sell value
+                if (buySell.get(0) < 0) {
                     ConvertStorage.removerPlayer(p);
 
-                    HashMap<Integer, Integer> hMap = new HashMap<Integer, Integer>();
-                    hMap.put(buySell.entrySet().iterator().next().getKey(), (int)event.getPrice());
+                    buySell.set(0, (int)event.getPrice());
 
-                    ConvertStorage.setPlayer(p, hMap);
+                    ConvertStorage.setPlayer(p, buySell);
                 }
             }
 
-            buySell = ConvertStorage.getPlayer(p);
-            if(PlayerStorage.getPlayer(p) != null && buySell.entrySet().iterator().next().getValue() > -1 && buySell.entrySet().iterator().next().getKey() > -1) {
+            if(PlayerStorage.getPlayer(p) != null && buySell.get(0) > -1 && buySell.get(1) > -1) {
                 Inventory chestInv = event.getOwnerInventory();
 
                 if(chestInv != null) {
-                    convertInventory(chestInv, event.getStock()[0], p, event.getOwner().getName(), buySell.entrySet().iterator().next().getValue(), buySell.entrySet().iterator().next().getKey(), event.getStock()[0].getAmount());
+                    convertInventory(chestInv, event.getStock()[0], p, event.getOwner().getName(), buySell.get(1), buySell.get(0), event.getStock()[0].getAmount());
 
                     ConvertStorage.removerPlayer(p);
 
-                    HashMap<Integer, Integer> hMap = new HashMap<Integer, Integer>();
-                    hMap.put(-1, -1);
+                    ArrayList<Integer> aList = new ArrayList<Integer>();
+                    aList.add(-1);
+                    aList.add(-1);
 
-                    ConvertStorage.setPlayer(p, hMap);
+                    ConvertStorage.setPlayer(p, aList);
                 } else {
                     p.sendMessage(Chat.getPrefix() + "Invalid ChestShop");
                     return;
@@ -197,6 +245,6 @@ public class ChestShop implements Listener {
             }
         }
 
-        p.sendMessage(Chat.getPrefix() + "Converted " + converted + " of " + ItemName.nicer(find.toString()));
+        p.sendMessage(Chat.getPrefix() + "Converted " + converted + " of " + ItemName.nicer(find.getType().toString()));
     }
 }

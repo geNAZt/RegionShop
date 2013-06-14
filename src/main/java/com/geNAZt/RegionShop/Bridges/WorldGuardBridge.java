@@ -39,7 +39,7 @@ public class WorldGuardBridge {
         HashSet<ProtectedRegion> proRegionCollection = new HashSet<ProtectedRegion>();
         ArrayList<ProtectedRegion> pRC = ListStorage.getShopList(world);
 
-        if(pRC.isEmpty()) return null;
+        if(pRC == null || pRC.isEmpty()) return null;
 
         for (ProtectedRegion region : pRC) {
 

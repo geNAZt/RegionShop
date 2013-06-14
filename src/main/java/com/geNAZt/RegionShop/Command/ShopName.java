@@ -35,6 +35,8 @@ class ShopName {
             if (rgn.isOwner(p.getName())) {
                 ArrayList<ProtectedRegion> regions = ListStorage.getShopList(p.getWorld());
 
+                if(regions == null) return;
+
                 for(ProtectedRegion wRegion : regions) {
                     String shopName = WorldGuardBridge.convertRegionToShopName(wRegion, p.getWorld());
                     if(shopName == null) {

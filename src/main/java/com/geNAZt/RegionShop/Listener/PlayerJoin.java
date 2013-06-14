@@ -33,6 +33,8 @@ public class PlayerJoin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         ArrayList<ProtectedRegion> regions = ListStorage.getShopList(e.getPlayer().getWorld());
 
+        if(regions == null) return;
+
         for (ProtectedRegion region : regions) {
             if(region.contains(e.getPlayer().getLocation().getBlockX(), e.getPlayer().getLocation().getBlockY(), e.getPlayer().getLocation().getBlockZ())) {
                 PlayerStorage.setPlayer(e.getPlayer(), region.getId());

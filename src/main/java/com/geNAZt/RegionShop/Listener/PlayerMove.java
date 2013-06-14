@@ -43,6 +43,8 @@ public class PlayerMove implements Listener {
 
         ArrayList<ProtectedRegion> regions = ListStorage.getShopList(e.getPlayer().getWorld());
 
+        if (regions == null) return;
+
         for (ProtectedRegion region : regions) {
             if(region.contains(e.getPlayer().getLocation().getBlockX(), e.getPlayer().getLocation().getBlockY(), e.getPlayer().getLocation().getBlockZ())) {
                 if (storedRegion != null) {
