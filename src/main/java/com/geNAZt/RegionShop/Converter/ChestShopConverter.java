@@ -1,12 +1,6 @@
 package com.geNAZt.RegionShop.Converter;
 
-import com.Acrobot.ChestShop.Events.PreTransactionEvent;
-import com.Acrobot.ChestShop.Events.TransactionEvent;
-
 import com.geNAZt.RegionShop.Converter.ChestShop.ConvertCommandExecutor;
-import com.geNAZt.RegionShop.Converter.ChestShop.ConvertStorage;
-import com.geNAZt.RegionShop.Converter.ChestShop.Listener.ChestShopTransaction;
-import com.geNAZt.RegionShop.Converter.ChestShop.Listener.PlayerQuit;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
@@ -30,12 +24,7 @@ public class ChestShopConverter {
     public ChestShopConverter(RegionShopPlugin pl) {
         plugin = pl;
 
-        ConvertStorage.init(pl);
-
         plugin.getCommand("convert").setExecutor(new ConvertCommandExecutor());
-
-        plugin.getServer().getPluginManager().registerEvents(new ChestShopTransaction(), plugin);
-        plugin.getServer().getPluginManager().registerEvents(new PlayerQuit(), plugin);
     }
 
     public static void convertInventory(Inventory inv, ItemStack find, Player p, String owner, Integer buy, Integer sell, Integer amount) {
@@ -87,6 +76,6 @@ public class ChestShopConverter {
             }
         }
 
-        p.sendMessage(Chat.getPrefix() + "Converted " + converted + " of " + ItemName.nicer(find.getType().toString()));
+        p.sendMessage(Chat.getPrefix() + "Converted " + converted + " of " + ItemName.nicer(find.getType().toString()) + " for " + owner);
     }
 }
