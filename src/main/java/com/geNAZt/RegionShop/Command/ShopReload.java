@@ -1,9 +1,11 @@
 package com.geNAZt.RegionShop.Command;
 
 
+import com.geNAZt.RegionShop.Events.RegionShopConfigReload;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Storages.ListStorage;
 import com.geNAZt.RegionShop.Util.Chat;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -23,6 +25,8 @@ class ShopReload {
     public void execute(Player p) {
         ListStorage.reload();
         plugin.reloadConfig();
+
+        plugin.getServer().getPluginManager().callEvent(new RegionShopConfigReload());
 
         p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "Reloaded " + ChatColor.GOLD + "Config/ShopList");
     }

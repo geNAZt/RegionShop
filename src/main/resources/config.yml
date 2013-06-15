@@ -1,8 +1,14 @@
 debug: false
 only-ascii: true
+
 chat:
   prefix: '[RS] '
-features:
-  addToShopViaDropItem: true
+
+interfaces:
+  sign:
+    equip: true
+  command:
+    equip: true
+
 converter:
   chestshop: true

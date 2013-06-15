@@ -4,7 +4,7 @@ import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Model.ShopEquipSign;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 
-import com.geNAZt.RegionShop.Storages.SignStorage;
+import com.geNAZt.RegionShop.Storages.SignEquipStorage;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.apache.commons.lang.StringUtils;
@@ -30,6 +30,12 @@ public class Equip {
     }
 
     public void execute(Player player, Block sign, String[] lines) {
+        if(!plugin.getConfig().getBoolean("interfaces.sign.equip")) {
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Quick Add via Signs is disabled");
+            sign.breakNaturally();
+            return;
+        }
+
         String region = StringUtils.join(Arrays.copyOfRange(lines, 2, 4), "");
         ProtectedRegion rgnObj = WorldGuardBridge.convertShopNameToRegion(region);
 
@@ -65,7 +71,7 @@ public class Equip {
 
                         plugin.getDatabase().save(equipSign);
 
-                        SignStorage.addSign(sign, player.getName(), rgnObj.getId(), player.getWorld().getName());
+                        SignEquipStorage.addSign(sign, player.getName(), rgnObj.getId(), player.getWorld().getName());
                         player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "All Items in this Chest will go to " + ChatColor.GREEN + region);
 
                         Sign sgn = (Sign) sign.getState();

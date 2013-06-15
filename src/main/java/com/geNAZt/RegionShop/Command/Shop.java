@@ -159,7 +159,7 @@ public class Shop implements CommandExecutor {
                         p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You don't have the permission " + ChatColor.DARK_RED + "rs.detail");
                         return true;
                     }
-                } else if(args[0].equalsIgnoreCase("equip") && plugin.getConfig().getBoolean("features.addToShopViaDropItem")) {
+                } else if(args[0].equalsIgnoreCase("equip") && plugin.getConfig().getBoolean("interfaces.command.equip")) {
                     if (p.hasPermission("rs.stock.equip")) {
                         if (args.length > 1) {
                             String[] nameParts = Arrays.copyOfRange(args, 1, args.length);
@@ -337,7 +337,7 @@ public class Shop implements CommandExecutor {
             sender.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "RegionShop: Help" + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Page " + ChatColor.RED + "2" + ChatColor.GOLD + "/" + ChatColor.RED + "2 " + ChatColor.YELLOW + "--");
             sender.sendMessage(Chat.getPrefix() + ChatColor.RED + "Necessary arguments");
             sender.sendMessage(Chat.getPrefix() + ChatColor.GREEN + "Optional arguments");
-            if(plugin.getConfig().getBoolean("features.addToShopViaDropItem")) sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop equip" + ChatColor.RESET + ": Toggle " + ChatColor.GRAY + "quick add");
+            if(plugin.getConfig().getBoolean("interfaces.command.equip")) sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop equip" + ChatColor.RESET + ": Toggle " + ChatColor.GRAY + "quick add");
             sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop name " + ChatColor.RED + "shopname" + ChatColor.RESET + ": Rename your shop to " + ChatColor.RED + "shopname");
             sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop set " + ChatColor.RED + "shopItemID sellprice buyprice amount" + ChatColor.RESET + ": Set/adjust the price for " + ChatColor.RED + "shopItemID");
         }

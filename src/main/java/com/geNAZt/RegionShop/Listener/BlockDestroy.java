@@ -3,7 +3,7 @@ package com.geNAZt.RegionShop.Listener;
 import com.geNAZt.RegionShop.Model.ShopEquipSign;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 
-import com.geNAZt.RegionShop.Storages.SignStorage;
+import com.geNAZt.RegionShop.Storages.SignEquipStorage;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.material.Sign;
@@ -54,7 +54,7 @@ public class BlockDestroy implements Listener {
                     plugin.getDatabase().delete(equipSign);
                 }
 
-                SignStorage.removeSign(b);
+                SignEquipStorage.removeSign(b);
             }
         }
     }

@@ -7,6 +7,7 @@ import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Command.Shop;
 
 import com.geNAZt.RegionShop.Converter.ChestShopConverter;
+import com.geNAZt.RegionShop.Events.RegionShopConfigReload;
 import com.geNAZt.RegionShop.Listener.*;
 
 import com.geNAZt.RegionShop.Model.ShopEquipSign;
@@ -16,15 +17,18 @@ import com.geNAZt.RegionShop.Model.ShopRegion;
 
 import com.geNAZt.RegionShop.Storages.ListStorage;
 
-import com.geNAZt.RegionShop.Storages.SignStorage;
+import com.geNAZt.RegionShop.Storages.SignEquipStorage;
 import com.geNAZt.RegionShop.Util.Chat;
 
 import com.geNAZt.RegionShop.Util.ItemConverter;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.MetricsLite;
 
 import javax.persistence.PersistenceException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,18 +37,12 @@ import java.util.List;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 05.06.13
  */
-public class RegionShopPlugin extends JavaPlugin {
+public class RegionShopPlugin extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         getLogger().info("[RegionShop] Enabled");
 
-        try {
-            MetricsLite metrics = new MetricsLite(this);
-            metrics.start();
-            getLogger().info("[Metrics] Started profiling...");
-        } catch (IOException e) {
-            getLogger().warning(e.getMessage());// Failed to submit the stats :-(
-        }
+        MCStats.init(this);
 
         //Database
         checkForDatabase();
@@ -56,13 +54,18 @@ public class RegionShopPlugin extends JavaPlugin {
 
         //Storages
         ListStorage.init(this);
-        SignStorage.init(this);
+
+        if(getConfig().getBoolean("interfaces.sign.equip")) {
+            SignEquipStorage.init(this);
+        }
 
         //Utils
         Chat.init(this);
         ItemConverter.init(this);
 
         //Listener
+        getServer().getPluginManager().registerEvents(this, this);
+
         getServer().getPluginManager().registerEvents(new PlayerMove(this), this);
         getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoin(this), this);
@@ -72,13 +75,50 @@ public class RegionShopPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BlockDestroy(this), this);
 
 
-        if(getConfig().getBoolean("features.addToShopViaDropItem")) getServer().getPluginManager().registerEvents(new PlayerDropItem(this), this);
+        if(getConfig().getBoolean("interfaces.command.equip")) getServer().getPluginManager().registerEvents(new PlayerDropItem(this), this);
 
         //Commands
         getCommand("shop").setExecutor(new Shop(this));
 
         //Converter
         if(getConfig().getBoolean("converter.chestshop")) new ChestShopConverter(this);
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onConfigReload(RegionShopConfigReload cnfrld) {
+        if(!getConfig().getBoolean("interfaces.command.equip")) {
+            for(RegisteredListener listener : PlayerDropItemEvent.getHandlerList().getRegisteredListeners()) {
+                if(listener.getListener().toString().contains("com.geNAZt.RegionShop.Listener.PlayerDropItem")) {
+                    PlayerDropItemEvent.getHandlerList().unregister(listener);
+                    getLogger().info("Removed com.geNAZt.RegionShop.Listener.PlayerDropItem Listener");
+                    break;
+                }
+            }
+        } else {
+            boolean found = false;
+
+            for(RegisteredListener listener : PlayerDropItemEvent.getHandlerList().getRegisteredListeners()) {
+                if(listener.getListener().toString().contains("com.geNAZt.RegionShop.Listener.PlayerDropItem")) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if(found == false) {
+                getServer().getPluginManager().registerEvents(new PlayerDropItem(this), this);
+                getLogger().info("Added com.geNAZt.RegionShop.Listener.PlayerDropItem Listener");
+            }
+        }
+
+        if(!getConfig().getBoolean("interfaces.sign.equip")) {
+            SignEquipStorage.unload();
+            getLogger().info("Unloaded SignEquipStorage");
+        } else {
+            if(SignEquipStorage.getTotalCount() < 1) {
+                SignEquipStorage.init(this);
+                getLogger().info("Loaded SignEquipStorage");
+            }
+        }
     }
 
     public void disable() {

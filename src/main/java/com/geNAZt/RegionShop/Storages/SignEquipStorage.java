@@ -6,10 +6,8 @@ import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
@@ -21,13 +19,14 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created for YEAHWH.AT
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 14.06.13
  */
-public class SignStorage {
+public class SignEquipStorage {
     private static HashMap<Block, BukkitTask> signWorkers = new HashMap<Block, BukkitTask>();
     protected static RegionShopPlugin plugin;
 
@@ -102,7 +101,7 @@ public class SignStorage {
             Location loc = sign.getLocation();
 
             plugin.getLogger().warning("No Chest found for Sign: (" + sign.getWorld().getName() + ") X: " + loc.getX() + " Y: " + loc.getY() + " Z: " + loc.getZ());
-            SignStorage.removeSign(sign);
+            SignEquipStorage.removeSign(sign);
             sign.breakNaturally();
 
             ShopEquipSign equipSign = plugin.getDatabase().find(ShopEquipSign.class).
@@ -138,7 +137,7 @@ public class SignStorage {
 
         for(ShopEquipSign equipSign:equipSigns) {
             Block blk = plugin.getServer().getWorld(equipSign.getWorld()).getBlockAt(equipSign.getX(), equipSign.getY(), equipSign.getZ());
-            SignStorage.addSign(blk, equipSign.getOwner(), equipSign.getShop(), equipSign.getWorld());
+            addSign(blk, equipSign.getOwner(), equipSign.getShop(), equipSign.getWorld());
         }
     }
 
@@ -151,5 +150,17 @@ public class SignStorage {
         task.cancel();
 
         signWorkers.remove(sign);
+    }
+
+    public static void unload() {
+        for(Map.Entry<Block, BukkitTask> task : signWorkers.entrySet()) {
+            task.getValue().cancel();
+        }
+
+        signWorkers = new HashMap<Block, BukkitTask>();
+    }
+
+    public static int getTotalCount() {
+        return signWorkers.size();
     }
 }

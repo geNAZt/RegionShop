@@ -85,7 +85,7 @@ public class ListStorage {
     public static void init(RegionShopPlugin pl) {
         plugin = pl;
 
-        task = new ShopListRegenerate(pl).runTaskTimer(pl, 20, 300 * 20);
+        task = new ShopListRegenerate(pl).runTaskTimerAsynchronously(pl, 20, 300 * 20);
     }
 
     public static ArrayList<ProtectedRegion> getShopList(World wrld) {
@@ -113,5 +113,15 @@ public class ListStorage {
     public static void reload() {
         task.cancel();
         task = new ShopListRegenerate(plugin).runTaskTimer(plugin, 20, 300 * 20);
+    }
+
+    public static int getTotalCount() {
+        int total = 0;
+
+        for(Map.Entry<World, ArrayList<ProtectedRegion>> entry : shopList.entrySet()) {
+            total += entry.getValue().size();
+        }
+
+        return total;
     }
 }
