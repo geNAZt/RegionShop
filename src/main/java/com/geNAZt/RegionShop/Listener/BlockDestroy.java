@@ -1,7 +1,9 @@
 package com.geNAZt.RegionShop.Listener;
 
+import com.geNAZt.RegionShop.Model.ShopEquipSign;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 
+import com.geNAZt.RegionShop.Storages.SignStorage;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.material.Sign;
@@ -38,7 +40,21 @@ public class BlockDestroy implements Listener {
             Sign s = (Sign) b.getState().getData();
             Block attachedBlock = b.getRelative(s.getAttachedFace());
             if (attachedBlock.getType() == Material.AIR || playerBreak) {  // or maybe any non-solid material, but AIR is the normal case
-                plugin.getServer().getPlayer("Skycrapper").sendMessage("Sign has been popped off");
+                ShopEquipSign equipSign = plugin.getDatabase().find(ShopEquipSign.class).
+                        where().
+                            conjunction().
+                                eq("world", event.getBlock().getWorld().getName()).
+                                eq("x", event.getBlock().getX()).
+                                eq("y", event.getBlock().getY()).
+                                eq("z", event.getBlock().getZ()).
+                            endJunction().
+                        findUnique();
+
+                if(equipSign != null) {
+                    plugin.getDatabase().delete(equipSign);
+                }
+
+                SignStorage.removeSign(b);
             }
         }
     }

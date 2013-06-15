@@ -6,9 +6,10 @@ import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 
 import com.geNAZt.RegionShop.Command.Shop;
 
-import com.geNAZt.RegionShop.Converter.ChestShop;
+import com.geNAZt.RegionShop.Converter.ChestShopConverter;
 import com.geNAZt.RegionShop.Listener.*;
 
+import com.geNAZt.RegionShop.Model.ShopEquipSign;
 import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.Model.ShopRegion;
@@ -77,7 +78,7 @@ public class RegionShopPlugin extends JavaPlugin {
         getCommand("shop").setExecutor(new Shop(this));
 
         //Converter
-        if(getConfig().getBoolean("converter.chestshop")) new ChestShop(this);
+        if(getConfig().getBoolean("converter.chestshop")) new ChestShopConverter(this);
     }
 
     public void disable() {
@@ -90,6 +91,7 @@ public class RegionShopPlugin extends JavaPlugin {
         list.add(ShopItems.class);
         list.add(ShopItemEnchantments.class);
         list.add(ShopRegion.class);
+        list.add(ShopEquipSign.class);
         return list;
     }
 
@@ -98,6 +100,7 @@ public class RegionShopPlugin extends JavaPlugin {
             getDatabase().find(ShopItems.class).findRowCount();
             getDatabase().find(ShopItemEnchantments.class).findRowCount();
             getDatabase().find(ShopRegion.class).findRowCount();
+            getDatabase().find(ShopEquipSign.class).findRowCount();
         } catch (PersistenceException ex) {
             getLogger().info("[RegionShop] Database hasn't setup.");
             installDDL();

@@ -1,0 +1,8 @@
+debug: false
+only-ascii: true
+chat:
+  prefix: '[RS] '
+features:
+  addToShopViaDropItem: true
+converter:
+  chestshop: true
