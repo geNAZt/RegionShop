@@ -1,13 +1,15 @@
 package com.geNAZt.RegionShop.Command.Shop;
 
-import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Command.ShopCommand;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Storages.DropStorage;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
-import com.sk89q.worldguard.protection.managers.RegionManager;
+
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.HashSet;
 
@@ -17,69 +19,83 @@ import java.util.HashSet;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
  */
-class ShopEquip {
-    private final RegionShopPlugin plugin;
+public class ShopEquip extends ShopCommand {
+    private final Plugin plugin;
 
-    public ShopEquip(RegionShopPlugin plugin) {
+    public ShopEquip(Plugin plugin) {
         this.plugin = plugin;
     }
 
-    @SuppressWarnings("unchecked")
-    public void execute(Player p, String regionStr) {
-        //Player warp
-        if (regionStr == null) {
-            if (DropStorage.getPlayer(p) != null) {
-                regionStr = DropStorage.getPlayer(p);
-                DropStorage.removerPlayer(p);
+    @Override
+    public String getCommand() {
+        return "equip";
+    }
 
-                ProtectedRegion region = WorldGuardBridge.getRegionByString(regionStr, p.getWorld());
+    @Override
+    public String getPermissionNode() {
+        return "rs.stock.equip";  //To change body of implemented methods use File | Settings | File Templates.
+    }
 
-                String shopName = WorldGuardBridge.convertRegionToShopName(region, p.getWorld());
+    @Override
+    public int getNumberOfArgs() {
+        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void execute(Player player, String[] args) {
+        if (args[0] == null) {
+            if (DropStorage.getPlayer(player) != null) {
+                args[0] = DropStorage.getPlayer(player);
+                DropStorage.removerPlayer(player);
+
+                ProtectedRegion region = WorldGuardBridge.getRegionByString(args[0], player.getWorld());
+
+                String shopName = WorldGuardBridge.convertRegionToShopName(region, player.getWorld());
                 if(shopName == null) {
                     shopName = region.getId();
                 }
 
-                p.sendMessage(Chat.getPrefix() + ChatColor.GRAY + "Quick add " + ChatColor.GOLD + "mode for " + ChatColor.GREEN + shopName + ChatColor.GOLD + " disabled.");
+                player.sendMessage(Chat.getPrefix() + ChatColor.GRAY + "Quick add " + ChatColor.GOLD + "mode for " + ChatColor.GREEN + shopName + ChatColor.GOLD + " disabled.");
                 return;
             } else {
-                HashSet<ProtectedRegion> foundRegions = WorldGuardBridge.searchRegionsByOwner(p.getName(), p.getWorld());
+                HashSet<ProtectedRegion> foundRegions = WorldGuardBridge.searchRegionsByOwner(player.getName(), player.getWorld());
 
                 if (foundRegions.size() == 0) {
-                    p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "No Shops found.");
+                    player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "No Shops found.");
                     return;
                 }
 
                 if (foundRegions.size() > 1) {
-                    p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Shop Selector" + ChatColor.YELLOW + " -- To select a shop: " + ChatColor.GOLD +"/shop equip <shopname>");
-                    p.sendMessage(Chat.getPrefix() + " ");
+                    player.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Shop Selector" + ChatColor.YELLOW + " -- To select a shop: " + ChatColor.GOLD +"/shop equip <shopname>");
+                    player.sendMessage(Chat.getPrefix() + " ");
 
                     for(ProtectedRegion region : foundRegions) {
-                        String name = WorldGuardBridge.convertRegionToShopName(region, p.getWorld());
+                        String name = WorldGuardBridge.convertRegionToShopName(region, player.getWorld());
 
                         if(name == null) {
                             name = region.getId();
                         }
 
-                        p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + name);
+                        player.sendMessage(Chat.getPrefix() + ChatColor.GREEN + name);
                     }
 
                     return;
                 } else {
                     ProtectedRegion region = foundRegions.iterator().next();
 
-                    plugin.getLogger().info("[RegionShop] Player "+ p.getDisplayName() +" has toggled "+ region.getId());
+                    plugin.getLogger().info("[RegionShop] Player "+ player.getDisplayName() +" has toggled "+ region.getId());
 
-                    if(DropStorage.getPlayer(p) != null) {
-                        DropStorage.removerPlayer(p);
+                    if(DropStorage.getPlayer(player) != null) {
+                        DropStorage.removerPlayer(player);
                     }
 
-                    DropStorage.setPlayer(p, region.getId());
-                    String shopName = WorldGuardBridge.convertRegionToShopName(region, p.getWorld());
+                    DropStorage.setPlayer(player, region.getId());
+                    String shopName = WorldGuardBridge.convertRegionToShopName(region, player.getWorld());
                     if(shopName == null) {
                         shopName = region.getId();
                     }
 
-                    p.sendMessage(Chat.getPrefix() + ChatColor.GRAY + "Quick add " + ChatColor.GOLD + "mode for " + ChatColor.GREEN + shopName + ChatColor.GOLD + " enabled. Drop items to add them to your shop stock");
+                    player.sendMessage(Chat.getPrefix() + ChatColor.GRAY + "Quick add " + ChatColor.GOLD + "mode for " + ChatColor.GREEN + shopName + ChatColor.GOLD + " enabled. Drop items to add them to your shop stock");
 
                     return;
                 }
@@ -87,30 +103,30 @@ class ShopEquip {
         }
 
         //Region warp
-        ProtectedRegion region = WorldGuardBridge.convertShopNameToRegion(regionStr);
+        ProtectedRegion region = WorldGuardBridge.convertShopNameToRegion(args[0]);
 
         if(region == null) {
-            region = WorldGuardBridge.getRegionByString(regionStr, p.getWorld());
+            region = WorldGuardBridge.getRegionByString(args[0], player.getWorld());
         }
 
         if (region != null) {
-            if (!region.isOwner(p.getName())) {
-                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You are not an owner of this shop");
+            if (!region.isOwner(player.getName())) {
+                player.sendMessage(Chat.getPrefix() + ChatColor.RED + "You are not an owner of this shop");
                 return;
             }
 
-            plugin.getLogger().info("[RegionShop] Player " + p.getName() + " has toggled " + region.getId());
+            plugin.getLogger().info("[RegionShop] Player " + player.getName() + " has toggled " + region.getId());
 
-            if(DropStorage.getPlayer(p) != null) {
-                DropStorage.removerPlayer(p);
+            if(DropStorage.getPlayer(player) != null) {
+                DropStorage.removerPlayer(player);
             }
 
-            DropStorage.setPlayer(p, region.getId());
-            p.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Shop " + ChatColor.GREEN + regionStr + ChatColor.GOLD + " selected");
+            DropStorage.setPlayer(player, region.getId());
+            player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Shop " + ChatColor.GREEN + args[0] + ChatColor.GOLD + " selected");
 
             return;
         }
 
-        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This region could not be found");
+        player.sendMessage(Chat.getPrefix() + ChatColor.RED + "This region could not be found");
     }
 }

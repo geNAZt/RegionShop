@@ -1,16 +1,20 @@
 package com.geNAZt.RegionShop.Command.Shop;
 
+import com.geNAZt.RegionShop.Command.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItems;
-import com.geNAZt.RegionShop.RegionShopPlugin;
-
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.geNAZt.RegionShop.Util.ItemName;
 import com.geNAZt.RegionShop.Storages.SearchStorage;
+
+import org.apache.commons.lang.StringUtils;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -21,14 +25,32 @@ import java.util.regex.Pattern;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
  */
-class ShopSearch {
-    private final RegionShopPlugin plugin;
+public class ShopSearch extends ShopCommand {
+    private final Plugin plugin;
 
-    public ShopSearch(RegionShopPlugin plugin) {
+    public ShopSearch(Plugin plugin) {
         this.plugin = plugin;
     }
 
-    public void execute(Player p, String search) {
+    @Override
+    public String getCommand() {
+        return "search";
+    }
+
+    @Override
+    public String getPermissionNode() {
+        return "rs.search";
+    }
+
+    @Override
+    public int getNumberOfArgs() {
+        return 1;
+    }
+
+    @Override
+    public void execute(Player player, String[] args) {
+        String search = StringUtils.join(args, "_");
+
         List<ShopItems> items = plugin.getDatabase().find(ShopItems.class).findList();
         if(items != null) {
             Pattern r = Pattern.compile("(.*)" + search + "(.*)");
@@ -47,18 +69,18 @@ class ShopSearch {
             }
 
             if(!result.isEmpty()) {
-                if(SearchStorage.hasPlayer(p)) {
-                    SearchStorage.removeAllPlayer(p);
+                if(SearchStorage.hasPlayer(player)) {
+                    SearchStorage.removeAllPlayer(player);
                 }
 
-                SearchStorage.putSearchResults(p, search, result);
-                ShopResult.printResultPage(p, search, result, 1);
+                SearchStorage.putSearchResults(player, search, result);
+                ShopResult.printResultPage(player, search, result, 1);
 
             } else {
-                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "No items found for your search");
+                player.sendMessage(Chat.getPrefix() + ChatColor.RED + "No items found for your search");
             }
         } else {
-            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "No items in shops");
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED + "No items in shops");
         }
     }
 }

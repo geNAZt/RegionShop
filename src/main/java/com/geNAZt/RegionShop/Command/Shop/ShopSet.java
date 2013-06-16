@@ -1,5 +1,6 @@
 package com.geNAZt.RegionShop.Command.Shop;
 
+import com.geNAZt.RegionShop.Command.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
@@ -10,6 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 
 /**
@@ -17,24 +19,51 @@ import org.bukkit.inventory.ItemStack;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
  */
-class ShopSet {
-    private final RegionShopPlugin plugin;
+public class ShopSet extends ShopCommand {
+    private final Plugin plugin;
 
-    public ShopSet(RegionShopPlugin plugin) {
+    public ShopSet(Plugin plugin) {
         this.plugin = plugin;
     }
 
-    @SuppressWarnings("unchecked")
-    public void execute(Player p, Integer shopItemId, Integer sell, Integer buy, Integer amount) {
+    @Override
+    public String getCommand() {
+        return "set";
+    }
+
+    @Override
+    public String getPermissionNode() {
+        return "rs.stock.set";
+    }
+
+    @Override
+    public int getNumberOfArgs() {
+        return 3;
+    }
+
+    @Override
+    public void execute(Player player, String[] args) {
+        Integer buy, sell, amount, shopItemId;
+
+        try {
+            shopItemId = Integer.parseInt(args[0]);
+            buy = Integer.parseInt(args[2]);
+            sell = Integer.parseInt(args[1]);
+            amount = Integer.parseInt(args[3]);
+        } catch (NumberFormatException e) {
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Only numbers as shopItemId, buy, sell and amount values allowed");
+            return;
+        }
+
         ShopItems item = plugin.getDatabase().
                 find(ShopItems.class).
                 where().
                     eq("id", shopItemId).
-                    eq("owner", p.getName()).
+                    eq("owner", player.getName()).
                 findUnique();
 
         if (item == null) {
-            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This item could not be found or you aren't the owner of it.");
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED + "This item could not be found or you aren't the owner of it.");
         } else {
             item.setBuy(buy);
             item.setSell(sell);
@@ -51,7 +80,7 @@ class ShopSet {
                 itemName = ItemName.getDataName(itemStack) + itemStack.getType().toString();
             }
 
-            p.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Item " + ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.GOLD + " now sells for " + ChatColor.GREEN + item.getSell() + ChatColor.GOLD + ", buys for " + ChatColor.GREEN + item.getBuy() + ChatColor.GOLD + ", per " + ChatColor.GREEN + item.getUnitAmount() + ChatColor.GOLD + " unit(s)");
+            player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Item " + ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.GOLD + " now sells for " + ChatColor.GREEN + item.getSell() + ChatColor.GOLD + ", buys for " + ChatColor.GREEN + item.getBuy() + ChatColor.GOLD + ", per " + ChatColor.GREEN + item.getUnitAmount() + ChatColor.GOLD + " unit(s)");
         }
     }
 }

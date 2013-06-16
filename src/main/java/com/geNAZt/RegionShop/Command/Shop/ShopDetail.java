@@ -1,7 +1,7 @@
 package com.geNAZt.RegionShop.Command.Shop;
 
+import com.geNAZt.RegionShop.Command.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItems;
-import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.geNAZt.RegionShop.Util.ItemName;
@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 
@@ -21,22 +22,51 @@ import java.util.Map;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
  */
-class ShopDetail {
-    private final RegionShopPlugin plugin;
+public class ShopDetail extends ShopCommand {
+    private final Plugin plugin;
 
-    public ShopDetail(RegionShopPlugin plugin) {
+    public ShopDetail(Plugin plugin) {
         this.plugin = plugin;
     }
 
     @SuppressWarnings("unchecked")
     public void execute(Player p, Integer itemID) {
-        ShopItems item = plugin.getDatabase().
-                find(ShopItems.class).
-                where().
-                    eq("id", itemID).
-                findUnique();
 
-        if (item != null && (((item.getSell() != 0 || item.getBuy() != 0) && item.getUnitAmount() > 0) || item.getOwner().equalsIgnoreCase(p.getName()))) {
+    }
+
+    @Override
+    public String getCommand() {
+        return "detail";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String getPermissionNode() {
+        return "rs.detail";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public int getNumberOfArgs() {
+        return 1;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void execute(Player player, String[] args) {
+        //Convert args
+        Integer itemId;
+
+        try {
+            itemId = Integer.parseInt(args[0]);
+        } catch (NumberFormatException e) {
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Only numbers as argument allowed");
+            return;
+        }
+
+        ShopItems item = plugin.getDatabase().find(ShopItems.class).
+                    where().
+                        eq("id", itemId).
+                    findUnique();
+
+        if (item != null && (((item.getSell() != 0 || item.getBuy() != 0) && item.getUnitAmount() > 0) || item.getOwner().equalsIgnoreCase(player.getName()))) {
             ItemStack iStack = ItemConverter.fromDBItem(item);
 
             String niceItemName = ItemName.nicer(iStack.getType().toString());
@@ -49,22 +79,22 @@ class ShopDetail {
                 dmg = Math.round(divide * 100);
             }
 
-            p.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Detail view " + ChatColor.YELLOW + "-- " + ChatColor.RED + item.getOwner() + "'s " + ChatColor.GREEN + itemName + ChatColor.GRAY + " #" + item.getId());
-            p.sendMessage(Chat.getPrefix() + " ");
-            p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + item.getSell() + "$ " + ChatColor.GOLD + "selling price");
-            p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + item.getBuy() + "$ " + ChatColor.GOLD + "buying price");
-            p.sendMessage(Chat.getPrefix() + ChatColor.RED + dmg + "% " + ChatColor.GOLD + "damaged");
+            player.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Detail view " + ChatColor.YELLOW + "-- " + ChatColor.RED + item.getOwner() + "'s " + ChatColor.GREEN + itemName + ChatColor.GRAY + " #" + item.getId());
+            player.sendMessage(Chat.getPrefix() + " ");
+            player.sendMessage(Chat.getPrefix() + ChatColor.GREEN + item.getSell() + "$ " + ChatColor.GOLD + "selling price");
+            player.sendMessage(Chat.getPrefix() + ChatColor.GREEN + item.getBuy() + "$ " + ChatColor.GOLD + "buying price");
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED + dmg + "% " + ChatColor.GOLD + "damaged");
 
             if (item.getCustomName() != null) {
-                p.sendMessage(Chat.getPrefix() + "     " + ChatColor.GOLD + "Custom name: " + ChatColor.GRAY + item.getCustomName());
+                player.sendMessage(Chat.getPrefix() + "     " + ChatColor.GOLD + "Custom name: " + ChatColor.GRAY + item.getCustomName());
             }
 
             if(!iStack.getEnchantments().isEmpty()) {
-                p.sendMessage(Chat.getPrefix() + " ");
-                p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + "Enchantments:");
+                player.sendMessage(Chat.getPrefix() + " ");
+                player.sendMessage(Chat.getPrefix() + ChatColor.GREEN + "Enchantments:");
 
                 for(Map.Entry<Enchantment, Integer> ench : iStack.getEnchantments().entrySet()) {
-                   p.sendMessage(Chat.getPrefix() + "    " + ChatColor.DARK_GREEN + ItemName.nicer(ench.getKey().getName()) + " Level " + ChatColor.GREEN + ench.getValue());
+                    player.sendMessage(Chat.getPrefix() + "    " + ChatColor.DARK_GREEN + ItemName.nicer(ench.getKey().getName()) + " Level " + ChatColor.GREEN + ench.getValue());
                 }
             }
 
@@ -73,8 +103,8 @@ class ShopDetail {
                 Collection<PotionEffect> ptnEffects = ptn.getEffects();
 
                 if (ptnEffects.size() > 0) {
-                    p.sendMessage(Chat.getPrefix() + " ");
-                    p.sendMessage(Chat.getPrefix() + ChatColor.GREEN + "Potion effects:");
+                    player.sendMessage(Chat.getPrefix() + " ");
+                    player.sendMessage(Chat.getPrefix() + ChatColor.GREEN + "Potion effects:");
 
                     for(PotionEffect ptnEffect : ptnEffects) {
                         Integer duration = 0;
@@ -84,7 +114,7 @@ class ShopDetail {
                             duration = Math.round(divide);
                         }
 
-                        p.sendMessage(Chat.getPrefix() + "    " + ChatColor.DARK_GREEN + ItemName.nicer(ptnEffect.getType().getName()) + ": Amplifier " + ChatColor.GREEN + ptnEffect.getAmplifier() + ChatColor.DARK_GREEN + ", Duration " + ChatColor.GREEN + duration + "s" );
+                        player.sendMessage(Chat.getPrefix() + "    " + ChatColor.DARK_GREEN + ItemName.nicer(ptnEffect.getType().getName()) + ": Amplifier " + ChatColor.GREEN + ptnEffect.getAmplifier() + ChatColor.DARK_GREEN + ", Duration " + ChatColor.GREEN + duration + "s" );
                     }
                 }
             }
@@ -92,6 +122,6 @@ class ShopDetail {
             return;
         }
 
-        p.sendMessage(Chat.getPrefix() + ChatColor.RED + "This Shopitem could not be found");
+        player.sendMessage(Chat.getPrefix() + ChatColor.RED + "This Shopitem could not be found");
     }
 }

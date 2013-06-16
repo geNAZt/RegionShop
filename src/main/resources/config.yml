@@ -7,9 +7,19 @@ chat:
   prefix: '[RS] '
 
 interfaces:
-  sign:
-    equip: true
   command:
+    add: true
+    buy: true
+    detail: true
+    equip: true
+    list: true
+    name: true
+    result: true
+    search: true
+    sell: true
+    set: true
+    warp: true
+  sign:
     equip: true
 
 converter:

@@ -4,7 +4,6 @@ import com.avaje.ebean.*;
 
 import com.geNAZt.RegionShop.Command.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItems;
-import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
@@ -20,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +29,10 @@ import java.util.List;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
  */
-class ShopList implements ShopCommand {
-    private final RegionShopPlugin plugin;
+public class ShopList extends ShopCommand {
+    private final Plugin plugin;
 
-    public ShopList(RegionShopPlugin plugin) {
+    public ShopList(Plugin plugin) {
         this.plugin = plugin;
     }
 
@@ -55,9 +55,10 @@ class ShopList implements ShopCommand {
     public void execute(Player player, String[] args) {
         //Check for optinal Args
         Integer page = 1;
-        if(args.length > 1) {
+
+        if(args.length > 0) {
             try {
-                page = Integer.parseInt(args[1]);
+                page = Integer.parseInt(args[0]);
             } catch (NumberFormatException e) {
                 player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Only numbers as page value");
                 return;

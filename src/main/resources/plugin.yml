@@ -2,7 +2,7 @@ name: RegionShop
 main: com.geNAZt.RegionShop.RegionShopPlugin
 database: true
 description: A Shop which uses Regions as Shop Basement
-version: 0.1.0
+version: 1.1.0b3
 softdepend: [Vault, WorldGuard, WorldEdit]
 commands:
     shop:
@@ -22,8 +22,7 @@ permissions:
     children:
       rs.help: true
       rs.list: true
-      rs.warp.region: true
-      rs.warp.owner: true
+      rs.warp: true
       rs.detail: true
       rs.stock.add: true
       rs.stock.set: true
@@ -31,17 +30,15 @@ permissions:
       rs.stock.equip: true
       rs.detail: true
       rs.search: true
+      rs.sell: true
   rs.help:
     description: Permission for /shop help
     default: true
   rs.list:
     description: Explore the shop catalogue
     default: true
-  rs.warp.region:
-    description: Allows the usage of the warp command based on a region name
-    default: true
-  rs.warp.owner:
-    description: Allows the usage of the warp command based on a shop owner
+  rs.warp:
+    description: Allows the usage of the warp command
     default: true
   rs.detail:
     description: Get more information based on a shop item id
@@ -64,6 +61,15 @@ permissions:
   rs.search:
     description: Search for a specific item on the whole marketplace 
     default: true
-  rs.admin
+  rs.sell:
+    description: Allows to sell Items to a Shop
+    default: true
+  rs.name:
+    description: Allows you to change the name of a Shop
+    default: false
+  rs.admin:
     description: Administration of the Shops
+    default: false
+  rs.admin.reload:
+    description: Reload the RegionShop Config
     default: false

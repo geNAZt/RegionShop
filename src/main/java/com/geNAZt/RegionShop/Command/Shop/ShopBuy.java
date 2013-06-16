@@ -5,7 +5,6 @@ import com.geNAZt.RegionShop.Bridges.VaultBridge;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Command.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItems;
-import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Util.*;
 
@@ -16,6 +15,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,10 +25,10 @@ import java.util.Map;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
  */
-class ShopBuy implements ShopCommand {
-    private final RegionShopPlugin plugin;
+public class ShopBuy extends ShopCommand {
+    private final Plugin plugin;
 
-    public ShopBuy(RegionShopPlugin plugin) {
+    public ShopBuy(Plugin plugin) {
         this.plugin = plugin;
     }
 
@@ -53,8 +53,8 @@ class ShopBuy implements ShopCommand {
         Integer shopItemId, wishAmount;
 
         try {
-            shopItemId = Integer.parseInt(args[1]);
-            wishAmount = Integer.parseInt(args[2]);
+            shopItemId = Integer.parseInt(args[0]);
+            wishAmount = Integer.parseInt(args[1]);
         } catch (NumberFormatException e) {
             player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only numbers as shopItemId and amount values allowed");
             return;

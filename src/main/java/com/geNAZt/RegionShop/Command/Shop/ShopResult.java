@@ -1,8 +1,8 @@
 package com.geNAZt.RegionShop.Command.Shop;
 
+import com.geNAZt.RegionShop.Command.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
-import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemName;
 import com.geNAZt.RegionShop.Storages.SearchStorage;
@@ -11,6 +11,7 @@ import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,20 +21,12 @@ import java.util.Map;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
  */
-class ShopResult {
-    private static RegionShopPlugin plugin;
+public class ShopResult extends ShopCommand {
+    private static Plugin plugin;
 
-    public ShopResult(RegionShopPlugin pl) {
+    public ShopResult(Plugin pl) {
         plugin = pl;
 
-    }
-
-    public void execute(Player p, Integer page) {
-        if (SearchStorage.hasPlayer(p)) {
-            ShopResult.printResultPage(p, SearchStorage.getSearchQuery(p), SearchStorage.getSearchResult(p), page);
-        } else {
-            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You have no results");
-        }
     }
 
     public static void printResultPage(Player p, String searchQry, HashMap<ShopItems, ItemStack> result, Integer page) {
@@ -105,6 +98,41 @@ class ShopResult {
             }
 
             p.sendMessage(message);
+        }
+    }
+
+    @Override
+    public String getCommand() {
+        return "result";
+    }
+
+    @Override
+    public String getPermissionNode() {
+        return "rs.search";
+    }
+
+    @Override
+    public int getNumberOfArgs() {
+        return 0;
+    }
+
+    @Override
+    public void execute(Player player, String[] args) {
+        Integer page = 1;
+
+        if(args.length > 1) {
+            try {
+                page = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only numbers as page value allowed");
+                return;
+            }
+        }
+
+        if (SearchStorage.hasPlayer(player)) {
+            ShopResult.printResultPage(player, SearchStorage.getSearchQuery(player), SearchStorage.getSearchResult(player), page);
+        } else {
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED + "You have no results");
         }
     }
 }

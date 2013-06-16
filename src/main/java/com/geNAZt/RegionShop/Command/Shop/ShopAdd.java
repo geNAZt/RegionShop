@@ -2,7 +2,6 @@ package com.geNAZt.RegionShop.Command.Shop;
 
 import com.geNAZt.RegionShop.Command.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItems;
-import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Storages.ListStorage;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
@@ -12,6 +11,7 @@ import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 
 /**
@@ -19,10 +19,10 @@ import org.bukkit.inventory.ItemStack;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
  */
-class ShopAdd implements ShopCommand {
-    private final RegionShopPlugin plugin;
+public class ShopAdd extends ShopCommand {
+    private final Plugin plugin;
 
-    public ShopAdd(RegionShopPlugin plugin) {
+    public ShopAdd(Plugin plugin) {
         this.plugin = plugin;
     }
 
@@ -47,9 +47,9 @@ class ShopAdd implements ShopCommand {
         Integer buy, sell, amount;
 
         try {
-            buy = Integer.parseInt(args[2]);
-            sell = Integer.parseInt(args[1]);
-            amount = Integer.parseInt(args[3]);
+            buy = Integer.parseInt(args[1]);
+            sell = Integer.parseInt(args[0]);
+            amount = Integer.parseInt(args[2]);
         } catch (NumberFormatException e) {
             player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Only numbers as sell, buy and amount values allowed");
             return;

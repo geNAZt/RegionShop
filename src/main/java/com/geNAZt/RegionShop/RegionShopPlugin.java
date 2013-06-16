@@ -3,24 +3,19 @@ package com.geNAZt.RegionShop;
 import com.geNAZt.RegionShop.Bridges.EssentialBridge;
 import com.geNAZt.RegionShop.Bridges.VaultBridge;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
-
 import com.geNAZt.RegionShop.Command.ShopExecutor;
-
 import com.geNAZt.RegionShop.Converter.ChestShopConverter;
 import com.geNAZt.RegionShop.Events.RegionShopConfigReload;
 import com.geNAZt.RegionShop.Listener.*;
-
 import com.geNAZt.RegionShop.Model.ShopEquipSign;
 import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.Model.ShopRegion;
-
 import com.geNAZt.RegionShop.Storages.ListStorage;
-
 import com.geNAZt.RegionShop.Storages.SignEquipStorage;
 import com.geNAZt.RegionShop.Util.Chat;
-
 import com.geNAZt.RegionShop.Util.ItemConverter;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -38,14 +33,15 @@ import java.util.List;
  * Date: 05.06.13
  */
 public class RegionShopPlugin extends JavaPlugin implements Listener {
-
-
-
     @Override
     public void onEnable() {
         getLogger().info("[RegionShop] Enabled");
 
         MCStats.init(this);
+
+        //Config
+        getConfig().options().copyDefaults(true);
+        saveConfig();
 
         //Database
         checkForDatabase();
