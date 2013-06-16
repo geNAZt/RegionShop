@@ -1,4 +1,4 @@
-package com.geNAZt.RegionShop.Command;
+package com.geNAZt.RegionShop.Interface;
 
 import org.bukkit.entity.Player;
 

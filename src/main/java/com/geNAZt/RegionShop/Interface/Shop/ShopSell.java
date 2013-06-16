@@ -1,10 +1,9 @@
-package com.geNAZt.RegionShop.Command.Shop;
+package com.geNAZt.RegionShop.Interface.Shop;
 
 import com.geNAZt.RegionShop.Bridges.VaultBridge;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
-import com.geNAZt.RegionShop.Command.ShopCommand;
+import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItems;
-import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Util.*;
 

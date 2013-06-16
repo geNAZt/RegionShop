@@ -1,4 +1,4 @@
-package com.geNAZt.RegionShop.Command;
+package com.geNAZt.RegionShop.Interface;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
@@ -27,8 +27,8 @@ public class ShopExecutor implements CommandExecutor {
     private final RegionShopPlugin plugin;
 
     public ShopExecutor(RegionShopPlugin pl) {
-        loadedCommands = loadFromJAR(pl, "com.geNAZt.RegionShop.Command.Shop", ShopCommand.class);
-        adminCommands  = loadFromJAR(pl, "com.geNAZt.RegionShop.Command.Admin", ShopCommand.class);
+        loadedCommands = loadFromJAR(pl, "com.geNAZt.RegionShop.Interface.Shop", ShopCommand.class);
+        adminCommands  = loadFromJAR(pl, "com.geNAZt.RegionShop.Interface.Admin", ShopCommand.class);
 
         for(Object command : loadedCommands) {
             ShopCommand shopCommand = (ShopCommand) command;
@@ -89,6 +89,7 @@ public class ShopExecutor implements CommandExecutor {
                                 if(command.getPermissionNode() == null || p.hasPermission(command.getPermissionNode())) {
                                     if(args.length > command.getNumberOfArgs()) {
                                         command.execute(p, Arrays.copyOfRange(args, 2, args.length));
+                                        return true;
                                     } else {
                                         p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Not enough arguments given. Type " + ChatColor.DARK_RED + "/shop help 3" + ChatColor.RED + " for more informations.");
                                         return true;
@@ -112,6 +113,7 @@ public class ShopExecutor implements CommandExecutor {
                             if(command.getPermissionNode() == null || p.hasPermission(command.getPermissionNode())) {
                                 if(args.length > command.getNumberOfArgs()) {
                                     command.execute(p, Arrays.copyOfRange(args, 1, args.length));
+                                    return true;
                                 } else {
                                     p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Not enough arguments given. Type " + ChatColor.DARK_RED + "/shop help" + ChatColor.RED + " for more informations.");
                                     return true;

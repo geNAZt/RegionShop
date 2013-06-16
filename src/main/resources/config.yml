@@ -23,4 +23,4 @@ interfaces:
     equip: true
 
 converter:
-  chestshop: true
+  chestshop: false

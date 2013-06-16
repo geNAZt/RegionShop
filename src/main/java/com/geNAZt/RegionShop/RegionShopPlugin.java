@@ -3,7 +3,7 @@ package com.geNAZt.RegionShop;
 import com.geNAZt.RegionShop.Bridges.EssentialBridge;
 import com.geNAZt.RegionShop.Bridges.VaultBridge;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
-import com.geNAZt.RegionShop.Command.ShopExecutor;
+import com.geNAZt.RegionShop.Interface.ShopExecutor;
 import com.geNAZt.RegionShop.Converter.ChestShopConverter;
 import com.geNAZt.RegionShop.Events.RegionShopConfigReload;
 import com.geNAZt.RegionShop.Listener.*;

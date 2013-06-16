@@ -1,6 +1,6 @@
-package com.geNAZt.RegionShop.Command.Shop;
+package com.geNAZt.RegionShop.Interface.Shop;
 
-import com.geNAZt.RegionShop.Command.ShopCommand;
+import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopRegion;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Storages.ListStorage;
@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created for YEAHWH.AT

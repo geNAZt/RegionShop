@@ -31,6 +31,7 @@ permissions:
       rs.detail: true
       rs.search: true
       rs.sell: true
+      rs.buy: true
   rs.help:
     description: Permission for /shop help
     default: true
@@ -63,6 +64,9 @@ permissions:
     default: true
   rs.sell:
     description: Allows to sell Items to a Shop
+    default: true
+  rs.sell:
+    description: Allows to buy Items from a Shop
     default: true
   rs.name:
     description: Allows you to change the name of a Shop

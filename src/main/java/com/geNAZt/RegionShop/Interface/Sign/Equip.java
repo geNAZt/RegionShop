@@ -1,18 +1,21 @@
-package com.geNAZt.RegionShop.Sign;
+package com.geNAZt.RegionShop.Interface.Sign;
 
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
+import com.geNAZt.RegionShop.Interface.SignCommand;
 import com.geNAZt.RegionShop.Model.ShopEquipSign;
-import com.geNAZt.RegionShop.RegionShopPlugin;
-
 import com.geNAZt.RegionShop.Storages.SignEquipStorage;
 import com.geNAZt.RegionShop.Util.Chat;
+
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+
 import org.apache.commons.lang.StringUtils;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.block.Sign;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Arrays;
 
@@ -22,13 +25,24 @@ import java.util.Arrays;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 10.06.13
  */
-public class Equip {
-    private RegionShopPlugin plugin;
+public class Equip extends SignCommand {
+    private Plugin plugin;
 
-    public Equip(RegionShopPlugin pl) {
+    public Equip(Plugin pl) {
         plugin = pl;
     }
 
+    @Override
+    public String getCommand() {
+        return "equip";
+    }
+
+    @Override
+    public String getPermissionNode() {
+        return "rs.equip";
+    }
+
+    @Override
     public void execute(Player player, Block sign, String[] lines) {
         if(!plugin.getConfig().getBoolean("interfaces.sign.equip")) {
             player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Quick Add via Signs is disabled");

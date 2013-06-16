@@ -1,12 +1,10 @@
-package com.geNAZt.RegionShop.Command.Shop;
+package com.geNAZt.RegionShop.Interface.Shop;
 
-import com.geNAZt.RegionShop.Command.ShopCommand;
-import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

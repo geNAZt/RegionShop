@@ -1,6 +1,6 @@
-package com.geNAZt.RegionShop.Command.Admin;
+package com.geNAZt.RegionShop.Interface.Admin;
 
-import com.geNAZt.RegionShop.Command.ShopCommand;
+import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.Events.RegionShopConfigReload;
 import com.geNAZt.RegionShop.Storages.ListStorage;
 import com.geNAZt.RegionShop.Util.Chat;
