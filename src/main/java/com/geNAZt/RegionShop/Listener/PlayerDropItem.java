@@ -2,7 +2,9 @@ package com.geNAZt.RegionShop.Listener;
 
 import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
+import com.geNAZt.RegionShop.Model.ShopTransaction;
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Transaction.Transaction;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Storages.DropStorage;
 import com.geNAZt.RegionShop.Util.ItemConverter;
@@ -46,6 +48,7 @@ public class PlayerDropItem implements Listener {
                         eq("item_id", droppedItem.getType().getId()).
                         eq("data_id", droppedItem.getData().getData()).
                         eq("durability", droppedItem.getDurability()).
+                        eq("owner", e.getPlayer().getName()).
                         eq("custom_name", (droppedItem.getItemMeta().hasDisplayName()) ? droppedItem.getItemMeta().getDisplayName() : null).
                     endJunction().
                     findUnique();
@@ -54,6 +57,8 @@ public class PlayerDropItem implements Listener {
                 item.setCurrentAmount(item.getCurrentAmount() + droppedItem.getAmount());
 
                 plugin.getDatabase().update(item);
+
+                Transaction.generateTransaction(e.getPlayer(), ShopTransaction.TransactionType.EQUIP, region, item.getOwner(), item.getItemID(), droppedItem.getAmount(), item.getSell(), item.getBuy());
 
                 e.getItemDrop().remove();
             } else {
@@ -66,6 +71,8 @@ public class PlayerDropItem implements Listener {
                 } else {
                     itemName = ItemName.getDataName(droppedItem) + droppedItem.getType().toString();
                 }
+
+                Transaction.generateTransaction(e.getPlayer(), ShopTransaction.TransactionType.EQUIP, region, e.getPlayer().getName(), item.getItemID(), droppedItem.getAmount(), 0, 0);
 
                 e.getPlayer().sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Added "+ ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.GOLD + " to the shop.");
             }

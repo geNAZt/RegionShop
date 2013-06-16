@@ -2,7 +2,10 @@ package com.geNAZt.RegionShop.Interface.Shop;
 
 import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItems;
+import com.geNAZt.RegionShop.Model.ShopTransaction;
 import com.geNAZt.RegionShop.Storages.ListStorage;
+import com.geNAZt.RegionShop.Transaction.Transaction;
+import com.geNAZt.RegionShop.Transaction.TransactionQueue;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.geNAZt.RegionShop.Util.ItemName;
@@ -96,6 +99,8 @@ public class ShopAdd extends ShopCommand {
                     if (itemInHand.getItemMeta().hasDisplayName()) {
                         itemName = "(" + itemInHand.getItemMeta().getDisplayName() + ")";
                     }
+
+                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.ADD, region, player.getName(), itemInHand.getTypeId(), itemInHand.getAmount(), sell, buy);
 
                     player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Added "+ ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.GOLD + " to the shop.");
                     return;

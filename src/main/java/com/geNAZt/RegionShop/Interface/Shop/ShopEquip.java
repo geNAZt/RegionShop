@@ -7,6 +7,7 @@ import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -33,17 +34,17 @@ public class ShopEquip extends ShopCommand {
 
     @Override
     public String getPermissionNode() {
-        return "rs.stock.equip";  //To change body of implemented methods use File | Settings | File Templates.
+        return "rs.stock.equip";
     }
 
     @Override
     public int getNumberOfArgs() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return 0;
     }
 
     @Override
     public void execute(Player player, String[] args) {
-        if (args[0] == null) {
+        if (args.length < 1) {
             if (DropStorage.getPlayer(player) != null) {
                 args[0] = DropStorage.getPlayer(player);
                 DropStorage.removerPlayer(player);
@@ -103,10 +104,10 @@ public class ShopEquip extends ShopCommand {
         }
 
         //Region warp
-        ProtectedRegion region = WorldGuardBridge.convertShopNameToRegion(args[0]);
+        ProtectedRegion region = WorldGuardBridge.convertShopNameToRegion(StringUtils.join(args, " "));
 
         if(region == null) {
-            region = WorldGuardBridge.getRegionByString(args[0], player.getWorld());
+            region = WorldGuardBridge.getRegionByString(StringUtils.join(args, " "), player.getWorld());
         }
 
         if (region != null) {
@@ -122,7 +123,7 @@ public class ShopEquip extends ShopCommand {
             }
 
             DropStorage.setPlayer(player, region.getId());
-            player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Shop " + ChatColor.GREEN + args[0] + ChatColor.GOLD + " selected");
+            player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Shop " + ChatColor.GREEN + StringUtils.join(args, " ") + ChatColor.GOLD + " selected");
 
             return;
         }

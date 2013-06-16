@@ -1,5 +1,6 @@
 package com.geNAZt.RegionShop;
 
+import com.avaje.ebean.EbeanServer;
 import com.geNAZt.RegionShop.Bridges.EssentialBridge;
 import com.geNAZt.RegionShop.Bridges.VaultBridge;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
@@ -7,12 +8,10 @@ import com.geNAZt.RegionShop.Interface.ShopExecutor;
 import com.geNAZt.RegionShop.Converter.ChestShopConverter;
 import com.geNAZt.RegionShop.Events.RegionShopConfigReload;
 import com.geNAZt.RegionShop.Listener.*;
-import com.geNAZt.RegionShop.Model.ShopEquipSign;
-import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
-import com.geNAZt.RegionShop.Model.ShopItems;
-import com.geNAZt.RegionShop.Model.ShopRegion;
+import com.geNAZt.RegionShop.Model.*;
 import com.geNAZt.RegionShop.Storages.ListStorage;
 import com.geNAZt.RegionShop.Storages.SignEquipStorage;
+import com.geNAZt.RegionShop.Transaction.Transaction;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
 
@@ -61,6 +60,9 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         //Utils
         Chat.init(this);
         ItemConverter.init(this);
+
+        //Transaction
+        new Transaction(this);
 
         //Listener
         getServer().getPluginManager().registerEvents(this, this);
@@ -131,6 +133,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         list.add(ShopItemEnchantments.class);
         list.add(ShopRegion.class);
         list.add(ShopEquipSign.class);
+        list.add(ShopTransaction.class);
         return list;
     }
 
@@ -140,6 +143,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
             getDatabase().find(ShopItemEnchantments.class).findRowCount();
             getDatabase().find(ShopRegion.class).findRowCount();
             getDatabase().find(ShopEquipSign.class).findRowCount();
+            getDatabase().find(ShopTransaction.class).findRowCount();
         } catch (PersistenceException ex) {
             getLogger().info("[RegionShop] Database hasn't setup.");
             installDDL();

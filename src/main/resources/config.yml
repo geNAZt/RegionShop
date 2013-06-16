@@ -6,6 +6,9 @@ servershop: true
 chat:
   prefix: '[RS] '
 
+feature:
+  transaction: true
+
 interfaces:
   command:
     add: true

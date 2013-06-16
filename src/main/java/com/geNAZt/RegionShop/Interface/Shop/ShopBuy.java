@@ -5,7 +5,9 @@ import com.geNAZt.RegionShop.Bridges.VaultBridge;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItems;
+import com.geNAZt.RegionShop.Model.ShopTransaction;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
+import com.geNAZt.RegionShop.Transaction.Transaction;
 import com.geNAZt.RegionShop.Util.*;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -134,6 +136,9 @@ public class ShopBuy extends ShopCommand {
 
                         plugin.getDatabase().delete(item);
                     }
+
+                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.BUY, region, owner.getName(), item.getItemID(), wishAmount, item.getSell(), 0);
+                    Transaction.generateTransaction(owner, ShopTransaction.TransactionType.SELL, region, player.getName(), item.getItemID(), wishAmount, item.getSell(), 0);
                 } else {
                     player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You have not enough money for this. You need "+ (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
                     return;

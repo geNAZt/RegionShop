@@ -1,0 +1,91 @@
+package com.geNAZt.RegionShop.Interface.Shop;
+
+import com.geNAZt.RegionShop.Interface.ShopCommand;
+import com.geNAZt.RegionShop.Model.ShopItems;
+import com.geNAZt.RegionShop.Model.ShopTransaction;
+import com.geNAZt.RegionShop.Transaction.Transaction;
+import com.geNAZt.RegionShop.Util.Chat;
+import com.geNAZt.RegionShop.Util.ItemConverter;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created for YEAHWH.AT
+ * User: geNAZt (fabian.fassbender42@googlemail.com)
+ * Date: 06.06.13
+ */
+public class ShopRemove extends ShopCommand {
+    private static Plugin plugin;
+
+    public ShopRemove(Plugin pl) {
+        plugin = pl;
+    }
+
+    @Override
+    public String getCommand() {
+        return "remove";
+    }
+
+    @Override
+    public String getPermissionNode() {
+        return "rs.stock.remove";
+    }
+
+    @Override
+    public int getNumberOfArgs() {
+        return 1;
+    }
+
+    @Override
+    public void execute(Player player, String[] args) {
+        Integer shopItemId = 0;
+
+        try {
+            shopItemId = Integer.parseInt(args[0]);
+        } catch (NumberFormatException e) {
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only numbers as shopItemID value allowed");
+            return;
+        }
+
+        ShopItems item = plugin.getDatabase().find(ShopItems.class).
+                    where().
+                        eq("id", shopItemId).
+                    findUnique();
+
+        if(item != null) {
+            if(!item.getOwner().equals(player.getName())) {
+                player.sendMessage(Chat.getPrefix() + ChatColor.RED + "This is not your Item");
+                return;
+            }
+
+            ItemStack iStack = ItemConverter.fromDBItem(item);
+            iStack.setAmount(item.getCurrentAmount());
+            HashMap<Integer, ItemStack> notFitItems = player.getInventory().addItem(iStack);
+            if (!notFitItems.isEmpty()) {
+                for(Map.Entry<Integer, ItemStack> notFitItem : notFitItems.entrySet()) {
+                    item.setCurrentAmount(item.getCurrentAmount() - notFitItem.getValue().getAmount());
+                }
+
+                plugin.getDatabase().update(item);
+
+                Transaction.generateTransaction(player, ShopTransaction.TransactionType.REMOVE, item.getRegion(), item.getOwner(), iStack.getTypeId(), iStack.getAmount(), item.getSell(), item.getBuy());
+
+                player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Not all Items has fit into your Inventory. Please remove again if you have more Place");
+                return;
+            }
+
+            plugin.getDatabase().delete(item);
+
+            Transaction.generateTransaction(player, ShopTransaction.TransactionType.REMOVE, item.getRegion(), item.getOwner(), iStack.getTypeId(), iStack.getAmount(), item.getSell(), item.getBuy());
+            player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Item has been removed from your Shop");
+            return;
+        } else {
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED + "No Item found for this shopItemID");
+        }
+    }
+}

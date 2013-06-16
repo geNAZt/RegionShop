@@ -3,7 +3,9 @@ package com.geNAZt.RegionShop.Storages;
 import com.geNAZt.RegionShop.Bridges.EssentialBridge;
 import com.geNAZt.RegionShop.Model.ShopEquipSign;
 import com.geNAZt.RegionShop.Model.ShopItems;
+import com.geNAZt.RegionShop.Model.ShopTransaction;
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Transaction.Transaction;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -72,13 +74,16 @@ public class SignEquipStorage {
                                             endJunction().
                                         findUnique();
 
+                                OfflinePlayer player = plugin.getServer().getOfflinePlayer(owner);
+
                                 if(item != null) {
                                     item.setCurrentAmount(item.getCurrentAmount() + iStack.getAmount());
                                     plugin.getDatabase().update(item);
+
+                                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.EQUIP, region, owner, iStack.getTypeId(), iStack.getAmount(), item.getSell(), item.getBuy());
+
                                 } else {
                                     ItemConverter.toDBItem(iStack, plugin.getServer().getWorld(world), owner, region, 0, 0, 0);
-
-                                    OfflinePlayer player = plugin.getServer().getOfflinePlayer(owner);
 
                                     if(player.isOnline()) {
                                         Player onlinePlayer = (Player) player;
@@ -87,6 +92,9 @@ public class SignEquipStorage {
 
                                         EssentialBridge.sendMail(Chat.getPrefix(), player, ChatColor.GOLD + "A Equip Sign has added a new Item to your Shop");
                                     }
+
+                                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.EQUIP, region, owner, iStack.getTypeId(), iStack.getAmount(), 0, 0);
+
                                 }
 
                                 inv.remove(iStack);
