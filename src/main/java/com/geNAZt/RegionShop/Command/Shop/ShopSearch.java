@@ -1,4 +1,4 @@
-package com.geNAZt.RegionShop.Command;
+package com.geNAZt.RegionShop.Command.Shop;
 
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
@@ -8,7 +8,6 @@ import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.geNAZt.RegionShop.Util.ItemName;
 import com.geNAZt.RegionShop.Storages.SearchStorage;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

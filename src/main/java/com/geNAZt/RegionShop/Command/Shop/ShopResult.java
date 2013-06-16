@@ -1,4 +1,4 @@
-package com.geNAZt.RegionShop.Command;
+package com.geNAZt.RegionShop.Command.Shop;
 
 import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
@@ -7,8 +7,6 @@ import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemName;
 import com.geNAZt.RegionShop.Storages.SearchStorage;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
-
-import com.sk89q.worldguard.protection.managers.RegionManager;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

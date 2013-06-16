@@ -1,4 +1,4 @@
-package com.geNAZt.RegionShop.Command;
+package com.geNAZt.RegionShop.Command.Shop;
 
 
 import com.geNAZt.RegionShop.Events.RegionShopConfigReload;

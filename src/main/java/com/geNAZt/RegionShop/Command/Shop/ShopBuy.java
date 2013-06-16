@@ -1,8 +1,9 @@
-package com.geNAZt.RegionShop.Command;
+package com.geNAZt.RegionShop.Command.Shop;
 
 import com.geNAZt.RegionShop.Bridges.EssentialBridge;
 import com.geNAZt.RegionShop.Bridges.VaultBridge;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
+import com.geNAZt.RegionShop.Command.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
@@ -24,35 +25,61 @@ import java.util.Map;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
  */
-class ShopBuy {
+class ShopBuy implements ShopCommand {
     private final RegionShopPlugin plugin;
 
     public ShopBuy(RegionShopPlugin plugin) {
         this.plugin = plugin;
     }
 
-    @SuppressWarnings("unchecked")
-    public void execute(Player p, Integer shopItemId, Integer wishAmount) {
-        if (PlayerStorage.getPlayer(p) != null) {
-            String region = PlayerStorage.getPlayer(p);
+    @Override
+    public String getCommand() {
+        return "buy";
+    }
+
+    @Override
+    public String getPermissionNode() {
+        return "rs.buy";
+    }
+
+    @Override
+    public int getNumberOfArgs() {
+        return 2;
+    }
+
+    @Override
+    public void execute(Player player, String[] args) {
+        //Convert args
+        Integer shopItemId, wishAmount;
+
+        try {
+            shopItemId = Integer.parseInt(args[1]);
+            wishAmount = Integer.parseInt(args[2]);
+        } catch (NumberFormatException e) {
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only numbers as shopItemId and amount values allowed");
+            return;
+        }
+
+        if (PlayerStorage.getPlayer(player) != null) {
+            String region = PlayerStorage.getPlayer(player);
 
             ShopItems item = plugin.getDatabase().find(ShopItems.class).
-                    where().
-                        conjunction().
-                            eq("world", p.getWorld().getName()).
-                            eq("region", region).
-                            eq("id", shopItemId).
-                        endJunction().
-                    findUnique();
+                        where().
+                            conjunction().
+                                eq("world", player.getWorld().getName()).
+                                eq("region", region).
+                                eq("id", shopItemId).
+                            endJunction().
+                        findUnique();
 
             if (item == null) {
-                p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "This shopItem could not be found");
+                player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "This shopItem could not be found");
                 return;
             }
 
             if (item.getSell() > 0) {
                 if (wishAmount > item.getCurrentAmount() && wishAmount != -1) {
-                    p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "This shop has not enough items in stock");
+                    player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "This shop has not enough items in stock");
                     return;
                 }
 
@@ -65,16 +92,16 @@ class ShopBuy {
 
                 Economy eco = VaultBridge.economy;
 
-                if (eco.has(p.getName(), ((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell())) {
-                    HashMap<Integer, ItemStack> notFitItems = p.getInventory().addItem(iStack);
+                if (eco.has(player.getName(), ((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell())) {
+                    HashMap<Integer, ItemStack> notFitItems = player.getInventory().addItem(iStack);
                     if (!notFitItems.isEmpty()) {
                         for(Map.Entry<Integer, ItemStack> notFitItem : notFitItems.entrySet()) {
                             wishAmount -= notFitItem.getValue().getAmount();
                         }
                     }
 
-                    ProtectedRegion regionObj = WorldGuardBridge.getRegionByString(region, p.getWorld());
-                    String shopName = WorldGuardBridge.convertRegionToShopName(regionObj, p.getWorld());
+                    ProtectedRegion regionObj = WorldGuardBridge.getRegionByString(region, player.getWorld());
+                    String shopName = WorldGuardBridge.convertRegionToShopName(regionObj, player.getWorld());
                     if(shopName == null) {
                         shopName = regionObj.getId();
                     }
@@ -87,12 +114,12 @@ class ShopBuy {
                     }
 
                     if (onOwner != null) {
-                        onOwner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + p.getDisplayName() + ChatColor.DARK_GREEN + " bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " from your shop (" + ChatColor.GREEN + shopName + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
+                        onOwner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + player.getDisplayName() + ChatColor.DARK_GREEN + " bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " from your shop (" + ChatColor.GREEN + shopName + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
                     }
 
-                    eco.withdrawPlayer(p.getName(), ((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell());
+                    eco.withdrawPlayer(player.getName(), ((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell());
                     eco.depositPlayer(item.getOwner(), ((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell());
-                    p.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + " for " + ChatColor.GREEN + (((float) wishAmount / (float) item.getUnitAmount()) * (float) item.getSell()) + "$" + ChatColor.DARK_GREEN + " from shop");
+                    player.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + " for " + ChatColor.GREEN + (((float) wishAmount / (float) item.getUnitAmount()) * (float) item.getSell()) + "$" + ChatColor.DARK_GREEN + " from shop");
 
                     item.setCurrentAmount(item.getCurrentAmount() - wishAmount);
 
@@ -108,11 +135,11 @@ class ShopBuy {
                         plugin.getDatabase().delete(item);
                     }
                 } else {
-                    p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You have not enough money for this. You need "+ (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
+                    player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You have not enough money for this. You need "+ (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
                     return;
                 }
             } else {
-                p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "This Shop doesn't sell this Item");
+                player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "This Shop doesn't sell this Item");
                 return;
             }
 
@@ -120,6 +147,6 @@ class ShopBuy {
         }
 
         //Nothing of all
-        p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You are not inside a shop");
+        player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You are not inside a shop");
     }
 }

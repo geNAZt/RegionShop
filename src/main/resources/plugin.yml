@@ -64,3 +64,6 @@ permissions:
   rs.search:
     description: Search for a specific item on the whole marketplace 
     default: true
+  rs.admin
+    description: Administration of the Shops
+    default: false

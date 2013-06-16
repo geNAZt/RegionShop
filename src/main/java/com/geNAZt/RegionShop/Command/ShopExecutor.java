@@ -1,5 +1,6 @@
 package com.geNAZt.RegionShop.Command;
 
+import com.geNAZt.RegionShop.Command.Shop.*;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemName;
@@ -7,47 +8,29 @@ import com.geNAZt.RegionShop.Storages.PlayerStorage;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+
+import static com.geNAZt.RegionShop.Util.Loader.loadFromJAR;
 
 /**
  * Created for YEAHWH.AT
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 06.06.13
  */
-public class Shop implements CommandExecutor {
-    private final ShopWarp shopWarp;
-    private final ShopList shopList;
-    private final ShopAdd shopAdd;
-    private final ShopDetail shopDetail;
-    private final ShopEquip shopEquip;
-    private final ShopSet shopSet;
-    private final ShopSell shopSell;
-    private final ShopBuy shopBuy;
-    private final ShopName shopName;
-    private final ShopSearch shopSearch;
-    private final ShopResult shopResult;
-    private final ShopReload shopReload;
+public class ShopExecutor implements CommandExecutor {
+    private ArrayList<Object> loadedCommands = new ArrayList<Object>();
 
     private final RegionShopPlugin plugin;
 
-    public Shop(RegionShopPlugin pl) {
-        this.shopWarp = new ShopWarp(pl);
-        this.shopList = new ShopList(pl);
-        this.shopAdd = new ShopAdd(pl);
-        this.shopDetail = new ShopDetail(pl);
-        this.shopEquip = new ShopEquip(pl);
-        this.shopSet = new ShopSet(pl);
-        this.shopSell = new ShopSell(pl);
-        this.shopBuy = new ShopBuy(pl);
-        this.shopName = new ShopName(pl);
-        this.shopSearch = new ShopSearch(pl);
-        this.shopResult = new ShopResult(pl);
-        this.shopReload = new ShopReload(pl);
+    public ShopExecutor(RegionShopPlugin pl) {
+        loadedCommands = loadFromJAR(pl, "com.geNAZt.RegionShop.Command.Shop", ShopCommand.class);
 
         this.plugin = pl;
     }
@@ -62,15 +45,43 @@ public class Shop implements CommandExecutor {
             return true;
         }
 
-        if(p.getGameMode().getValue() == 1) {
-            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You can not use the Shop if you are in Creative Mode");
+        if(plugin.getConfig().getBoolean("only-survival") && p.getGameMode() != GameMode.SURVIVAL) {
+            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You must be in survival Mode to use the Shop");
 
             return true;
         }
 
         if (cmd.getName().equalsIgnoreCase("shop")) {
             if (args.length > 0) {
-                if (args[0].equalsIgnoreCase("list")) {
+                for(Object command : loadedCommands) {
+                    ShopCommand shopCommand = (ShopCommand) command;
+
+                    if(shopCommand.getCommand().equalsIgnoreCase(args[0])) {
+                        if(shopCommand.getPermissionNode() == null || p.hasPermission(shopCommand.getPermissionNode())) {
+                            if(args.length > shopCommand.getNumberOfArgs()) {
+                                shopCommand.execute(p, Arrays.copyOfRange(args, 1, args.length));
+                            } else {
+                                p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Not enough arguments given. Type " + ChatColor.DARK_RED + "/shop help" + ChatColor.RED + " for more informations.");
+                                return true;
+                            }
+                        } else {
+                            p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You don't have the permission " + ChatColor.DARK_RED + shopCommand.getPermissionNode());
+                            return true;
+                        }
+                    }
+                }
+
+                showHelp(p, 1);
+                return true;
+            } else {
+                showHelp(p, 1);
+                return true;
+            }
+        }
+
+        return false;
+
+                /*if (args[0].equalsIgnoreCase("list")) {
                     if (p.hasPermission("rs.list")) {
                         if (PlayerStorage.getPlayer(p) != null) {
                             String regString = PlayerStorage.getPlayer(p);
@@ -313,7 +324,7 @@ public class Shop implements CommandExecutor {
             }
         }
 
-        return false;
+        return false; */
     }
 
     private void showHelp(Player sender, Integer page) {
@@ -328,18 +339,30 @@ public class Shop implements CommandExecutor {
             sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop warp " + ChatColor.RED + "owner" + ChatColor.RESET + ": Warp to " + ChatColor.RED + "owner" + ChatColor.RESET + "'s shop");
             sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop warp " + ChatColor.RED + "shopname" + ChatColor.RESET + ": Warp to the shop called " + ChatColor.RED + "shopname");
             sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop detail " + ChatColor.RED + "shopItemID" + ChatColor.RESET + ": Display details of " + ChatColor.RED + "shopItemID");
-            sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop add " + ChatColor.RED + "sellprice buyprice amount" + ChatColor.RESET + ": Add current item in hand to the shop stock");
             sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop buy " + ChatColor.RED + "shopItemID " +  ChatColor.GREEN + "amount" + ChatColor.RESET + ": Buy (" + ChatColor.GREEN + "amount" + ChatColor.RESET + " pcs. of) " + ChatColor.RED + "shopItemID " + ChatColor.RESET + "from the shop");
             sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop sell " + ChatColor.RED + "shopItemID " + ChatColor.GREEN + "amount" + ChatColor.RESET + ": Sell (" + ChatColor.GREEN + "amount" + ChatColor.RESET + " pcs. of) " + ChatColor.RED + "shopItemID " + ChatColor.RESET + "to the shop");
+            return;
         }
 
         if (page == 2) {
             sender.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "RegionShop: Help" + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Page " + ChatColor.RED + "2" + ChatColor.GOLD + "/" + ChatColor.RED + "2 " + ChatColor.YELLOW + "--");
             sender.sendMessage(Chat.getPrefix() + ChatColor.RED + "Necessary arguments");
             sender.sendMessage(Chat.getPrefix() + ChatColor.GREEN + "Optional arguments");
+            sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop add " + ChatColor.RED + "sellprice buyprice amount" + ChatColor.RESET + ": Add current item in hand to the shop stock");
             if(plugin.getConfig().getBoolean("interfaces.command.equip")) sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop equip" + ChatColor.RESET + ": Toggle " + ChatColor.GRAY + "quick add");
             sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop name " + ChatColor.RED + "shopname" + ChatColor.RESET + ": Rename your shop to " + ChatColor.RED + "shopname");
             sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop set " + ChatColor.RED + "shopItemID sellprice buyprice amount" + ChatColor.RESET + ": Set/adjust the price for " + ChatColor.RED + "shopItemID");
+            sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/shop remove " + ChatColor.RED + "shopItemID" + ChatColor.RESET + ": Remove the "+ ChatColor.RED + "shopItemID" + ChatColor.RESET + " out of the ShopExecutor");
+            return;
         }
+
+        if (page == 3 && sender.hasPermission("rs.admin")) {
+            sender.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "RegionShop: Help" + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Page " + ChatColor.RED + "2" + ChatColor.GOLD + "/" + ChatColor.RED + "2 " + ChatColor.YELLOW + "--");
+            sender.sendMessage(Chat.getPrefix() + ChatColor.RED + "Necessary arguments");
+            sender.sendMessage(Chat.getPrefix() + ChatColor.GREEN + "Optional arguments");
+
+        }
+
+        sender.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid Help page");
     }
 }

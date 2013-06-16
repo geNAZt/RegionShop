@@ -4,7 +4,7 @@ import com.geNAZt.RegionShop.Bridges.EssentialBridge;
 import com.geNAZt.RegionShop.Bridges.VaultBridge;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 
-import com.geNAZt.RegionShop.Command.Shop;
+import com.geNAZt.RegionShop.Command.ShopExecutor;
 
 import com.geNAZt.RegionShop.Converter.ChestShopConverter;
 import com.geNAZt.RegionShop.Events.RegionShopConfigReload;
@@ -38,6 +38,9 @@ import java.util.List;
  * Date: 05.06.13
  */
 public class RegionShopPlugin extends JavaPlugin implements Listener {
+
+
+
     @Override
     public void onEnable() {
         getLogger().info("[RegionShop] Enabled");
@@ -78,7 +81,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         if(getConfig().getBoolean("interfaces.command.equip")) getServer().getPluginManager().registerEvents(new PlayerDropItem(this), this);
 
         //Commands
-        getCommand("shop").setExecutor(new Shop(this));
+        getCommand("shop").setExecutor(new ShopExecutor(this));
 
         //Converter
         if(getConfig().getBoolean("converter.chestshop")) new ChestShopConverter(this);
