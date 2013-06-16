@@ -25,6 +25,16 @@ public class ShopSet extends ShopCommand {
     }
 
     @Override
+    public int getHelpPage() {
+        return 2;
+    }
+
+    @Override
+    public String[] getHelpText() {
+        return new String[]{ChatColor.GOLD + "/shop set " + ChatColor.RED + "shopItemID sellprice buyprice amount" + ChatColor.RESET + ": Set/adjust the price for " + ChatColor.RED + "shopItemID"};
+    }
+
+    @Override
     public String getCommand() {
         return "set";
     }

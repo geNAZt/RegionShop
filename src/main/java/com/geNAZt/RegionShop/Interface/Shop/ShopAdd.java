@@ -30,6 +30,16 @@ public class ShopAdd extends ShopCommand {
     }
 
     @Override
+    public int getHelpPage() {
+        return 2;
+    }
+
+    @Override
+    public String[] getHelpText() {
+        return new String[]{ChatColor.GOLD + "/shop add " + ChatColor.RED + "sellprice buyprice amount" + ChatColor.RESET + ": Add current item in hand to the shop stock"};
+    }
+
+    @Override
     public String getCommand() {
         return "add";
     }

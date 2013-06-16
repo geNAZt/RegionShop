@@ -102,6 +102,16 @@ public class ShopResult extends ShopCommand {
     }
 
     @Override
+    public int getHelpPage() {
+        return 1;
+    }
+
+    @Override
+    public String[] getHelpText() {
+        return new String[]{ChatColor.GOLD + "/shop result " + ChatColor.RED + "page" + ChatColor.RESET + ": Browse to page " + ChatColor.RED + "page"};
+    }
+
+    @Override
     public String getCommand() {
         return "result";
     }

@@ -33,6 +33,16 @@ public class ShopSell extends ShopCommand {
     }
 
     @Override
+    public int getHelpPage() {
+        return 1;
+    }
+
+    @Override
+    public String[] getHelpText() {
+        return new String[]{ChatColor.GOLD + "/shop sell "+ ChatColor.RESET + ": Sell the current Item in Hand to the shop"};
+    }
+
+    @Override
     public String getCommand() {
         return "sell";
     }

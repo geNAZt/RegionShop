@@ -28,6 +28,16 @@ public class ShopEquip extends ShopCommand {
     }
 
     @Override
+    public int getHelpPage() {
+        return 2;
+    }
+
+    @Override
+    public String[] getHelpText() {
+        return new String[]{ChatColor.GOLD + "/shop equip" + ChatColor.RESET + ": Toggle " + ChatColor.GRAY + "quick add"};
+    }
+
+    @Override
     public String getCommand() {
         return "equip";
     }

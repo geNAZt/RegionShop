@@ -30,18 +30,28 @@ public class ShopName extends ShopCommand {
     }
 
     @Override
+    public int getHelpPage() {
+        return 2;
+    }
+
+    @Override
+    public String[] getHelpText() {
+        return new String[]{ChatColor.GOLD + "/shop name " + ChatColor.RED + "shopname" + ChatColor.RESET + ": Rename your shop to " + ChatColor.RED + "shopname"};
+    }
+
+    @Override
     public String getCommand() {
-        return "name";  //To change body of implemented methods use File | Settings | File Templates.
+        return "name";
     }
 
     @Override
     public String getPermissionNode() {
-        return "rs.name";  //To change body of implemented methods use File | Settings | File Templates.
+        return "rs.name";
     }
 
     @Override
     public int getNumberOfArgs() {
-        return 1;  //To change body of implemented methods use File | Settings | File Templates.
+        return 1;
     }
 
     @Override

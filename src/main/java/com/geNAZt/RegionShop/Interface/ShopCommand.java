@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
  * Date: 16.06.13
  */
 public abstract class ShopCommand {
+    public abstract int getHelpPage();
+    public abstract String[] getHelpText();
     public abstract String getCommand();
     public abstract String getPermissionNode();
     public abstract int getNumberOfArgs();

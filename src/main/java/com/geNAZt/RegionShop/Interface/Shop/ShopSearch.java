@@ -32,6 +32,16 @@ public class ShopSearch extends ShopCommand {
     }
 
     @Override
+    public int getHelpPage() {
+        return 1;
+    }
+
+    @Override
+    public String[] getHelpText() {
+        return new String[]{ChatColor.GOLD + "/shop search " + ChatColor.RED + "ItemID/ItemName" + ChatColor.RESET + ": Search for " + ChatColor.RED + "ItemID/ItemName"};
+    }
+
+    @Override
     public String getCommand() {
         return "search";
     }

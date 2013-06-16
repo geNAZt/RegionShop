@@ -37,18 +37,28 @@ public class ShopList extends ShopCommand {
     }
 
     @Override
+    public int getHelpPage() {
+        return 1;
+    }
+
+    @Override
+    public String[] getHelpText() {
+        return new String[]{ChatColor.GOLD + "/shop list" + ChatColor.RESET + ": List items in the shop (inside a shopregion)", ChatColor.GOLD + "/shop list" + ChatColor.RESET + ": List all shops (outside a shopregion)"};
+    }
+
+    @Override
     public String getCommand() {
-        return "list";  //To change body of implemented methods use File | Settings | File Templates.
+        return "list";
     }
 
     @Override
     public String getPermissionNode() {
-        return "rs.list";  //To change body of implemented methods use File | Settings | File Templates.
+        return "rs.list";
     }
 
     @Override
     public int getNumberOfArgs() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return 0;
     }
 
     @Override

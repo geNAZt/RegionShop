@@ -22,6 +22,16 @@ public class ShopReload extends ShopCommand {
     }
 
     @Override
+    public int getHelpPage() {
+        return 4;
+    }
+
+    @Override
+    public String[] getHelpText() {
+        return new String[]{ChatColor.GOLD + "/shop admin reload " + ChatColor.RESET + ": Reload the RegionShop config and ListStorage"};
+    }
+
+    @Override
     public String getCommand() {
         return "reload";
     }

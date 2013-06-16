@@ -27,6 +27,16 @@ public class ShopRemove extends ShopCommand {
     }
 
     @Override
+    public int getHelpPage() {
+        return 2;
+    }
+
+    @Override
+    public String[] getHelpText() {
+        return new String[]{ChatColor.GOLD + "/shop remove " + ChatColor.RED + "shopItemID" + ChatColor.RESET + ": Remove the "+ ChatColor.RED + "shopItemID" + ChatColor.RESET + " out of the Shop"};
+    }
+
+    @Override
     public String getCommand() {
         return "remove";
     }

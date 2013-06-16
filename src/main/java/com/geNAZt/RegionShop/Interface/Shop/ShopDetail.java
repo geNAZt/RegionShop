@@ -29,24 +29,29 @@ public class ShopDetail extends ShopCommand {
         this.plugin = plugin;
     }
 
-    @SuppressWarnings("unchecked")
-    public void execute(Player p, Integer itemID) {
+    @Override
+    public int getHelpPage() {
+        return 1;
+    }
 
+    @Override
+    public String[] getHelpText() {
+        return new String[]{ChatColor.GOLD + "/shop detail " + ChatColor.RED + "shopItemID" + ChatColor.RESET + ": Display details of " + ChatColor.RED + "shopItemID"};
     }
 
     @Override
     public String getCommand() {
-        return "detail";  //To change body of implemented methods use File | Settings | File Templates.
+        return "detail";
     }
 
     @Override
     public String getPermissionNode() {
-        return "rs.detail";  //To change body of implemented methods use File | Settings | File Templates.
+        return "rs.detail";
     }
 
     @Override
     public int getNumberOfArgs() {
-        return 1;  //To change body of implemented methods use File | Settings | File Templates.
+        return 1;
     }
 
     @Override

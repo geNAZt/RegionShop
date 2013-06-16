@@ -26,18 +26,28 @@ public class ShopWarp extends ShopCommand {
     }
 
     @Override
+    public int getHelpPage() {
+        return 1;
+    }
+
+    @Override
+    public String[] getHelpText() {
+        return new String[]{ChatColor.GOLD + "/shop warp " + ChatColor.RED + "owner" + ChatColor.RESET + ": Warp to " + ChatColor.RED + "owner" + ChatColor.RESET + "'s shop",ChatColor.GOLD + "/shop warp " + ChatColor.RED + "shopname" + ChatColor.RESET + ": Warp to the shop called " + ChatColor.RED + "shopname"};  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public String getCommand() {
-        return "warp";  //To change body of implemented methods use File | Settings | File Templates.
+        return "warp";
     }
 
     @Override
     public String getPermissionNode() {
-        return "rs.warp";  //To change body of implemented methods use File | Settings | File Templates.
+        return "rs.warp";
     }
 
     @Override
     public int getNumberOfArgs() {
-        return 1;  //To change body of implemented methods use File | Settings | File Templates.
+        return 1;
     }
 
     @Override
