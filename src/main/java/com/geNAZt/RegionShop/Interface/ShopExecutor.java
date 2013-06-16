@@ -17,6 +17,7 @@ import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.geNAZt.RegionShop.Util.Loader.loadFromJAR;
 
@@ -26,8 +27,8 @@ import static com.geNAZt.RegionShop.Util.Loader.loadFromJAR;
  * Date: 06.06.13
  */
 public class ShopExecutor implements CommandExecutor, Listener {
-    private ArrayList<ShopCommand> loadedCommands = new ArrayList<ShopCommand>();
-    private ArrayList<ShopCommand> adminCommands = new ArrayList<ShopCommand>();
+    private CopyOnWriteArrayList<ShopCommand> loadedCommands = new CopyOnWriteArrayList<ShopCommand>();
+    private CopyOnWriteArrayList<ShopCommand> adminCommands = new CopyOnWriteArrayList<ShopCommand>();
 
     private final RegionShopPlugin plugin;
 
@@ -44,6 +45,9 @@ public class ShopExecutor implements CommandExecutor, Listener {
     }
 
     private void loadAllCommands() {
+        loadedCommands = new CopyOnWriteArrayList<ShopCommand>();
+        adminCommands = new CopyOnWriteArrayList<ShopCommand>();
+
         loadedCommands = loadFromJAR(plugin, "com.geNAZt.RegionShop.Interface.Shop", ShopCommand.class);
         adminCommands  = loadFromJAR(plugin, "com.geNAZt.RegionShop.Interface.Admin", ShopCommand.class);
 

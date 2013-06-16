@@ -17,6 +17,7 @@ import org.bukkit.event.block.SignChangeEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.geNAZt.RegionShop.Util.Loader.loadFromJAR;
 
@@ -27,7 +28,7 @@ import static com.geNAZt.RegionShop.Util.Loader.loadFromJAR;
  */
 public class SignChange implements Listener {
     private final RegionShopPlugin plugin;
-    private ArrayList<SignCommand> signCommands = new ArrayList<SignCommand>();
+    private CopyOnWriteArrayList<SignCommand> signCommands = new CopyOnWriteArrayList<SignCommand>();
 
     public SignChange(RegionShopPlugin pl) {
         plugin = pl;

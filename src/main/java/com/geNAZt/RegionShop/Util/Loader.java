@@ -5,10 +5,8 @@ import com.geNAZt.RegionShop.RegionShopPlugin;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -18,8 +16,8 @@ import java.util.jar.JarFile;
  * Date: 16.06.13
  */
 public class Loader {
-    public static <T> ArrayList<T> loadFromJAR(RegionShopPlugin plugin, String path, Class interf) {
-        ArrayList<T> returnObjects = new ArrayList<T>();
+    public static <T> CopyOnWriteArrayList<T> loadFromJAR(RegionShopPlugin plugin, String path, Class interf) {
+        CopyOnWriteArrayList<T> returnObjects = new CopyOnWriteArrayList<T>();
 
         try {
             String pathToJar = Loader.class.getProtectionDomain().getCodeSource().getLocation().getPath();
