@@ -1,6 +1,5 @@
 package com.geNAZt.RegionShop;
 
-import com.avaje.ebean.EbeanServer;
 import com.geNAZt.RegionShop.Bridges.EssentialBridge;
 import com.geNAZt.RegionShop.Bridges.VaultBridge;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
@@ -9,6 +8,7 @@ import com.geNAZt.RegionShop.Converter.ChestShopConverter;
 import com.geNAZt.RegionShop.Events.RegionShopConfigReload;
 import com.geNAZt.RegionShop.Listener.*;
 import com.geNAZt.RegionShop.Model.*;
+import com.geNAZt.RegionShop.ServerShop.ServerShop;
 import com.geNAZt.RegionShop.Storages.ListStorage;
 import com.geNAZt.RegionShop.Storages.SignEquipStorage;
 import com.geNAZt.RegionShop.Transaction.Transaction;
@@ -83,6 +83,9 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
 
         //Converter
         if(getConfig().getBoolean("converter.chestshop")) new ChestShopConverter(this);
+
+        //Server Shop
+        ServerShop.init(this);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -134,6 +137,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         list.add(ShopRegion.class);
         list.add(ShopEquipSign.class);
         list.add(ShopTransaction.class);
+        list.add(ShopServerItemAverage.class);
         return list;
     }
 
@@ -144,6 +148,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
             getDatabase().find(ShopRegion.class).findRowCount();
             getDatabase().find(ShopEquipSign.class).findRowCount();
             getDatabase().find(ShopTransaction.class).findRowCount();
+            getDatabase().find(ShopServerItemAverage.class).findRowCount();
         } catch (PersistenceException ex) {
             getLogger().info("[RegionShop] Database hasn't setup.");
             installDDL();
@@ -153,6 +158,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         saveConfig();
+
         getLogger().info("[RegionShop] Disabled");
     }
 }
