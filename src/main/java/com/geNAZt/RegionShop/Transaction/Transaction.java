@@ -22,6 +22,10 @@ public class Transaction {
         }
     }
 
+    public static void generateTransaction(OfflinePlayer player, ShopTransaction.TransactionType type, String shop, String owner, Integer item, Integer amount, Double sell, Integer buy) {
+        generateTransaction(player, type, shop, owner, item, amount, sell.intValue(), buy);
+    }
+
     public static void generateTransaction(OfflinePlayer player, ShopTransaction.TransactionType type, String shop, String owner, Integer item, Integer amount, Integer sell, Integer buy) {
         if(plugin.getConfig().getBoolean("feature.transactions", true)) {
             ShopTransaction shopTransaction = new ShopTransaction();

@@ -1,10 +1,14 @@
 package com.geNAZt.RegionShop.Interface.ServerShop;
 
+import com.geNAZt.RegionShop.Bridges.VaultBridge;
 import com.geNAZt.RegionShop.Interface.ShopCommand;
+import com.geNAZt.RegionShop.Model.ShopTransaction;
 import com.geNAZt.RegionShop.ServerShop.Price;
 import com.geNAZt.RegionShop.ServerShop.PriceStorage;
+import com.geNAZt.RegionShop.Transaction.Transaction;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemName;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -45,53 +49,76 @@ public class Buy extends ShopCommand {
 
     @Override
     public int getNumberOfArgs() {
-        return 0;
+        return 1;
     }
 
     @Override
     public void execute(Player player, String[] args) {
-        HashMap<ItemStack, Price> itemPrices = PriceStorage.getAll();
-
-        Float max = (float)itemPrices.size() / (float)7;
-        Integer maxPage = (int)Math.ceil(max);
-        Integer page = 1;
-        Integer current = 0;
-        Integer skip = (page - 1) * 7;
-
+        //Convert args
+        String amountStr = "1";
         if(args.length > 1) {
-            try {
-                page = Integer.parseInt(args[0]);
-            } catch (NumberFormatException e) {
-                player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only numbers as page value allowed");
-                return;
-            }
+            amountStr = args[1];
         }
 
-        player.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "List of items inside the Servershop -- " + ChatColor.GOLD + "Page " + ChatColor.RED + page + ChatColor.GOLD + "/" + ChatColor.RED + maxPage + ChatColor.YELLOW + " --");
-        player.sendMessage(Chat.getPrefix() + " ");
+        Integer itemId, wishAmount;
+        Byte dataValue;
+        String itemIDStr, dataValueStr;
 
-        for(Map.Entry<ItemStack, Price> itemPrice : itemPrices.entrySet()) {
-            current++;
-
-            if(skip > current) {
-                continue;
-            }
-
-            if(current - skip > 7) {
-                break;
-            }
-
-            ItemStack iStack = itemPrice.getKey();
-            Price price = itemPrice.getValue();
-
-            String niceItemName = ItemName.nicer(iStack.getType().toString());
-            String itemName = ItemName.getDataName(iStack) + niceItemName;
-            String message = Chat.getPrefix() + ChatColor.DARK_GREEN + "1" + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for (S)" + ChatColor.GREEN + price.getCurrentSell() + "$" + ChatColor.DARK_GREEN + " (B)" + ChatColor.GREEN + price.getCurrentBuy() + "$";
-            player.sendMessage(message);
+        if(args[0].contains(":")) {
+            String[] split = args[0].split(":");
+            itemIDStr = split[0];
+            dataValueStr = split[1];
+        } else {
+            itemIDStr = args[0];
+            dataValueStr = "0";
         }
 
-        if(page < maxPage) {
-            player.sendMessage(Chat.getPrefix() + ChatColor.GREEN +"/shop server list "+ (page+1) + ChatColor.GOLD + " for the next page");
+        try {
+            itemId = Integer.parseInt(itemIDStr);
+            wishAmount = Integer.parseInt(amountStr);
+            dataValue = Byte.parseByte(dataValueStr);
+        } catch (NumberFormatException e) {
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only numbers as itemId and amount values allowed");
+            return;
+        }
+
+        if (wishAmount < 1) {
+            wishAmount = 1;
+        }
+
+        ItemStack iStack = new ItemStack(itemId, 1);
+
+        if(dataValue != 0) {
+            iStack.getData().setData(dataValue);
+        }
+
+        Price price = PriceStorage.get(iStack);
+
+        if(price == null) {
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "ItemID could not be found inside the Servershop");
+            return;
+        }
+
+        Economy eco = VaultBridge.economy;
+        Double sellPrice = wishAmount * price.getCurrentSell();
+        if(eco.has(player.getName(), sellPrice)) {
+            HashMap<Integer, ItemStack> notFitItems = player.getInventory().addItem(iStack);
+            if (!notFitItems.isEmpty()) {
+                for(Map.Entry<Integer, ItemStack> notFitItem : notFitItems.entrySet()) {
+                    wishAmount -= notFitItem.getValue().getAmount();
+                }
+            }
+
+            sellPrice = wishAmount * price.getCurrentSell();
+
+            eco.withdrawPlayer(player.getName(), sellPrice);
+            player.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + " for " + ChatColor.GREEN + sellPrice + "$" + ChatColor.DARK_GREEN + " from Servershop");
+            Transaction.generateTransaction(player, ShopTransaction.TransactionType.BUY, "SERVERSHOP", "server", iStack.getTypeId(), wishAmount, price.getCurrentSell(), 0);
+            price.setSold(price.getSold() + wishAmount);
+            PriceStorage.add(iStack, price);
+        } else {
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You have not enough money for this. You need "+ sellPrice + "$");
+            return;
         }
     }
 }

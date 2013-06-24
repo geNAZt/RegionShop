@@ -23,4 +23,12 @@ public class PriceStorage {
     public static synchronized HashMap<ItemStack, Price> getAll() {
         return itemPrices;
     }
+
+    public static synchronized Price get(ItemStack itemStack) {
+        if(itemPrices.containsKey(itemStack)) {
+            return itemPrices.get(itemStack);
+        }
+
+        return null;
+    }
 }

@@ -56,17 +56,22 @@ public class ShopBuy extends ShopCommand {
 
     @Override
     public int getNumberOfArgs() {
-        return 2;
+        return 1;
     }
 
     @Override
     public void execute(Player player, String[] args) {
         //Convert args
+        String amountStr = "1";
+        if(args.length > 1) {
+            amountStr = args[1];
+        }
+
         Integer shopItemId, wishAmount;
 
         try {
             shopItemId = Integer.parseInt(args[0]);
-            wishAmount = Integer.parseInt(args[1]);
+            wishAmount = Integer.parseInt(amountStr);
         } catch (NumberFormatException e) {
             player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only numbers as shopItemId and amount values allowed");
             return;
