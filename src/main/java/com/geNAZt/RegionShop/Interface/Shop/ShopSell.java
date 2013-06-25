@@ -114,8 +114,8 @@ public class ShopSell extends ShopCommand {
                         item.setCurrentAmount(item.getCurrentAmount() + itemInHand.getAmount());
                         plugin.getDatabase().update(item);
 
-                        Transaction.generateTransaction(player, ShopTransaction.TransactionType.SELL, region, owner.getName(), item.getItemID(), itemInHand.getAmount(), 0, item.getBuy());
-                        Transaction.generateTransaction(owner, ShopTransaction.TransactionType.BUY, region, player.getName(), item.getItemID(), itemInHand.getAmount(), 0, item.getBuy());
+                        Transaction.generateTransaction(player, ShopTransaction.TransactionType.SELL, region, owner.getName(), item.getItemID(), itemInHand.getAmount(), 0.0, item.getBuy().doubleValue());
+                        Transaction.generateTransaction(owner, ShopTransaction.TransactionType.BUY, region, player.getName(), item.getItemID(), itemInHand.getAmount(), 0.0, item.getBuy().doubleValue());
 
                         return;
                     }

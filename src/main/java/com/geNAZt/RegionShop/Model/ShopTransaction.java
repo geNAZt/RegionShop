@@ -24,8 +24,8 @@ public class ShopTransaction {
     private String owner;
     private Integer item;
     private Integer amount;
-    private Integer sell;
-    private Integer buy;
+    private Double sell;
+    private Double buy;
 
     @EnumMapping(nameValuePairs="BUY=B, SELL=S, ADD=A, EQUIP=E, REMOVE=R")
     public enum TransactionType {
@@ -102,19 +102,19 @@ public class ShopTransaction {
         this.type = type;
     }
 
-    public Integer getBuy() {
+    public Double getBuy() {
         return buy;
     }
 
-    public void setBuy(Integer buy) {
+    public void setBuy(Double buy) {
         this.buy = buy;
     }
 
-    public Integer getSell() {
+    public Double getSell() {
         return sell;
     }
 
-    public void setSell(Integer sell) {
+    public void setSell(Double sell) {
         this.sell = sell;
     }
 }

@@ -1,0 +1,11 @@
+items:
+ -
+  itemid: 1
+  datavalue: 0
+  buy: 0.5
+  sell: 1.0
+  maxItemRecalc: 50
+  limitSellPriceFactor: 5.0
+  limitBuyPriceFactor: 2.0
+  limitSellPriceUnderFactor: 0.6
+  limitBuyPriceUnderFactor: 0.4

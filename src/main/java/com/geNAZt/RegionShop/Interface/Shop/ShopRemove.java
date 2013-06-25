@@ -83,7 +83,7 @@ public class ShopRemove extends ShopCommand {
 
                 plugin.getDatabase().update(item);
 
-                Transaction.generateTransaction(player, ShopTransaction.TransactionType.REMOVE, item.getRegion(), item.getOwner(), iStack.getTypeId(), iStack.getAmount(), item.getSell(), item.getBuy());
+                Transaction.generateTransaction(player, ShopTransaction.TransactionType.REMOVE, item.getRegion(), item.getOwner(), iStack.getTypeId(), iStack.getAmount(), item.getSell().doubleValue(), item.getBuy().doubleValue());
 
                 player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Not all Items has fit into your Inventory. Please remove again if you have more Place");
                 return;
@@ -91,9 +91,8 @@ public class ShopRemove extends ShopCommand {
 
             plugin.getDatabase().delete(item);
 
-            Transaction.generateTransaction(player, ShopTransaction.TransactionType.REMOVE, item.getRegion(), item.getOwner(), iStack.getTypeId(), iStack.getAmount(), item.getSell(), item.getBuy());
+            Transaction.generateTransaction(player, ShopTransaction.TransactionType.REMOVE, item.getRegion(), item.getOwner(), iStack.getTypeId(), iStack.getAmount(), item.getSell().doubleValue(), item.getBuy().doubleValue());
             player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Item has been removed from your Shop");
-            return;
         } else {
             player.sendMessage(Chat.getPrefix() + ChatColor.RED + "No Item found for this shopItemID");
         }

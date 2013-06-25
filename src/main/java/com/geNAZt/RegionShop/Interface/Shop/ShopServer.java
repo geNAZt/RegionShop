@@ -34,13 +34,10 @@ import static com.geNAZt.RegionShop.Util.Loader.loadFromJAR;
  * Date: 06.06.13
  */
 public class ShopServer extends ShopCommand {
-    private final Plugin plugin;
     private CopyOnWriteArrayList<ShopCommand> loadedCommands = new CopyOnWriteArrayList<ShopCommand>();
     private String[] help = new String[]{};
 
     public ShopServer(Plugin plugin) {
-        this.plugin = plugin;
-
         loadedCommands = loadFromJAR((RegionShopPlugin)plugin, "com.geNAZt.RegionShop.Interface.ServerShop", ShopCommand.class);
 
         for(Object command : loadedCommands) {

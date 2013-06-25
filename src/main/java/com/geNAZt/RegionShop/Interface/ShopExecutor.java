@@ -187,7 +187,7 @@ public class ShopExecutor implements CommandExecutor, Listener {
             sender.sendMessage(Chat.getPrefix() + ChatColor.RED + "Necessary arguments");
             sender.sendMessage(Chat.getPrefix() + ChatColor.GREEN + "Optional arguments");
             showHelpPage(sender, page);
-
+            sender.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "/convert " + ChatColor.RESET + ": Starts the loaded Converter if any is loaded");
             return;
         }
 

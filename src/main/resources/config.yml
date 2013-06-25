@@ -1,13 +1,13 @@
 debug: false
 only-ascii: true
 only-survival: true
-servershop: true
 
 chat:
   prefix: '[RS] '
 
 feature:
   transaction: true
+  servershop: true
 
 interfaces:
   command:

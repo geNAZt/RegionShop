@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created for YEAHWH.AT
@@ -25,7 +26,7 @@ public class ItemAverageTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        HashMap<ItemStack, Price> currentPrices = PriceStorage.getAll();
+        ConcurrentHashMap<ItemStack, Price> currentPrices = PriceStorage.getAll();
 
         for(Map.Entry<ItemStack, Price> currentPrice : currentPrices.entrySet()) {
             Price price = currentPrice.getValue();

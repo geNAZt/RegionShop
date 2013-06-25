@@ -50,21 +50,16 @@ public class Loader {
                             break;
                         } catch (InvocationTargetException e1) {
                             e1.printStackTrace();
-                            continue;
                         } catch (InstantiationException e1) {
                             e1.printStackTrace();
-                            continue;
                         } catch (IllegalAccessException e1) {
                             e1.printStackTrace();
-                            continue;
                         } catch (IllegalArgumentException e1) {
                             e1.printStackTrace();
-                            continue;
                         }
                     }
                 } catch(ClassNotFoundException er) {
                     er.printStackTrace();
-                    continue;
                 }
 
             }

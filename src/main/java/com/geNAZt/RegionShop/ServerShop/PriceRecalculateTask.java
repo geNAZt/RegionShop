@@ -10,6 +10,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created for YEAHWH.AT
@@ -25,7 +26,7 @@ public class PriceRecalculateTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        HashMap<ItemStack, Price> currentPrices = PriceStorage.getAll();
+        ConcurrentHashMap<ItemStack, Price> currentPrices = PriceStorage.getAll();
 
         for(Map.Entry<ItemStack, Price> currentPrice : currentPrices.entrySet()) {
             Price price = currentPrice.getValue();
@@ -37,6 +38,16 @@ public class PriceRecalculateTask extends BukkitRunnable {
             if(!row.isEmpty()) {
                 BigDecimal soldDec = (BigDecimal) row.get("sold");
                 BigDecimal boughtDec = (BigDecimal) row.get("bought");
+
+                if(soldDec == null || boughtDec == null) {
+                    if(soldDec == null) {
+                        soldDec = new BigDecimal(0);
+                    }
+
+                    if(boughtDec == null) {
+                        boughtDec = new BigDecimal(0);
+                    }
+                }
 
                 Integer sold = soldDec.intValue();
                 Integer bought = boughtDec.intValue();

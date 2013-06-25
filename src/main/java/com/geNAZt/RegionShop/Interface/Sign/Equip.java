@@ -103,6 +103,5 @@ public class Equip extends SignCommand {
 
         player.sendMessage(Chat.getPrefix() + ChatColor.RED + "No Chest in near of the Sign found");
         sign.breakNaturally();
-        return;
     }
 }

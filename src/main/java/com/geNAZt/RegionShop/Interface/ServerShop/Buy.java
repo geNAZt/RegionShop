@@ -99,26 +99,31 @@ public class Buy extends ShopCommand {
             return;
         }
 
-        Economy eco = VaultBridge.economy;
-        Double sellPrice = wishAmount * price.getCurrentSell();
-        if(eco.has(player.getName(), sellPrice)) {
-            HashMap<Integer, ItemStack> notFitItems = player.getInventory().addItem(iStack);
-            if (!notFitItems.isEmpty()) {
-                for(Map.Entry<Integer, ItemStack> notFitItem : notFitItems.entrySet()) {
-                    wishAmount -= notFitItem.getValue().getAmount();
+        if(price.getCurrentSell() > 0.0) {
+            iStack.setAmount(wishAmount);
+
+            Economy eco = VaultBridge.economy;
+            Double sellPrice = wishAmount * price.getCurrentSell();
+            if(eco.has(player.getName(), sellPrice)) {
+                HashMap<Integer, ItemStack> notFitItems = player.getInventory().addItem(iStack);
+                if (!notFitItems.isEmpty()) {
+                    for(Map.Entry<Integer, ItemStack> notFitItem : notFitItems.entrySet()) {
+                        wishAmount -= notFitItem.getValue().getAmount();
+                    }
                 }
+
+                sellPrice = wishAmount * price.getCurrentSell();
+
+                eco.withdrawPlayer(player.getName(), sellPrice);
+                player.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + " for " + ChatColor.GREEN + sellPrice + "$" + ChatColor.DARK_GREEN + " from Servershop");
+                Transaction.generateTransaction(player, ShopTransaction.TransactionType.BUY, "SERVERSHOP", "server", iStack.getTypeId(), wishAmount, price.getCurrentSell(), 0.0);
+                price.setSold(price.getSold() + wishAmount);
+                PriceStorage.add(iStack, price);
+            } else {
+                player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You have not enough money for this. You need "+ sellPrice + "$");
             }
-
-            sellPrice = wishAmount * price.getCurrentSell();
-
-            eco.withdrawPlayer(player.getName(), sellPrice);
-            player.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + " for " + ChatColor.GREEN + sellPrice + "$" + ChatColor.DARK_GREEN + " from Servershop");
-            Transaction.generateTransaction(player, ShopTransaction.TransactionType.BUY, "SERVERSHOP", "server", iStack.getTypeId(), wishAmount, price.getCurrentSell(), 0);
-            price.setSold(price.getSold() + wishAmount);
-            PriceStorage.add(iStack, price);
         } else {
-            player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You have not enough money for this. You need "+ sellPrice + "$");
-            return;
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "The Servershop does not sell this item");
         }
     }
 }

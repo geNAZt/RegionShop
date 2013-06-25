@@ -3,6 +3,7 @@ package com.geNAZt.RegionShop.ServerShop;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created for YEAHWH.AT
@@ -10,7 +11,7 @@ import java.util.HashMap;
  * Date: 17.06.13
  */
 public class PriceStorage {
-    private static HashMap<ItemStack, Price> itemPrices = new HashMap<ItemStack, Price>();
+    private static ConcurrentHashMap<ItemStack, Price> itemPrices = new ConcurrentHashMap<ItemStack, Price>();
 
     public static synchronized void add(ItemStack itemStack, Price price) {
         if(itemPrices.containsKey(itemStack)) {
@@ -20,7 +21,7 @@ public class PriceStorage {
         itemPrices.put(itemStack, price);
     }
 
-    public static synchronized HashMap<ItemStack, Price> getAll() {
+    public static synchronized ConcurrentHashMap<ItemStack, Price> getAll() {
         return itemPrices;
     }
 

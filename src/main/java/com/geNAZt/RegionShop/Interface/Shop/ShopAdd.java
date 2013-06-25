@@ -110,7 +110,7 @@ public class ShopAdd extends ShopCommand {
                         itemName = "(" + itemInHand.getItemMeta().getDisplayName() + ")";
                     }
 
-                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.ADD, region, player.getName(), itemInHand.getTypeId(), itemInHand.getAmount(), sell, buy);
+                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.ADD, region, player.getName(), itemInHand.getTypeId(), itemInHand.getAmount(), sell.doubleValue(), buy.doubleValue());
 
                     player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Added "+ ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.GOLD + " to the shop.");
                     return;

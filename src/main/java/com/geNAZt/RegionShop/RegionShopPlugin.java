@@ -15,6 +15,7 @@ import com.geNAZt.RegionShop.Transaction.Transaction;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
 
+import org.apache.sanselan.util.IOUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -23,6 +24,7 @@ import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.persistence.PersistenceException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,7 +87,31 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         if(getConfig().getBoolean("converter.chestshop")) new ChestShopConverter(this);
 
         //Server Shop
-        ServerShop.init(this);
+        if(getConfig().getBoolean("feature.servershop")) {
+            File serverShop = new File(getDataFolder().getAbsolutePath(), "servershop");
+            if(!serverShop.exists()) {
+                serverShop.mkdirs();
+
+                InputStream stream = getResource("static/servershop/00-default.yml");
+                File fle = new File(serverShop.getAbsolutePath(), "00-default.yml");
+
+                try {
+                    OutputStream oStream = new FileOutputStream(fle);
+
+                    byte[] buffer = new byte[1024];
+                    int len;
+                    while ((len = stream.read(buffer)) != -1) {
+                        oStream.write(buffer, 0, len);
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (IOException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
+
+            ServerShop.init(this);
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -108,7 +134,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
                 }
             }
 
-            if(found == false) {
+            if(!found) {
                 getServer().getPluginManager().registerEvents(new PlayerDropItem(this), this);
                 getLogger().info("Added com.geNAZt.RegionShop.Listener.PlayerDropItem Listener");
             }

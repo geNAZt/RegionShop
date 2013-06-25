@@ -12,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created for YEAHWH.AT
@@ -50,7 +51,7 @@ public class List extends ShopCommand {
 
     @Override
     public void execute(Player player, String[] args) {
-        HashMap<ItemStack, Price> itemPrices = PriceStorage.getAll();
+        ConcurrentHashMap<ItemStack, Price> itemPrices = PriceStorage.getAll();
 
         Float max = (float)itemPrices.size() / (float)7;
         Integer maxPage = (int)Math.ceil(max);

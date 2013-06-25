@@ -5,6 +5,7 @@ package com.geNAZt.RegionShop.ServerShop;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 21.06.13
  */
+@SuppressWarnings("SameParameterValue")
 public class Price {
     private double sell;
     private double buy;
