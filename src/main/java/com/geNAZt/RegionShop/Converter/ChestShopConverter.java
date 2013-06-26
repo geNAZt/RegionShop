@@ -19,7 +19,7 @@ import org.bukkit.inventory.ItemStack;
  * Date: 09.06.13
  */
 public class ChestShopConverter {
-    protected static RegionShopPlugin plugin;
+    private static RegionShopPlugin plugin;
 
     public ChestShopConverter(RegionShopPlugin pl) {
         plugin = pl;

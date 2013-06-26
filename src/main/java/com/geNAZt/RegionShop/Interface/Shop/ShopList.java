@@ -98,7 +98,7 @@ public class ShopList extends ShopCommand {
         player.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "List of shops " + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Page " + ChatColor.RED + page + ChatColor.GOLD + "/" + ChatColor.RED + maxPage + ChatColor.YELLOW + " --");
         player.sendMessage(Chat.getPrefix() + " ");
 
-        if(pRC.isEmpty()) {
+        if(pRC == null || pRC.isEmpty()) {
             player.sendMessage(Chat.getPrefix() + ChatColor.RED + "No shops available");
             return;
         }
@@ -126,6 +126,7 @@ public class ShopList extends ShopCommand {
 
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void executeInsideRegion(Player player, Integer page) {
         ProtectedRegion regionObj = WorldGuardBridge.getRegionByString(PlayerStorage.getPlayer(player), player.getWorld());
         PagingList<ShopItems> shopItems;

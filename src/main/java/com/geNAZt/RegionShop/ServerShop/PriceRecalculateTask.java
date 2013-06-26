@@ -17,13 +17,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 16.06.13
  */
-public class PriceRecalculateTask extends BukkitRunnable {
-    private RegionShopPlugin plugin;
+class PriceRecalculateTask extends BukkitRunnable {
+    private final RegionShopPlugin plugin;
 
     public PriceRecalculateTask(RegionShopPlugin plugin) {
         this.plugin = plugin;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void run() {
         ConcurrentHashMap<ItemStack, Price> currentPrices = PriceStorage.getAll();
@@ -36,21 +37,19 @@ public class PriceRecalculateTask extends BukkitRunnable {
                     setParameter("itemid", currentPrice.getKey().getTypeId()).setParameter("datavalue", currentPrice.getKey().getData().getData()).findUnique();
 
             if(!row.isEmpty()) {
-                BigDecimal soldDec = (BigDecimal) row.get("sold");
-                BigDecimal boughtDec = (BigDecimal) row.get("bought");
+                Double soldDec = (Double) row.get("sold");
+                Double boughtDec = (Double) row.get("bought");
 
-                if(soldDec == null || boughtDec == null) {
-                    if(soldDec == null) {
-                        soldDec = new BigDecimal(0);
-                    }
+                Integer sold = 0;
+                Integer bought = 0;
 
-                    if(boughtDec == null) {
-                        boughtDec = new BigDecimal(0);
-                    }
+                if(soldDec != null) {
+                    sold = soldDec.intValue();
                 }
 
-                Integer sold = soldDec.intValue();
-                Integer bought = boughtDec.intValue();
+                if(boughtDec != null) {
+                    bought = boughtDec.intValue();
+                }
 
                 if(plugin.getConfig().getBoolean("debug")) {
                     String niceItemName = ItemName.nicer(currentPrice.getKey().getType().toString());

@@ -26,14 +26,14 @@ public class ServerShop {
     public static boolean isEnabled = false;
 
     public static void init(RegionShopPlugin plugin) {
-        ServerShop.isEnabled = true;
+        isEnabled = true;
         ServerShop.plugin = plugin;
 
         loadAllServerShopConfigs();
     }
 
-    public static void unload() {
-        ServerShop.isEnabled = false;
+    private static void unload() {
+        isEnabled = false;
 
         configs = new CopyOnWriteArrayList<FileConfiguration>();
 

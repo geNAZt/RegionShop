@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Date: 17.06.13
  */
 public class PriceStorage {
-    private static ConcurrentHashMap<ItemStack, Price> itemPrices = new ConcurrentHashMap<ItemStack, Price>();
+    private static final ConcurrentHashMap<ItemStack, Price> itemPrices = new ConcurrentHashMap<ItemStack, Price>();
 
     public static synchronized void add(ItemStack itemStack, Price price) {
         if(itemPrices.containsKey(itemStack)) {

@@ -26,7 +26,7 @@ import java.util.Arrays;
  * Date: 10.06.13
  */
 public class Equip extends SignCommand {
-    private Plugin plugin;
+    private final Plugin plugin;
 
     public Equip(Plugin pl) {
         plugin = pl;

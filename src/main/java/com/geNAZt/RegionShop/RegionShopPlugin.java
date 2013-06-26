@@ -93,7 +93,10 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         if(getConfig().getBoolean("feature.servershop")) {
             File serverShop = new File(getDataFolder().getAbsolutePath(), "servershop");
             if(!serverShop.exists()) {
-                serverShop.mkdirs();
+                boolean made = serverShop.mkdirs();
+                if(made == false) {
+                    getLogger().warning("Could not creata Servershop Config dir");
+                }
 
                 InputStream stream = getResource("static/servershop/00-default.yml");
                 File fle = new File(serverShop.getAbsolutePath(), "00-default.yml");
@@ -107,9 +110,9 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
                         oStream.write(buffer, 0, len);
                     }
                 } catch (FileNotFoundException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    e.printStackTrace();
                 } catch (IOException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    e.printStackTrace();
                 }
             }
 

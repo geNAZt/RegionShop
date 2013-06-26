@@ -10,7 +10,7 @@ import java.io.IOException;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 15.06.13
  */
-public class MCStats {
+class MCStats {
     public static void init(RegionShopPlugin plugin) {
         try {
             Metrics metrics = new Metrics(plugin);

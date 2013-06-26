@@ -16,6 +16,7 @@ import java.util.jar.JarFile;
  * Date: 16.06.13
  */
 public class Loader {
+    @SuppressWarnings("ConstantConditions")
     public static <T> CopyOnWriteArrayList<T> loadFromJAR(RegionShopPlugin plugin, String path, Class interf) {
         CopyOnWriteArrayList<T> returnObjects = new CopyOnWriteArrayList<T>();
 

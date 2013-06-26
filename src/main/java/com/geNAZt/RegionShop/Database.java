@@ -12,7 +12,7 @@ import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 26.06.13
  */
-public class Database {
+class Database {
     public static EbeanServer createDatabaseServer(RegionShopPlugin plugin) {
         ServerConfig db = new ServerConfig();
         db.setDefaultServer(false);

@@ -29,6 +29,7 @@ public class ShopResult extends ShopCommand {
 
     }
 
+    @SuppressWarnings("ConstantConditions")
     public static void printResultPage(Player p, String searchQry, HashMap<ShopItems, ItemStack> result, Integer page) {
         Float max = (float)result.size() / (float)7;
         Integer maxPage = (int)Math.ceil(max);

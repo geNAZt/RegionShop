@@ -29,13 +29,13 @@ import java.util.Map;
  */
 public class SignEquipStorage {
     private static HashMap<Block, BukkitTask> signWorkers = new HashMap<Block, BukkitTask>();
-    protected static RegionShopPlugin plugin;
+    private static RegionShopPlugin plugin;
 
     private static class EquipTask extends BukkitRunnable {
-        private Block sign;
-        private String owner;
-        private String region;
-        private String world;
+        private final Block sign;
+        private final String owner;
+        private final String region;
+        private final String world;
 
         public EquipTask(Block sign, String owner, String region, String world) {
             this.sign = sign;

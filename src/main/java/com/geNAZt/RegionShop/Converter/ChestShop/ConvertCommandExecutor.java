@@ -30,6 +30,7 @@ import static com.Acrobot.Breeze.Utils.BlockUtil.isSign;
  * Date: 15.06.13
  */
 public class ConvertCommandExecutor implements CommandExecutor {
+    @SuppressWarnings("ConstantConditions")
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         boolean isPlayer = (sender instanceof Player);

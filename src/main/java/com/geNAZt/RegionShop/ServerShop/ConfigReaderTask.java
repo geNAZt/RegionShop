@@ -15,8 +15,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 18.06.13
  */
-public class ConfigReaderTask extends BukkitRunnable {
-    private RegionShopPlugin plugin;
+class ConfigReaderTask extends BukkitRunnable {
+    private final RegionShopPlugin plugin;
 
     public ConfigReaderTask(RegionShopPlugin plugin) {
         this.plugin = plugin;

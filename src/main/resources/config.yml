@@ -29,6 +29,7 @@ interfaces:
     sell: true
     set: true
     warp: true
+    server: true
   sign:
     equip: true
 

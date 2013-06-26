@@ -9,8 +9,8 @@ import org.bukkit.scheduler.BukkitRunnable;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 16.06.13
  */
-public class TransactionTask extends BukkitRunnable {
-    private RegionShopPlugin plugin;
+class TransactionTask extends BukkitRunnable {
+    private final RegionShopPlugin plugin;
 
     public TransactionTask(RegionShopPlugin plugin) {
         this.plugin = plugin;

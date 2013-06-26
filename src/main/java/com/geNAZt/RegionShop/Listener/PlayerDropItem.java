@@ -72,6 +72,7 @@ public class PlayerDropItem implements Listener {
                     itemName = ItemName.getDataName(droppedItem) + droppedItem.getType().toString();
                 }
 
+                //noinspection ConstantConditions
                 Transaction.generateTransaction(e.getPlayer(), ShopTransaction.TransactionType.EQUIP, region, e.getPlayer().getName(), item.getItemID(), droppedItem.getAmount(), 0.0, 0.0);
 
                 e.getPlayer().sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Added "+ ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.GOLD + " to the shop.");

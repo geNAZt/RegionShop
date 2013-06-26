@@ -6,9 +6,7 @@ import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,8 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 16.06.13
  */
-public class ItemAverageTask extends BukkitRunnable {
-    private RegionShopPlugin plugin;
+class ItemAverageTask extends BukkitRunnable {
+    private final RegionShopPlugin plugin;
 
     public ItemAverageTask(RegionShopPlugin plugin) {
         this.plugin = plugin;

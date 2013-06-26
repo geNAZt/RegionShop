@@ -9,8 +9,8 @@ import java.util.concurrent.ArrayBlockingQueue;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 15.06.13
  */
-public class TransactionQueue {
-    public static ArrayBlockingQueue<ShopTransaction> transactionPriorityQueue = new ArrayBlockingQueue<ShopTransaction>(500);
+class TransactionQueue {
+    private static final ArrayBlockingQueue<ShopTransaction> transactionPriorityQueue = new ArrayBlockingQueue<ShopTransaction>(500);
 
     public static void addTransaction(ShopTransaction shopTransaction) {
         transactionPriorityQueue.add(shopTransaction);
