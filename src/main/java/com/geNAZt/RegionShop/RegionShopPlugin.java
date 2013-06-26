@@ -1,5 +1,6 @@
 package com.geNAZt.RegionShop;
 
+import com.avaje.ebean.EbeanServer;
 import com.geNAZt.RegionShop.Bridges.EssentialBridge;
 import com.geNAZt.RegionShop.Bridges.VaultBridge;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
@@ -34,6 +35,8 @@ import java.util.List;
  * Date: 05.06.13
  */
 public class RegionShopPlugin extends JavaPlugin implements Listener {
+    private EbeanServer database;
+
     @Override
     public void onEnable() {
         getLogger().info("[RegionShop] Enabled");
@@ -45,6 +48,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         saveConfig();
 
         //Database
+        database = Database.createDatabaseServer(this);
         checkForDatabase();
 
         //Bridge init
@@ -153,6 +157,11 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
 
     public void disable() {
         setEnabled(false);
+    }
+
+    @Override
+    public EbeanServer getDatabase() {
+        return database;
     }
 
     @Override

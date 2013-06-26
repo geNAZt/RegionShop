@@ -2,6 +2,13 @@ debug: false
 only-ascii: true
 only-survival: true
 
+database:
+  username: bukkit
+  isolation: SERIALIZABLE
+  driver: org.sqlite.JDBC
+  password: walrus
+  url: jdbc:sqlite:{DIR}RegionShop.db
+
 chat:
   prefix: '[RS] '
 
