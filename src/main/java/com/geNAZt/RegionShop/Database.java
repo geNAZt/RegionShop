@@ -34,6 +34,12 @@ public class Database {
 
         db.setDataSourceConfig(ds);
 
-        return EbeanServerFactory.create(db);
+        ClassLoader previous = Thread.currentThread().getContextClassLoader();
+
+        Thread.currentThread().setContextClassLoader(Database.class.getClassLoader());
+        EbeanServer dbs = EbeanServerFactory.create(db);
+        Thread.currentThread().setContextClassLoader(previous);
+
+        return dbs;
     }
 }

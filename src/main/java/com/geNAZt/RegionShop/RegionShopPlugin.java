@@ -16,7 +16,6 @@ import com.geNAZt.RegionShop.Transaction.Transaction;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
 
-import org.apache.sanselan.util.IOUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
