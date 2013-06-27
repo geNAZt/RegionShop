@@ -3,6 +3,7 @@ package com.geNAZt.RegionShop.Transaction;
 import com.geNAZt.RegionShop.Model.ShopTransaction;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import java.util.Date;
 
@@ -22,7 +23,7 @@ public class Transaction {
         }
     }
 
-    public static void generateTransaction(OfflinePlayer player, ShopTransaction.TransactionType type, String shop, String owner, Integer item, Integer amount, Double sell, Double buy) {
+    public static void generateTransaction(OfflinePlayer player, ShopTransaction.TransactionType type, String shop, String world, String owner, Integer item, Integer amount, Double sell, Double buy, Integer unitAmount) {
         if(plugin.getConfig().getBoolean("feature.transactions", true)) {
             ShopTransaction shopTransaction = new ShopTransaction();
             shopTransaction.setIssuer(player.getName());
@@ -34,6 +35,8 @@ public class Transaction {
             shopTransaction.setSell(sell);
             shopTransaction.setBuy(buy);
             shopTransaction.setDate(new Date());
+            shopTransaction.setWorld(world);
+            shopTransaction.setUnitAmount(unitAmount);
 
             TransactionQueue.addTransaction(shopTransaction);
         }

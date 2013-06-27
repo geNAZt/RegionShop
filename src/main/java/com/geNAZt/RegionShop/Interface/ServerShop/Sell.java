@@ -82,8 +82,8 @@ public class Sell extends ShopCommand {
             Double buyPrice = itemInHand.getAmount() * price.getCurrentSell();
 
             eco.depositPlayer(player.getName(), buyPrice);
-            player.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + " for " + ChatColor.GREEN + buyPrice + "$" + ChatColor.DARK_GREEN + " to Servershop");
-            Transaction.generateTransaction(player, ShopTransaction.TransactionType.SELL, "SERVERSHOP", "server", itemInHand.getTypeId(), itemInHand.getAmount(), 0.0, price.getCurrentBuy());
+            player.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + buyPrice + "$" + ChatColor.DARK_GREEN + " to Servershop");
+            Transaction.generateTransaction(player, ShopTransaction.TransactionType.SELL, "Servershop", player.getWorld().getName(), "server", itemInHand.getTypeId(), itemInHand.getAmount(), 0.0, price.getCurrentBuy(), 1);
             player.getInventory().remove(itemInHand);
 
             price.setBought(price.getBought() + itemInHand.getAmount());

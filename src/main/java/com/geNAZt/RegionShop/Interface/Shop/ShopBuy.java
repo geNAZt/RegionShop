@@ -136,7 +136,7 @@ public class ShopBuy extends ShopCommand {
 
                     eco.withdrawPlayer(player.getName(), ((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell());
                     eco.depositPlayer(item.getOwner(), ((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell());
-                    player.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + " for " + ChatColor.GREEN + (((float) wishAmount / (float) item.getUnitAmount()) * (float) item.getSell()) + "$" + ChatColor.DARK_GREEN + " from shop");
+                    player.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + (((float) wishAmount / (float) item.getUnitAmount()) * (float) item.getSell()) + "$" + ChatColor.DARK_GREEN + " from shop");
 
                     item.setCurrentAmount(item.getCurrentAmount() - wishAmount);
 
@@ -152,8 +152,8 @@ public class ShopBuy extends ShopCommand {
                         plugin.getDatabase().delete(item);
                     }
 
-                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.BUY, region, owner.getName(), item.getItemID(), wishAmount, item.getSell().doubleValue(), 0.0);
-                    Transaction.generateTransaction(owner, ShopTransaction.TransactionType.SELL, region, player.getName(), item.getItemID(), wishAmount, item.getSell().doubleValue(), 0.0);
+                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.BUY, region, player.getWorld().getName(), owner.getName(), item.getItemID(), wishAmount, item.getSell().doubleValue(), 0.0, item.getUnitAmount());
+                    Transaction.generateTransaction(owner, ShopTransaction.TransactionType.SELL, region, player.getWorld().getName(), player.getName(), item.getItemID(), wishAmount, 0.0, item.getSell().doubleValue(), item.getUnitAmount());
                 } else {
                     player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You have not enough money for this. You need "+ (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
                     return;

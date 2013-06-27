@@ -86,7 +86,20 @@ public class WorldGuardBridge {
         return (shpRegion != null) ? shpRegion.getName() : null;
     }
 
-    //Gets the Region with the string
+    //Gets the Shopname via Regionstring
+    public static String convertRegionStringToShopName(String regionName, World world) {
+        ShopRegion shpRegion = plugin.getDatabase().find(ShopRegion.class).
+                where().
+                    conjunction().
+                        eq("region", regionName).
+                        eq("world", world.getName()).
+                    endJunction().
+                findUnique();
+
+        return (shpRegion != null) ? shpRegion.getName() : null;
+    }
+
+        //Gets the Region with the string
     public static ProtectedRegion getRegionByString(String region, World world) {
         return getRegionManager(world).getRegion(region);
     }

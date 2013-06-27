@@ -58,7 +58,7 @@ public class PlayerDropItem implements Listener {
 
                 plugin.getDatabase().update(item);
 
-                Transaction.generateTransaction(e.getPlayer(), ShopTransaction.TransactionType.EQUIP, region, item.getOwner(), item.getItemID(), droppedItem.getAmount(), item.getSell().doubleValue(), item.getBuy().doubleValue());
+                Transaction.generateTransaction(e.getPlayer(), ShopTransaction.TransactionType.EQUIP, region, item.getWorld(), item.getOwner(), item.getItemID(), droppedItem.getAmount(), item.getSell().doubleValue(), item.getBuy().doubleValue(), item.getUnitAmount());
 
                 e.getItemDrop().remove();
             } else {
@@ -73,7 +73,7 @@ public class PlayerDropItem implements Listener {
                 }
 
                 //noinspection ConstantConditions
-                Transaction.generateTransaction(e.getPlayer(), ShopTransaction.TransactionType.EQUIP, region, e.getPlayer().getName(), item.getItemID(), droppedItem.getAmount(), 0.0, 0.0);
+                Transaction.generateTransaction(e.getPlayer(), ShopTransaction.TransactionType.EQUIP, region, e.getPlayer().getWorld().getName(), e.getPlayer().getName(), item.getItemID(), droppedItem.getAmount(), 0.0, 0.0, 0);
 
                 e.getPlayer().sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Added "+ ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.GOLD + " to the shop.");
             }

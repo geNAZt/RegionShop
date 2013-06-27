@@ -87,7 +87,7 @@ public class List extends ShopCommand {
 
             String niceItemName = ItemName.nicer(iStack.getType().toString());
             String itemName = ItemName.getDataName(iStack) + niceItemName;
-            String message = Chat.getPrefix() + ChatColor.DARK_GREEN + "1" + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for (S)" + ChatColor.GREEN + price.getCurrentSell() + "$" + ChatColor.DARK_GREEN + " (B)" + ChatColor.GREEN + price.getCurrentBuy() + "$";
+            String message = Chat.getPrefix() + ChatColor.DARK_GREEN + "1x" + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for (S)" + ChatColor.GREEN + price.getCurrentSell() + "$" + ChatColor.DARK_GREEN + " (B)" + ChatColor.GREEN + price.getCurrentBuy() + "$";
             player.sendMessage(message);
         }
 

@@ -79,7 +79,7 @@ public class SignEquipStorage {
                                     item.setCurrentAmount(item.getCurrentAmount() + iStack.getAmount());
                                     plugin.getDatabase().update(item);
 
-                                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.EQUIP, region, owner, iStack.getTypeId(), iStack.getAmount(), item.getSell().doubleValue(), item.getBuy().doubleValue());
+                                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.EQUIP, region, world, owner, iStack.getTypeId(), iStack.getAmount(), item.getSell().doubleValue(), item.getBuy().doubleValue(), item.getUnitAmount());
 
                                 } else {
                                     ItemConverter.toDBItem(iStack, plugin.getServer().getWorld(world), owner, region, 0, 0, 0);
@@ -92,7 +92,7 @@ public class SignEquipStorage {
                                         EssentialBridge.sendMail(Chat.getPrefix(), player, ChatColor.GOLD + "A Equip Sign has added a new Item to your Shop");
                                     }
 
-                                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.EQUIP, region, owner, iStack.getTypeId(), iStack.getAmount(), 0.0, 0.0);
+                                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.EQUIP, region, world, owner, iStack.getTypeId(), iStack.getAmount(), 0.0, 0.0, 0);
 
                                 }
 

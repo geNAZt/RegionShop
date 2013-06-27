@@ -66,7 +66,7 @@ public class ShopEquip extends ShopCommand {
                     shopName = region.getId();
                 }
 
-                player.sendMessage(Chat.getPrefix() + ChatColor.GRAY + "Quick add " + ChatColor.GOLD + "mode for " + ChatColor.GREEN + shopName + ChatColor.GOLD + " disabled.");
+                player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Quick add mode for " + ChatColor.GREEN + shopName + ChatColor.GOLD + " disabled.");
                 return;
             } else {
                 HashSet<ProtectedRegion> foundRegions = WorldGuardBridge.searchRegionsByOwner(player.getName(), player.getWorld());
@@ -77,7 +77,7 @@ public class ShopEquip extends ShopCommand {
                 }
 
                 if (foundRegions.size() > 1) {
-                    player.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Shop Selector" + ChatColor.YELLOW + " -- To select a shop: " + ChatColor.GOLD +"/shop equip <shopname>");
+                    player.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Shop Selector" + ChatColor.YELLOW + " -- To select a shop: " + ChatColor.GOLD +"/shop equip " + ChatColor.RED + "shopname");
                     player.sendMessage(Chat.getPrefix() + " ");
 
                     for(ProtectedRegion region : foundRegions) {
@@ -106,7 +106,7 @@ public class ShopEquip extends ShopCommand {
                         shopName = region.getId();
                     }
 
-                    player.sendMessage(Chat.getPrefix() + ChatColor.GRAY + "Quick add " + ChatColor.GOLD + "mode for " + ChatColor.GREEN + shopName + ChatColor.GOLD + " enabled. Drop items to add them to your shop stock");
+                    player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Quick add mode for " + ChatColor.GREEN + shopName + ChatColor.GOLD + " enabled. Drop items to add them to your shop stock");
 
                     return;
                 }

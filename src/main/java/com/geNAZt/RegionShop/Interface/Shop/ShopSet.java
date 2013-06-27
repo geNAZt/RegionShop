@@ -1,7 +1,9 @@
 package com.geNAZt.RegionShop.Interface.Shop;
 
 import com.geNAZt.RegionShop.Interface.ShopCommand;
-import com.geNAZt.RegionShop.Model.ShopItems;
+import com.geNAZt.RegionShop.Model.*;
+import com.geNAZt.RegionShop.Model.ShopTransaction;
+import com.geNAZt.RegionShop.Transaction.Transaction;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.geNAZt.RegionShop.Util.ItemName;
@@ -88,6 +90,7 @@ public class ShopSet extends ShopCommand {
                 itemName = ItemName.getDataName(itemStack) + itemStack.getType().toString();
             }
 
+            Transaction.generateTransaction(player, ShopTransaction.TransactionType.ADD, item.getRegion(), item.getWorld(), player.getName(), item.getItemID(), item.getUnitAmount(), item.getSell().doubleValue(), item.getBuy().doubleValue(), item.getUnitAmount());
             player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Item " + ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.GOLD + " now sells for " + ChatColor.GREEN + item.getSell() + ChatColor.GOLD + ", buys for " + ChatColor.GREEN + item.getBuy() + ChatColor.GOLD + ", per " + ChatColor.GREEN + item.getUnitAmount() + ChatColor.GOLD + " unit(s)");
         }
     }

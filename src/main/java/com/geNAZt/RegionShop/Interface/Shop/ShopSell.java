@@ -115,8 +115,8 @@ public class ShopSell extends ShopCommand {
                         plugin.getDatabase().update(item);
 
                         //noinspection ConstantConditions
-                        Transaction.generateTransaction(player, ShopTransaction.TransactionType.SELL, region, owner.getName(), item.getItemID(), itemInHand.getAmount(), 0.0, item.getBuy().doubleValue());
-                        Transaction.generateTransaction(owner, ShopTransaction.TransactionType.BUY, region, player.getName(), item.getItemID(), itemInHand.getAmount(), 0.0, item.getBuy().doubleValue());
+                        Transaction.generateTransaction(player, ShopTransaction.TransactionType.SELL, region, player.getWorld().getName(), owner.getName(), item.getItemID(), itemInHand.getAmount(), 0.0, item.getBuy().doubleValue(), item.getUnitAmount());
+                        Transaction.generateTransaction(owner, ShopTransaction.TransactionType.BUY, region, player.getWorld().getName(), player.getName(), item.getItemID(), itemInHand.getAmount(), item.getBuy().doubleValue(), 0.0, item.getUnitAmount());
 
                         return;
                     }

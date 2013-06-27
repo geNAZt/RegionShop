@@ -94,10 +94,10 @@ public class ShopName extends ShopCommand {
 
                 ShopRegion shpRegion = plugin.getDatabase().find(ShopRegion.class).
                         where().
-                        conjunction().
-                        eq("region", rgn.getId()).
-                        eq("world", player.getWorld().getName()).
-                        endJunction().
+                            conjunction().
+                                eq("region", rgn.getId()).
+                                eq("world", player.getWorld().getName()).
+                            endJunction().
                         findUnique();
 
                 if (shpRegion != null) {

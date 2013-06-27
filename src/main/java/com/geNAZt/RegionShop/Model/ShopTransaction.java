@@ -20,12 +20,14 @@ public class ShopTransaction {
     private Integer id;
     private String issuer;
     private String shop;
+    private String world;
     private Date date;
     private String owner;
     private Integer item;
     private Integer amount;
     private Double sell;
     private Double buy;
+    private Integer unitAmount;
 
     @EnumMapping(nameValuePairs="BUY=B, SELL=S, ADD=A, EQUIP=E, REMOVE=R")
     public enum TransactionType {
@@ -116,5 +118,21 @@ public class ShopTransaction {
 
     public void setSell(Double sell) {
         this.sell = sell;
+    }
+
+    public String getWorld() {
+        return world;
+    }
+
+    public void setWorld(String world) {
+        this.world = world;
+    }
+
+    public Integer getUnitAmount() {
+        return unitAmount;
+    }
+
+    public void setUnitAmount(Integer unitAmount) {
+        this.unitAmount = unitAmount;
     }
 }

@@ -95,7 +95,7 @@ public class ShopList extends ShopCommand {
             maxPage = (int)Math.ceil(max);
         }
 
-        player.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "List of shops " + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Page " + ChatColor.RED + page + ChatColor.GOLD + "/" + ChatColor.RED + maxPage + ChatColor.YELLOW + " --");
+        player.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "List of shops " + ChatColor.YELLOW + " -- " + ChatColor.GOLD + "Page " + ChatColor.RED + page + ChatColor.GOLD + "/" + ChatColor.RED + maxPage + ChatColor.YELLOW + " --");
         player.sendMessage(Chat.getPrefix() + " ");
 
         if(pRC == null || pRC.isEmpty()) {
@@ -186,7 +186,7 @@ public class ShopList extends ShopCommand {
         }
 
         //Send the Header
-        player.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "List of items in " + ChatColor.GREEN + shopName + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Page " + ChatColor.RED + (curPage+1) + ChatColor.GOLD + "/" + ChatColor.RED + shopItems.getTotalPageCount() + ChatColor.YELLOW + " --");
+        player.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "List of items in " + ChatColor.GREEN + shopName + ChatColor.YELLOW + " -- " + ChatColor.GOLD + "Page " + ChatColor.RED + (curPage+1) + ChatColor.GOLD + "/" + ChatColor.RED + shopItems.getTotalPageCount() + ChatColor.YELLOW + " --");
 
         String ench = Character.toString((char)0x2692);
         String dmg = Character.toString((char)0x26A0);
@@ -216,7 +216,7 @@ public class ShopList extends ShopCommand {
                 String niceItemName = ItemName.nicer(iStack.getType().toString());
                 String itemName = ItemName.getDataName(iStack) + niceItemName;
 
-                String message = Chat.getPrefix() + ChatColor.DARK_GREEN + amount + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for (S)" + ChatColor.GREEN + item.getSell() + "$" + ChatColor.DARK_GREEN + " (B)" + ChatColor.GREEN + item.getBuy() + "$/" + item.getUnitAmount() + " Unit(s) from " + ChatColor.GREEN + item.getOwner() + ChatColor.GRAY + " #" + item.getId();
+                String message = Chat.getPrefix() + ChatColor.DARK_GREEN + amount + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for (S)" + ChatColor.GREEN + item.getSell() + "$" + ChatColor.DARK_GREEN + " (B)" + ChatColor.GREEN + item.getBuy() + "$/" + item.getUnitAmount() + ChatColor.DARK_GREEN + " Unit(s) from " + ChatColor.GREEN + item.getOwner() + ChatColor.DARK_GREEN + " (" + ChatColor.GRAY + "#" + item.getId() + ChatColor.DARK_GREEN + ")";
 
                 Integer perDmg = 0;
 

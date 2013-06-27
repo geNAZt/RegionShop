@@ -115,8 +115,8 @@ public class Buy extends ShopCommand {
                 sellPrice = wishAmount * price.getCurrentSell();
 
                 eco.withdrawPlayer(player.getName(), sellPrice);
-                player.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + " for " + ChatColor.GREEN + sellPrice + "$" + ChatColor.DARK_GREEN + " from Servershop");
-                Transaction.generateTransaction(player, ShopTransaction.TransactionType.BUY, "SERVERSHOP", "server", iStack.getTypeId(), wishAmount, price.getCurrentSell(), 0.0);
+                player.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + sellPrice + "$" + ChatColor.DARK_GREEN + " from Servershop");
+                Transaction.generateTransaction(player, ShopTransaction.TransactionType.BUY, "Servershop", player.getWorld().getName(), "server", iStack.getTypeId(), wishAmount, price.getCurrentSell(), 0.0, 1);
                 price.setSold(price.getSold() + wishAmount);
                 PriceStorage.add(iStack, price);
             } else {

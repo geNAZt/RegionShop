@@ -109,18 +109,18 @@ public class ShopAdd extends ShopCommand {
                         itemName = "(" + itemInHand.getItemMeta().getDisplayName() + ")";
                     }
 
-                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.ADD, region, player.getName(), itemInHand.getTypeId(), itemInHand.getAmount(), sell.doubleValue(), buy.doubleValue());
+                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.ADD, region, player.getWorld().getName(), player.getName(), itemInHand.getTypeId(), itemInHand.getAmount(), sell.doubleValue(), buy.doubleValue(), amount);
 
                     player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Added "+ ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.GOLD + " to the shop.");
                     return;
                 } else {
                     //Item is already added
-                    player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Item already added. /shop set "+ item.getId() + " <sell> <buy> <amount> to change it.");
+                    player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Item already added. " + ChatColor.DARK_RED + "/shop set "+ item.getId() + " sellprice buyprice amount" + ChatColor.RED + " to change it.");
                     return;
                 }
             } else {
                 //Player is not owner in this shop
-                player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You aren't a owner in this shop. You can't add items to it.");
+                player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You are not a owner in this shop. You can not add items to it.");
                 return;
             }
         }

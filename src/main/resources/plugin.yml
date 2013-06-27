@@ -32,6 +32,10 @@ permissions:
       rs.search: true
       rs.sell: true
       rs.buy: true
+      rs.transaction: true
+      rs.server.list: true
+      rs.server.buy: true
+      rs.server.sell: true
   rs.help:
     description: Permission for /shop help
     default: true
@@ -71,9 +75,21 @@ permissions:
   rs.name:
     description: Allows you to change the name of a Shop
     default: false
+  rs.transaction:
+    description: Lets you see the Transaction Log
+    default: true
   rs.admin:
     description: Administration of the Shops
     default: false
   rs.admin.reload:
     description: Reload the RegionShop Config
     default: false
+  rs.server.sell:
+    description: Sell to the Servershop
+    default: true
+  rs.server.buy:
+    description: Buy things from the Servershop
+    default: true
+  rs.server.list:
+    description: List all items inside the Servershop
+    default: true
