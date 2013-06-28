@@ -1,13 +1,12 @@
 package com.geNAZt.RegionShop.Interface.Shop;
 
 import com.geNAZt.RegionShop.Interface.ShopCommand;
-import com.geNAZt.RegionShop.Model.*;
+import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.Model.ShopTransaction;
 import com.geNAZt.RegionShop.Transaction.Transaction;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.geNAZt.RegionShop.Util.ItemName;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

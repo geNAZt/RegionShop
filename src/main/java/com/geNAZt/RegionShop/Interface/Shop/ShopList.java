@@ -1,21 +1,19 @@
 package com.geNAZt.RegionShop.Interface.Shop;
 
-import com.avaje.ebean.*;
-
+import com.avaje.ebean.Page;
+import com.avaje.ebean.PagingList;
+import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItems;
+import com.geNAZt.RegionShop.Region.Region;
+import com.geNAZt.RegionShop.Storages.ListStorage;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.geNAZt.RegionShop.Util.ItemName;
-import com.geNAZt.RegionShop.Storages.ListStorage;
-import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
-
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-
 import org.apache.commons.lang.StringUtils;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -76,7 +74,7 @@ public class ShopList extends ShopCommand {
         }
 
         //Check if Player is inside a Region
-        if (PlayerStorage.getPlayer(player) != null) {
+        if (PlayerStorage.has(player)) {
             executeInsideRegion(player, page);
         } else {
             executeOutsideRegion(player, page);
@@ -87,7 +85,8 @@ public class ShopList extends ShopCommand {
         Integer skip = (page - 1) * 7;
         Integer current = 0;
 
-        ArrayList<ProtectedRegion> pRC = ListStorage.getShopList(player.getWorld());
+        ArrayList<ProtectedRegion> pRC = ListStorage.get(player.getWorld());
+        ArrayList<String> listed = new ArrayList<String>();
 
         Integer maxPage = 0;
         if (pRC != null) {
@@ -117,7 +116,14 @@ public class ShopList extends ShopCommand {
             }
 
             String shopName = WorldGuardBridge.convertRegionToShopName(rg, player.getWorld());
-            player.sendMessage(Chat.getPrefix() + ChatColor.GREEN + ((shopName != null) ? shopName : rg.getId()) + ChatColor.GOLD + " - Owners: " + ChatColor.GRAY + StringUtils.join(owners.getPlayers().toArray(), ", "));
+            shopName = ((shopName != null) ? shopName : rg.getId());
+
+            if(!listed.contains(shopName)) {
+                listed.add(shopName);
+                player.sendMessage(Chat.getPrefix() + ChatColor.GREEN + shopName + ChatColor.GOLD + " - Owners: " + ChatColor.GRAY + StringUtils.join(owners.getPlayers().toArray(), ", "));
+            } else {
+                current--;
+            }
         }
 
         if(page < maxPage) {
@@ -128,17 +134,17 @@ public class ShopList extends ShopCommand {
 
     @SuppressWarnings("ConstantConditions")
     private void executeInsideRegion(Player player, Integer page) {
-        ProtectedRegion regionObj = WorldGuardBridge.getRegionByString(PlayerStorage.getPlayer(player), player.getWorld());
+        Region region = PlayerStorage.get(player);
         PagingList<ShopItems> shopItems;
 
         //Check if Player is Owner
-        if (regionObj.isOwner(player.getName())) {
+        if (region.getRegion().isOwner(player.getName())) {
             //Player is owner of this shop. he can see not ready items
             shopItems = plugin.getDatabase().find(ShopItems.class).
                         where().
                             conjunction().
                                 eq("world", player.getWorld().getName()).
-                                eq("region", PlayerStorage.getPlayer(player)).
+                                eq("region", region.getItemStorage()).
                                     disjunction().
                                         conjunction().
                                             gt("unit_amount", 0).
@@ -157,7 +163,7 @@ public class ShopList extends ShopCommand {
                         where().
                             conjunction().
                                 eq("world", player.getWorld().getName()).
-                                eq("region", PlayerStorage.getPlayer(player)).
+                                eq("region", region.getItemStorage()).
                                 gt("unit_amount", 0).
                                     disjunction().
                                         gt("sell", 0).
@@ -179,14 +185,8 @@ public class ShopList extends ShopCommand {
         Page qryPage = shopItems.getPage(curPage);
         List<ShopItems> itemList = qryPage.getList();
 
-        //Get the ShopName
-        String shopName = WorldGuardBridge.convertRegionToShopName(regionObj, player.getWorld());
-        if(shopName == null) {
-            shopName = regionObj.getId();
-        }
-
         //Send the Header
-        player.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "List of items in " + ChatColor.GREEN + shopName + ChatColor.YELLOW + " -- " + ChatColor.GOLD + "Page " + ChatColor.RED + (curPage+1) + ChatColor.GOLD + "/" + ChatColor.RED + shopItems.getTotalPageCount() + ChatColor.YELLOW + " --");
+        player.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "List of items in " + ChatColor.GREEN + region.getName() + ChatColor.YELLOW + " -- " + ChatColor.GOLD + "Page " + ChatColor.RED + (curPage+1) + ChatColor.GOLD + "/" + ChatColor.RED + shopItems.getTotalPageCount() + ChatColor.YELLOW + " --");
 
         String ench = Character.toString((char)0x2692);
         String dmg = Character.toString((char)0x26A0);
@@ -196,7 +196,7 @@ public class ShopList extends ShopCommand {
         //Define the legend
         String legend = Chat.getPrefix() + ChatColor.YELLOW + "Legend: " + ChatColor.RED + dmg + ChatColor.YELLOW + " damaged, " + ChatColor.RED + ench + ChatColor.YELLOW + " enchanted, " + ChatColor.RED + name + ChatColor.YELLOW + " renamed";
 
-        if (regionObj.isOwner(player.getName())) {
+        if (region.getRegion().isOwner(player.getName())) {
             legend += ", " + ChatColor.RED + notrdy + ChatColor.YELLOW + " not ready";
         }
 
@@ -206,7 +206,7 @@ public class ShopList extends ShopCommand {
         //List all Items
         if(itemList.size() > 0) {
             for(ShopItems item : itemList) {
-                if(((item.getSell() == 0 && item.getBuy() == 0) || item.getUnitAmount() == 0) && !regionObj.isOwner(player.getName())) {
+                if(((item.getSell() == 0 && item.getBuy() == 0) || item.getUnitAmount() == 0) && !region.getRegion().isOwner(player.getName())) {
                     continue;
                 }
 

@@ -5,7 +5,10 @@ package com.geNAZt.RegionShop.Model;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 05.06.13
  */
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @SuppressWarnings("UnusedDeclaration")
 @Entity()

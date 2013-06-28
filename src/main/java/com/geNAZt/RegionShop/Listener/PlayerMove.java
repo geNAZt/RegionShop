@@ -1,24 +1,15 @@
 package com.geNAZt.RegionShop.Listener;
 
+import com.geNAZt.RegionShop.Region.Region;
+import com.geNAZt.RegionShop.Region.Resolver;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-import com.geNAZt.RegionShop.Storages.ListStorage;
-import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
-import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
-
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-
+import com.geNAZt.RegionShop.Util.Chat;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created for YEAHWH.AT
@@ -34,49 +25,30 @@ public class PlayerMove implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMove(PlayerMoveEvent e) {
-        String storedRegion = null;
-        Boolean found = false;
+        Region foundRegion = Resolver.resolve(e.getPlayer().getLocation(), e.getPlayer().getWorld());
 
-        if (PlayerStorage.getPlayer(e.getPlayer()) != null) {
-            storedRegion = PlayerStorage.getPlayer(e.getPlayer());
-        }
+        if (PlayerStorage.has(e.getPlayer())) {
+            Region stored = PlayerStorage.get(e.getPlayer());
+            if(foundRegion == null || stored.getRegion() != foundRegion.getRegion()) {
+                e.getPlayer().sendMessage(Chat.getPrefix() + ChatColor.GOLD + "You have left " + ChatColor.DARK_GREEN + stored.getName() +  ChatColor.GOLD + ". Bye!");
+                plugin.getLogger().info("Player "+ e.getPlayer().getDisplayName() + " left WG Region " + stored.getName());
 
-        ArrayList<ProtectedRegion> regions = ListStorage.getShopList(e.getPlayer().getWorld());
+                PlayerStorage.remove(e.getPlayer());
 
-        if (regions == null) return;
+                if(foundRegion != null) {
+                    e.getPlayer().sendMessage(Chat.getPrefix() + ChatColor.GOLD + "You have entered " + ChatColor.DARK_GREEN + foundRegion.getName() +  ChatColor.GOLD + ". Type " + ChatColor.GREEN + "/shop list " + ChatColor.GOLD + "to list the items");
+                    plugin.getLogger().info("Player " + e.getPlayer().getDisplayName() + " entered WG Region " + foundRegion.getName());
 
-        for (ProtectedRegion region : regions) {
-            if(region.contains(e.getPlayer().getLocation().getBlockX(), e.getPlayer().getLocation().getBlockY(), e.getPlayer().getLocation().getBlockZ())) {
-                if (storedRegion != null) {
-                    if (region.getId().equals(storedRegion)) {
-                        found = true;
-                        break;
-                    }
-                } else {
-                    PlayerStorage.setPlayer(e.getPlayer(), region.getId());
-
-                    String shopName = WorldGuardBridge.convertRegionToShopName(region, e.getPlayer().getWorld());
-                    if(shopName == null) {
-                        shopName = region.getId();
-                    }
-
-                    e.getPlayer().sendMessage(Chat.getPrefix() + ChatColor.GOLD + "You have entered " + ChatColor.DARK_GREEN + shopName +  ChatColor.GOLD + ". Type " + ChatColor.GREEN + "/shop list " + ChatColor.GOLD + "to list the items");
-                    plugin.getLogger().info("Player " + e.getPlayer().getDisplayName() + " entered WG Region " + region.getId());
+                    PlayerStorage.set(e.getPlayer(), foundRegion);
                 }
             }
-        }
+        } else {
+            if(foundRegion != null) {
+                e.getPlayer().sendMessage(Chat.getPrefix() + ChatColor.GOLD + "You have entered " + ChatColor.DARK_GREEN + foundRegion.getName() +  ChatColor.GOLD + ". Type " + ChatColor.GREEN + "/shop list " + ChatColor.GOLD + "to list the items");
+                plugin.getLogger().info("Player " + e.getPlayer().getDisplayName() + " entered WG Region " + foundRegion.getName());
 
-        if (storedRegion != null && !found) {
-            ProtectedRegion region = WorldGuardBridge.getRegionByString(storedRegion, e.getPlayer().getWorld());
-            String shopName = WorldGuardBridge.convertRegionToShopName(region, e.getPlayer().getWorld());
-
-            if(shopName == null) {
-                shopName = region.getId();
+                PlayerStorage.set(e.getPlayer(), foundRegion);
             }
-
-            e.getPlayer().sendMessage(Chat.getPrefix() + ChatColor.GOLD + "You have left " + ChatColor.DARK_GREEN + shopName +  ChatColor.GOLD + ". Bye!");
-            plugin.getLogger().info("Player "+ e.getPlayer().getDisplayName() + " left WG Region " + storedRegion);
-            PlayerStorage.removerPlayer(e.getPlayer());
         }
     }
 }

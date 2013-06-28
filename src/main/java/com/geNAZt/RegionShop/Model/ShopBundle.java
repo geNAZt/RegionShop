@@ -11,14 +11,14 @@ import javax.persistence.Table;
 
 @SuppressWarnings("UnusedDeclaration")
 @Entity()
-@Table(name = "ShopRegion")
-public class ShopRegion {
+@Table(name = "ShopBundle")
+public class ShopBundle {
     @Id
     private Integer id;
     private String name;
     private String region;
     private String world;
-    private Boolean bundle;
+    private Boolean master;
 
     public Integer getId() {
         return id;
@@ -52,15 +52,15 @@ public class ShopRegion {
         this.world = world;
     }
 
-    public Boolean getBundle() {
-        return bundle;
+    public Boolean getMaster() {
+        return master;
     }
 
-    public Boolean isBundle() {
-        return bundle;
+    public Boolean isMaster() {
+        return master;
     }
 
-    public void setBundle(Boolean bundle) {
-        this.bundle = bundle;
+    public void setMaster(Boolean master) {
+        this.master = master;
     }
 }

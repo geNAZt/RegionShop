@@ -1,9 +1,7 @@
 package com.geNAZt.RegionShop.Listener;
 
-import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Storages.DropStorage;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
-
 import com.geNAZt.RegionShop.Storages.SearchStorage;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -19,12 +17,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class PlayerQuit implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerQuit(PlayerQuitEvent e) {
-        if (PlayerStorage.getPlayer(e.getPlayer()) != null) {
-           PlayerStorage.removerPlayer(e.getPlayer());
+        if (PlayerStorage.has(e.getPlayer())) {
+            PlayerStorage.remove(e.getPlayer());
         }
 
-        if (DropStorage.getPlayer(e.getPlayer()) != null) {
-            DropStorage.removerPlayer(e.getPlayer());
+        if (DropStorage.has(e.getPlayer())) {
+            DropStorage.remove(e.getPlayer());
         }
 
         SearchStorage.removeAllPlayer(e.getPlayer());

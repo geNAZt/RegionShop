@@ -1,9 +1,7 @@
 package com.geNAZt.RegionShop.Bridges;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
-
 import net.milkbowl.vault.economy.Economy;
-
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 /**

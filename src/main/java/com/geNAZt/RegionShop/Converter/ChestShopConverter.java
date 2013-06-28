@@ -7,9 +7,7 @@ import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.geNAZt.RegionShop.Util.ItemName;
-
 import org.bukkit.entity.Player;
-
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -49,7 +47,7 @@ public class ChestShopConverter {
                             where().
                                 conjunction().
                                     eq("world", p.getWorld().getName()).
-                                    eq("region", PlayerStorage.getPlayer(p)).
+                                    eq("region", PlayerStorage.get(p).getItemStorage()).
                                     eq("item_id", item.getType().getId()).
                                     eq("data_id", item.getData().getData()).
                                     eq("durability", item.getDurability()).
@@ -59,7 +57,7 @@ public class ChestShopConverter {
                             findUnique();
 
                     if(sItem == null) {
-                        sItem = ItemConverter.toDBItem(item, p.getWorld(), owner, PlayerStorage.getPlayer(p), buy, sell, amount);
+                        sItem = ItemConverter.toDBItem(item, p.getWorld(), owner, PlayerStorage.get(p).getItemStorage(), buy, sell, amount);
                         inv.remove(item);
                     } else {
                         sItem.setCurrentAmount(sItem.getCurrentAmount() + item.getAmount());

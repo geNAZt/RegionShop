@@ -1,9 +1,8 @@
 package com.geNAZt.RegionShop.Bridges;
 
-import com.geNAZt.RegionShop.RegionShopPlugin;
-
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.User;
+import com.geNAZt.RegionShop.RegionShopPlugin;
 
 
 /**

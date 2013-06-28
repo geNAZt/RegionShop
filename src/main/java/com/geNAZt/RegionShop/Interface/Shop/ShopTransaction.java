@@ -2,12 +2,10 @@ package com.geNAZt.RegionShop.Interface.Shop;
 
 import com.avaje.ebean.Page;
 import com.avaje.ebean.PagingList;
-
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemName;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -119,6 +117,10 @@ public class ShopTransaction extends ShopCommand {
                 if(item.getType() == com.geNAZt.RegionShop.Model.ShopTransaction.TransactionType.REMOVE) {
                     player.sendMessage(Chat.getPrefix() + ChatColor.DARK_AQUA + item.getAmount() + "x " + ChatColor.AQUA + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_AQUA + " from " + ChatColor.DARK_AQUA + "(" + ChatColor.GRAY + "#" + item.getId() + ChatColor.DARK_AQUA + ")");
                 }
+            }
+
+            if (qryPage.hasNext()) {
+                player.sendMessage(Chat.getPrefix() + ChatColor.GREEN +"/shop transaction "+ (curPage+2) + ChatColor.GOLD + " for the next page");
             }
         } else {
             player.sendMessage(Chat.getPrefix() + ChatColor.RED + "No Transactionlog found");

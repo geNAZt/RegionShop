@@ -2,15 +2,16 @@ package com.geNAZt.RegionShop.Listener;
 
 import com.geNAZt.RegionShop.Model.ShopEquipSign;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-
 import com.geNAZt.RegionShop.Storages.SignEquipStorage;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.material.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.*;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockEvent;
+import org.bukkit.event.block.BlockPhysicsEvent;
+import org.bukkit.material.Sign;
 
 /**
  * Created for YEAHWH.AT
@@ -38,8 +39,10 @@ public class BlockDestroy implements Listener {
         Block b = event.getBlock();
         if (b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST) {
             Sign s = (Sign) b.getState().getData();
+            org.bukkit.block.Sign sign = (org.bukkit.block.Sign) b.getState();
+
             Block attachedBlock = b.getRelative(s.getAttachedFace());
-            if (attachedBlock.getType() == Material.AIR || playerBreak) {  // or maybe any non-solid material, but AIR is the normal case
+            if (sign.getLine(0).equals("[RegionShop]") && (attachedBlock.getType() == Material.AIR || playerBreak)) {
                 ShopEquipSign equipSign = plugin.getDatabase().find(ShopEquipSign.class).
                         where().
                             conjunction().

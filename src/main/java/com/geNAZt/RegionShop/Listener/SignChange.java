@@ -1,22 +1,16 @@
 package com.geNAZt.RegionShop.Listener;
 
-import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.Interface.SignCommand;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-import com.geNAZt.RegionShop.Interface.Sign.Equip;
 import com.geNAZt.RegionShop.Util.Chat;
-
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.geNAZt.RegionShop.Util.Loader.loadFromJAR;

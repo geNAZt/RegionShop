@@ -4,19 +4,13 @@ import com.geNAZt.RegionShop.Model.ShopRegion;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Storages.ListStorage;
 import com.sk89q.worldguard.bukkit.WGBukkit;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created for YEAHWH.AT
@@ -37,12 +31,11 @@ public class WorldGuardBridge {
     //Get all Regions that have the owner inside
     public static HashSet<ProtectedRegion> searchRegionsByOwner(String owner, World world) {
         HashSet<ProtectedRegion> proRegionCollection = new HashSet<ProtectedRegion>();
-        ArrayList<ProtectedRegion> pRC = ListStorage.getShopList(world);
+        ArrayList<ProtectedRegion> pRC = ListStorage.get(world);
 
         if(pRC == null || pRC.isEmpty()) return null;
 
         for (ProtectedRegion region : pRC) {
-
             if (region.isOwner(owner)) {
                 proRegionCollection.add(region);
             }

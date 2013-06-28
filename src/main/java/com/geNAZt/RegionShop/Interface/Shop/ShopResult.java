@@ -1,13 +1,12 @@
 package com.geNAZt.RegionShop.Interface.Shop;
 
+import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
+import com.geNAZt.RegionShop.Storages.SearchStorage;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemName;
-import com.geNAZt.RegionShop.Storages.SearchStorage;
-import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

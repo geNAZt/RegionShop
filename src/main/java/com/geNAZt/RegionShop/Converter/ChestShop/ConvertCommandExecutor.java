@@ -5,12 +5,11 @@ import com.Acrobot.Breeze.Utils.PriceUtil;
 import com.Acrobot.ChestShop.Containers.AdminInventory;
 import com.Acrobot.ChestShop.Signs.ChestShopSign;
 import com.Acrobot.ChestShop.Utils.uBlock;
-import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Converter.ChestShopConverter;
+import com.geNAZt.RegionShop.Region.Region;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.sk89q.worldedit.Vector;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -42,12 +41,11 @@ public class ConvertCommandExecutor implements CommandExecutor {
         }
 
         if (p.hasPermission("rs.convert")) {
-            if(PlayerStorage.getPlayer(p) != null) {
-                String region = PlayerStorage.getPlayer(p);
-                ProtectedRegion rgnObj = WorldGuardBridge.getRegionByString(region, p.getWorld());
+            if(PlayerStorage.has(p)) {
+                Region region = PlayerStorage.get(p);
 
-                Vector minPoint = rgnObj.getMinimumPoint();
-                Vector maxPoint = rgnObj.getMaximumPoint();
+                Vector minPoint = region.getRegion().getMinimumPoint();
+                Vector maxPoint = region.getRegion().getMaximumPoint();
 
                 p.sendMessage(minPoint.toString());
                 p.sendMessage(maxPoint.toString());

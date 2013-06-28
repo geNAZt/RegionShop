@@ -2,17 +2,16 @@ package com.geNAZt.RegionShop.Interface.Shop;
 
 import com.geNAZt.RegionShop.Bridges.EssentialBridge;
 import com.geNAZt.RegionShop.Bridges.VaultBridge;
-import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.Model.ShopTransaction;
+import com.geNAZt.RegionShop.Region.Region;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Transaction.Transaction;
-import com.geNAZt.RegionShop.Util.*;
-
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.geNAZt.RegionShop.Util.Chat;
+import com.geNAZt.RegionShop.Util.ItemConverter;
+import com.geNAZt.RegionShop.Util.ItemName;
 import net.milkbowl.vault.economy.Economy;
-
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -77,14 +76,14 @@ public class ShopBuy extends ShopCommand {
             return;
         }
 
-        if (PlayerStorage.getPlayer(player) != null) {
-            String region = PlayerStorage.getPlayer(player);
+        if (PlayerStorage.has(player)) {
+            Region region = PlayerStorage.get(player);
 
             ShopItems item = plugin.getDatabase().find(ShopItems.class).
                         where().
                             conjunction().
                                 eq("world", player.getWorld().getName()).
-                                eq("region", region).
+                                eq("region", region.getItemStorage()).
                                 eq("id", shopItemId).
                             endJunction().
                         findUnique();
@@ -117,12 +116,6 @@ public class ShopBuy extends ShopCommand {
                         }
                     }
 
-                    ProtectedRegion regionObj = WorldGuardBridge.getRegionByString(region, player.getWorld());
-                    String shopName = WorldGuardBridge.convertRegionToShopName(regionObj, player.getWorld());
-                    if(shopName == null) {
-                        shopName = regionObj.getId();
-                    }
-
                     OfflinePlayer owner = plugin.getServer().getOfflinePlayer(item.getOwner());
                     Player onOwner = null;
 
@@ -131,7 +124,7 @@ public class ShopBuy extends ShopCommand {
                     }
 
                     if (onOwner != null) {
-                        onOwner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + player.getDisplayName() + ChatColor.DARK_GREEN + " bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " from your shop (" + ChatColor.GREEN + shopName + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
+                        onOwner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + player.getDisplayName() + ChatColor.DARK_GREEN + " bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " from your shop (" + ChatColor.GREEN + region.getName() + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
                     }
 
                     eco.withdrawPlayer(player.getName(), ((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell());
@@ -144,16 +137,16 @@ public class ShopBuy extends ShopCommand {
                         plugin.getDatabase().update(item);
                     } else {
                         if (onOwner != null) {
-                            onOwner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + shopName + ChatColor.DARK_GREEN + ")");
+                            onOwner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + region.getName() + ChatColor.DARK_GREEN + ")");
                         } else {
-                            EssentialBridge.sendMail(Chat.getPrefix(), owner, ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + shopName + ChatColor.DARK_GREEN + ")");
+                            EssentialBridge.sendMail(Chat.getPrefix(), owner, ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + region.getName() + ChatColor.DARK_GREEN + ")");
                         }
 
                         plugin.getDatabase().delete(item);
                     }
 
-                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.BUY, region, player.getWorld().getName(), owner.getName(), item.getItemID(), wishAmount, item.getSell().doubleValue(), 0.0, item.getUnitAmount());
-                    Transaction.generateTransaction(owner, ShopTransaction.TransactionType.SELL, region, player.getWorld().getName(), player.getName(), item.getItemID(), wishAmount, 0.0, item.getSell().doubleValue(), item.getUnitAmount());
+                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.BUY, region.getName(), player.getWorld().getName(), owner.getName(), item.getItemID(), wishAmount, item.getSell().doubleValue(), 0.0, item.getUnitAmount());
+                    Transaction.generateTransaction(owner, ShopTransaction.TransactionType.SELL, region.getName(), player.getWorld().getName(), player.getName(), item.getItemID(), wishAmount, 0.0, item.getSell().doubleValue(), item.getUnitAmount());
                 } else {
                     player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You have not enough money for this. You need "+ (((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell()) + "$");
                     return;

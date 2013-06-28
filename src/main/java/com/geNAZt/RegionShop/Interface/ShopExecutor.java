@@ -1,10 +1,8 @@
 package com.geNAZt.RegionShop.Interface;
 
 import com.geNAZt.RegionShop.Events.RegionShopConfigReload;
-import com.geNAZt.RegionShop.Listener.SignChange;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Chat;
-
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -15,7 +13,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;
 

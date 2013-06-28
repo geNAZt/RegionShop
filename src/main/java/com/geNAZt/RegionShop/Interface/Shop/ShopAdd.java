@@ -3,18 +3,16 @@ package com.geNAZt.RegionShop.Interface.Shop;
 import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.Model.ShopTransaction;
-import com.geNAZt.RegionShop.Storages.ListStorage;
+import com.geNAZt.RegionShop.Region.Region;
+import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Transaction.Transaction;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.geNAZt.RegionShop.Util.ItemName;
-import com.geNAZt.RegionShop.Storages.PlayerStorage;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-
 
 /**
  * Created for YEAHWH.AT
@@ -68,14 +66,14 @@ public class ShopAdd extends ShopCommand {
         }
 
         //Check if the Player is inside a Region
-        if (PlayerStorage.getPlayer(player) != null) {
-            String region = PlayerStorage.getPlayer(player);
+        if (PlayerStorage.has(player)) {
+            Region region = PlayerStorage.get(player);
 
             //Check if User is Owner of this shop
-            if (ListStorage.getShopByRegion(region, player.getWorld()).isOwner(player.getName())) {
+            if (region.getRegion().isOwner(player.getName())) {
                 ItemStack itemInHand = player.getItemInHand();
 
-                //Check if the User has somethin in his hand
+                //Check if the User has something in his hand
                 if(itemInHand == null || itemInHand.getType().getId() == 0) {
                     player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You have no item in the hand");
                     return;
@@ -86,7 +84,7 @@ public class ShopAdd extends ShopCommand {
                         where().
                             conjunction().
                                 eq("world", player.getWorld().getName()).
-                                eq("region", region).
+                                eq("region", region.getItemStorage()).
                                 eq("item_id", itemInHand.getType().getId()).
                                 eq("data_id", itemInHand.getData().getData()).
                                 eq("durability", itemInHand.getDurability()).
@@ -98,7 +96,7 @@ public class ShopAdd extends ShopCommand {
                 //Check if item is already in the Database
                 if (item == null) {
                     //It is new. Convert it into the Database
-                    ItemConverter.toDBItem(itemInHand, player.getWorld(), player.getName(), region, buy, sell, amount);
+                    ItemConverter.toDBItem(itemInHand, player.getWorld(), player.getName(), region.getItemStorage(), buy, sell, amount);
 
                     //Remove it from the Player
                     player.getInventory().remove(itemInHand);
@@ -109,7 +107,7 @@ public class ShopAdd extends ShopCommand {
                         itemName = "(" + itemInHand.getItemMeta().getDisplayName() + ")";
                     }
 
-                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.ADD, region, player.getWorld().getName(), player.getName(), itemInHand.getTypeId(), itemInHand.getAmount(), sell.doubleValue(), buy.doubleValue(), amount);
+                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.ADD, region.getName(), player.getWorld().getName(), player.getName(), itemInHand.getTypeId(), itemInHand.getAmount(), sell.doubleValue(), buy.doubleValue(), amount);
 
                     player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Added "+ ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.GOLD + " to the shop.");
                     return;

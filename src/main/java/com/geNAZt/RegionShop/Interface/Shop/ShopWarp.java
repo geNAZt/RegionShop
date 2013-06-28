@@ -1,17 +1,19 @@
 package com.geNAZt.RegionShop.Interface.Shop;
 
-import com.geNAZt.RegionShop.Interface.ShopCommand;
-import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
+import com.geNAZt.RegionShop.Interface.ShopCommand;
+import com.geNAZt.RegionShop.Model.ShopBundle;
+import com.geNAZt.RegionShop.Util.Chat;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * Created for YEAHWH.AT
@@ -19,6 +21,23 @@ import java.util.HashSet;
  * Date: 06.06.13
  */
 public class ShopWarp extends ShopCommand {
+    private class ValueComparator implements Comparator<ProtectedRegion> {
+
+        Map<ProtectedRegion, Double> base;
+        public ValueComparator(Map<ProtectedRegion, Double> base) {
+            this.base = base;
+        }
+
+        // Note: this comparator imposes orderings that are inconsistent with equals.
+        public int compare(ProtectedRegion a, ProtectedRegion b) {
+            if (base.get(a) <= base.get(b)) {
+                return -1;
+            } else {
+                return 1;
+            } // returning 0 would merge keys
+        }
+    }
+
     private final Plugin plugin;
 
     public ShopWarp(Plugin plugin) {
@@ -52,6 +71,41 @@ public class ShopWarp extends ShopCommand {
 
     @Override
     public void execute(Player player, String[] args) {
+        String shop = StringUtils.join(args, " ");
+
+        //Bundle warp
+        List<ShopBundle> bundledShops = plugin.getDatabase().find(ShopBundle.class).
+                where().
+                    eq("name", shop).
+                findList();
+
+        //Shop is a bundle
+        if(bundledShops != null && !bundledShops.isEmpty()) {
+            HashMap<ProtectedRegion,Double> map = new HashMap<ProtectedRegion,Double>();
+            ValueComparator bvc =  new ValueComparator(map);
+            TreeMap<ProtectedRegion,Double> sorted_map = new TreeMap<ProtectedRegion,Double>(bvc);
+
+            for(ShopBundle bundleShop:bundledShops) {
+                ProtectedRegion reg = WorldGuardBridge.getRegionByString(bundleShop.getRegion(), player.getWorld());
+                Vector locVector = reg.getFlag(DefaultFlag.TELE_LOC).getPosition();
+
+                map.put(reg, player.getLocation().distance(new Location(player.getWorld(), locVector.getX(), locVector.getY()+1, locVector.getZ())));
+            }
+
+            sorted_map.putAll(map);
+
+            for(Map.Entry<ProtectedRegion, Double> entry : sorted_map.entrySet()) {
+                plugin.getLogger().info(entry.getKey().getId() + ": " + entry.getValue());
+            }
+
+            ProtectedRegion regTP = sorted_map.firstKey();
+
+            plugin.getLogger().info("[RegionShop] Player "+ player.getDisplayName() +" was teleported to "+ regTP.getId());
+            Vector tpVector = regTP.getFlag(DefaultFlag.TELE_LOC).getPosition();
+            player.teleport(new Location(player.getWorld(), tpVector.getX(), tpVector.getY()+1, tpVector.getZ()));
+            return;
+        }
+
         //Player warp
         HashSet<ProtectedRegion> foundRegions;
         if (!(foundRegions = WorldGuardBridge.searchRegionsByOwner(args[0], player.getWorld())).isEmpty()) {
@@ -74,7 +128,7 @@ public class ShopWarp extends ShopCommand {
 
                 plugin.getLogger().info("[RegionShop] Player "+ player.getDisplayName() +" was teleported to "+ region.getId());
                 Vector tpVector = region.getFlag(DefaultFlag.TELE_LOC).getPosition();
-                player.teleport(new Location(player.getWorld(), tpVector.getX(), tpVector.getY(), tpVector.getZ()));
+                player.teleport(new Location(player.getWorld(), tpVector.getX(), tpVector.getY()+1, tpVector.getZ()));
                 return;
             }
         }
@@ -89,7 +143,7 @@ public class ShopWarp extends ShopCommand {
         if (region != null) {
             plugin.getLogger().info("[RegionShop] Player "+ player.getDisplayName() +" was teleported to "+  region.getId());
             Vector tpVector = region.getFlag(DefaultFlag.TELE_LOC).getPosition();
-            player.teleport(new Location(player.getWorld(), tpVector.getX(), tpVector.getY(), tpVector.getZ()));
+            player.teleport(new Location(player.getWorld(), tpVector.getX(), tpVector.getY()+1, tpVector.getZ()));
             return;
         }
 

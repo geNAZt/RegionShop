@@ -2,13 +2,10 @@ package com.geNAZt.RegionShop.ServerShop;
 
 import com.avaje.ebean.SqlRow;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-
 import com.geNAZt.RegionShop.Util.ItemName;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

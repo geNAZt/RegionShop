@@ -1,17 +1,15 @@
 package com.geNAZt.RegionShop.Interface.Shop;
 
 import com.geNAZt.RegionShop.Bridges.VaultBridge;
-import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.Model.ShopTransaction;
+import com.geNAZt.RegionShop.Region.Region;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Transaction.Transaction;
-import com.geNAZt.RegionShop.Util.*;
-
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.geNAZt.RegionShop.Util.Chat;
+import com.geNAZt.RegionShop.Util.ItemName;
 import net.milkbowl.vault.economy.Economy;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -59,8 +57,8 @@ public class ShopSell extends ShopCommand {
 
     @Override
     public void execute(Player player, String[] args) {
-        if (PlayerStorage.getPlayer(player) != null) {
-            String region = PlayerStorage.getPlayer(player);
+        if (PlayerStorage.has(player)) {
+            Region region = PlayerStorage.get(player);
 
             ItemStack itemInHand = player.getItemInHand();
 
@@ -77,7 +75,7 @@ public class ShopSell extends ShopCommand {
                     where().
                         conjunction().
                             eq("world", player.getWorld().getName()).
-                            eq("region", region).
+                            eq("region", region.getItemStorage()).
                             eq("item_id", itemInHand.getType().getId()).
                             eq("data_id", itemInHand.getData().getData()).
                             eq("durability", itemInHand.getDurability()).
@@ -95,15 +93,9 @@ public class ShopSell extends ShopCommand {
                     Economy eco = VaultBridge.economy;
 
                     if (eco.has(item.getOwner(), itemInHand.getAmount() * item.getBuy())) {
-                        ProtectedRegion regionObj = WorldGuardBridge.getRegionByString(region, player.getWorld());
-                        String shopName = WorldGuardBridge.convertRegionToShopName(regionObj, player.getWorld());
-                        if(shopName == null) {
-                            shopName = regionObj.getId();
-                        }
-
                         Player owner = plugin.getServer().getPlayer(item.getOwner());
                         if (owner != null) {
-                            owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + player.getDisplayName() + ChatColor.DARK_GREEN + " has sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + ChatColor.DARK_GREEN + " to your shop (" + ChatColor.GREEN + shopName + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getBuy()) + "$");
+                            owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + player.getDisplayName() + ChatColor.DARK_GREEN + " has sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + ChatColor.DARK_GREEN + " to your shop (" + ChatColor.GREEN + region.getName() + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getBuy()) + "$");
                         }
 
                         eco.withdrawPlayer(item.getOwner(), itemInHand.getAmount() * item.getBuy());
@@ -115,8 +107,8 @@ public class ShopSell extends ShopCommand {
                         plugin.getDatabase().update(item);
 
                         //noinspection ConstantConditions
-                        Transaction.generateTransaction(player, ShopTransaction.TransactionType.SELL, region, player.getWorld().getName(), owner.getName(), item.getItemID(), itemInHand.getAmount(), 0.0, item.getBuy().doubleValue(), item.getUnitAmount());
-                        Transaction.generateTransaction(owner, ShopTransaction.TransactionType.BUY, region, player.getWorld().getName(), player.getName(), item.getItemID(), itemInHand.getAmount(), item.getBuy().doubleValue(), 0.0, item.getUnitAmount());
+                        Transaction.generateTransaction(player, ShopTransaction.TransactionType.SELL, region.getName(), player.getWorld().getName(), owner.getName(), item.getItemID(), itemInHand.getAmount(), 0.0, item.getBuy().doubleValue(), item.getUnitAmount());
+                        Transaction.generateTransaction(owner, ShopTransaction.TransactionType.BUY, region.getName(), player.getWorld().getName(), player.getName(), item.getItemID(), itemInHand.getAmount(), item.getBuy().doubleValue(), 0.0, item.getUnitAmount());
 
                         return;
                     }

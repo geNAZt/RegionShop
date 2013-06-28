@@ -1,29 +1,14 @@
 package com.geNAZt.RegionShop.Interface.Shop;
 
-import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Interface.ShopCommand;
-import com.geNAZt.RegionShop.Model.ShopRegion;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-import com.geNAZt.RegionShop.ServerShop.Price;
-import com.geNAZt.RegionShop.ServerShop.PriceStorage;
-import com.geNAZt.RegionShop.Storages.ListStorage;
-import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Util.Chat;
-import com.geNAZt.RegionShop.Util.ItemName;
 import com.geNAZt.RegionShop.Util.Misc;
-import com.google.common.base.CharMatcher;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.geNAZt.RegionShop.Util.Loader.loadFromJAR;

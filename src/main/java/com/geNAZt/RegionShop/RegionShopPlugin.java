@@ -4,18 +4,19 @@ import com.avaje.ebean.EbeanServer;
 import com.geNAZt.RegionShop.Bridges.EssentialBridge;
 import com.geNAZt.RegionShop.Bridges.VaultBridge;
 import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
-import com.geNAZt.RegionShop.Interface.ShopExecutor;
 import com.geNAZt.RegionShop.Converter.ChestShopConverter;
 import com.geNAZt.RegionShop.Events.RegionShopConfigReload;
+import com.geNAZt.RegionShop.Interface.ShopExecutor;
 import com.geNAZt.RegionShop.Listener.*;
 import com.geNAZt.RegionShop.Model.*;
+import com.geNAZt.RegionShop.Region.Resolver;
 import com.geNAZt.RegionShop.ServerShop.ServerShop;
 import com.geNAZt.RegionShop.Storages.ListStorage;
 import com.geNAZt.RegionShop.Storages.SignEquipStorage;
 import com.geNAZt.RegionShop.Transaction.Transaction;
+import com.geNAZt.RegionShop.Util.AdminTeller;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
-
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -54,6 +55,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         VaultBridge.init(this);
         WorldGuardBridge.init(this);
         EssentialBridge.init(this);
+        Resolver.init(this);
 
         //Storages
         ListStorage.init(this);
@@ -65,6 +67,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         //Utils
         Chat.init(this);
         ItemConverter.init(this);
+        AdminTeller.init(this);
 
         //Transaction
         new Transaction(this);
@@ -94,7 +97,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
             File serverShop = new File(getDataFolder().getAbsolutePath(), "servershop");
             if(!serverShop.exists()) {
                 boolean made = serverShop.mkdirs();
-                if(made == false) {
+                if(!made) {
                     getLogger().warning("Could not creata Servershop Config dir");
                 }
 
@@ -175,6 +178,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         list.add(ShopEquipSign.class);
         list.add(ShopTransaction.class);
         list.add(ShopServerItemAverage.class);
+        list.add(ShopBundle.class);
         return list;
     }
 
@@ -186,6 +190,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
             getDatabase().find(ShopEquipSign.class).findRowCount();
             getDatabase().find(ShopTransaction.class).findRowCount();
             getDatabase().find(ShopServerItemAverage.class).findRowCount();
+            getDatabase().find(ShopBundle.class).findRowCount();
         } catch (PersistenceException ex) {
             getLogger().info("[RegionShop] Database hasn't setup.");
             installDDL();

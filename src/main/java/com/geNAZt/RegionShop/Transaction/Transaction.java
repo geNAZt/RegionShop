@@ -3,7 +3,6 @@ package com.geNAZt.RegionShop.Transaction;
 import com.geNAZt.RegionShop.Model.ShopTransaction;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
 import java.util.Date;
 

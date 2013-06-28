@@ -1,14 +1,13 @@
 package com.geNAZt.RegionShop.Interface.Shop;
 
+import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopRegion;
-import com.geNAZt.RegionShop.Util.Chat;
+import com.geNAZt.RegionShop.Region.Region;
 import com.geNAZt.RegionShop.Storages.ListStorage;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
-import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
-
+import com.geNAZt.RegionShop.Util.Chat;
 import com.google.common.base.CharMatcher;
-
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -58,13 +57,16 @@ public class ShopName extends ShopCommand {
     public void execute(Player player, String[] args) {
         String name = StringUtils.join(args, " ");
 
-        if(PlayerStorage.getPlayer(player) != null) {
-            String region = PlayerStorage.getPlayer(player);
+        if(PlayerStorage.has(player)) {
+            Region region = PlayerStorage.get(player);
 
-            ProtectedRegion rgn = WorldGuardBridge.getRegionByString(region, player.getWorld());
+            if (region.getRegion().isOwner(player.getName())) {
+                if(region.isBundle()) {
+                    player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Shop is inside a bundle and can only be renamed via Admincommands");
+                    return;
+                }
 
-            if (rgn.isOwner(player.getName())) {
-                ArrayList<ProtectedRegion> regions = ListStorage.getShopList(player.getWorld());
+                ArrayList<ProtectedRegion> regions = ListStorage.get(player.getWorld());
 
                 if(regions == null) return;
 
@@ -95,7 +97,7 @@ public class ShopName extends ShopCommand {
                 ShopRegion shpRegion = plugin.getDatabase().find(ShopRegion.class).
                         where().
                             conjunction().
-                                eq("region", rgn.getId()).
+                                eq("name", region.getName()).
                                 eq("world", player.getWorld().getName()).
                             endJunction().
                         findUnique();
@@ -106,8 +108,9 @@ public class ShopName extends ShopCommand {
                 } else {
                     ShopRegion newShpRegion = new ShopRegion();
                     newShpRegion.setName(name);
-                    newShpRegion.setRegion(rgn.getId());
+                    newShpRegion.setRegion(region.getRegion().getId());
                     newShpRegion.setWorld(player.getWorld().getName());
+                    newShpRegion.setBundle(false);
                     plugin.getDatabase().save(newShpRegion);
                 }
 

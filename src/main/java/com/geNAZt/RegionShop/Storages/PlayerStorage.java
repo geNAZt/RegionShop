@@ -1,5 +1,6 @@
 package com.geNAZt.RegionShop.Storages;
 
+import com.geNAZt.RegionShop.Region.Region;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -10,9 +11,9 @@ import java.util.HashMap;
  * Date: 06.06.13
  */
 public class PlayerStorage {
-    private static final HashMap<Player, String> playersInRegions = new HashMap<Player, String>();
+    private static final HashMap<Player, Region> playersInRegions = new HashMap<Player, Region>();
 
-    public static String getPlayer(Player plyr) {
+    public static Region get(Player plyr) {
         if (!playersInRegions.containsKey(plyr)) {
             return null;
         }
@@ -20,11 +21,15 @@ public class PlayerStorage {
         return playersInRegions.get(plyr);
     }
 
-    public static void setPlayer(Player plyr, String region) {
+    public static boolean has(Player player) {
+        return playersInRegions.containsKey(player);
+    }
+
+    public static void set(Player plyr, Region region) {
         playersInRegions.put(plyr, region);
     }
 
-    public static void removerPlayer(Player plyr) {
+    public static void remove(Player plyr) {
         playersInRegions.remove(plyr);
     }
 }

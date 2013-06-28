@@ -2,7 +2,6 @@ package com.geNAZt.RegionShop.ServerShop;
 
 import com.geNAZt.RegionShop.Model.ShopServerItemAverage;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
