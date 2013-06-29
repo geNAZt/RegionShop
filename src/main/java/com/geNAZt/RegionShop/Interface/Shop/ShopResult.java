@@ -12,8 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created for YEAHWH.AT
@@ -29,7 +29,7 @@ public class ShopResult extends ShopCommand {
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static void printResultPage(Player p, String searchQry, HashMap<ShopItems, ItemStack> result, Integer page) {
+    public static void printResultPage(Player p, String searchQry, ConcurrentHashMap<ShopItems, ItemStack> result, Integer page) {
         Float max = (float)result.size() / (float)7;
         Integer maxPage = (int)Math.ceil(max);
         Integer skip = (page - 1) * 7;

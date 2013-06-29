@@ -2,7 +2,6 @@ package com.geNAZt.RegionShop.Interface.Shop;
 
 import com.avaje.ebean.Page;
 import com.avaje.ebean.PagingList;
-import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemName;
@@ -87,35 +86,31 @@ public class ShopTransaction extends ShopCommand {
         player.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Transactionlog -- " + ChatColor.GOLD + "Page " + ChatColor.RED + (curPage+1) + ChatColor.GOLD + "/" + ChatColor.RED + transactionPagingList.getTotalPageCount() + ChatColor.YELLOW + " --");
         player.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "Legend: " + ChatColor.DARK_GREEN + "You have bought" + ChatColor.RESET + " - " + ChatColor.DARK_RED + "You have sold" + ChatColor.RESET + " - " + ChatColor.GOLD + "You have equipped" + ChatColor.RESET + " - " + ChatColor.YELLOW + "You added/set Item" + ChatColor.RESET + " - " + ChatColor.DARK_AQUA + "You have removed" );
 
-        DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        DateFormat df = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
 
         if(transactionList.size() > 0) {
             for(com.geNAZt.RegionShop.Model.ShopTransaction item : transactionList) {
                 ItemStack iStack = new ItemStack(item.getItem(), 1);
                 String shopName = item.getShop();
 
-                if(shopName != "Servershop") {
-                    shopName = WorldGuardBridge.convertRegionStringToShopName(shopName, plugin.getServer().getWorld(item.getWorld()));
-                }
-
                 if(item.getType() == com.geNAZt.RegionShop.Model.ShopTransaction.TransactionType.BUY) {
-                    player.sendMessage(Chat.getPrefix() + item.getDate().toString() + ChatColor.DARK_GREEN + item.getAmount() + "x " + ChatColor.GREEN + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " from " + ChatColor.GREEN + shopName + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + (item.getSell() * (item.getAmount() / item.getUnitAmount())) + "$ " + ChatColor.DARK_GREEN + "(" + ChatColor.GRAY + "#" + item.getId() + ChatColor.DARK_GREEN + ")");
+                    player.sendMessage(Chat.getPrefix() + df.format(item.getDate()) + ": " + ChatColor.DARK_GREEN + item.getAmount() + "x " + ChatColor.GREEN + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " from " + ChatColor.GREEN + shopName + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + (item.getSell() * (item.getAmount() / item.getUnitAmount())) + "$ " + ChatColor.DARK_GREEN + "(" + ChatColor.GRAY + "#" + item.getId() + ChatColor.DARK_GREEN + ")");
                 }
 
                 if(item.getType() == com.geNAZt.RegionShop.Model.ShopTransaction.TransactionType.SELL) {
-                    player.sendMessage(Chat.getPrefix() + ChatColor.DARK_RED + item.getAmount() + "x " + ChatColor.RED + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_RED + " via " + ChatColor.RED + shopName + ChatColor.DARK_RED + " for " + ChatColor.RED + (item.getBuy() * (item.getAmount() / item.getUnitAmount())) + "$ " + ChatColor.DARK_RED + "(" + ChatColor.GRAY + "#" + item.getId() + ChatColor.DARK_RED + ")");
+                    player.sendMessage(Chat.getPrefix() + df.format(item.getDate()) + ": " + ChatColor.DARK_RED + item.getAmount() + "x " + ChatColor.RED + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_RED + " via " + ChatColor.RED + shopName + ChatColor.DARK_RED + " for " + ChatColor.RED + (item.getBuy() * (item.getAmount() / item.getUnitAmount())) + "$ " + ChatColor.DARK_RED + "(" + ChatColor.GRAY + "#" + item.getId() + ChatColor.DARK_RED + ")");
                 }
 
                 if(item.getType() == com.geNAZt.RegionShop.Model.ShopTransaction.TransactionType.EQUIP) {
-                    player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + item.getAmount() + "x " + ChatColor.YELLOW + ItemName.nicer(iStack.getType().toString()) + ChatColor.GOLD + " into " + ChatColor.YELLOW + shopName + ChatColor.GOLD + "(" + ChatColor.GRAY + "#" + item.getId() + ChatColor.GOLD + ")");
+                    player.sendMessage(Chat.getPrefix() + df.format(item.getDate()) + ": " + ChatColor.GOLD + item.getAmount() + "x " + ChatColor.YELLOW + ItemName.nicer(iStack.getType().toString()) + ChatColor.GOLD + " into " + ChatColor.YELLOW + shopName + ChatColor.GOLD + " (" + ChatColor.GRAY + "#" + item.getId() + ChatColor.GOLD + ")");
                 }
 
                 if(item.getType() == com.geNAZt.RegionShop.Model.ShopTransaction.TransactionType.ADD) {
-                    player.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + item.getAmount() + "x " + ChatColor.GOLD + ItemName.nicer(iStack.getType().toString()) + ChatColor.YELLOW + " into " + ChatColor.GOLD + shopName + ChatColor.YELLOW + "(S)"+ ChatColor.GOLD + item.getSell() + ChatColor.YELLOW + "$ (B)" +ChatColor.GOLD + item.getBuy() + ChatColor.YELLOW + "$ /" + ChatColor.GOLD + item.getUnitAmount() + ChatColor.YELLOW +" Unit(s) (" + ChatColor.GRAY + "#" + item.getId() + ChatColor.YELLOW + ")");
+                    player.sendMessage(Chat.getPrefix() + df.format(item.getDate()) + ": " + ChatColor.YELLOW + item.getAmount() + "x " + ChatColor.GOLD + ItemName.nicer(iStack.getType().toString()) + ChatColor.YELLOW + " into " + ChatColor.GOLD + shopName + ChatColor.YELLOW + " (S)"+ ChatColor.GOLD + item.getSell() + ChatColor.YELLOW + "$ (B)" +ChatColor.GOLD + item.getBuy() + ChatColor.YELLOW + "$ /" + ChatColor.GOLD + item.getUnitAmount() + ChatColor.YELLOW +" Unit(s) (" + ChatColor.GRAY + "#" + item.getId() + ChatColor.YELLOW + ")");
                 }
 
                 if(item.getType() == com.geNAZt.RegionShop.Model.ShopTransaction.TransactionType.REMOVE) {
-                    player.sendMessage(Chat.getPrefix() + ChatColor.DARK_AQUA + item.getAmount() + "x " + ChatColor.AQUA + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_AQUA + " from " + ChatColor.DARK_AQUA + "(" + ChatColor.GRAY + "#" + item.getId() + ChatColor.DARK_AQUA + ")");
+                    player.sendMessage(Chat.getPrefix() + df.format(item.getDate()) + ": " + ChatColor.DARK_AQUA + item.getAmount() + "x " + ChatColor.AQUA + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_AQUA + " from " + ChatColor.DARK_AQUA + " (" + ChatColor.GRAY + "#" + item.getId() + ChatColor.DARK_AQUA + ")");
                 }
             }
 

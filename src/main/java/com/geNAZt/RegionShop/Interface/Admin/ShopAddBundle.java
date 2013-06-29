@@ -1,8 +1,9 @@
 package com.geNAZt.RegionShop.Interface.Admin;
 
-import com.geNAZt.RegionShop.Events.RegionShopConfigReload;
 import com.geNAZt.RegionShop.Interface.ShopCommand;
-import com.geNAZt.RegionShop.Storages.ListStorage;
+import com.geNAZt.RegionShop.Model.ShopBundle;
+import com.geNAZt.RegionShop.Model.ShopRegion;
+import com.geNAZt.RegionShop.Region.Region;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Util.Chat;
 import org.apache.commons.lang.StringUtils;
@@ -57,7 +58,57 @@ public class ShopAddBundle extends ShopCommand {
             return;
         }
 
-        //Look if this bundle exists
+        //Check if Shop already is inside a bundle
+        Region region = PlayerStorage.get(player);
+        ShopBundle bundle = plugin.getDatabase().find(ShopBundle.class).
+                where().
+                    eq("region", region.getRegion().getId()).
+                findUnique();
 
+        if(bundle != null) {
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Shop is already inside a bundle: " + bundle.getName());
+            return;
+        }
+
+        //Look if this bundle exists
+        bundle = plugin.getDatabase().find(ShopBundle.class).
+            where().
+                eq("name", name).
+            setMaxRows(1).
+            findUnique();
+
+        ShopBundle newBundle = new ShopBundle();
+        newBundle.setName(name);
+        newBundle.setWorld(player.getWorld().getName());
+        newBundle.setRegion(region.getRegion().getId());
+
+        //No bundle exists => This is the master
+        if(bundle != null) {
+            newBundle.setMaster(false);
+        } else {
+            newBundle.setMaster(true);
+        }
+
+        plugin.getDatabase().save(newBundle);
+
+        //If an old ShopRegion entry is found delete it
+        ShopRegion shopRegion = plugin.getDatabase().find(ShopRegion.class).
+                where().
+                    eq("region", region.getRegion().getId()).
+                    eq("world", player.getWorld().getName()).
+                findUnique();
+
+        if(shopRegion != null) plugin.getDatabase().delete(shopRegion);
+
+        //Create a new Bundle ShopRegion entry
+        ShopRegion newShopRegion = new ShopRegion();
+        newShopRegion.setBundle(true);
+        newShopRegion.setName(name);
+        newShopRegion.setWorld(player.getWorld().getName());
+        newShopRegion.setRegion(region.getRegion().getId());
+
+        plugin.getDatabase().save(newShopRegion);
+
+        player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Shop has been added to the Bundle: " + name);
     }
 }

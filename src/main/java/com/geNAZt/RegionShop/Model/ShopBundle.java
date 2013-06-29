@@ -5,10 +5,13 @@ package com.geNAZt.RegionShop.Model;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 05.06.13
  */
+import com.avaje.ebean.annotation.CacheStrategy;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+@CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by region")
 @SuppressWarnings("UnusedDeclaration")
 @Entity()
 @Table(name = "ShopBundle")

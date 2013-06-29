@@ -1,6 +1,7 @@
 package com.geNAZt.RegionShop.Interface.Shop;
 
 import com.geNAZt.RegionShop.Interface.ShopCommand;
+import com.geNAZt.RegionShop.Model.ShopItemEnchantments;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.Model.ShopTransaction;
 import com.geNAZt.RegionShop.Region.Region;
@@ -10,9 +11,13 @@ import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
 import com.geNAZt.RegionShop.Util.ItemName;
 import org.bukkit.ChatColor;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created for YEAHWH.AT
@@ -80,7 +85,7 @@ public class ShopAdd extends ShopCommand {
                 }
 
                 //Ask Database for this Item
-                ShopItems item = plugin.getDatabase().find(ShopItems.class).
+                List<ShopItems> item = plugin.getDatabase().find(ShopItems.class).
                         where().
                             conjunction().
                                 eq("world", player.getWorld().getName()).
@@ -91,10 +96,10 @@ public class ShopAdd extends ShopCommand {
                                 eq("owner", player.getName()).
                                 eq("custom_name", (itemInHand.getItemMeta().hasDisplayName()) ? itemInHand.getItemMeta().getDisplayName() : null).
                             endJunction().
-                        findUnique();
+                        findList();
 
                 //Check if item is already in the Database
-                if (item == null) {
+                if (item == null || item.isEmpty()) {
                     //It is new. Convert it into the Database
                     ItemConverter.toDBItem(itemInHand, player.getWorld(), player.getName(), region.getItemStorage(), buy, sell, amount);
 
@@ -112,9 +117,70 @@ public class ShopAdd extends ShopCommand {
                     player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Added "+ ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.GOLD + " to the shop.");
                     return;
                 } else {
-                    //Item is already added
-                    player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Item already added. " + ChatColor.DARK_RED + "/shop set "+ item.getId() + " sellprice buyprice amount" + ChatColor.RED + " to change it.");
-                    return;
+                    boolean found = false;
+                    Integer itemID = 0;
+
+                    for(ShopItems it : item) {
+                        //Check if enchantments are the same
+                        List<ShopItemEnchantments> enchantments = plugin.getDatabase().find(ShopItemEnchantments.class).
+                                where().
+                                    eq("shop_item_id", it.getId()).
+                                findList();
+
+                        Map<Enchantment, Integer> enchOnItem = itemInHand.getEnchantments();
+
+                        if((enchantments == null || enchantments.isEmpty()) && (enchOnItem == null || enchOnItem.isEmpty())) {
+                            found = true;
+                            itemID = it.getId();
+                            break;
+                        } else {
+                            if(enchantments == null || enchantments.isEmpty()) {
+                                continue;
+                            }
+
+                            if (enchOnItem == null || enchOnItem.isEmpty()) {
+                                continue;
+                            }
+
+                            Integer foundEnchs = 0;
+                            for(Map.Entry<Enchantment, Integer> ench : enchOnItem.entrySet()) {
+                                for(ShopItemEnchantments enchI : enchantments) {
+                                    if(enchI.getEnchId().equals(ench.getKey().getId()) && enchI.getEnchLvl().equals(ench.getValue())) {
+                                        foundEnchs++;
+                                    }
+                                }
+                            }
+
+                            if(foundEnchs.equals(enchOnItem.size()) && enchantments.size() == enchOnItem.size()) {
+                                itemID = it.getId();
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if(found) {
+                        //Item is already added
+                        player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Item already added. " + ChatColor.DARK_RED + "/shop set "+ itemID + " sellprice buyprice amount" + ChatColor.RED + " to change it.");
+                        return;
+                    } else {
+                        //It is new. Convert it into the Database
+                        ItemConverter.toDBItem(itemInHand, player.getWorld(), player.getName(), region.getItemStorage(), buy, sell, amount);
+
+                        //Remove it from the Player
+                        player.getInventory().remove(itemInHand);
+
+                        //Get the nice name
+                        String itemName = ItemName.getDataName(itemInHand) + itemInHand.getType().toString();
+                        if (itemInHand.getItemMeta().hasDisplayName()) {
+                            itemName = "(" + itemInHand.getItemMeta().getDisplayName() + ")";
+                        }
+
+                        Transaction.generateTransaction(player, ShopTransaction.TransactionType.ADD, region.getName(), player.getWorld().getName(), player.getName(), itemInHand.getTypeId(), itemInHand.getAmount(), sell.doubleValue(), buy.doubleValue(), amount);
+
+                        player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "Added "+ ChatColor.GREEN + ItemName.nicer(itemName) + ChatColor.GOLD + " to the shop.");
+                        return;
+                    }
                 }
             } else {
                 //Player is not owner in this shop

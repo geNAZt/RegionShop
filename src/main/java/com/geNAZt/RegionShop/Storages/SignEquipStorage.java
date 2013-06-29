@@ -151,7 +151,7 @@ public class SignEquipStorage {
     }
 
     public static void addSign(Block sign, String owner, String region, String world) {
-        signWorkers.put(sign, new EquipTask(sign, owner, region, world).runTaskTimer(plugin, 20, 20));
+        signWorkers.put(sign, new EquipTask(sign, owner, region, world).runTaskTimer(plugin, 10*20, 10*20));
     }
 
     public static void removeSign(Block sign) {

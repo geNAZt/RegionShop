@@ -11,9 +11,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.intellij.lang.annotations.MagicConstant;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,8 +61,24 @@ public class ShopSearch extends ShopCommand {
 
         List<ShopItems> items = plugin.getDatabase().find(ShopItems.class).findList();
         if(items != null) {
-            Pattern r = Pattern.compile("(.*)" + search + "(.*)");
-            HashMap<ShopItems, ItemStack> result = new HashMap<ShopItems, ItemStack>();
+            Pattern r = Pattern.compile("(.*)" + search + "(.*)", Pattern.CASE_INSENSITIVE);
+            ConcurrentHashMap<ShopItems, ItemStack> result = new ConcurrentHashMap<ShopItems, ItemStack>();
+
+            Integer itemID = -1;
+            byte dataValue = 0;
+
+            if(search.contains(":")) {
+                String[] itemIDAndData = search.split(":");
+
+                try {
+                    dataValue = Byte.parseByte(itemIDAndData[1]);
+                    itemID = Integer.parseInt(itemIDAndData[0]);
+                } catch(NumberFormatException e) {}
+            } else {
+                try {
+                    itemID = Integer.parseInt(search);
+                } catch(NumberFormatException e) {}
+            }
 
             for(ShopItems item : items) {
                 ItemStack iStack = ItemConverter.fromDBItem(item);
@@ -69,6 +86,11 @@ public class ShopSearch extends ShopCommand {
                 String searchString = ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString());
 
                 Matcher m = r.matcher(searchString);
+
+                if(itemID > -1 && item.getItemID().equals(itemID) && item.getDataID().equals(dataValue) && ((item.getSell() != 0 || item.getBuy() != 0) && item.getUnitAmount() > 0)) {
+                    result.put(item, iStack);
+                    continue;
+                }
 
                 if (m.matches() && ((item.getSell() != 0 || item.getBuy() != 0) && item.getUnitAmount() > 0)) {
                     result.put(item, iStack);

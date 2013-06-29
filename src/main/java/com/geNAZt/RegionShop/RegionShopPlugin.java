@@ -14,6 +14,7 @@ import com.geNAZt.RegionShop.ServerShop.ServerShop;
 import com.geNAZt.RegionShop.Storages.ListStorage;
 import com.geNAZt.RegionShop.Storages.SignEquipStorage;
 import com.geNAZt.RegionShop.Transaction.Transaction;
+import com.geNAZt.RegionShop.Updater.Updater;
 import com.geNAZt.RegionShop.Util.AdminTeller;
 import com.geNAZt.RegionShop.Util.Chat;
 import com.geNAZt.RegionShop.Util.ItemConverter;
@@ -28,6 +29,7 @@ import javax.persistence.PersistenceException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created for YEAHWH.AT
@@ -40,6 +42,52 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         getLogger().info("[RegionShop] Enabled");
+
+        Updater.init(this);
+
+        //Check if Version has changed
+        File versionFile = new File(getDataFolder().getAbsolutePath(), "version");
+        if(versionFile.exists()) {
+            try {
+                StringBuilder fileContents = new StringBuilder((int)versionFile.length());
+                Scanner scanner = new Scanner(versionFile);
+
+                try {
+                    while(scanner.hasNextLine()) {
+                        fileContents.append(scanner.nextLine());
+                    }
+
+                    String buildNumber = fileContents.toString();
+                    Integer build;
+
+                    try {
+                        build = Integer.parseInt(buildNumber);
+
+                        getLogger().info("Build Number: " + build);
+
+                        if(build < Updater.getCurrentBuild()) {
+                            //Needs updates
+                            Updater.update(build);
+                        }
+                    } catch(NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+
+                } finally {
+                    scanner.close();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                OutputStream oStream = new FileOutputStream(versionFile);
+                oStream.write(String.valueOf(Updater.getCurrentBuild()).getBytes());
+                oStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         MCStats.init(this);
 
@@ -98,7 +146,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
             if(!serverShop.exists()) {
                 boolean made = serverShop.mkdirs();
                 if(!made) {
-                    getLogger().warning("Could not creata Servershop Config dir");
+                    getLogger().warning("Could not create Servershop Config dir");
                 }
 
                 InputStream stream = getResource("static/servershop/00-default.yml");
@@ -112,6 +160,9 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
                     while ((len = stream.read(buffer)) != -1) {
                         oStream.write(buffer, 0, len);
                     }
+
+                    stream.close();
+                    oStream.close();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -191,6 +242,8 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
             getDatabase().find(ShopTransaction.class).findRowCount();
             getDatabase().find(ShopServerItemAverage.class).findRowCount();
             getDatabase().find(ShopBundle.class).findRowCount();
+
+            getDatabase().runCacheWarming();
         } catch (PersistenceException ex) {
             getLogger().info("[RegionShop] Database hasn't setup.");
             installDDL();

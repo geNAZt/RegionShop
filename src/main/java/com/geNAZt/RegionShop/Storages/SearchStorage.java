@@ -4,8 +4,8 @@ import com.geNAZt.RegionShop.Model.ShopItems;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created for YEAHWH.AT
@@ -18,10 +18,10 @@ public class SearchStorage {
         public String searchQry;
     }
 
-    private static final HashMap<SearchItem, HashMap<ShopItems, ItemStack>> playerSearchQuery = new HashMap<SearchItem, HashMap<ShopItems, ItemStack>>();
+    private static final ConcurrentHashMap<SearchItem, ConcurrentHashMap<ShopItems, ItemStack>> playerSearchQuery = new ConcurrentHashMap<SearchItem, ConcurrentHashMap<ShopItems, ItemStack>>();
 
     public static boolean hasPlayer(Player plyr) {
-        for(Map.Entry<SearchItem, HashMap<ShopItems, ItemStack>> item : playerSearchQuery.entrySet()) {
+        for(Map.Entry<SearchItem, ConcurrentHashMap<ShopItems, ItemStack>> item : playerSearchQuery.entrySet()) {
             if(item.getKey().plyr == plyr) {
                 return true;
             }
@@ -31,7 +31,7 @@ public class SearchStorage {
     }
 
     public static void removeAllPlayer(Player plyr) {
-        for(Map.Entry<SearchItem, HashMap<ShopItems, ItemStack>> item : playerSearchQuery.entrySet()) {
+        for(Map.Entry<SearchItem, ConcurrentHashMap<ShopItems, ItemStack>> item : playerSearchQuery.entrySet()) {
             if(item.getKey().plyr == plyr) {
                 playerSearchQuery.remove(item.getKey());
             }
@@ -39,7 +39,7 @@ public class SearchStorage {
     }
 
     public static String getSearchQuery(Player plyr) {
-        for(Map.Entry<SearchItem, HashMap<ShopItems, ItemStack>> item : playerSearchQuery.entrySet()) {
+        for(Map.Entry<SearchItem, ConcurrentHashMap<ShopItems, ItemStack>> item : playerSearchQuery.entrySet()) {
             if(item.getKey().plyr == plyr) {
                 return item.getKey().searchQry;
             }
@@ -48,8 +48,8 @@ public class SearchStorage {
         return null;
     }
 
-    public static HashMap<ShopItems, ItemStack> getSearchResult(Player plyr) {
-        for(Map.Entry<SearchItem, HashMap<ShopItems, ItemStack>> item : playerSearchQuery.entrySet()) {
+    public static ConcurrentHashMap<ShopItems, ItemStack> getSearchResult(Player plyr) {
+        for(Map.Entry<SearchItem, ConcurrentHashMap<ShopItems, ItemStack>> item : playerSearchQuery.entrySet()) {
             if(item.getKey().plyr == plyr) {
                 return item.getValue();
             }
@@ -58,7 +58,7 @@ public class SearchStorage {
         return null;
     }
 
-    public static void putSearchResults(Player plyr, String searchQry, HashMap<ShopItems, ItemStack> result) {
+    public static void putSearchResults(Player plyr, String searchQry, ConcurrentHashMap<ShopItems, ItemStack> result) {
         SearchItem srchItm = new SearchItem();
         srchItm.plyr = plyr;
         srchItm.searchQry = searchQry;

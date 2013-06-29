@@ -12,6 +12,9 @@ database:
 chat:
   prefix: '[RS] '
 
+adminteller:
+  console: true
+
 feature:
   transaction: true
   servershop: true

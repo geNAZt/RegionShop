@@ -5,6 +5,7 @@ import com.geNAZt.RegionShop.RegionShopPlugin;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.Enumeration;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.jar.JarEntry;
@@ -40,6 +41,10 @@ public class Loader {
                     Class<?> c = cl.loadClass(className);
 
                     if(!interf.isAssignableFrom(c)) {
+                        continue;
+                    }
+
+                    if(Modifier.isAbstract(c.getModifiers())) {
                         continue;
                     }
 
