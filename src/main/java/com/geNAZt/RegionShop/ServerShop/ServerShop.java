@@ -56,7 +56,7 @@ public class ServerShop {
             ServerShop.unload();
         }
 
-        new ConfigReaderTask(plugin).runTaskAsynchronously(plugin);
+        new ConfigReaderTask(plugin).runTaskLaterAsynchronously(plugin, 2*20);
     }
 
     public static CopyOnWriteArrayList<FileConfiguration> getAllConfigs() {

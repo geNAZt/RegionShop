@@ -6,6 +6,8 @@ import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.Region.Region;
+import com.geNAZt.RegionShop.ServerShop.Price;
+import com.geNAZt.RegionShop.ServerShop.PriceStorage;
 import com.geNAZt.RegionShop.Storages.ListStorage;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Util.Chat;
@@ -21,6 +23,8 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created for YEAHWH.AT
@@ -61,7 +65,7 @@ public class ShopList extends ShopCommand {
 
     @Override
     public void execute(Player player, String[] args) {
-        //Check for optinal Args
+        //Check for optional Args
         Integer page = 1;
 
         if(args.length > 0) {
@@ -132,45 +136,43 @@ public class ShopList extends ShopCommand {
 
     }
 
-    @SuppressWarnings("ConstantConditions")
-    private void executeInsideRegion(Player player, Integer page) {
-        Region region = PlayerStorage.get(player);
+    private void executeInsideRegionPlayerShop(Player player, Integer page, Region region) {
         PagingList<ShopItems> shopItems;
 
         //Check if Player is Owner
         if (region.getRegion().isOwner(player.getName())) {
             //Player is owner of this shop. he can see not ready items
             shopItems = plugin.getDatabase().find(ShopItems.class).
-                        where().
-                            conjunction().
-                                eq("world", player.getWorld().getName()).
-                                eq("region", region.getItemStorage()).
-                                    disjunction().
-                                        conjunction().
-                                            gt("unit_amount", 0).
-                                            disjunction().
-                                                gt("sell", 0).
-                                                gt("buy", 0).
-                                            endJunction().
-                                        endJunction().
-                                        eq("owner", player.getName()).
-                                    endJunction().
-                            endJunction().
-                        findPagingList(7);
-        } else {
-            //Is normal player. Can only see ready items
-            shopItems = plugin.getDatabase().find(ShopItems.class).
-                        where().
-                            conjunction().
-                                eq("world", player.getWorld().getName()).
-                                eq("region", region.getItemStorage()).
-                                gt("unit_amount", 0).
+                    where().
+                        conjunction().
+                        eq("world", player.getWorld().getName()).
+                        eq("region", region.getItemStorage()).
+                            disjunction().
+                                conjunction().
+                                    gt("unit_amount", 0).
                                     disjunction().
                                         gt("sell", 0).
                                         gt("buy", 0).
                                     endJunction().
+                                endJunction().
+                                eq("owner", player.getName()).
                             endJunction().
-                        findPagingList(7);
+                        endJunction().
+                    findPagingList(7);
+        } else {
+            //Is normal player. Can only see ready items
+            shopItems = plugin.getDatabase().find(ShopItems.class).
+                    where().
+                        conjunction().
+                            eq("world", player.getWorld().getName()).
+                            eq("region", region.getItemStorage()).
+                            gt("unit_amount", 0).
+                            disjunction().
+                                gt("sell", 0).
+                                gt("buy", 0).
+                            endJunction().
+                        endJunction().
+                    findPagingList(7);
         }
 
         Integer curPage = page - 1;
@@ -249,6 +251,64 @@ public class ShopList extends ShopCommand {
             }
         } else {
             player.sendMessage(Chat.getPrefix() + ChatColor.RED + "This shop has no items");
+        }
+    }
+
+    private void executeInsideRegionServerShop(Player player, Integer page, ConcurrentHashMap<ItemStack, Price> items, Region region) {
+        Integer skip = (page - 1) * 7;
+        Integer current = 0;
+
+        Integer maxPage;
+        Float max = items.size() / (float)7;
+        maxPage = (int)Math.ceil(max);
+
+
+        if(page < 1 || page > maxPage) {
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid page");
+            return;
+        }
+
+        //Send the Header
+        player.sendMessage(Chat.getPrefix() + ChatColor.YELLOW + "-- " + ChatColor.GOLD + "List of items in " + ChatColor.GREEN + region.getName() + ChatColor.YELLOW + " -- " + ChatColor.GOLD + "Page " + ChatColor.RED + page + ChatColor.GOLD + "/" + ChatColor.RED + maxPage + ChatColor.YELLOW + " --");
+
+        player.sendMessage(Chat.getPrefix() + " ");
+
+        String endless = Character.toString((char)0x221E);
+
+        for(Map.Entry<ItemStack, Price> item : items.entrySet()) {
+            current++;
+
+            if(skip > current) {
+                continue;
+            }
+
+            if(current - skip > 7) {
+                return;
+            }
+
+            String niceItemName = ItemName.nicer(item.getKey().getType().toString());
+            String itemName = ItemName.getDataName(item.getKey()) + niceItemName;
+            String itemID = Integer.toString(item.getKey().getTypeId());
+
+            if(item.getKey().getData().getData() > 0) {
+                itemID += ":" + item.getKey().getData().getData();
+            }
+
+            String message = Chat.getPrefix() + ChatColor.DARK_GREEN + endless + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for (S)" + ChatColor.GREEN + item.getValue().getCurrentSell() + "$" + ChatColor.DARK_GREEN + " (B)" + ChatColor.GREEN + item.getValue().getCurrentBuy() + "$/1" + ChatColor.DARK_GREEN + " Unit(s) from " + ChatColor.GREEN + "Server" + ChatColor.DARK_GREEN + " (" + ChatColor.GRAY + itemID + ChatColor.DARK_GREEN + ")";
+
+            player.sendMessage(message);
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void executeInsideRegion(Player player, Integer page) {
+        Region region = PlayerStorage.get(player);
+        ConcurrentHashMap<ItemStack, Price> serverShop = PriceStorage.getRegion(region.getRegion().getId());
+
+        if(serverShop != null) {
+            executeInsideRegionServerShop(player, page, serverShop, region);
+        } else {
+            executeInsideRegionPlayerShop(player, page, region);
         }
     }
 }

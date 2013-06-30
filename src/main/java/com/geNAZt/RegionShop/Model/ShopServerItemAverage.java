@@ -22,6 +22,7 @@ public class ShopServerItemAverage {
     private Integer itemid;
     private Date date;
     private byte datavalue;
+    private String region;
 
     public Integer getId() {
         return id;
@@ -69,5 +70,13 @@ public class ShopServerItemAverage {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 }

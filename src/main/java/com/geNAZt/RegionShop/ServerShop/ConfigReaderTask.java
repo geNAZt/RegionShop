@@ -28,36 +28,48 @@ class ConfigReaderTask extends BukkitRunnable {
 
     @Override
     public void run() {
+        plugin.getLogger().info("=== Loading ServerShops ===");
+
         CopyOnWriteArrayList<FileConfiguration> configs = ServerShop.getAllConfigs();
 
         for(FileConfiguration config : configs) {
             List<Map<?, ?>> list = config.getMapList("items");
-            Map<String, Object> item = new HashMap<String, Object>();
+
+            String region;
+            if(config.get("region") != null) {
+                plugin.getLogger().info("ServerShop for Region: " + config.get("region"));
+                region = config.getString("region");
+            } else {
+                plugin.getLogger().info("ServeShop Global");
+                region = "GLOBAL";
+            }
 
             for(Map<?, ?> section : list) {
+                Map<String, Object> item = new HashMap<String, Object>();
+
                 for(Map.Entry<?, ?> sectionEntry : section.entrySet()) {
                     item.put((String)sectionEntry.getKey(), sectionEntry.getValue());
                 }
+
+                Price price = new Price();
+                price.setBuy((Double)autoCast(item.get("buy")));
+                price.setSell((Double) autoCast(item.get("sell")));
+                price.setMaxItemRecalc((Integer) autoCast(item.get("maxItemRecalc")));
+                price.setLimitSellPriceFactor((Double) autoCast(item.get("limitSellPriceFactor")));
+                price.setLimitBuyPriceFactor((Double) autoCast(item.get("limitBuyPriceFactor")));
+                price.setLimitSellPriceUnderFactor((Double) autoCast(item.get("limitSellPriceUnderFactor")));
+                price.setLimitBuyPriceUnderFactor((Double) autoCast(item.get("limitBuyPriceUnderFactor")));
+
+                ItemStack itemStack = new ItemStack((Integer) autoCast(item.get("itemid")), 1);
+                Integer dataValue = autoCast(item.get("datavalue"));
+                if(dataValue != 0) {
+                    itemStack.getData().setData(dataValue.byteValue());
+                }
+
+                PriceStorage.add(region, itemStack, price);
+
+                plugin.getLogger().info("Found ItemID: " + itemStack);
             }
-
-            Price price = new Price();
-            price.setBuy((Double)autoCast(item.get("buy")));
-            price.setSell((Double) autoCast(item.get("sell")));
-            price.setMaxItemRecalc((Integer) autoCast(item.get("maxItemRecalc")));
-            price.setLimitSellPriceFactor((Double) autoCast(item.get("limitSellPriceFactor")));
-            price.setLimitBuyPriceFactor((Double) autoCast(item.get("limitBuyPriceFactor")));
-            price.setLimitSellPriceUnderFactor((Double) autoCast(item.get("limitSellPriceUnderFactor")));
-            price.setLimitBuyPriceUnderFactor((Double) autoCast(item.get("limitBuyPriceUnderFactor")));
-
-            ItemStack itemStack = new ItemStack((Integer) autoCast(item.get("itemid")), 1);
-            Integer dataValue = autoCast(item.get("datavalue"));
-            if(dataValue != 0) {
-                itemStack.getData().setData(dataValue.byteValue());
-            }
-
-            PriceStorage.add(itemStack, price);
-
-            plugin.getLogger().info("ServerShop - Found ItemID: " + itemStack);
         }
 
         ServerShop.itemAverageTask = new ItemAverageTask(plugin).runTaskTimerAsynchronously(plugin, 60*20, 60*20);

@@ -92,7 +92,7 @@ public class Buy extends ShopCommand {
             iStack.getData().setData(dataValue);
         }
 
-        Price price = PriceStorage.get(iStack);
+        Price price = PriceStorage.get("GLOBAL", iStack);
 
         if(price == null) {
             player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "ItemID could not be found inside the Servershop");
@@ -118,7 +118,7 @@ public class Buy extends ShopCommand {
                 player.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + wishAmount + " " + ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString()) + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + sellPrice + "$" + ChatColor.DARK_GREEN + " from Servershop");
                 Transaction.generateTransaction(player, ShopTransaction.TransactionType.BUY, "Servershop", player.getWorld().getName(), "server", iStack.getTypeId(), wishAmount, price.getCurrentSell(), 0.0, 1);
                 price.setSold(price.getSold() + wishAmount);
-                PriceStorage.add(iStack, price);
+                PriceStorage.add("GLOBAL", iStack, price);
             } else {
                 player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "You have not enough money for this. You need "+ sellPrice + "$");
             }

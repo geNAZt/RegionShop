@@ -50,7 +50,7 @@ public class List extends ShopCommand {
 
     @Override
     public void execute(Player player, String[] args) {
-        ConcurrentHashMap<ItemStack, Price> itemPrices = PriceStorage.getAll();
+        ConcurrentHashMap<ItemStack, Price> itemPrices = PriceStorage.getRegion("GLOBAL");
 
         Float max = (float)itemPrices.size() / (float)7;
         Integer maxPage = (int)Math.ceil(max);

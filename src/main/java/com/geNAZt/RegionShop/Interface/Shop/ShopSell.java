@@ -5,6 +5,8 @@ import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.Model.ShopItems;
 import com.geNAZt.RegionShop.Model.ShopTransaction;
 import com.geNAZt.RegionShop.Region.Region;
+import com.geNAZt.RegionShop.ServerShop.Price;
+import com.geNAZt.RegionShop.ServerShop.PriceStorage;
 import com.geNAZt.RegionShop.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Transaction.Transaction;
 import com.geNAZt.RegionShop.Util.Chat;
@@ -16,6 +18,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -55,6 +59,76 @@ public class ShopSell extends ShopCommand {
         return 0;
     }
 
+    private void executeServerShop(Player player, ItemStack itemInHand, ConcurrentHashMap<ItemStack, Price> items, Region region) {
+        for(Map.Entry<ItemStack, Price> item : items.entrySet()) {
+            if(item.getKey().getTypeId() == itemInHand.getTypeId() && item.getKey().getData().getData() == itemInHand.getData().getData()) {
+                if(item.getValue().getCurrentBuy() > 0.0) {
+                    Economy eco = VaultBridge.economy;
+                    eco.depositPlayer(player.getName(), itemInHand.getAmount() * item.getValue().getCurrentBuy());
+                    player.getInventory().remove(itemInHand);
+                    player.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getValue().getCurrentBuy()) + "$" + ChatColor.DARK_GREEN + " to shop");
+
+                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.SELL, region.getName(), player.getWorld().getName(), "Server", itemInHand.getTypeId(), itemInHand.getAmount(), 0.0, item.getValue().getCurrentBuy(), 1);
+
+                    item.getValue().setBought(item.getValue().getBought() + itemInHand.getAmount());
+                    PriceStorage.add(region.getRegion().getId(), item.getKey(), item.getValue());
+
+                    return;
+                }
+            }
+        }
+
+        player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "This Shop doesn't buy this Item");
+    }
+
+    private void executePlayerShop(Player player, ItemStack itemInHand, Region region) {
+        List<ShopItems> items = plugin.getDatabase().find(ShopItems.class).
+                where().
+                    conjunction().
+                        eq("world", player.getWorld().getName()).
+                        eq("region", region.getItemStorage()).
+                        eq("item_id", itemInHand.getType().getId()).
+                        eq("data_id", itemInHand.getData().getData()).
+                        eq("durability", itemInHand.getDurability()).
+                        eq("custom_name", (itemInHand.getItemMeta().hasDisplayName()) ? itemInHand.getItemMeta().getDisplayName() : null).
+                    endJunction().
+                findList();
+
+        if(items.isEmpty()) {
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED + "This shop does not buy this item");
+            return;
+        }
+
+        for(ShopItems item : items) {
+            if (item != null && item.getBuy() > 0) {
+                Economy eco = VaultBridge.economy;
+
+                if (eco.has(item.getOwner(), itemInHand.getAmount() * item.getBuy())) {
+                    Player owner = plugin.getServer().getPlayer(item.getOwner());
+                    if (owner != null) {
+                        owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + player.getDisplayName() + ChatColor.DARK_GREEN + " has sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + ChatColor.DARK_GREEN + " to your shop (" + ChatColor.GREEN + region.getName() + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getBuy()) + "$");
+                    }
+
+                    eco.withdrawPlayer(item.getOwner(), itemInHand.getAmount() * item.getBuy());
+                    eco.depositPlayer(player.getName(), itemInHand.getAmount() * item.getBuy());
+                    player.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getBuy()) + "$" + ChatColor.DARK_GREEN + " to shop");
+
+                    player.getInventory().remove(itemInHand);
+                    item.setCurrentAmount(item.getCurrentAmount() + itemInHand.getAmount());
+                    plugin.getDatabase().update(item);
+
+                    //noinspection ConstantConditions
+                    Transaction.generateTransaction(player, ShopTransaction.TransactionType.SELL, region.getName(), player.getWorld().getName(), owner.getName(), item.getItemID(), itemInHand.getAmount(), 0.0, item.getBuy().doubleValue(), item.getUnitAmount());
+                    Transaction.generateTransaction(owner, ShopTransaction.TransactionType.BUY, region.getName(), player.getWorld().getName(), player.getName(), item.getItemID(), itemInHand.getAmount(), item.getBuy().doubleValue(), 0.0, item.getUnitAmount());
+
+                    return;
+                }
+            }
+        }
+
+        player.sendMessage(Chat.getPrefix() + ChatColor.RED + "None of the Item Owners has enough Money");
+    }
+
     @Override
     public void execute(Player player, String[] args) {
         if (PlayerStorage.has(player)) {
@@ -71,55 +145,17 @@ public class ShopSell extends ShopCommand {
                 player.sendMessage(Chat.getPrefix() + ChatColor.RED + "You can't sell enchanted / custom renamed Items into a shop");
             }
 
-            List<ShopItems> items = plugin.getDatabase().find(ShopItems.class).
-                    where().
-                        conjunction().
-                            eq("world", player.getWorld().getName()).
-                            eq("region", region.getItemStorage()).
-                            eq("item_id", itemInHand.getType().getId()).
-                            eq("data_id", itemInHand.getData().getData()).
-                            eq("durability", itemInHand.getDurability()).
-                            eq("custom_name", (itemInHand.getItemMeta().hasDisplayName()) ? itemInHand.getItemMeta().getDisplayName() : null).
-                        endJunction().
-                    findList();
+            ConcurrentHashMap<ItemStack, Price> serverShop = PriceStorage.getRegion(region.getRegion().getId());
 
-            if(items.isEmpty()) {
-                player.sendMessage(Chat.getPrefix() + ChatColor.RED + "This shop does not buy this item");
-                return;
+            if(serverShop != null) {
+                executeServerShop(player, itemInHand, serverShop, region);
+            } else {
+                executePlayerShop(player, itemInHand, region);
             }
 
-            for(ShopItems item : items) {
-                if (item != null && item.getBuy() > 0) {
-                    Economy eco = VaultBridge.economy;
-
-                    if (eco.has(item.getOwner(), itemInHand.getAmount() * item.getBuy())) {
-                        Player owner = plugin.getServer().getPlayer(item.getOwner());
-                        if (owner != null) {
-                            owner.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + player.getDisplayName() + ChatColor.DARK_GREEN + " has sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + ChatColor.DARK_GREEN + " to your shop (" + ChatColor.GREEN + region.getName() + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getBuy()) + "$");
-                        }
-
-                        eco.withdrawPlayer(item.getOwner(), itemInHand.getAmount() * item.getBuy());
-                        eco.depositPlayer(player.getName(), itemInHand.getAmount() * item.getBuy());
-                        player.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + " for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getBuy()) + "$" + ChatColor.DARK_GREEN + " to shop");
-
-                        player.getInventory().remove(itemInHand);
-                        item.setCurrentAmount(item.getCurrentAmount() + itemInHand.getAmount());
-                        plugin.getDatabase().update(item);
-
-                        //noinspection ConstantConditions
-                        Transaction.generateTransaction(player, ShopTransaction.TransactionType.SELL, region.getName(), player.getWorld().getName(), owner.getName(), item.getItemID(), itemInHand.getAmount(), 0.0, item.getBuy().doubleValue(), item.getUnitAmount());
-                        Transaction.generateTransaction(owner, ShopTransaction.TransactionType.BUY, region.getName(), player.getWorld().getName(), player.getName(), item.getItemID(), itemInHand.getAmount(), item.getBuy().doubleValue(), 0.0, item.getUnitAmount());
-
-                        return;
-                    }
-                }
-            }
-
-            player.sendMessage(Chat.getPrefix() + ChatColor.RED + "None of the Item Owners has enough Money");
-            return;
+        } else {
+            //Nothing of all
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED + "You are not inside a shop");
         }
-
-        //Nothing of all
-        player.sendMessage(Chat.getPrefix() + ChatColor.RED + "You are not inside a shop");
     }
 }

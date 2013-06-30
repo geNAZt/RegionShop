@@ -23,23 +23,27 @@ class ItemAverageTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        ConcurrentHashMap<ItemStack, Price> currentPrices = PriceStorage.getAll();
+        ConcurrentHashMap<String, ConcurrentHashMap<ItemStack, Price>> currentPrices = PriceStorage.getAll();
 
-        for(Map.Entry<ItemStack, Price> currentPrice : currentPrices.entrySet()) {
-            Price price = currentPrice.getValue();
+        for(Map.Entry<String, ConcurrentHashMap<ItemStack, Price>> currentRegion : currentPrices.entrySet()) {
+            for(Map.Entry<ItemStack, Price> currentPrice : currentRegion.getValue().entrySet()) {
+                Price price = currentPrice.getValue();
 
-            ShopServerItemAverage item = new ShopServerItemAverage();
-            item.setSold(price.getSold());
-            item.setBought(price.getBought());
-            item.setDatavalue(currentPrice.getKey().getData().getData());
-            item.setItemid(currentPrice.getKey().getTypeId());
-            item.setDate(new Date());
-            plugin.getDatabase().save(item);
+                ShopServerItemAverage item = new ShopServerItemAverage();
+                item.setSold(price.getSold());
+                item.setBought(price.getBought());
+                item.setDatavalue(currentPrice.getKey().getData().getData());
+                item.setItemid(currentPrice.getKey().getTypeId());
+                item.setDate(new Date());
+                item.setRegion(currentRegion.getKey());
 
-            price.setBought(0);
-            price.setSold(0);
+                plugin.getDatabase().save(item);
 
-            PriceStorage.add(currentPrice.getKey(), price);
+                price.setBought(0);
+                price.setSold(0);
+
+                PriceStorage.add(currentRegion.getKey(), currentPrice.getKey(), price);
+            }
         }
     }
 }

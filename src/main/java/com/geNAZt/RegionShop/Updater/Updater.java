@@ -2,6 +2,10 @@ package com.geNAZt.RegionShop.Updater;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.geNAZt.RegionShop.Util.Loader.loadFromJAR;
@@ -19,7 +23,7 @@ public class Updater {
     }
 
     public static int getCurrentBuild() {
-        return 2;
+        return 3;
     }
 
     public static void update(int actualBuild) {
@@ -34,5 +38,20 @@ public class Updater {
                 up.execute();
             }
         }
+
+        File versionFile = new File(plugin.getDataFolder().getAbsolutePath(), "version");
+
+        if(versionFile.delete()) {
+            try {
+                OutputStream oStream = new FileOutputStream(versionFile);
+                oStream.write(String.valueOf(Updater.getCurrentBuild()).getBytes());
+                oStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            plugin.getLogger().warning("Could not update Version file");
+        }
+
     }
 }

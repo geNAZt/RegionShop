@@ -67,7 +67,7 @@ public class Sell extends ShopCommand {
         priceItemStack.setAmount(1);
 
 
-        Price price = PriceStorage.get(priceItemStack);
+        Price price = PriceStorage.get("GLOBAL", priceItemStack);
 
         if(price == null) {
             player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "ItemID could not be found inside the Servershop");
@@ -84,7 +84,7 @@ public class Sell extends ShopCommand {
             player.getInventory().remove(itemInHand);
 
             price.setBought(price.getBought() + itemInHand.getAmount());
-            PriceStorage.add(priceItemStack, price);
+            PriceStorage.add("GLOBAL", priceItemStack, price);
         } else {
             player.sendMessage(Chat.getPrefix() + ChatColor.RED +  "The Servershop does not buy this Item");
         }
