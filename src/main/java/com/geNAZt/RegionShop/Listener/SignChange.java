@@ -1,14 +1,11 @@
 package com.geNAZt.RegionShop.Listener;
 
+import com.geNAZt.RegionShop.Bukkit.Util.Chat;
 import com.geNAZt.RegionShop.Interface.SignCommand;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-import com.geNAZt.RegionShop.Util.Chat;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -20,14 +17,14 @@ import static com.geNAZt.RegionShop.Util.Loader.loadFromJAR;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 09.06.13
  */
-public class SignChange implements Listener {
+public class SignChange extends Listener {
     private final RegionShopPlugin plugin;
     private CopyOnWriteArrayList<SignCommand> signCommands = new CopyOnWriteArrayList<SignCommand>();
 
     public SignChange(RegionShopPlugin pl) {
         plugin = pl;
 
-        signCommands = loadFromJAR(pl, "com.geNAZt.RegionShop.Interface.Sign", SignCommand.class);
+        signCommands = loadFromJAR("com.geNAZt.RegionShop.Interface.Sign", SignCommand.class, new Object[]{plugin});
 
         for(Object command : signCommands) {
             SignCommand signCommand = (SignCommand) command;
@@ -40,21 +37,20 @@ public class SignChange implements Listener {
         pl.getLogger().info("Loaded SignCommands: " + signCommands.toString());
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onSignChange(SignChangeEvent e) {
-        Player p = e.getPlayer();
+    public void execute(SignChangeEvent event) {
+        Player p = event.getPlayer();
 
-        Block signBlock = e.getBlock();
+        Block signBlock = event.getBlock();
         if (signBlock == null) {
             plugin.getLogger().warning("Player " + p.getName() + " tried to generate a fake sign.");
             return;
         }
 
-        if(e.getLine(0).contains("[RegionShop]")) {
+        if(event.getLine(0).contains("[RegionShop]")) {
             for(SignCommand command : signCommands) {
-                if(command.getCommand().equalsIgnoreCase(e.getLine(1))) {
+                if(command.getCommand().equalsIgnoreCase(event.getLine(1))) {
                     if(command.getPermissionNode() == null || p.hasPermission(command.getPermissionNode())) {
-                        command.execute(p, signBlock, e.getLines());
+                        command.execute(p, signBlock, event);
                         return;
                     } else {
                         p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You don't have the permission " + ChatColor.DARK_RED + command.getPermissionNode());

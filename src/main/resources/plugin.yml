@@ -1,6 +1,5 @@
 name: RegionShop
 main: com.geNAZt.RegionShop.RegionShopPlugin
-database: true
 description: A Shop which uses Regions as Shop Basement
 version: 1.1.0b7
 softdepend: [Vault, WorldGuard, WorldEdit]

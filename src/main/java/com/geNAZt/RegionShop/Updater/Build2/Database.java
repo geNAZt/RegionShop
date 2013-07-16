@@ -1,6 +1,7 @@
 package com.geNAZt.RegionShop.Updater.Build2;
 
 import com.avaje.ebean.EbeanServer;
+import com.avaje.ebean.SqlRow;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Updater.Update;
 
@@ -18,8 +19,11 @@ public class Database extends Update {
 
     @Override
     public void execute() {
-        EbeanServer dbServer = com.geNAZt.RegionShop.Database.createDatabaseServer(pl);
+        EbeanServer dbServer = com.geNAZt.RegionShop.Database.Manager.createDatabaseServer(pl);
 
-        int row = dbServer.createSqlUpdate("ALTER TABLE `ShopServerItemAverage` ADD `region` VARCHAR(255);").execute();
+        SqlRow row = dbServer.createSqlQuery("ALTER TABLE `ShopServerItemAverage` ADD `region` VARCHAR(255);").findUnique();
+        if(row.isEmpty()) {
+            pl.getLogger().warning("Update to Build3 Database failed");
+        }
     }
 }

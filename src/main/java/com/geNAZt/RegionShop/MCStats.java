@@ -1,6 +1,7 @@
 package com.geNAZt.RegionShop;
 
-import com.geNAZt.RegionShop.Storages.ListStorage;
+import com.geNAZt.RegionShop.Bukkit.Util.Logger;
+import com.geNAZt.RegionShop.Data.Storages.ListStorage;
 import org.mcstats.Metrics;
 
 import java.io.IOException;
@@ -23,9 +24,9 @@ class MCStats {
             });
 
             metrics.start();
-            plugin.getLogger().info("[Metrics] Started profiling...");
+            Logger.debug("Started profiling...");
         } catch (IOException e) {
-            plugin.getLogger().warning(e.getMessage());
+            Logger.warn(e.getMessage());
         }
     }
 }

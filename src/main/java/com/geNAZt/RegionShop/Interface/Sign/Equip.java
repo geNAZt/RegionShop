@@ -1,18 +1,20 @@
 package com.geNAZt.RegionShop.Interface.Sign;
 
-import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
+import com.geNAZt.RegionShop.Bukkit.Bridges.WorldGuardBridge;
+import com.geNAZt.RegionShop.Bukkit.Util.Chat;
+import com.geNAZt.RegionShop.Bukkit.Util.Logger;
+import com.geNAZt.RegionShop.Data.Storages.PriceStorage;
+import com.geNAZt.RegionShop.Data.Storages.SignEquipStorage;
+import com.geNAZt.RegionShop.Database.Model.ShopEquipSign;
 import com.geNAZt.RegionShop.Interface.SignCommand;
-import com.geNAZt.RegionShop.Model.ShopEquipSign;
-import com.geNAZt.RegionShop.Storages.SignEquipStorage;
-import com.geNAZt.RegionShop.Util.Chat;
+import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.event.block.SignChangeEvent;
 
 import java.util.Arrays;
 
@@ -23,9 +25,9 @@ import java.util.Arrays;
  * Date: 10.06.13
  */
 public class Equip extends SignCommand {
-    private final Plugin plugin;
+    private final RegionShopPlugin plugin;
 
-    public Equip(Plugin pl) {
+    public Equip(RegionShopPlugin pl) {
         plugin = pl;
     }
 
@@ -40,12 +42,16 @@ public class Equip extends SignCommand {
     }
 
     @Override
-    public void execute(Player player, Block sign, String[] lines) {
+    public void execute(Player player, Block sign, SignChangeEvent event) {
+        Logger.debug("New Shop equip Sign");
+
         if(!plugin.getConfig().getBoolean("interfaces.sign.equip")) {
             player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Quick Add via Signs is disabled");
             sign.breakNaturally();
             return;
         }
+
+        String[] lines = event.getLines();
 
         String region = StringUtils.join(Arrays.copyOfRange(lines, 2, 4), "");
         ProtectedRegion rgnObj = WorldGuardBridge.convertShopNameToRegion(region);
@@ -62,6 +68,12 @@ public class Equip extends SignCommand {
 
         if(!rgnObj.isOwner(player.getName())) {
             player.sendMessage(Chat.getPrefix() + ChatColor.RED + "You are not an owner of this Shop");
+            sign.breakNaturally();
+            return;
+        }
+
+        if(PriceStorage.getRegion(rgnObj.getId()) != null) {
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Shop is a Servershop");
             sign.breakNaturally();
             return;
         }
@@ -85,12 +97,8 @@ public class Equip extends SignCommand {
                         SignEquipStorage.addSign(sign, player.getName(), rgnObj.getId(), player.getWorld().getName());
                         player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "All Items in this Chest will go to " + ChatColor.GREEN + region);
 
-                        Sign sgn = (Sign) sign.getState();
-                        sgn.setLine(0, "Automatic Equip");
-                        sgn.setLine(1, "to a Shop of");
-                        sgn.setLine(2, player.getDisplayName());
-                        sgn.setLine(3, region);
-                        sgn.update(true);
+                        event.setLine(0, "Automatic Equip");
+                        event.setLine(1, "to the Shop:");
 
                         return;
                     }

@@ -1,11 +1,9 @@
 package com.geNAZt.RegionShop.Listener;
 
-import com.geNAZt.RegionShop.Storages.DropStorage;
-import com.geNAZt.RegionShop.Storages.PlayerStorage;
-import com.geNAZt.RegionShop.Storages.SearchStorage;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
+import com.geNAZt.RegionShop.Data.Storages.DropStorage;
+import com.geNAZt.RegionShop.Data.Storages.PlayerStorage;
+import com.geNAZt.RegionShop.Data.Storages.SearchStorage;
+import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 
@@ -14,17 +12,22 @@ import org.bukkit.event.player.PlayerQuitEvent;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 05.06.13
  */
-public class PlayerQuit implements Listener {
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onPlayerQuit(PlayerQuitEvent e) {
-        if (PlayerStorage.has(e.getPlayer())) {
-            PlayerStorage.remove(e.getPlayer());
+public class PlayerQuit extends Listener {
+    private final RegionShopPlugin plugin;
+
+    public PlayerQuit(RegionShopPlugin pl) {
+        this.plugin = pl;
+    }
+
+    public void execute(PlayerQuitEvent event) {
+        if (PlayerStorage.has(event.getPlayer())) {
+            PlayerStorage.remove(event.getPlayer());
         }
 
-        if (DropStorage.has(e.getPlayer())) {
-            DropStorage.remove(e.getPlayer());
+        if (DropStorage.has(event.getPlayer())) {
+            DropStorage.remove(event.getPlayer());
         }
 
-        SearchStorage.removeAllPlayer(e.getPlayer());
+        SearchStorage.removeAllPlayer(event.getPlayer());
     }
 }

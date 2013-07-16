@@ -2,6 +2,7 @@ package com.geNAZt.RegionShop.Interface;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.SignChangeEvent;
 
 /**
  * Created for YEAHWH.AT
@@ -11,5 +12,5 @@ import org.bukkit.entity.Player;
 public abstract class SignCommand {
     public abstract String getCommand();
     public abstract String getPermissionNode();
-    public abstract void execute(Player player, Block sign, String[] lines);
+    public abstract void execute(Player player, Block sign, SignChangeEvent event);
 }

@@ -1,35 +1,28 @@
 package com.geNAZt.RegionShop;
 
 import com.avaje.ebean.EbeanServer;
-import com.geNAZt.RegionShop.Bridges.EssentialBridge;
-import com.geNAZt.RegionShop.Bridges.VaultBridge;
-import com.geNAZt.RegionShop.Bridges.WorldGuardBridge;
-import com.geNAZt.RegionShop.Converter.ChestShopConverter;
-import com.geNAZt.RegionShop.Events.RegionShopConfigReload;
+
+import com.geNAZt.RegionShop.Bukkit.ListenerManager;
+import com.geNAZt.RegionShop.Bukkit.StaticManager;
+import com.geNAZt.RegionShop.Bukkit.Util.Logger;
+import com.geNAZt.RegionShop.Data.Storages.Profiler;
+import com.geNAZt.RegionShop.Database.Manager;
+import com.geNAZt.RegionShop.Database.Model.*;
 import com.geNAZt.RegionShop.Interface.ShopExecutor;
 import com.geNAZt.RegionShop.Listener.*;
-import com.geNAZt.RegionShop.Model.*;
-import com.geNAZt.RegionShop.Region.Resolver;
-import com.geNAZt.RegionShop.ServerShop.ServerShop;
-import com.geNAZt.RegionShop.Storages.ListStorage;
-import com.geNAZt.RegionShop.Storages.SignEquipStorage;
-import com.geNAZt.RegionShop.Transaction.Transaction;
 import com.geNAZt.RegionShop.Updater.Updater;
-import com.geNAZt.RegionShop.Util.AdminTeller;
-import com.geNAZt.RegionShop.Util.Chat;
-import com.geNAZt.RegionShop.Util.ItemConverter;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
+
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.plugin.RegisteredListener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPhysicsEvent;
+import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.persistence.PersistenceException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Created for YEAHWH.AT
@@ -41,174 +34,89 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        getLogger().info("[RegionShop] Enabled");
+        Profiler.init(this);
 
+        //Logger first
+        Logger.init(this);
+
+        Logger.debug("===== Bootup RegionShop =====");
+
+        //Check for Updates
         Updater.init(this);
+        Updater.check();
 
-        //Check if Version has changed
-        File versionFile = new File(getDataFolder().getAbsolutePath(), "version");
-        if(versionFile.exists()) {
-            try {
-                StringBuilder fileContents = new StringBuilder((int)versionFile.length());
-                Scanner scanner = new Scanner(versionFile);
+        //Start up Bukkit Wrappers
+        Logger.debug("----- Bukkit API Wrapper -----");
+        new StaticManager(this);
+        new ListenerManager(this);
 
-                try {
-                    while(scanner.hasNextLine()) {
-                        fileContents.append(scanner.nextLine());
-                    }
-
-                    String buildNumber = fileContents.toString();
-                    Integer build;
-
-                    try {
-                        build = Integer.parseInt(buildNumber);
-
-                        getLogger().info("Build Number: " + build);
-
-                        if(build < Updater.getCurrentBuild()) {
-                            //Needs updates
-                            Updater.update(build);
-                        }
-                    } catch(NumberFormatException e) {
-                        e.printStackTrace();
-                    }
-
-                } finally {
-                    scanner.close();
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                OutputStream oStream = new FileOutputStream(versionFile);
-                oStream.write(String.valueOf(Updater.getCurrentBuild()).getBytes());
-                oStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
+        //MCStats
+        Logger.debug("----- Starting MCStats -----");
         MCStats.init(this);
 
-        //Config
+        //Init Config
+        Logger.debug("----- Loading Config -----");
         getConfig().options().copyDefaults(true);
         saveConfig();
 
         //Database
-        database = Database.createDatabaseServer(this);
+        Logger.debug("----- Connecting Database -----");
+        database = Manager.createDatabaseServer(this);
         checkForDatabase();
 
-        //Bridge init
-        VaultBridge.init(this);
-        WorldGuardBridge.init(this);
-        EssentialBridge.init(this);
-        Resolver.init(this);
+        //Listeners
+        Logger.debug("----- Appending Listeners -----");
+        ListenerManager.addListener(PlayerJoinEvent.class, new PlayerJoin(this));
+        ListenerManager.addListener(PlayerMoveEvent.class, new PlayerMove(this));
+        ListenerManager.addListener(PlayerQuitEvent.class, new PlayerQuit(this));
 
-        //Storages
-        ListStorage.init(this);
+        SignEquipDestroy des = new SignEquipDestroy(this);
+        ListenerManager.addListener(BlockBreakEvent.class, des);
+        ListenerManager.addListener(BlockPhysicsEvent.class, des);
+        ListenerManager.addListener(PlayerInteractEvent.class, new CheckChestProtection(this));
+        ListenerManager.addListener(SignChangeEvent.class, new SignChange(this));
 
-        if(getConfig().getBoolean("interfaces.sign.equip")) {
-            SignEquipStorage.init(this);
-        }
+        ListenerManager.addListener(PlayerDropItemEvent.class, new DropEquip(this));
 
-        //Utils
-        Chat.init(this);
-        ItemConverter.init(this);
-        AdminTeller.init(this);
-
-        //Transaction
-        new Transaction(this);
-
-        //Listener
-        getServer().getPluginManager().registerEvents(this, this);
-
-        getServer().getPluginManager().registerEvents(new PlayerMove(this), this);
-        getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
-        getServer().getPluginManager().registerEvents(new PlayerJoin(this), this);
-
-
-        getServer().getPluginManager().registerEvents(new SignChange(this), this);
-        getServer().getPluginManager().registerEvents(new BlockDestroy(this), this);
-
-
-        if(getConfig().getBoolean("interfaces.command.equip")) getServer().getPluginManager().registerEvents(new PlayerDropItem(this), this);
-
-        //Commands
-        getCommand("shop").setExecutor(new ShopExecutor(this));
-
-        //Converter
-        if(getConfig().getBoolean("converter.chestshop")) new ChestShopConverter(this);
-
-        //Server Shop
+        //ServerShop
+        Profiler.start("ServerShop");
         if(getConfig().getBoolean("feature.servershop")) {
             File serverShop = new File(getDataFolder().getAbsolutePath(), "servershop");
             if(!serverShop.exists()) {
                 boolean made = serverShop.mkdirs();
                 if(!made) {
                     getLogger().warning("Could not create Servershop Config dir");
-                }
+                } else {
+                    InputStream stream = getResource("static/servershop/00-default.yml");
+                    File fle = new File(serverShop.getAbsolutePath(), "00-default.yml");
 
-                InputStream stream = getResource("static/servershop/00-default.yml");
-                File fle = new File(serverShop.getAbsolutePath(), "00-default.yml");
+                    try {
+                        OutputStream oStream = new FileOutputStream(fle);
 
-                try {
-                    OutputStream oStream = new FileOutputStream(fle);
+                        byte[] buffer = new byte[1024];
+                        int len;
+                        while ((len = stream.read(buffer)) != -1) {
+                            oStream.write(buffer, 0, len);
+                        }
 
-                    byte[] buffer = new byte[1024];
-                    int len;
-                    while ((len = stream.read(buffer)) != -1) {
-                        oStream.write(buffer, 0, len);
+                        stream.close();
+                        oStream.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
-                    stream.close();
-                    oStream.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
 
             ServerShop.init(this);
         }
-    }
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onConfigReload(RegionShopConfigReload cnfrld) {
-        if(!getConfig().getBoolean("interfaces.command.equip")) {
-            for(RegisteredListener listener : PlayerDropItemEvent.getHandlerList().getRegisteredListeners()) {
-                if(listener.getListener().toString().contains("com.geNAZt.RegionShop.Listener.PlayerDropItem")) {
-                    PlayerDropItemEvent.getHandlerList().unregister(listener);
-                    getLogger().info("Removed com.geNAZt.RegionShop.Listener.PlayerDropItem Listener");
-                    break;
-                }
-            }
-        } else {
-            boolean found = false;
+        Profiler.end("ServerShop");
 
-            for(RegisteredListener listener : PlayerDropItemEvent.getHandlerList().getRegisteredListeners()) {
-                if(listener.getListener().toString().contains("com.geNAZt.RegionShop.Listener.PlayerDropItem")) {
-                    found = true;
-                    break;
-                }
-            }
+        getCommand("shop").setExecutor(new ShopExecutor(this));
 
-            if(!found) {
-                getServer().getPluginManager().registerEvents(new PlayerDropItem(this), this);
-                getLogger().info("Added com.geNAZt.RegionShop.Listener.PlayerDropItem Listener");
-            }
-        }
-
-        if(!getConfig().getBoolean("interfaces.sign.equip")) {
-            SignEquipStorage.unload();
-            getLogger().info("Unloaded SignEquipStorage");
-        } else {
-            if(SignEquipStorage.getTotalCount() < 1) {
-                SignEquipStorage.init(this);
-                getLogger().info("Loaded SignEquipStorage");
-            }
-        }
+        Logger.info("===== RegionShop enabled =====");
     }
 
     public void disable() {
@@ -230,6 +138,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         list.add(ShopTransaction.class);
         list.add(ShopServerItemAverage.class);
         list.add(ShopBundle.class);
+        list.add(ShopSellSign.class);
         return list;
     }
 
@@ -242,6 +151,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
             getDatabase().find(ShopTransaction.class).findRowCount();
             getDatabase().find(ShopServerItemAverage.class).findRowCount();
             getDatabase().find(ShopBundle.class).findRowCount();
+            getDatabase().find(ShopSellSign.class).findRowCount();
 
             getDatabase().runCacheWarming();
         } catch (PersistenceException ex) {

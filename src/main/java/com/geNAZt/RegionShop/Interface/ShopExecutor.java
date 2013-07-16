@@ -1,8 +1,8 @@
 package com.geNAZt.RegionShop.Interface;
 
-import com.geNAZt.RegionShop.Events.RegionShopConfigReload;
+import com.geNAZt.RegionShop.Bukkit.Events.RegionShopConfigReload;
+import com.geNAZt.RegionShop.Bukkit.Util.Chat;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-import com.geNAZt.RegionShop.Util.Chat;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -36,17 +36,12 @@ public class ShopExecutor implements CommandExecutor, Listener {
         loadAllCommands();
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onConfigReload(RegionShopConfigReload cnfrld) {
-        loadAllCommands();
-    }
-
     private void loadAllCommands() {
         loadedCommands = new CopyOnWriteArrayList<ShopCommand>();
         adminCommands = new CopyOnWriteArrayList<ShopCommand>();
 
-        loadedCommands = loadFromJAR(plugin, "com.geNAZt.RegionShop.Interface.Shop", ShopCommand.class);
-        adminCommands  = loadFromJAR(plugin, "com.geNAZt.RegionShop.Interface.Admin", ShopCommand.class);
+        loadedCommands = loadFromJAR("com.geNAZt.RegionShop.Interface.CLI.Shop", ShopCommand.class, new Object[]{plugin});
+        adminCommands  = loadFromJAR("com.geNAZt.RegionShop.Interface.CLI.Admin", ShopCommand.class, new Object[]{plugin});
 
         for(Object command : loadedCommands) {
             ShopCommand shopCommand = (ShopCommand) command;
