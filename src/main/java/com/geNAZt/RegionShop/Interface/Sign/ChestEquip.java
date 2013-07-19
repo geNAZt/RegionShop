@@ -4,8 +4,8 @@ import com.geNAZt.RegionShop.Bukkit.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Bukkit.Util.Chat;
 import com.geNAZt.RegionShop.Bukkit.Util.Logger;
 import com.geNAZt.RegionShop.Data.Storages.PriceStorage;
-import com.geNAZt.RegionShop.Data.Storages.SignEquipStorage;
-import com.geNAZt.RegionShop.Database.Model.ShopEquipSign;
+import com.geNAZt.RegionShop.Data.Storages.SignChestEquipStorage;
+import com.geNAZt.RegionShop.Database.Model.ShopChestEquipSign;
 import com.geNAZt.RegionShop.Interface.SignCommand;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -24,21 +24,21 @@ import java.util.Arrays;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 10.06.13
  */
-public class Equip extends SignCommand {
+public class ChestEquip extends SignCommand {
     private final RegionShopPlugin plugin;
 
-    public Equip(RegionShopPlugin pl) {
+    public ChestEquip(RegionShopPlugin pl) {
         plugin = pl;
     }
 
     @Override
     public String getCommand() {
-        return "equip";
+        return "chestequip";
     }
 
     @Override
     public String getPermissionNode() {
-        return "rs.equip";
+        return "rs.chestequip";
     }
 
     @Override
@@ -84,7 +84,7 @@ public class Equip extends SignCommand {
                     Block rl = sign.getRelative(x, y, z);
 
                     if (rl.getType().equals(Material.CHEST)) {
-                        ShopEquipSign equipSign = new ShopEquipSign();
+                        ShopChestEquipSign equipSign = new ShopChestEquipSign();
                         equipSign.setOwner(player.getName());
                         equipSign.setShop(rgnObj.getId());
                         equipSign.setWorld(player.getWorld().getName());
@@ -94,10 +94,10 @@ public class Equip extends SignCommand {
 
                         plugin.getDatabase().save(equipSign);
 
-                        SignEquipStorage.addSign(sign, player.getName(), rgnObj.getId(), player.getWorld().getName());
+                        SignChestEquipStorage.addSign(sign, player.getName(), rgnObj.getId(), player.getWorld().getName());
                         player.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "All Items in this Chest will go to " + ChatColor.GREEN + region);
 
-                        event.setLine(0, "Automatic Equip");
+                        event.setLine(0, "Automatic ChestEquip");
                         event.setLine(1, "to the Shop:");
 
                         return;

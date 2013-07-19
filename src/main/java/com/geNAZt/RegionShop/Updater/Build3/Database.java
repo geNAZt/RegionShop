@@ -1,6 +1,7 @@
 package com.geNAZt.RegionShop.Updater.Build3;
 
 import com.avaje.ebean.EbeanServer;
+import com.avaje.ebean.SqlRow;
 import com.avaje.ebeaninternal.api.SpiEbeanServer;
 import com.avaje.ebeaninternal.server.ddl.DdlGenerator;
 import com.geNAZt.RegionShop.RegionShopPlugin;
@@ -38,5 +39,10 @@ public class Database extends Update {
                 ";";
 
         gen.runScript(false, createSQL);
+
+        SqlRow row = dbServer.createSqlQuery("ALTER TABLE `ShopEquipSign` RENAME TO `ShopChestEquipSign`;").findUnique();
+        if(row.isEmpty()) {
+            pl.getLogger().warning("Update to Build3 Database failed");
+        }
     }
 }

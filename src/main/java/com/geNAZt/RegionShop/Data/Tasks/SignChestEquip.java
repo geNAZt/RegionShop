@@ -2,9 +2,9 @@ package com.geNAZt.RegionShop.Data.Tasks;
 
 import com.geNAZt.RegionShop.Bukkit.Bridges.EssentialBridge;
 import com.geNAZt.RegionShop.Bukkit.Util.Chat;
-import com.geNAZt.RegionShop.Data.Storages.SignEquipStorage;
+import com.geNAZt.RegionShop.Data.Storages.SignChestEquipStorage;
 import com.geNAZt.RegionShop.Database.ItemConverter;
-import com.geNAZt.RegionShop.Database.Model.ShopEquipSign;
+import com.geNAZt.RegionShop.Database.Model.ShopChestEquipSign;
 import com.geNAZt.RegionShop.Database.Model.ShopItems;
 import com.geNAZt.RegionShop.Database.Model.ShopTransaction;
 import com.geNAZt.RegionShop.Util.Transaction;
@@ -28,16 +28,16 @@ import java.util.Map;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 03.07.13
  */
-public class SignEquip extends BukkitRunnable{
+public class SignChestEquip extends BukkitRunnable{
     private final JavaPlugin plugin;
 
-    public SignEquip(JavaPlugin plugin) {
+    public SignChestEquip(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public void run() {
-        HashMap<Block, com.geNAZt.RegionShop.Data.Struct.SignEquip> signEquipHashMap = SignEquipStorage.getAll();
+        HashMap<Block, com.geNAZt.RegionShop.Data.Struct.SignEquip> signEquipHashMap = SignChestEquipStorage.getAll();
 
         for(Map.Entry<Block, com.geNAZt.RegionShop.Data.Struct.SignEquip> signEquip : signEquipHashMap.entrySet()) {
             boolean chestFound = false;
@@ -83,9 +83,9 @@ public class SignEquip extends BukkitRunnable{
 
                                     if(player.isOnline()) {
                                         Player onlinePlayer = (Player) player;
-                                        onlinePlayer.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "A Equip Sign has added a new Item to your Shop");
+                                        onlinePlayer.sendMessage(Chat.getPrefix() + ChatColor.GOLD + "A ChestEquip Sign has added a new Item to your Shop");
                                     } else {
-                                        EssentialBridge.sendMail(Chat.getPrefix(), player, ChatColor.GOLD + "A Equip Sign has added a new Item to your Shop");
+                                        EssentialBridge.sendMail(Chat.getPrefix(), player, ChatColor.GOLD + "A ChestEquip Sign has added a new Item to your Shop");
                                     }
 
                                     Transaction.generateTransaction(player, ShopTransaction.TransactionType.EQUIP, signEquip.getValue().region, signEquip.getValue().world, signEquip.getValue().owner, iStack.getTypeId(), iStack.getAmount(), 0.0, 0.0, 0);
@@ -108,10 +108,10 @@ public class SignEquip extends BukkitRunnable{
                 Location loc = signEquip.getKey().getLocation();
 
                 plugin.getLogger().warning("No Chest found for Sign: (" + signEquip.getKey().getWorld().getName() + ") X: " + loc.getX() + " Y: " + loc.getY() + " Z: " + loc.getZ());
-                SignEquipStorage.removeSign(signEquip.getKey());
+                SignChestEquipStorage.removeSign(signEquip.getKey());
                 signEquip.getKey().breakNaturally();
 
-                ShopEquipSign equipSign = plugin.getDatabase().find(ShopEquipSign.class).
+                ShopChestEquipSign equipSign = plugin.getDatabase().find(ShopChestEquipSign.class).
                     where().
                         conjunction().
                             eq("world", signEquip.getKey().getWorld().getName()).
@@ -129,9 +129,9 @@ public class SignEquip extends BukkitRunnable{
 
                 if(player.isOnline()) {
                     Player onlinePlayer = (Player) player;
-                    onlinePlayer.sendMessage(Chat.getPrefix() + ChatColor.RED + "A Equip Sign has been destroyed: (" + signEquip.getKey().getWorld().getName() + ") X: " + loc.getX() + " Y: " + loc.getY() + " Z: " + loc.getZ());
+                    onlinePlayer.sendMessage(Chat.getPrefix() + ChatColor.RED + "A ChestEquip Sign has been destroyed: (" + signEquip.getKey().getWorld().getName() + ") X: " + loc.getX() + " Y: " + loc.getY() + " Z: " + loc.getZ());
                 } else {
-                    EssentialBridge.sendMail(Chat.getPrefix(), player, ChatColor.RED + "A Equip Sign has been destroyed: (" + signEquip.getKey().getWorld().getName() + ") X: " + loc.getX() + " Y: " + loc.getY() + " Z: " + loc.getZ());
+                    EssentialBridge.sendMail(Chat.getPrefix(), player, ChatColor.RED + "A ChestEquip Sign has been destroyed: (" + signEquip.getKey().getWorld().getName() + ") X: " + loc.getX() + " Y: " + loc.getY() + " Z: " + loc.getZ());
                 }
             }
         }

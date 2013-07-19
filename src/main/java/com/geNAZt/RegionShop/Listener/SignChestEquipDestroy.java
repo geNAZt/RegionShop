@@ -1,7 +1,7 @@
 package com.geNAZt.RegionShop.Listener;
 
-import com.geNAZt.RegionShop.Data.Storages.SignEquipStorage;
-import com.geNAZt.RegionShop.Database.Model.ShopEquipSign;
+import com.geNAZt.RegionShop.Data.Storages.SignChestEquipStorage;
+import com.geNAZt.RegionShop.Database.Model.ShopChestEquipSign;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,10 +15,10 @@ import org.bukkit.material.Sign;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 09.06.13
  */
-public class SignEquipDestroy extends Listener {
+public class SignChestEquipDestroy extends Listener {
     private final RegionShopPlugin plugin;
 
-    public SignEquipDestroy(RegionShopPlugin pl) {
+    public SignChestEquipDestroy(RegionShopPlugin pl) {
         plugin = pl;
     }
 
@@ -37,7 +37,7 @@ public class SignEquipDestroy extends Listener {
 
             Block attachedBlock = b.getRelative(s.getAttachedFace());
             if (attachedBlock.getType() == Material.AIR || playerBreak) {
-                ShopEquipSign equipSign = plugin.getDatabase().find(ShopEquipSign.class).
+                ShopChestEquipSign equipSign = plugin.getDatabase().find(ShopChestEquipSign.class).
                         where().
                             conjunction().
                                 eq("world", event.getBlock().getWorld().getName()).
@@ -51,7 +51,7 @@ public class SignEquipDestroy extends Listener {
                     plugin.getDatabase().delete(equipSign);
                 }
 
-                SignEquipStorage.removeSign(b);
+                SignChestEquipStorage.removeSign(b);
             }
         }
     }

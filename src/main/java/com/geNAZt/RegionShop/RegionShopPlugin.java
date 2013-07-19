@@ -70,7 +70,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         ListenerManager.addListener(PlayerMoveEvent.class, new PlayerMove(this));
         ListenerManager.addListener(PlayerQuitEvent.class, new PlayerQuit(this));
 
-        SignEquipDestroy des = new SignEquipDestroy(this);
+        SignChestEquipDestroy des = new SignChestEquipDestroy(this);
         ListenerManager.addListener(BlockBreakEvent.class, des);
         ListenerManager.addListener(BlockPhysicsEvent.class, des);
 
@@ -140,7 +140,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         list.add(ShopItems.class);
         list.add(ShopItemEnchantments.class);
         list.add(ShopRegion.class);
-        list.add(ShopEquipSign.class);
+        list.add(ShopChestEquipSign.class);
         list.add(ShopTransaction.class);
         list.add(ShopServerItemAverage.class);
         list.add(ShopBundle.class);
@@ -153,7 +153,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
             getDatabase().find(ShopItems.class).findRowCount();
             getDatabase().find(ShopItemEnchantments.class).findRowCount();
             getDatabase().find(ShopRegion.class).findRowCount();
-            getDatabase().find(ShopEquipSign.class).findRowCount();
+            getDatabase().find(ShopChestEquipSign.class).findRowCount();
             getDatabase().find(ShopTransaction.class).findRowCount();
             getDatabase().find(ShopServerItemAverage.class).findRowCount();
             getDatabase().find(ShopBundle.class).findRowCount();
@@ -161,6 +161,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
 
             getDatabase().runCacheWarming();
         } catch (PersistenceException ex) {
+            ex.printStackTrace();
             getLogger().info("[RegionShop] Database hasn't setup.");
             installDDL();
         }

@@ -92,3 +92,6 @@ permissions:
   rs.server.list:
     description: List all items inside the Servershop
     default: true
+  rs.chestequip:
+    description: Allows the Player to use Equip Chests
+    default: true

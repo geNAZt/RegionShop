@@ -8,7 +8,7 @@ import com.geNAZt.RegionShop.Bukkit.Util.Resolver;
 import com.geNAZt.RegionShop.Core.Add;
 import com.geNAZt.RegionShop.Data.Storages.ListStorage;
 import com.geNAZt.RegionShop.Data.Storages.Profiler;
-import com.geNAZt.RegionShop.Data.Storages.SignEquipStorage;
+import com.geNAZt.RegionShop.Data.Storages.SignChestEquipStorage;
 import com.geNAZt.RegionShop.Database.ItemConverter;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Transaction;
@@ -38,7 +38,7 @@ public class StaticManager {
 
         //Storages
         ListStorage.init(plugin);
-        SignEquipStorage.init(plugin);
+        SignChestEquipStorage.init(plugin);
 
         Profiler.end("InitBukkitStatic");
     }
