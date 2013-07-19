@@ -16,7 +16,7 @@ import java.util.Date;
 public class Transaction {
     private static RegionShopPlugin plugin;
 
-    public Transaction(RegionShopPlugin pl) {
+    public static void init(RegionShopPlugin pl) {
         plugin = pl;
 
         if(plugin.getConfig().getBoolean("feature.transactions", true)) {

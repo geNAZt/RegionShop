@@ -47,6 +47,11 @@ public class List extends ShopCommand {
     public void execute(Player player, String[] args) {
         ConcurrentHashMap<ItemStack, Price> itemPrices = PriceStorage.getRegion("GLOBAL");
 
+        if(itemPrices == null || itemPrices.isEmpty()) {
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED + "The Servershop has no Items");
+            return;
+        }
+
         Float max = (float)itemPrices.size() / (float)7;
         Integer maxPage = (int)Math.ceil(max);
         Integer page = 1;

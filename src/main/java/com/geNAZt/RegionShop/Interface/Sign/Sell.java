@@ -1,9 +1,11 @@
 package com.geNAZt.RegionShop.Interface.Sign;
 
 import com.geNAZt.RegionShop.Bukkit.Util.Chat;
+import com.geNAZt.RegionShop.Bukkit.Util.Logger;
 import com.geNAZt.RegionShop.Data.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Data.Storages.PriceStorage;
 import com.geNAZt.RegionShop.Data.Struct.Region;
+import com.geNAZt.RegionShop.Database.Model.ShopSellSign;
 import com.geNAZt.RegionShop.Interface.SignCommand;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.ChatColor;
@@ -21,7 +23,7 @@ import java.util.regex.Pattern;
  * Date: 10.06.13
  */
 public class Sell extends SignCommand {
-    private static final Pattern SELL_REG = Pattern.compile("([0-9]{1,2}):([0-9]+)");
+    private static final String SELL_REG = "([0-9]{1,2}):([0-9]+):([0-9]+)";
     private final RegionShopPlugin plugin;
 
     public Sell(RegionShopPlugin pl) {
@@ -66,22 +68,45 @@ public class Sell extends SignCommand {
         }
 
         String[] lines = event.getLines();
-        Matcher matcher = SELL_REG.matcher(lines[2]);
-        if(matcher.matches()) {
-            Integer amount = 0, sell = 0;
+        Pattern p = Pattern.compile(SELL_REG);
+        Matcher matcher = p.matcher(lines[2]);
+        if(matcher.find()) {
+            Integer amount, sell, buy;
 
-            while (matcher.find()) {
-                try {
-                    amount = Integer.parseInt(matcher.group(0));
-                    sell = Integer.parseInt(matcher.group(1));
-                } catch (NumberFormatException e) {
-                    player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid Number");
-                    sign.breakNaturally();
-                    return;
-                }
+            try {
+                Logger.debug(matcher.toMatchResult().toString());
+
+                amount = Integer.parseInt(matcher.group(1));
+                sell = Integer.parseInt(matcher.group(2));
+                buy = Integer.parseInt(matcher.group(3));
+            } catch (NumberFormatException e) {
+                player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid Number");
+                sign.breakNaturally();
+                return;
             }
+
+            Logger.info("New Sell Sign for " + playerRegion.getName() + "(" + event.getPlayer().getName() + ") - " + amount + ":" + sell + ":" + buy);
+
+            Block blk = event.getBlock();
+
+            ShopSellSign sellSign = new ShopSellSign();
+            sellSign.setOwner(event.getPlayer().getName());
+            sellSign.setShop(playerRegion.getRegion().getId());
+            sellSign.setWorld(event.getPlayer().getWorld().getName());
+            sellSign.setAmount(amount);
+            sellSign.setSell(sell);
+            sellSign.setX(blk.getX());
+            sellSign.setY(blk.getY());
+            sellSign.setZ(blk.getZ());
+
+            plugin.getDatabase().save(sellSign);
+
+            event.setLine(0, "Sell / Buy " + amount + "x");
+            event.setLine(1, "for S " + sell + " B " + buy);
+            event.setLine(2, "Hit with item");
+            event.setLine(3, "to add");
         } else {
-            player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid Sell Pattern. Must be <amount>:<sellprice>");
+            player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Invalid Sell Pattern. Must be <amount>:<sellprice>:<buyprice>");
             sign.breakNaturally();
         }
     }

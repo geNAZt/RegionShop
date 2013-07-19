@@ -31,7 +31,10 @@ public class Database extends Update {
                 "  shop                      varchar(255),\n" +
                 "  x                         integer,\n" +
                 "  y                         integer,\n" +
-                "  z                         integer)\n" +
+                "  z                         integer,\n" +
+                "  amount                    integer,\n" +
+                "  sell                      integer,\n" +
+                "  buy                       integer)\n" +
                 ";";
 
         gen.runScript(false, createSQL);

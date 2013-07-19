@@ -16,12 +16,9 @@ import java.util.List;
  */
 public class SignEquipStorage {
     private static HashMap<Block, SignEquip> signWorkers = new HashMap<Block, SignEquip>();
-    private static RegionShopPlugin plugin;
     private static BukkitTask task;
 
-    public static void init(RegionShopPlugin pl) {
-        plugin = pl;
-
+    public static void init(RegionShopPlugin plugin) {
         List<ShopEquipSign> equipSigns = plugin.getDatabase().find(ShopEquipSign.class).findList();
 
         for(ShopEquipSign equipSign:equipSigns) {

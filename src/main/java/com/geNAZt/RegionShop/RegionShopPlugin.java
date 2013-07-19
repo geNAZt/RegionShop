@@ -45,15 +45,6 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         Updater.init(this);
         Updater.check();
 
-        //Start up Bukkit Wrappers
-        Logger.debug("----- Bukkit API Wrapper -----");
-        new StaticManager(this);
-        new ListenerManager(this);
-
-        //MCStats
-        Logger.debug("----- Starting MCStats -----");
-        MCStats.init(this);
-
         //Init Config
         Logger.debug("----- Loading Config -----");
         getConfig().options().copyDefaults(true);
@@ -64,6 +55,15 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         database = Manager.createDatabaseServer(this);
         checkForDatabase();
 
+        //Start up Bukkit Wrappers
+        Logger.debug("----- Bukkit API Wrapper -----");
+        new StaticManager(this);
+        new ListenerManager(this);
+
+        //MCStats
+        Logger.debug("----- Starting MCStats -----");
+        MCStats.init(this);
+
         //Listeners
         Logger.debug("----- Appending Listeners -----");
         ListenerManager.addListener(PlayerJoinEvent.class, new PlayerJoin(this));
@@ -73,8 +73,14 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         SignEquipDestroy des = new SignEquipDestroy(this);
         ListenerManager.addListener(BlockBreakEvent.class, des);
         ListenerManager.addListener(BlockPhysicsEvent.class, des);
+
+        SignSellDestroy dss = new SignSellDestroy(this);
+        ListenerManager.addListener(BlockBreakEvent.class, dss);
+        ListenerManager.addListener(BlockPhysicsEvent.class, dss);
+
         ListenerManager.addListener(PlayerInteractEvent.class, new CheckChestProtection(this));
         ListenerManager.addListener(SignChangeEvent.class, new SignChange(this));
+        ListenerManager.addListener(PlayerInteractEvent.class, new SignSellInteract(this));
 
         ListenerManager.addListener(PlayerDropItemEvent.class, new DropEquip(this));
 

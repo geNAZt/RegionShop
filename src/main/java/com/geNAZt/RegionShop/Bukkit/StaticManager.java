@@ -5,9 +5,13 @@ import com.geNAZt.RegionShop.Bukkit.Bridges.VaultBridge;
 import com.geNAZt.RegionShop.Bukkit.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Bukkit.Util.Chat;
 import com.geNAZt.RegionShop.Bukkit.Util.Resolver;
+import com.geNAZt.RegionShop.Core.Add;
 import com.geNAZt.RegionShop.Data.Storages.ListStorage;
 import com.geNAZt.RegionShop.Data.Storages.Profiler;
+import com.geNAZt.RegionShop.Data.Storages.SignEquipStorage;
+import com.geNAZt.RegionShop.Database.ItemConverter;
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Util.Transaction;
 
 /**
  * Created for YEAHWH.AT
@@ -17,6 +21,11 @@ import com.geNAZt.RegionShop.RegionShopPlugin;
 public class StaticManager {
     public StaticManager(RegionShopPlugin plugin) {
         Profiler.start("InitBukkitStatic");
+
+        //Start Core
+        ItemConverter.init(plugin);
+        Transaction.init(plugin);
+        Add.init(plugin);
 
         //Utils
         Chat.init(plugin);
@@ -29,6 +38,7 @@ public class StaticManager {
 
         //Storages
         ListStorage.init(plugin);
+        SignEquipStorage.init(plugin);
 
         Profiler.end("InitBukkitStatic");
     }

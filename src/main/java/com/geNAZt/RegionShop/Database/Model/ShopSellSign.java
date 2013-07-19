@@ -21,6 +21,9 @@ public class ShopSellSign {
     private String owner;
     private String world;
     private String shop;
+    private Integer amount;
+    private Integer sell;
+    private Integer buy;
     private Integer x;
     private Integer y;
     private Integer z;
@@ -79,5 +82,29 @@ public class ShopSellSign {
 
     public void setZ(Integer z) {
         this.z = z;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public Integer getSell() {
+        return sell;
+    }
+
+    public void setSell(Integer sell) {
+        this.sell = sell;
+    }
+
+    public Integer getBuy() {
+        return buy;
+    }
+
+    public void setBuy(Integer buy) {
+        this.buy = buy;
     }
 }
