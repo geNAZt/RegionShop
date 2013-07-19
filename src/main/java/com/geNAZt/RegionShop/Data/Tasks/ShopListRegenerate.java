@@ -1,6 +1,7 @@
 package com.geNAZt.RegionShop.Data.Tasks;
 
 import com.geNAZt.RegionShop.Bukkit.Bridges.WorldGuardBridge;
+import com.geNAZt.RegionShop.Bukkit.Util.Logger;
 import com.geNAZt.RegionShop.Data.Storages.ListStorage;
 import com.geNAZt.RegionShop.Data.Storages.Profiler;
 import com.sk89q.worldedit.BlockVector;
@@ -35,9 +36,7 @@ public class ShopListRegenerate extends BukkitRunnable {
     public void run() {
         Profiler.start("ShopListRegenerate");
 
-        if (plugin.getConfig().getBoolean("debug")) {
-            plugin.getLogger().info("Generating new ShopList");
-        }
+        Logger.debug("Generating new ShopList");
 
         ConcurrentHashMap<World, ArrayList<ProtectedRegion>> shopList = new ConcurrentHashMap<World, ArrayList<ProtectedRegion>>();
         Pattern r = Pattern.compile("(.*)regionshop(.*)");

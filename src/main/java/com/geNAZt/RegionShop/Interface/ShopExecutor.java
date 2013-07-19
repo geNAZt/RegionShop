@@ -2,6 +2,7 @@ package com.geNAZt.RegionShop.Interface;
 
 import com.geNAZt.RegionShop.Bukkit.Events.RegionShopConfigReload;
 import com.geNAZt.RegionShop.Bukkit.Util.Chat;
+import com.geNAZt.RegionShop.Data.Storages.Profiler;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -73,6 +74,8 @@ public class ShopExecutor implements CommandExecutor, Listener {
 
         if (cmd.getName().equalsIgnoreCase("shop")) {
             if (args.length > 0) {
+                Profiler.start("ShopCommand:" + args[0]);
+
                 if(args[0].equalsIgnoreCase("help")) {
                     if (args.length > 1) {
                         Integer page;
@@ -81,13 +84,16 @@ public class ShopExecutor implements CommandExecutor, Listener {
                             page = Integer.parseInt(args[1]);
                         } catch (NumberFormatException e) {
                             p.sendMessage(Chat.getPrefix() + ChatColor.RED +  "Only numbers as page value allowed");
+                            Profiler.end("ShopCommand:" + args[0]);
                             return true;
                         }
 
                         showHelp(p, page);
+                        Profiler.end("ShopCommand:" + args[0]);
                         return true;
                     } else {
                         showHelp(p, 1);
+                        Profiler.end("ShopCommand:" + args[0]);
                         return true;
                     }
                 }
@@ -100,22 +106,27 @@ public class ShopExecutor implements CommandExecutor, Listener {
                                 if(command.getPermissionNode() == null || p.hasPermission(command.getPermissionNode())) {
                                     if(args.length > command.getNumberOfArgs()) {
                                         command.execute(p, Arrays.copyOfRange(args, 2, args.length));
+                                        Profiler.end("ShopCommand:" + args[0]);
                                         return true;
                                     } else {
                                         p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Not enough arguments given. Type " + ChatColor.DARK_RED + "/shop help 3" + ChatColor.RED + " for more informations.");
+                                        Profiler.end("ShopCommand:" + args[0]);
                                         return true;
                                     }
                                 } else {
                                     p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You don't have the permission " + ChatColor.DARK_RED + command.getPermissionNode());
+                                    Profiler.end("ShopCommand:" + args[0]);
                                     return true;
                                 }
                             }
                         }
 
                         showHelp(p, 4);
+                        Profiler.end("ShopCommand:" + args[0]);
                         return true;
                     } else {
                         showHelp(p, 4);
+                        Profiler.end("ShopCommand:" + args[0]);
                         return true;
                     }
                 } else {
@@ -124,13 +135,16 @@ public class ShopExecutor implements CommandExecutor, Listener {
                             if(command.getPermissionNode() == null || p.hasPermission(command.getPermissionNode())) {
                                 if(args.length > command.getNumberOfArgs()) {
                                     command.execute(p, Arrays.copyOfRange(args, 1, args.length));
+                                    Profiler.end("ShopCommand:" + args[0]);
                                     return true;
                                 } else {
                                     p.sendMessage(Chat.getPrefix() + ChatColor.RED + "Not enough arguments given. Type " + ChatColor.DARK_RED + "/shop help" + ChatColor.RED + " for more informations.");
+                                    Profiler.end("ShopCommand:" + args[0]);
                                     return true;
                                 }
                             } else {
                                 p.sendMessage(Chat.getPrefix() + ChatColor.RED + "You don't have the permission " + ChatColor.DARK_RED + command.getPermissionNode());
+                                Profiler.end("ShopCommand:" + args[0]);
                                 return true;
                             }
                         }
@@ -138,6 +152,8 @@ public class ShopExecutor implements CommandExecutor, Listener {
                 }
 
                 showHelp(p, 1);
+
+                Profiler.end("ShopCommand:" + args[0]);
                 return true;
             } else {
                 showHelp(p, 1);

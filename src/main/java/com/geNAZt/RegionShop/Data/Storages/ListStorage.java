@@ -1,5 +1,6 @@
 package com.geNAZt.RegionShop.Data.Storages;
 
+import com.geNAZt.RegionShop.Bukkit.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Data.Tasks.ShopListRegenerate;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -7,6 +8,7 @@ import org.bukkit.World;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,6 +27,26 @@ public class ListStorage {
         plugin = pl;
 
         task = new ShopListRegenerate(pl).runTaskTimerAsynchronously(pl, 20, 60 * 20);
+    }
+
+    //Get a unique list of all shop in a world
+    public static HashMap<String, ProtectedRegion> getUnique(World world) {
+        ArrayList<ProtectedRegion> list = get(world);
+
+        if(list == null) return null;
+
+        HashMap<String, ProtectedRegion> resultMap = new HashMap<String, ProtectedRegion>();
+
+        for(ProtectedRegion region : list) {
+            String shopName = WorldGuardBridge.convertRegionToShopName(region, world);
+            shopName = ((shopName != null) ? shopName : region.getId());
+
+            if(!resultMap.containsKey(shopName)) {
+                resultMap.put(shopName, region);
+            }
+        }
+
+        return resultMap;
     }
 
     //Get all Shops in the World

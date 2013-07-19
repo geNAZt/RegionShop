@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -89,8 +90,7 @@ public class ShopList extends ShopCommand {
         Integer skip = (page - 1) * 7;
         Integer current = 0;
 
-        ArrayList<ProtectedRegion> pRC = ListStorage.get(player.getWorld());
-        ArrayList<String> listed = new ArrayList<String>();
+        HashMap<String, ProtectedRegion> pRC = ListStorage.getUnique(player.getWorld());
 
         Integer maxPage = 0;
         if (pRC != null) {
@@ -106,8 +106,8 @@ public class ShopList extends ShopCommand {
             return;
         }
 
-        for( ProtectedRegion rg : pRC) {
-            DefaultDomain owners = rg.getOwners();
+        for( Map.Entry<String, ProtectedRegion> rg : pRC.entrySet()) {
+            DefaultDomain owners = rg.getValue().getOwners();
 
             current++;
 
@@ -119,15 +119,8 @@ public class ShopList extends ShopCommand {
                 return;
             }
 
-            String shopName = WorldGuardBridge.convertRegionToShopName(rg, player.getWorld());
-            shopName = ((shopName != null) ? shopName : rg.getId());
 
-            if(!listed.contains(shopName)) {
-                listed.add(shopName);
-                player.sendMessage(Chat.getPrefix() + ChatColor.GREEN + shopName + ChatColor.GOLD + " - Owners: " + ChatColor.GRAY + StringUtils.join(owners.getPlayers().toArray(), ", "));
-            } else {
-                current--;
-            }
+            player.sendMessage(Chat.getPrefix() + ChatColor.GREEN + rg.getKey() + ChatColor.GOLD + " - Owners: " + ChatColor.GRAY + StringUtils.join(owners.getPlayers().toArray(), ", "));
         }
 
         if(page < maxPage) {
