@@ -2,7 +2,9 @@ package com.geNAZt.RegionShop.Interface.CLI.Shop;
 
 import com.geNAZt.RegionShop.Bukkit.Util.Chat;
 import com.geNAZt.RegionShop.Bukkit.Util.ItemName;
+import com.geNAZt.RegionShop.Bukkit.Util.Parser;
 import com.geNAZt.RegionShop.Data.Storages.SearchStorage;
+import com.geNAZt.RegionShop.Data.Struct.ParsedItem;
 import com.geNAZt.RegionShop.Database.ItemConverter;
 import com.geNAZt.RegionShop.Database.Model.ShopItems;
 import com.geNAZt.RegionShop.Interface.ShopCommand;
@@ -63,25 +65,7 @@ public class ShopSearch extends ShopCommand {
             Pattern r = Pattern.compile("(.*)" + search + "(.*)", Pattern.CASE_INSENSITIVE);
             ConcurrentHashMap<ShopItems, ItemStack> result = new ConcurrentHashMap<ShopItems, ItemStack>();
 
-            Integer itemID = -1;
-            byte dataValue = 0;
-
-            if(search.contains(":")) {
-                String[] itemIDAndData = search.split(":");
-
-                try {
-                    dataValue = Byte.parseByte(itemIDAndData[1]);
-                    itemID = Integer.parseInt(itemIDAndData[0]);
-                } catch(NumberFormatException ignored) {
-
-                }
-            } else {
-                try {
-                    itemID = Integer.parseInt(search);
-                } catch(NumberFormatException ignored) {
-
-                }
-            }
+            ParsedItem parsedItem = Parser.parseItemID(search);
 
             for(ShopItems item : items) {
                 ItemStack iStack = ItemConverter.fromDBItem(item);
@@ -90,7 +74,7 @@ public class ShopSearch extends ShopCommand {
 
                 Matcher m = r.matcher(searchString);
 
-                if(itemID > -1 && item.getItemID().equals(itemID) && item.getDataID().equals(dataValue) && ((item.getSell() != 0 || item.getBuy() != 0) && item.getUnitAmount() > 0)) {
+                if((parsedItem != null && item.getItemID().equals(parsedItem.itemID) && item.getDataID().equals(parsedItem.dataValue)) && ((item.getSell() != 0 || item.getBuy() != 0) && item.getUnitAmount() > 0)) {
                     result.put(item, iStack);
                     continue;
                 }
