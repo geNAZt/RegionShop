@@ -14,8 +14,8 @@ import javax.persistence.Table;
 @CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by id")
 @SuppressWarnings("UnusedDeclaration")
 @Entity()
-@Table(name = "ShopSellSign")
-public class ShopSellSign {
+@Table(name = "ShopAddSign")
+public class ShopAddSign {
     @Id
     private Integer id;
     private String owner;

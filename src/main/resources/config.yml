@@ -33,7 +33,7 @@ interfaces:
     server: true
   sign:
     chestequip: true
-    sell: true
+    add: true
     equip: true
 
 converter:

@@ -146,7 +146,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         list.add(ShopTransaction.class);
         list.add(ShopServerItemAverage.class);
         list.add(ShopBundle.class);
-        list.add(ShopSellSign.class);
+        list.add(ShopAddSign.class);
         list.add(ShopEquipSign.class);
         return list;
     }
@@ -160,7 +160,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
             getDatabase().find(ShopTransaction.class).findRowCount();
             getDatabase().find(ShopServerItemAverage.class).findRowCount();
             getDatabase().find(ShopBundle.class).findRowCount();
-            getDatabase().find(ShopSellSign.class).findRowCount();
+            getDatabase().find(ShopAddSign.class).findRowCount();
             getDatabase().find(ShopEquipSign.class).findRowCount();
 
             getDatabase().runCacheWarming();

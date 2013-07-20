@@ -25,7 +25,7 @@ public class Database extends Update {
         SpiEbeanServer serv = (SpiEbeanServer)dbServer;
         DdlGenerator gen = serv.getDdlGenerator();
 
-        String createSQL = "create table ShopSellSign (\n" +
+        String createSQL = "create table ShopAddSign (\n" +
                 "  id                        integer primary key,\n" +
                 "  owner                     varchar(255),\n" +
                 "  world                     varchar(255),\n" +

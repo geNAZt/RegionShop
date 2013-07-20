@@ -1,10 +1,9 @@
 package com.geNAZt.RegionShop.Listener;
 
 import com.geNAZt.RegionShop.Data.Storages.SignChestEquipStorage;
+import com.geNAZt.RegionShop.Database.Model.ShopAddSign;
 import com.geNAZt.RegionShop.Database.Model.ShopChestEquipSign;
 import com.geNAZt.RegionShop.Database.Model.ShopEquipSign;
-import com.geNAZt.RegionShop.Database.Model.ShopSellSign;
-import com.geNAZt.RegionShop.Interface.CLI.Shop.ShopEquip;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -58,7 +57,7 @@ public class SignDestroy extends Listener {
                 }
 
                 //Look for SellSigns
-                ShopSellSign sellSign = plugin.getDatabase().find(ShopSellSign.class).
+                ShopAddSign addSign = plugin.getDatabase().find(ShopAddSign.class).
                         where().
                             conjunction().
                                 eq("world", event.getBlock().getWorld().getName()).
@@ -68,8 +67,8 @@ public class SignDestroy extends Listener {
                             endJunction().
                         findUnique();
 
-                if(sellSign != null) {
-                    plugin.getDatabase().delete(sellSign);
+                if(addSign != null) {
+                    plugin.getDatabase().delete(addSign);
                     return;
                 }
 

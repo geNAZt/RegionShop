@@ -6,7 +6,7 @@ import com.geNAZt.RegionShop.Bukkit.Util.ItemName;
 import com.geNAZt.RegionShop.Core.Add;
 import com.geNAZt.RegionShop.Data.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Data.Struct.Region;
-import com.geNAZt.RegionShop.Database.Model.ShopSellSign;
+import com.geNAZt.RegionShop.Database.Model.ShopAddSign;
 import com.geNAZt.RegionShop.Listener.Listener;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.ChatColor;
@@ -25,7 +25,7 @@ public class Sell extends Listener {
     }
 
     public void execute(SignInteract event) {
-        ShopSellSign sellSign = plugin.getDatabase().find(ShopSellSign.class).
+        ShopAddSign sellSign = plugin.getDatabase().find(ShopAddSign.class).
                 where().
                     conjunction().
                         eq("world", event.getParent().getPlayer().getWorld().getName()).
