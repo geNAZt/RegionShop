@@ -26,10 +26,8 @@ import java.util.Map;
  * Date: 06.06.13
  */
 public class ShopAdd extends ShopCommand {
-    private final RegionShopPlugin plugin;
-
     public ShopAdd(RegionShopPlugin plugin) {
-        this.plugin = plugin;
+
     }
 
     @Override

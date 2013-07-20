@@ -23,10 +23,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * Date: 29.06.13
  */
 public class ShopFilter extends ShopCommand {
-    private final RegionShopPlugin plugin;
-
     public ShopFilter(RegionShopPlugin plugin) {
-        this.plugin = plugin;
+
     }
 
     @Override

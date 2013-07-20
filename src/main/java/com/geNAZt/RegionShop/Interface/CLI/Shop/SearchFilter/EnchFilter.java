@@ -21,7 +21,7 @@ public class EnchFilter extends Filter {
         public Integer enchLvl;
     }
 
-    private ArrayList<EnchFilterContainer> enchFilter = new ArrayList<EnchFilterContainer>();
+    private final ArrayList<EnchFilterContainer> enchFilter = new ArrayList<EnchFilterContainer>();
 
     @Override
     public boolean checkItem(ShopItems shopItem, ItemStack item) {

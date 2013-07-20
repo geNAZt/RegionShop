@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Date: 15.07.13
  */
 public class ProfilerTask extends BukkitRunnable {
-    private RegionShopPlugin plugin;
+    private final RegionShopPlugin plugin;
 
     public ProfilerTask(RegionShopPlugin plugin) {
         this.plugin = plugin;

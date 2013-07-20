@@ -72,11 +72,15 @@ public class ShopSearch extends ShopCommand {
                 try {
                     dataValue = Byte.parseByte(itemIDAndData[1]);
                     itemID = Integer.parseInt(itemIDAndData[0]);
-                } catch(NumberFormatException e) {}
+                } catch(NumberFormatException ignored) {
+
+                }
             } else {
                 try {
                     itemID = Integer.parseInt(search);
-                } catch(NumberFormatException e) {}
+                } catch(NumberFormatException ignored) {
+
+                }
             }
 
             for(ShopItems item : items) {

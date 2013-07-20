@@ -41,6 +41,7 @@ public class PriceStorage {
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static synchronized Price get(String region, ItemStack itemStack) {
         if(itemPrices.containsKey(region)) {
             ConcurrentHashMap<ItemStack, Price> itemsInRegion = itemPrices.get(region);

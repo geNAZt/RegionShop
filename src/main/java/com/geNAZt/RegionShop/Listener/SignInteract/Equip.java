@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
  * Date: 19.07.13
  */
 public class Equip extends Listener {
-    private RegionShopPlugin plugin;
+    private final RegionShopPlugin plugin;
 
     public Equip(RegionShopPlugin plugin) {
         this.plugin = plugin;

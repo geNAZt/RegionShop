@@ -16,7 +16,7 @@ import static com.geNAZt.RegionShop.Util.Loader.loadFromJAR;
  * Date: 14.07.13
  */
 public class ListenerManager {
-    private static HashMap<Class, ArrayList<com.geNAZt.RegionShop.Listener.Listener>> listeners = new HashMap<Class, ArrayList<com.geNAZt.RegionShop.Listener.Listener>>();
+    private static final HashMap<Class, ArrayList<com.geNAZt.RegionShop.Listener.Listener>> listeners = new HashMap<Class, ArrayList<com.geNAZt.RegionShop.Listener.Listener>>();
 
     public ListenerManager(RegionShopPlugin plugin) {
         CopyOnWriteArrayList<Listener> bukkitListener = loadFromJAR("com.geNAZt.RegionShop.Bukkit.Listener", Listener.class);

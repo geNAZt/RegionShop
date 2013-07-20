@@ -11,7 +11,7 @@ import com.geNAZt.RegionShop.Updater.Update;
  * Date: 30.06.13
  */
 public class Database extends Update {
-    private RegionShopPlugin pl;
+    private final RegionShopPlugin pl;
 
     public Database(RegionShopPlugin plugin) {
         pl = plugin;

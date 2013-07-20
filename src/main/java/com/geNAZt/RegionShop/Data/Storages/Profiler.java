@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Profiler {
     public static ConcurrentHashMap<Long, HashMap<String, ArrayList<Long>>> profiles = new ConcurrentHashMap<Long, HashMap<String, ArrayList<Long>>>();
-    private static ConcurrentHashMap<Long, HashMap<String, Long>> start = new ConcurrentHashMap<Long, HashMap<String, Long>>();
+    private static final ConcurrentHashMap<Long, HashMap<String, Long>> start = new ConcurrentHashMap<Long, HashMap<String, Long>>();
     private static RegionShopPlugin plugin;
 
     public static void init(RegionShopPlugin plugin) {

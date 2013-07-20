@@ -16,7 +16,7 @@ public class PriceFilter extends Filter {
         public Double price;
     }
 
-    private ArrayList<PriceFilterContainer> priceFilter = new ArrayList<PriceFilterContainer>();
+    private final ArrayList<PriceFilterContainer> priceFilter = new ArrayList<PriceFilterContainer>();
 
     @Override
     public boolean checkItem(ShopItems shopItem, ItemStack item) {

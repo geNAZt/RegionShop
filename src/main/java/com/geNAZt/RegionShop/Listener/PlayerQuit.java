@@ -13,12 +13,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
  * Date: 05.06.13
  */
 public class PlayerQuit extends Listener {
-    private final RegionShopPlugin plugin;
-
-    public PlayerQuit(RegionShopPlugin pl) {
-        this.plugin = pl;
-    }
-
     public void execute(PlayerQuitEvent event) {
         if (PlayerStorage.has(event.getPlayer())) {
             PlayerStorage.remove(event.getPlayer());

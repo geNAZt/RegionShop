@@ -20,6 +20,7 @@ public class Updater {
         plugin = pl;
     }
 
+    @SuppressWarnings("SameReturnValue")
     public static int getCurrentBuild() {
         return 4;
     }

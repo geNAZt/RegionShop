@@ -10,8 +10,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
  * Date: 19.07.13
  */
 public class SignInteract {
-    private Block block;
-    private PlayerInteractEvent parent;
+    private final Block block;
+    private final PlayerInteractEvent parent;
 
     public SignInteract(Block block, PlayerInteractEvent parent) {
         this.block = block;

@@ -23,7 +23,7 @@ import java.util.*;
 public class ShopWarp extends ShopCommand {
     private class ValueComparator implements Comparator<ProtectedRegion> {
 
-        Map<ProtectedRegion, Double> base;
+        final Map<ProtectedRegion, Double> base;
         public ValueComparator(Map<ProtectedRegion, Double> base) {
             this.base = base;
         }

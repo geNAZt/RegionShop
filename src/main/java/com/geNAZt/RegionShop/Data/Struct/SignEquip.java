@@ -6,9 +6,9 @@ package com.geNAZt.RegionShop.Data.Struct;
  * Date: 03.07.13
  */
 public class SignEquip {
-    public String owner;
-    public String region;
-    public String world;
+    public final String owner;
+    public final String region;
+    public final String world;
 
     public SignEquip(String owner, String region, String world) {
         this.owner = owner;

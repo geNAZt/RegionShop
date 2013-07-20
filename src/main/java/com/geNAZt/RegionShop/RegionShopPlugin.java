@@ -71,7 +71,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         Logger.debug("----- Appending Listeners -----");
         ListenerManager.addListener(PlayerJoinEvent.class, new PlayerJoin(this));
         ListenerManager.addListener(PlayerMoveEvent.class, new PlayerMove(this));
-        ListenerManager.addListener(PlayerQuitEvent.class, new PlayerQuit(this));
+        ListenerManager.addListener(PlayerQuitEvent.class, new PlayerQuit());
 
         SignDestroy dss = new SignDestroy(this);
         ListenerManager.addListener(BlockBreakEvent.class, dss);

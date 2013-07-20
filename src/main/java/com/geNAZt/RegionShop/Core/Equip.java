@@ -1,14 +1,12 @@
 package com.geNAZt.RegionShop.Core;
 
-import com.geNAZt.RegionShop.Bukkit.Util.Chat;
-import com.geNAZt.RegionShop.Bukkit.Util.ItemName;
 import com.geNAZt.RegionShop.Data.Struct.Region;
 import com.geNAZt.RegionShop.Database.ItemConverter;
 import com.geNAZt.RegionShop.Database.Model.ShopItems;
 import com.geNAZt.RegionShop.Database.Model.ShopTransaction;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Transaction;
-import org.bukkit.ChatColor;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -49,7 +47,6 @@ public class Equip {
         } else {
             dbItem = ItemConverter.toDBItem(item, player.getWorld(), player.getName(), shop.getItemStorage(), 0, 0, 0);
 
-            //noinspection ConstantConditions
             Transaction.generateTransaction(player, ShopTransaction.TransactionType.EQUIP, shop.getName(), player.getWorld().getName(), player.getName(), dbItem.getItemID(), item.getAmount(), 0.0, 0.0, 0);
 
             return dbItem.getId();
