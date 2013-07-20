@@ -95,6 +95,7 @@ public class Sell extends SignCommand {
             sellSign.setWorld(event.getPlayer().getWorld().getName());
             sellSign.setAmount(amount);
             sellSign.setSell(sell);
+            sellSign.setBuy(buy);
             sellSign.setX(blk.getX());
             sellSign.setY(blk.getY());
             sellSign.setZ(blk.getZ());

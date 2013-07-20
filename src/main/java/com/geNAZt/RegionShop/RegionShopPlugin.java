@@ -2,6 +2,7 @@ package com.geNAZt.RegionShop;
 
 import com.avaje.ebean.EbeanServer;
 
+import com.geNAZt.RegionShop.Bukkit.Events.SignInteract;
 import com.geNAZt.RegionShop.Bukkit.ListenerManager;
 import com.geNAZt.RegionShop.Bukkit.StaticManager;
 import com.geNAZt.RegionShop.Bukkit.Util.Logger;
@@ -10,6 +11,8 @@ import com.geNAZt.RegionShop.Database.Manager;
 import com.geNAZt.RegionShop.Database.Model.*;
 import com.geNAZt.RegionShop.Interface.ShopExecutor;
 import com.geNAZt.RegionShop.Listener.*;
+import com.geNAZt.RegionShop.Listener.SignInteract.Equip;
+import com.geNAZt.RegionShop.Listener.SignInteract.Sell;
 import com.geNAZt.RegionShop.Updater.Updater;
 
 import org.bukkit.event.Listener;
@@ -70,19 +73,18 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         ListenerManager.addListener(PlayerMoveEvent.class, new PlayerMove(this));
         ListenerManager.addListener(PlayerQuitEvent.class, new PlayerQuit(this));
 
-        SignChestEquipDestroy des = new SignChestEquipDestroy(this);
-        ListenerManager.addListener(BlockBreakEvent.class, des);
-        ListenerManager.addListener(BlockPhysicsEvent.class, des);
-
-        SignSellDestroy dss = new SignSellDestroy(this);
+        SignDestroy dss = new SignDestroy(this);
         ListenerManager.addListener(BlockBreakEvent.class, dss);
         ListenerManager.addListener(BlockPhysicsEvent.class, dss);
 
         ListenerManager.addListener(PlayerInteractEvent.class, new CheckChestProtection(this));
         ListenerManager.addListener(SignChangeEvent.class, new SignChange(this));
-        ListenerManager.addListener(PlayerInteractEvent.class, new SignSellInteract(this));
+        ListenerManager.addListener(PlayerInteractEvent.class, new SignInteractPrepare());
 
-        ListenerManager.addListener(PlayerDropItemEvent.class, new DropEquip(this));
+        ListenerManager.addListener(PlayerDropItemEvent.class, new DropEquip());
+
+        ListenerManager.addListener(SignInteract.class, new Sell(this));
+        ListenerManager.addListener(SignInteract.class, new Equip(this));
 
         //ServerShop
         Profiler.start("ServerShop");
@@ -145,6 +147,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         list.add(ShopServerItemAverage.class);
         list.add(ShopBundle.class);
         list.add(ShopSellSign.class);
+        list.add(ShopEquipSign.class);
         return list;
     }
 
@@ -158,6 +161,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
             getDatabase().find(ShopServerItemAverage.class).findRowCount();
             getDatabase().find(ShopBundle.class).findRowCount();
             getDatabase().find(ShopSellSign.class).findRowCount();
+            getDatabase().find(ShopEquipSign.class).findRowCount();
 
             getDatabase().runCacheWarming();
         } catch (PersistenceException ex) {

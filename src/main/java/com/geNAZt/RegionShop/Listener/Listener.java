@@ -1,5 +1,6 @@
 package com.geNAZt.RegionShop.Listener;
 
+import com.geNAZt.RegionShop.Bukkit.Events.SignInteract;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.SignChangeEvent;
@@ -19,4 +20,5 @@ public abstract class Listener {
     public void execute(SignChangeEvent event) {}
     public void execute(PlayerQuitEvent event) {}
     public void execute(PlayerDropItemEvent event) {}
+    public void execute(SignInteract event) {}
 }

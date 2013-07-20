@@ -32,8 +32,9 @@ interfaces:
     warp: true
     server: true
   sign:
-    equip: true
+    chestequip: true
     sell: true
+    equip: true
 
 converter:
   chestshop: false

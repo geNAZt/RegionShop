@@ -36,6 +36,14 @@ public class Database extends Update {
                 "  amount                    integer,\n" +
                 "  sell                      integer,\n" +
                 "  buy                       integer)\n" +
+                ";create table ShopEquipSign (\n" +
+                "  id                        integer primary key,\n" +
+                "  owner                     varchar(255),\n" +
+                "  world                     varchar(255),\n" +
+                "  shop                      varchar(255),\n" +
+                "  x                         integer,\n" +
+                "  y                         integer,\n" +
+                "  z                         integer)\n" +
                 ";";
 
         gen.runScript(false, createSQL);

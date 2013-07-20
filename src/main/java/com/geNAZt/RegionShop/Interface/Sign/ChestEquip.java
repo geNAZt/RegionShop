@@ -45,7 +45,7 @@ public class ChestEquip extends SignCommand {
     public void execute(Player player, Block sign, SignChangeEvent event) {
         Logger.debug("New Shop equip Sign");
 
-        if(!plugin.getConfig().getBoolean("interfaces.sign.equip")) {
+        if(!plugin.getConfig().getBoolean("interfaces.sign.chestequip")) {
             player.sendMessage(Chat.getPrefix() + ChatColor.RED + "Quick Add via Signs is disabled");
             sign.breakNaturally();
             return;
