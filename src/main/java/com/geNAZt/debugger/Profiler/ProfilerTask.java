@@ -1,6 +1,8 @@
-package com.geNAZt.RegionShop.Data.Tasks;
+package com.geNAZt.debugger.Profiler;
 
-import com.geNAZt.RegionShop.Data.Storages.Profiler;
+import com.geNAZt.RegionShop.Bukkit.Util.Logger;
+import com.geNAZt.debugger.Config;
+import com.geNAZt.debugger.Profiler.Profiler;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -15,12 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * Date: 15.07.13
  */
 public class ProfilerTask extends BukkitRunnable {
-    private final RegionShopPlugin plugin;
-
-    public ProfilerTask(RegionShopPlugin plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public void run() {
         for(Map.Entry<Long, HashMap<String, ArrayList<Long>>> entry : Profiler.profiles.entrySet()) {
@@ -39,9 +35,12 @@ public class ProfilerTask extends BukkitRunnable {
                     threadStr = "ASYNC ID " + entry.getKey();
                 }
 
-                plugin.getLogger().info("Profiler: "+ entry1.getKey() +": " + nsAvg / 100000 + " ms - " + threadStr);
+                if(Config.getConfig().getBoolean("profiler.internal")) {
+                    Logger.info("Profiler: " + entry1.getKey() + ": " + nsAvg / 100000 + " ms - " + threadStr);
+                }
             }
         }
+
 
         Profiler.profiles = new ConcurrentHashMap<Long, HashMap<String, ArrayList<Long>>>();
     }

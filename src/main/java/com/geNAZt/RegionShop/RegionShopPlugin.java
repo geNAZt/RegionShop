@@ -2,19 +2,23 @@ package com.geNAZt.RegionShop;
 
 import com.avaje.ebean.EbeanServer;
 
+import com.avaje.ebeaninternal.api.SpiEbeanServer;
+import com.avaje.ebeaninternal.server.ddl.DdlGenerator;
+
 import com.geNAZt.RegionShop.Bukkit.Events.SignInteract;
 import com.geNAZt.RegionShop.Bukkit.ListenerManager;
 import com.geNAZt.RegionShop.Bukkit.StaticManager;
 import com.geNAZt.RegionShop.Bukkit.Util.Logger;
-import com.geNAZt.RegionShop.Data.Storages.Profiler;
 import com.geNAZt.RegionShop.Database.Manager;
 import com.geNAZt.RegionShop.Database.Model.*;
 import com.geNAZt.RegionShop.Interface.ShopExecutor;
 import com.geNAZt.RegionShop.Listener.*;
+import com.geNAZt.RegionShop.Listener.SignInteract.Customer;
 import com.geNAZt.RegionShop.Listener.SignInteract.Equip;
 import com.geNAZt.RegionShop.Listener.SignInteract.Sell;
 import com.geNAZt.RegionShop.Updater.Updater;
 
+import com.geNAZt.debugger.Profiler.Profiler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
@@ -37,7 +41,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        Profiler.init(this);
+        com.geNAZt.debugger.Main.init(this);
 
         //Logger first
         Logger.init(this);
@@ -85,6 +89,7 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
 
         ListenerManager.addListener(SignInteract.class, new Sell(this));
         ListenerManager.addListener(SignInteract.class, new Equip(this));
+        ListenerManager.addListener(SignInteract.class, new Customer(this));
 
         //ServerShop
         Profiler.start("ServerShop");
@@ -148,7 +153,19 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
         list.add(ShopBundle.class);
         list.add(ShopAddSign.class);
         list.add(ShopEquipSign.class);
+        list.add(ShopCustomerSign.class);
         return list;
+    }
+
+    @Override
+    protected void installDDL() {
+        SpiEbeanServer serv = (SpiEbeanServer)getDatabase();
+        DdlGenerator gen = serv.getDdlGenerator();
+
+        String createSQL = gen.generateCreateDdl();
+        getLogger().info(createSQL);
+
+        gen.runScript(false, createSQL);
     }
 
     private void checkForDatabase() {
@@ -162,10 +179,10 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
             getDatabase().find(ShopBundle.class).findRowCount();
             getDatabase().find(ShopAddSign.class).findRowCount();
             getDatabase().find(ShopEquipSign.class).findRowCount();
+            getDatabase().find(ShopCustomerSign.class).findRowCount();
 
             getDatabase().runCacheWarming();
         } catch (PersistenceException ex) {
-            ex.printStackTrace();
             getLogger().info("[RegionShop] Database hasn't setup.");
             installDDL();
         }

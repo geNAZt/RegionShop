@@ -2,7 +2,7 @@ package com.geNAZt.RegionShop.Listener;
 
 import com.geNAZt.RegionShop.Bukkit.Events.SignInteract;
 import com.geNAZt.RegionShop.Bukkit.ListenerManager;
-import com.geNAZt.RegionShop.Data.Storages.Profiler;
+import com.geNAZt.debugger.Profiler.Profiler;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;

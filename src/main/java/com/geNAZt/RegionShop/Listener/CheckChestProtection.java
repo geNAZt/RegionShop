@@ -39,8 +39,15 @@ public class CheckChestProtection extends Listener {
             }
 
             if(blk.getType().equals(Material.SIGN_POST) || blk.getType().equals(Material.WALL_SIGN)) {
-                ShopChestEquipSign equipSign;
-                if((equipSign = isRegionShopChest(event.getPlayer().getWorld(), blk.getLocation())) != null) {
+                ShopChestEquipSign equipSign = plugin.getDatabase().find(ShopChestEquipSign.class).
+                        where().
+                            eq("world", event.getPlayer().getPlayer().getWorld().getName()).
+                            eq("x", blk.getX()).
+                            eq("y", blk.getY()).
+                            eq("z", blk.getZ()).
+                        findUnique();
+
+                if(equipSign != null) {
                     if(!event.getPlayer().getName().equals(equipSign.getOwner()) || (plugin.getConfig().getBoolean("only-survival", true) && event.getPlayer().getGameMode() != GameMode.SURVIVAL)) {
                         event.setCancelled(true);
                         event.getPlayer().sendMessage(Chat.getPrefix() + ChatColor.RED + "You are not the owner of this Chest or you are in Creative Gamemode");

@@ -35,6 +35,8 @@ permissions:
       rs.server.list: true
       rs.server.buy: true
       rs.server.sell: true
+      rs.chestequip: true
+      rs.customersign: true
   rs.help:
     description: Permission for /shop help
     default: true
@@ -94,4 +96,10 @@ permissions:
     default: true
   rs.chestequip:
     description: Allows the Player to use Equip Chests
+    default: true
+  rs.server.customersign:
+    description: Allows a User to add Customer Signs into a Servershop
+    default: false
+  rs.customersign:
+    description: Allows a User to set Customer Signs
     default: true

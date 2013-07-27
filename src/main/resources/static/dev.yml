@@ -1,0 +1,10 @@
+debug:
+  internal: false
+  external:
+    enabled: true
+    port: 25562
+    ip: 0.0.0.0
+
+profiler:
+  internal: false
+  external: true

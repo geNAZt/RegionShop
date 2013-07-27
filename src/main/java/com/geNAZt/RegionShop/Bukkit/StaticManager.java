@@ -8,7 +8,7 @@ import com.geNAZt.RegionShop.Bukkit.Util.Resolver;
 import com.geNAZt.RegionShop.Core.Add;
 import com.geNAZt.RegionShop.Core.Equip;
 import com.geNAZt.RegionShop.Data.Storages.ListStorage;
-import com.geNAZt.RegionShop.Data.Storages.Profiler;
+import com.geNAZt.debugger.Profiler.Profiler;
 import com.geNAZt.RegionShop.Data.Storages.SignChestEquipStorage;
 import com.geNAZt.RegionShop.Database.ItemConverter;
 import com.geNAZt.RegionShop.RegionShopPlugin;

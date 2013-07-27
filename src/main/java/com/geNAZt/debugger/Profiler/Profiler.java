@@ -1,6 +1,6 @@
-package com.geNAZt.RegionShop.Data.Storages;
+package com.geNAZt.debugger.Profiler;
 
-import com.geNAZt.RegionShop.Data.Tasks.ProfilerTask;
+import com.geNAZt.RegionShop.Bukkit.Util.Logger;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 
 import java.util.ArrayList;
@@ -15,18 +15,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Profiler {
     public static ConcurrentHashMap<Long, HashMap<String, ArrayList<Long>>> profiles = new ConcurrentHashMap<Long, HashMap<String, ArrayList<Long>>>();
     private static final ConcurrentHashMap<Long, HashMap<String, Long>> start = new ConcurrentHashMap<Long, HashMap<String, Long>>();
-    private static RegionShopPlugin plugin;
+    private static Boolean enabled = false;
 
     public static void init(RegionShopPlugin plugin) {
-        Profiler.plugin = plugin;
+        plugin.getServer().getScheduler().runTaskTimer(plugin, new ProfilerTask(), 20, 20);
 
-        if(plugin.getConfig().getBoolean("profiler", true)) {
-            plugin.getServer().getScheduler().runTaskTimer(plugin, new ProfilerTask(plugin), 20, 20);
-        }
+        enabled = true;
     }
 
     public synchronized static void start(String name) {
-        if(plugin.getConfig().getBoolean("profiler", true)) {
+        if(enabled) {
             long tID = Thread.currentThread().getId();
 
             if(start.get(tID) != null) {
@@ -34,7 +32,7 @@ public class Profiler {
                 if(prof.get(name) == null) {
                     prof.put(name, System.nanoTime());
                 } else {
-                    plugin.getLogger().warning("Profiler: Tryed to start a Timer which is already started: " + name);
+                    Logger.warn("Profiler: Tryed to start a Timer which is already started: " + name);
                 }
             } else {
                 HashMap<String, Long> prof = new HashMap<String, Long>();
@@ -46,7 +44,7 @@ public class Profiler {
     }
 
     public synchronized static void end(String name) {
-        if(plugin.getConfig().getBoolean("profiler", true)) {
+        if(enabled) {
             long tID = Thread.currentThread().getId();
             HashMap<String, Long> prof = start.get(tID);
 
@@ -77,7 +75,7 @@ public class Profiler {
 
                     prof.remove(name);
                 } else {
-                    plugin.getLogger().warning("Profiler: Tryed to end a Timer which is not started: " + name);
+                    Logger.warn("Profiler: Tryed to end a Timer which is not started: " + name);
                 }
             }
         }

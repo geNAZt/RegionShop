@@ -4,9 +4,13 @@ import com.avaje.ebean.SqlRow;
 import com.geNAZt.RegionShop.Bukkit.Util.ItemName;
 import com.geNAZt.RegionShop.Bukkit.Util.Logger;
 import com.geNAZt.RegionShop.Data.Storages.PriceStorage;
-import com.geNAZt.RegionShop.Data.Storages.Profiler;
+import com.geNAZt.debugger.Profiler.Profiler;
 import com.geNAZt.RegionShop.Data.Struct.Price;
+import com.geNAZt.RegionShop.Database.Model.ShopCustomerSign;
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -112,6 +116,37 @@ class PriceRecalculateTask extends BukkitRunnable {
                     price.setCurrentBuy(newBuyPrice);
                     price.setCurrentSell(newSellPrice);
                     PriceStorage.add(currentServerShop.getKey(), currentPrice.getKey(), price);
+
+                    //Check if Item has a Sign
+                    final ShopCustomerSign customerSign = plugin.getDatabase().find(ShopCustomerSign.class).
+                            where().
+                                conjunction().
+                                    eq("shop", currentServerShop.getKey()).
+                                    eq("itemid", currentPrice.getKey().getTypeId()).
+                                    eq("datavalue", currentPrice.getKey().getData().getData()).
+                                    eq("is_servershop", 1).
+                                endJunction().
+                            findUnique();
+
+                    final double newSellPriceRead = newSellPrice;
+                    final double newBuyPriceRead = newBuyPrice;
+
+                    if(customerSign != null) {
+                        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                            @Override
+                            public void run() {
+                                Block block = plugin.getServer().getWorld(customerSign.getWorld()).getBlockAt(customerSign.getX(), customerSign.getY(), customerSign.getZ());
+                                if(block.getType().equals(Material.SIGN_POST) || block.getType().equals(Material.WALL_SIGN)) {
+                                    Sign sign = (Sign)block.getState();
+
+                                    plugin.getLogger().info(sign.toString());
+                                    sign.setLine(2, "B " + newSellPriceRead + "$:S " + newBuyPriceRead + "$");
+                                    sign.update();
+                                }
+                            }
+                        });
+
+                    }
                 }
             }
         }

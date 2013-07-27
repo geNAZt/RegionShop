@@ -1,7 +1,7 @@
 package com.geNAZt.RegionShop.Data.Tasks;
 
 import com.geNAZt.RegionShop.Data.Storages.PriceStorage;
-import com.geNAZt.RegionShop.Data.Storages.Profiler;
+import com.geNAZt.debugger.Profiler.Profiler;
 import com.geNAZt.RegionShop.Data.Struct.Price;
 import com.geNAZt.RegionShop.Database.Model.ShopServerItemAverage;
 import com.geNAZt.RegionShop.RegionShopPlugin;

@@ -1,7 +1,7 @@
 package com.geNAZt.RegionShop.Bukkit.Listener;
 
 import com.geNAZt.RegionShop.Bukkit.ListenerManager;
-import com.geNAZt.RegionShop.Data.Storages.Profiler;
+import com.geNAZt.debugger.Profiler.Profiler;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;

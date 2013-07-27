@@ -1,7 +1,7 @@
 package com.geNAZt.RegionShop.Data.Tasks;
 
 import com.geNAZt.RegionShop.Data.Storages.PriceStorage;
-import com.geNAZt.RegionShop.Data.Storages.Profiler;
+import com.geNAZt.debugger.Profiler.Profiler;
 import com.geNAZt.RegionShop.Data.Struct.Price;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.ServerShop;
@@ -79,7 +79,7 @@ public class ConfigReaderTask extends BukkitRunnable {
         }
 
         ServerShop.itemAverageTask = new ItemAverageTask(plugin).runTaskTimerAsynchronously(plugin, 60*20, 60*20);
-        ServerShop.priceRecalculateTask = new PriceRecalculateTask(plugin).runTaskTimerAsynchronously(plugin, 20, 300*20);
+        ServerShop.priceRecalculateTask = new PriceRecalculateTask(plugin).runTaskTimerAsynchronously(plugin, 20, 120*20);
 
         Profiler.end("ConfigReaderTask");
     }

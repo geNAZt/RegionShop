@@ -1,5 +1,3 @@
-debug: false
-profiler: false
 only-ascii: true
 only-survival: true
 
@@ -35,6 +33,7 @@ interfaces:
     chestequip: true
     add: true
     equip: true
+    customer: true
 
 converter:
   chestshop: false
