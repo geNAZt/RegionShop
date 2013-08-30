@@ -21,12 +21,7 @@ public class ShopShowcaseItem {
     private String owner;
     private String world;
     private String shop;
-    private Integer amount;
-    private Integer sell;
-    private Integer buy;
-    private Integer x;
-    private Integer y;
-    private Integer z;
+    private Integer item;
 
     public Integer getId() {
         return id;
@@ -60,51 +55,11 @@ public class ShopShowcaseItem {
         this.shop = shop;
     }
 
-    public Integer getX() {
-        return x;
+    public Integer getItem() {
+        return item;
     }
 
-    public void setX(Integer x) {
-        this.x = x;
-    }
-
-    public Integer getY() {
-        return y;
-    }
-
-    public void setY(Integer y) {
-        this.y = y;
-    }
-
-    public Integer getZ() {
-        return z;
-    }
-
-    public void setZ(Integer z) {
-        this.z = z;
-    }
-
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
-    }
-
-    public Integer getSell() {
-        return sell;
-    }
-
-    public void setSell(Integer sell) {
-        this.sell = sell;
-    }
-
-    public Integer getBuy() {
-        return buy;
-    }
-
-    public void setBuy(Integer buy) {
-        this.buy = buy;
+    public void setItem(Integer item) {
+        this.item = item;
     }
 }

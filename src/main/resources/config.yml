@@ -7,6 +7,7 @@ database:
   driver: org.sqlite.JDBC
   password: walrus
   url: jdbc:sqlite:{DIR}RegionShop.db
+  maxConnections: 200
 
 chat:
   prefix: '[RS] '

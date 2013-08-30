@@ -29,6 +29,7 @@ public class Manager {
         ds.setUsername(plugin.getConfig().getString("database.username"));
         ds.setPassword(plugin.getConfig().getString("database.password"));
         ds.setIsolationLevel(TransactionIsolation.getLevel(plugin.getConfig().getString("database.isolation")));
+        ds.setMaxConnections(plugin.getConfig().getInt("database.maxConnections"));
 
         if (ds.getDriver().contains("sqlite")) {
             db.setDatabasePlatform(new SQLitePlatform());
