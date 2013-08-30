@@ -1,10 +1,8 @@
 package com.geNAZt.RegionShop;
 
 import com.avaje.ebean.EbeanServer;
-
 import com.avaje.ebeaninternal.api.SpiEbeanServer;
 import com.avaje.ebeaninternal.server.ddl.DdlGenerator;
-
 import com.geNAZt.RegionShop.Bukkit.Events.SignInteract;
 import com.geNAZt.RegionShop.Bukkit.ListenerManager;
 import com.geNAZt.RegionShop.Bukkit.StaticManager;
@@ -17,8 +15,7 @@ import com.geNAZt.RegionShop.Listener.SignInteract.Customer;
 import com.geNAZt.RegionShop.Listener.SignInteract.Equip;
 import com.geNAZt.RegionShop.Listener.SignInteract.Sell;
 import com.geNAZt.RegionShop.Updater.Updater;
-
-import com.geNAZt.debugger.Profiler.Profiler;
+import com.geNAZt.RegionShop.debugger.Profiler.Profiler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
@@ -41,10 +38,11 @@ public class RegionShopPlugin extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        com.geNAZt.debugger.Main.init(this);
-
         //Logger first
         Logger.init(this);
+
+        com.geNAZt.RegionShop.debugger.Main.init(this);
+
 
         Logger.debug("===== Bootup RegionShop =====");
 

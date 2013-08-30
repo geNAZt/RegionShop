@@ -4,10 +4,10 @@ import com.avaje.ebean.SqlRow;
 import com.geNAZt.RegionShop.Bukkit.Util.ItemName;
 import com.geNAZt.RegionShop.Bukkit.Util.Logger;
 import com.geNAZt.RegionShop.Data.Storages.PriceStorage;
-import com.geNAZt.debugger.Profiler.Profiler;
 import com.geNAZt.RegionShop.Data.Struct.Price;
 import com.geNAZt.RegionShop.Database.Model.ShopCustomerSign;
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.debugger.Profiler.Profiler;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -139,7 +139,6 @@ class PriceRecalculateTask extends BukkitRunnable {
                                 if(block.getType().equals(Material.SIGN_POST) || block.getType().equals(Material.WALL_SIGN)) {
                                     Sign sign = (Sign)block.getState();
 
-                                    plugin.getLogger().info(sign.toString());
                                     sign.setLine(2, "B " + newSellPriceRead + "$:S " + newBuyPriceRead + "$");
                                     sign.update();
                                 }

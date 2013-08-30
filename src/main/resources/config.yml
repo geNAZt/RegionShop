@@ -14,6 +14,7 @@ chat:
 feature:
   transaction: true
   servershop: true
+  include_servershops_into_search: true
 
 interfaces:
   command:
@@ -29,6 +30,7 @@ interfaces:
     set: true
     warp: true
     server: true
+    showcase: true
   sign:
     chestequip: true
     add: true

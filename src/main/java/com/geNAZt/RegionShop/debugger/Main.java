@@ -1,8 +1,8 @@
-package com.geNAZt.debugger;
+package com.geNAZt.RegionShop.debugger;
 
 import com.geNAZt.RegionShop.Bukkit.Util.Logger;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-import com.geNAZt.debugger.Profiler.Profiler;
+import com.geNAZt.RegionShop.debugger.Profiler.Profiler;
 
 /**
  * Created for YEAHWH.AT

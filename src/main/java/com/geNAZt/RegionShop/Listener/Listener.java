@@ -4,6 +4,7 @@ import com.geNAZt.RegionShop.Bukkit.Events.SignInteract;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.player.*;
 
 /**
@@ -21,4 +22,6 @@ public abstract class Listener {
     public void execute(PlayerQuitEvent event) {}
     public void execute(PlayerDropItemEvent event) {}
     public void execute(SignInteract event) {}
+    public void execute(ItemDespawnEvent event) {}
+    public void execute(PlayerPickupItemEvent  event) {}
 }

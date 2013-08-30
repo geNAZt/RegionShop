@@ -2,7 +2,6 @@ package com.geNAZt.RegionShop.Interface.CLI.Shop;
 
 import com.avaje.ebean.Page;
 import com.avaje.ebean.PagingList;
-import com.geNAZt.RegionShop.Bukkit.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Bukkit.Util.Chat;
 import com.geNAZt.RegionShop.Bukkit.Util.ItemName;
 import com.geNAZt.RegionShop.Data.Storages.ListStorage;
@@ -21,7 +20,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

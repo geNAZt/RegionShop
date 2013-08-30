@@ -1,4 +1,4 @@
-package com.geNAZt.debugger.Profiler;
+package com.geNAZt.RegionShop.debugger.Profiler;
 
 import com.geNAZt.RegionShop.Bukkit.Util.Logger;
 import com.geNAZt.RegionShop.RegionShopPlugin;

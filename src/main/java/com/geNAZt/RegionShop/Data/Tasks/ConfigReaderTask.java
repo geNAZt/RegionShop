@@ -1,10 +1,10 @@
 package com.geNAZt.RegionShop.Data.Tasks;
 
 import com.geNAZt.RegionShop.Data.Storages.PriceStorage;
-import com.geNAZt.debugger.Profiler.Profiler;
 import com.geNAZt.RegionShop.Data.Struct.Price;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.ServerShop;
+import com.geNAZt.RegionShop.debugger.Profiler.Profiler;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;

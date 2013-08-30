@@ -3,6 +3,7 @@ package com.geNAZt.RegionShop.Listener;
 import com.geNAZt.RegionShop.Data.Storages.SignChestEquipStorage;
 import com.geNAZt.RegionShop.Database.Model.ShopAddSign;
 import com.geNAZt.RegionShop.Database.Model.ShopChestEquipSign;
+import com.geNAZt.RegionShop.Database.Model.ShopCustomerSign;
 import com.geNAZt.RegionShop.Database.Model.ShopEquipSign;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.Material;
@@ -85,6 +86,21 @@ public class SignDestroy extends Listener {
 
                 if(equipSign != null) {
                     plugin.getDatabase().delete(equipSign);
+                }
+
+                //Look for Customer Signs
+                ShopCustomerSign customerSign = plugin.getDatabase().find(ShopCustomerSign.class).
+                        where().
+                            conjunction().
+                                eq("world", event.getBlock().getWorld().getName()).
+                                eq("x", event.getBlock().getX()).
+                                eq("y", event.getBlock().getY()).
+                                eq("z", event.getBlock().getZ()).
+                            endJunction().
+                        findUnique();
+
+                if(customerSign != null) {
+                    plugin.getDatabase().delete(customerSign);
                 }
             }
         }

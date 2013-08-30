@@ -7,7 +7,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 28.06.13
  */
-public class Region {
+public class Region{
     private ProtectedRegion region;
     private String name;
     private String itemStorage;

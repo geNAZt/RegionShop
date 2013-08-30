@@ -3,7 +3,7 @@ package com.geNAZt.RegionShop.Data.Tasks;
 import com.geNAZt.RegionShop.Bukkit.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Bukkit.Util.Logger;
 import com.geNAZt.RegionShop.Data.Storages.ListStorage;
-import com.geNAZt.debugger.Profiler.Profiler;
+import com.geNAZt.RegionShop.debugger.Profiler.Profiler;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldedit.Location;
 import com.sk89q.worldedit.Vector;

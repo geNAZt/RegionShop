@@ -71,12 +71,12 @@ public class Sell extends ShopCommand {
 
         if(price.getCurrentBuy() > 0.0) {
             Economy eco = VaultBridge.economy;
-            Double buyPrice = itemInHand.getAmount() * price.getCurrentSell();
+            Double buyPrice = itemInHand.getAmount() * price.getCurrentBuy();
 
             eco.depositPlayer(player.getName(), buyPrice);
             player.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + buyPrice + "$" + ChatColor.DARK_GREEN + " to Servershop");
             Transaction.generateTransaction(player, ShopTransaction.TransactionType.SELL, "Servershop", player.getWorld().getName(), "server", itemInHand.getTypeId(), itemInHand.getAmount(), 0.0, price.getCurrentBuy(), 1);
-            player.getInventory().remove(itemInHand);
+            player.getInventory().removeItem(itemInHand);
 
             price.setBought(price.getBought() + itemInHand.getAmount());
             PriceStorage.add("GLOBAL", priceItemStack, price);

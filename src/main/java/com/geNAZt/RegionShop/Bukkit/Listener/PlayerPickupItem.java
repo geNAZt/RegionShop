@@ -5,7 +5,7 @@ import com.geNAZt.RegionShop.debugger.Profiler.Profiler;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPhysicsEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 
 import java.util.ArrayList;
 
@@ -14,10 +14,10 @@ import java.util.ArrayList;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 05.06.13
  */
-public class BlockPhysics implements Listener {
+public class PlayerPickupItem implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
-    public void onBlockPhysics(BlockPhysicsEvent e) {
-        Profiler.start("BlockPhysicsEvent");
+    public void onPlayerPickupItem(PlayerPickupItemEvent e) {
+        Profiler.start("PlayerPickupItemEvent ");
 
         ArrayList<com.geNAZt.RegionShop.Listener.Listener> listener = ListenerManager.getHandler(e.getClass());
 
@@ -27,6 +27,6 @@ public class BlockPhysics implements Listener {
             }
         }
 
-        Profiler.end("BlockPhysicsEvent");
+        Profiler.end("PlayerPickupItemEvent ");
     }
 }

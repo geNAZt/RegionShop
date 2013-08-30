@@ -1,7 +1,7 @@
 name: RegionShop
 main: com.geNAZt.RegionShop.RegionShopPlugin
 description: A Shop which uses Regions as Shop Basement
-version: 1.1.0b7
+version: 1.1.0b8
 softdepend: [Vault, WorldGuard, WorldEdit]
 commands:
     shop:
@@ -37,6 +37,7 @@ permissions:
       rs.server.sell: true
       rs.chestequip: true
       rs.customersign: true
+      rs.showvase: true
   rs.help:
     description: Permission for /shop help
     default: true
@@ -102,4 +103,7 @@ permissions:
     default: false
   rs.customersign:
     description: Allows a User to set Customer Signs
+    default: true
+  rs.showcase:
+    description: Allows a User to create a Drop Itementity to showcase the item
     default: true

@@ -1,9 +1,7 @@
-package com.geNAZt.debugger.Profiler;
+package com.geNAZt.RegionShop.debugger.Profiler;
 
 import com.geNAZt.RegionShop.Bukkit.Util.Logger;
-import com.geNAZt.debugger.Config;
-import com.geNAZt.debugger.Profiler.Profiler;
-import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.debugger.Config;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;

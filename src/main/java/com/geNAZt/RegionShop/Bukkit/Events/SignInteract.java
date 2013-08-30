@@ -1,7 +1,6 @@
 package com.geNAZt.RegionShop.Bukkit.Events;
 
 import org.bukkit.block.Block;
-import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 /**

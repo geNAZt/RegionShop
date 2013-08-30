@@ -65,7 +65,7 @@ public class ShopSell extends ShopCommand {
                 if(item.getValue().getCurrentBuy() > 0.0) {
                     Economy eco = VaultBridge.economy;
                     eco.depositPlayer(player.getName(), itemInHand.getAmount() * item.getValue().getCurrentBuy());
-                    player.getInventory().remove(itemInHand);
+                    player.getInventory().removeItem(itemInHand);
                     player.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getValue().getCurrentBuy()) + "$" + ChatColor.DARK_GREEN + " to shop");
 
                     Transaction.generateTransaction(player, ShopTransaction.TransactionType.SELL, region.getName(), player.getWorld().getName(), "Server", itemInHand.getTypeId(), itemInHand.getAmount(), 0.0, item.getValue().getCurrentBuy(), 1);
@@ -113,7 +113,7 @@ public class ShopSell extends ShopCommand {
                     eco.depositPlayer(player.getName(), itemInHand.getAmount() * item.getBuy());
                     player.sendMessage(Chat.getPrefix() + ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + itemInHand.getAmount() + " " + ItemName.getDataName(itemInHand) + ItemName.nicer(itemInHand.getType().toString()) + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + (itemInHand.getAmount() * item.getBuy()) + "$" + ChatColor.DARK_GREEN + " to shop");
 
-                    player.getInventory().remove(itemInHand);
+                    player.getInventory().removeItem(itemInHand);
                     item.setCurrentAmount(item.getCurrentAmount() + itemInHand.getAmount());
                     plugin.getDatabase().update(item);
 

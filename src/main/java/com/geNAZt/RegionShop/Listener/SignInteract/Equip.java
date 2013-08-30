@@ -8,7 +8,6 @@ import com.geNAZt.RegionShop.Data.Struct.Region;
 import com.geNAZt.RegionShop.Database.Model.ShopEquipSign;
 import com.geNAZt.RegionShop.Listener.Listener;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 

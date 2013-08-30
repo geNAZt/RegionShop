@@ -3,7 +3,6 @@ package com.geNAZt.RegionShop.Listener;
 import com.geNAZt.RegionShop.Data.Storages.DropStorage;
 import com.geNAZt.RegionShop.Data.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Data.Storages.SearchStorage;
-import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 

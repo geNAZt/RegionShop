@@ -1,6 +1,7 @@
 package com.geNAZt.RegionShop.Bukkit.Util;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.debugger.Config;
 
 /**
  * Created for YEAHWH.AT
@@ -15,7 +16,7 @@ public class Logger {
     }
 
     public static synchronized void debug(String message) {
-        if (plugin.getConfig().getBoolean("debug", true)) {
+        if (Config.getConfig().getBoolean("debug.internal", false)) {
             plugin.getLogger().info("[DEBUG] " + message);
         }
     }

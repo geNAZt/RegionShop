@@ -5,20 +5,11 @@ import com.geNAZt.RegionShop.Bukkit.Util.ItemName;
 import com.geNAZt.RegionShop.Core.Add;
 import com.geNAZt.RegionShop.Data.Storages.PlayerStorage;
 import com.geNAZt.RegionShop.Data.Struct.Region;
-import com.geNAZt.RegionShop.Database.ItemConverter;
-import com.geNAZt.RegionShop.Database.Model.ShopItemEnchantments;
-import com.geNAZt.RegionShop.Database.Model.ShopItems;
-import com.geNAZt.RegionShop.Database.Model.ShopTransaction;
 import com.geNAZt.RegionShop.Interface.ShopCommand;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-import com.geNAZt.RegionShop.Util.Transaction;
 import org.bukkit.ChatColor;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created for YEAHWH.AT
@@ -86,7 +77,7 @@ public class ShopAdd extends ShopCommand {
                 Integer itemID;
                 if((itemID = Add.add(itemInHand, player, region, sell, buy, amount)) == 0) {
                     //Remove the item from the Player
-                    player.getInventory().remove(itemInHand);
+                    player.getInventory().removeItem(itemInHand);
 
                     //Get the nice name
                     String itemName = ItemName.getDataName(itemInHand) + itemInHand.getType().toString();

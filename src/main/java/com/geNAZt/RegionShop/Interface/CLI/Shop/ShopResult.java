@@ -71,30 +71,39 @@ public class ShopResult extends ShopCommand {
                 shopName = item.getRegion();
             }
 
-            String message = Chat.getPrefix() + ChatColor.DARK_GREEN + amount + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for (S)" + ChatColor.GREEN + item.getSell() + "$" + ChatColor.DARK_GREEN + " (B)" + ChatColor.GREEN + item.getBuy() + "$/" + item.getUnitAmount() + " Unit(s)" + ChatColor.DARK_GREEN + " at " + ChatColor.GREEN + shopName + " " + ChatColor.GRAY + "#" + item.getId();
-
-            Integer enchant = plugin.getDatabase().find(ShopItemEnchantments.class).
-                    where().
-                        eq("shop_item_id", item.getId()).
-                    findRowCount();
-
-            Integer perDmg = 0;
-
-            if (iStack.getDurability() > 0 && item.getItemID() != 373 && !item.isStackable()) {
-                Float divide = ((float)iStack.getDurability() / (float)iStack.getType().getMaxDurability());
-                perDmg = Math.round(divide * 100);
+            if(item.getCurrentAmount() == -1) {
+                amount =  Character.toString((char)0x221E);
             }
 
-            if (item.isStackable() && perDmg > 0) {
-                message += " " + ChatColor.RED + dmg;
-            }
+            String message = Chat.getPrefix() + ChatColor.DARK_GREEN + amount + " " + ChatColor.GREEN + itemName + ChatColor.DARK_GREEN + " for (S)" + ChatColor.GREEN + item.getSell() + "$" + ChatColor.DARK_GREEN + " (B)" + ChatColor.GREEN + item.getBuy() + "$/" + item.getUnitAmount() + " Unit(s)" + ChatColor.DARK_GREEN + " at " + ChatColor.GREEN + shopName + " ";
 
-            if (enchant > 0) {
-                message += " " + ChatColor.GREEN + ench;
-            }
+            if(item.getId() != null) {
 
-            if(item.getCustomName() != null) {
-                message += " " + ChatColor.YELLOW + name;
+                message += ChatColor.GRAY + "#" + item.getId();
+
+                Integer enchant = plugin.getDatabase().find(ShopItemEnchantments.class).
+                        where().
+                            eq("shop_item_id", item.getId()).
+                        findRowCount();
+
+                Integer perDmg = 0;
+
+                if (iStack.getDurability() > 0 && item.getItemID() != 373 && !item.isStackable()) {
+                    Float divide = ((float)iStack.getDurability() / (float)iStack.getType().getMaxDurability());
+                    perDmg = Math.round(divide * 100);
+                }
+
+                if (item.isStackable() && perDmg > 0) {
+                    message += " " + ChatColor.RED + dmg;
+                }
+
+                if (enchant > 0) {
+                    message += " " + ChatColor.GREEN + ench;
+                }
+
+                if(item.getCustomName() != null) {
+                    message += " " + ChatColor.YELLOW + name;
+                }
             }
 
             p.sendMessage(message);

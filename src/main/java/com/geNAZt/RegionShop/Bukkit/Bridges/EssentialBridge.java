@@ -2,7 +2,6 @@ package com.geNAZt.RegionShop.Bukkit.Bridges;
 
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.User;
-
 import com.geNAZt.RegionShop.RegionShopPlugin;
 
 

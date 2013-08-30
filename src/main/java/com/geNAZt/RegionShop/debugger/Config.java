@@ -1,4 +1,4 @@
-package com.geNAZt.debugger;
+package com.geNAZt.RegionShop.debugger;
 
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.configuration.file.FileConfiguration;

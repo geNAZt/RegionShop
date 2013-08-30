@@ -1,8 +1,8 @@
 package com.geNAZt.RegionShop.Interface;
 
 import com.geNAZt.RegionShop.Bukkit.Util.Chat;
-import com.geNAZt.debugger.Profiler.Profiler;
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.debugger.Profiler.Profiler;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
