@@ -1,0 +1,44 @@
+debug: false
+
+only-ascii: true
+only-survival: true
+
+database:
+  username: bukkit
+  isolation: SERIALIZABLE
+  driver: org.sqlite.JDBC
+  password: walrus
+  url: jdbc:sqlite:{DIR}RegionShop.db
+  maxConnections: 200
+
+chat:
+  prefix: '[RS] '
+
+feature:
+  transaction: true
+  servershop: true
+  include_servershops_into_search: true
+
+interfaces:
+  command:
+    add: true
+    buy: true
+    detail: true
+    equip: true
+    list: true
+    name: true
+    result: true
+    search: true
+    sell: true
+    set: true
+    warp: true
+    server: true
+    showcase: true
+  sign:
+    chestequip: true
+    add: true
+    equip: true
+    customer: true
+
+converter:
+  chestshop: false
