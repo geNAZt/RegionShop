@@ -1,6 +1,8 @@
 package com.geNAZt.RegionShop;
 
 import com.geNAZt.RegionShop.Config.ConfigManager;
+import com.geNAZt.RegionShop.Data.Tasks.AsyncDatabaseWriter;
+import com.geNAZt.RegionShop.Data.Tasks.DetectWGChanges;
 import com.geNAZt.RegionShop.Database.Database;
 
 import com.geNAZt.RegionShop.Database.Manager;
@@ -20,9 +22,6 @@ public class RegionShopPlugin extends JavaPlugin {
     public void onEnable() {
         //Logger first
         Logger.init(this);
-
-        //com.geNAZt.RegionShop.debugger.Main.init(this);
-
         Logger.debug("===== Bootup RegionShop =====");
 
         //Init Config
@@ -44,10 +43,16 @@ public class RegionShopPlugin extends JavaPlugin {
         //Start all Tasks
         Logger.debug("----- Starting Tasks -----");
 
+        for(Integer i = 0; i < ConfigManager.timings.AsyncDatabaseWriters; i++) {
+            getServer().getScheduler().runTaskAsynchronously(this, new AsyncDatabaseWriter());
+        }
+
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new DetectWGChanges(this), 20, ConfigManager.timings.DetectWGChanges);
 
         //Listener
         getServer().getPluginManager().registerEvents(new CheckForNewPlayer(), this);
 
+        //Shop Commands
         //getCommand("shop").setExecutor(new ShopExecutor(this));
 
         Logger.info("===== RegionShop enabled =====");
@@ -66,6 +71,6 @@ public class RegionShopPlugin extends JavaPlugin {
         getServer().getPluginManager().disablePlugin(this);
 
         //Log it
-        getLogger().info("[RegionShop] Disabled");
+        getLogger().info("===== RegionShop Disabled =====");
     }
 }
