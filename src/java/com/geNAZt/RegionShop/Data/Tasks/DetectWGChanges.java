@@ -1,6 +1,7 @@
 package com.geNAZt.RegionShop.Data.Tasks;
 
 import com.geNAZt.RegionShop.Config.ConfigManager;
+import com.geNAZt.RegionShop.Events.WGChangeRegionEvent;
 import com.geNAZt.RegionShop.Events.WGNewRegionEvent;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.sk89q.worldguard.bukkit.WGBukkit;
@@ -73,7 +74,23 @@ public class DetectWGChanges extends BukkitRunnable {
                             }
                         });
                     } else {
+                        //Has the region changed ?
+                        ProtectedRegion protectedRegion = worldRegions.get(region.getKey());
+                        if(!protectedRegion.equals(region.getValue())) {
+                            //Generate a new Event
+                            final WGChangeRegionEvent wgChangeRegionEvent = new WGChangeRegionEvent(protectedRegion, region.getValue(), world);
 
+                            //Shedule the event
+                            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    Bukkit.getPluginManager().callEvent(wgChangeRegionEvent);
+                                }
+                            });
+
+                            //Store the new Region
+                            worldRegions.put(region.getKey(), region.getValue());
+                        }
                     }
                 }
             }
