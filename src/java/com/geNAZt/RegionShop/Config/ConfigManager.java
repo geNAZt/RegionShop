@@ -10,6 +10,8 @@ import com.geNAZt.RegionShop.RegionShopPlugin;
 public class ConfigManager {
     public static DBConfig db;
     public static TimingConfig timings;
+    public static Language language;
+    public static Misc misc;
 
     public static void init(RegionShopPlugin plugin) {
         try {
@@ -18,6 +20,12 @@ public class ConfigManager {
 
             timings = new TimingConfig(plugin);
             timings.init();
+
+            language = new Language(plugin);
+            language.init();
+
+            misc = new Misc(plugin);
+            misc.init();
         } catch(InvalidConfigurationException e) {
             e.printStackTrace();
         }
