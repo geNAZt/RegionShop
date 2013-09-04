@@ -6,7 +6,6 @@ import com.geNAZt.RegionShop.Events.WGNewRegionEvent;
 import com.geNAZt.RegionShop.Events.WGRemoveRegionEvent;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.sk89q.worldguard.bukkit.WGBukkit;
-import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -27,7 +26,7 @@ public class DetectWGChanges extends BukkitRunnable {
     //Save the State of the last run
     private HashMap<World, HashMap<String, ProtectedRegion>> lastCheckState = new HashMap<World, HashMap<String, ProtectedRegion>>();
     //Create the test Pattern
-    private Pattern regex = Pattern.compile("(.*)" + ConfigManager.misc.regexPattern + "(.*)");
+    private Pattern regex = Pattern.compile("(.*)" + ConfigManager.expert.Misc_regexPattern + "(.*)");
     //Hold the instance of the Plugin
     private RegionShopPlugin plugin;
 

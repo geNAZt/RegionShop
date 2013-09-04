@@ -9,7 +9,6 @@ import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebean.config.dbplatform.SQLitePlatform;
 import com.avaje.ebeaninternal.api.SpiEbeanServer;
 import com.avaje.ebeaninternal.server.ddl.DdlGenerator;
-import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 
@@ -178,12 +177,12 @@ public class Manager {
         db.setLoggingLevel(LogLevel.NONE);
 
         DataSourceConfig ds = new DataSourceConfig();
-        ds.setDriver(ConfigManager.db.driver);
-        ds.setUrl(ConfigManager.db.url.replaceAll("\\{DIR\\}", plugin.getDataFolder().getPath().replaceAll("\\\\", "/") + "/"));
-        ds.setUsername(ConfigManager.db.username);
-        ds.setPassword(ConfigManager.db.password);
+        ds.setDriver(ConfigManager.main.DB_driver);
+        ds.setUrl(ConfigManager.main.DB_url.replaceAll("\\{DIR\\}", plugin.getDataFolder().getPath().replaceAll("\\\\", "/") + "/"));
+        ds.setUsername(ConfigManager.main.DB_username);
+        ds.setPassword(ConfigManager.main.DB_password);
         ds.setIsolationLevel(Transaction.SERIALIZABLE);
-        ds.setMaxConnections(ConfigManager.db.maxConnections);
+        ds.setMaxConnections(ConfigManager.expert.DB_maxConnections);
 
         if (ds.getDriver().contains("sqlite")) {
             db.setDatabasePlatform(new SQLitePlatform());

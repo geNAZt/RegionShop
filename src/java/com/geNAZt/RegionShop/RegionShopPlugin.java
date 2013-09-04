@@ -44,11 +44,11 @@ public class RegionShopPlugin extends JavaPlugin {
         //Start all Tasks
         Logger.debug("----- Starting Tasks -----");
 
-        for(Integer i = 0; i < ConfigManager.timings.AsyncDatabaseWriters; i++) {
+        for(Integer i = 0; i < ConfigManager.expert.Tasks_AsyncDatabaseWriters; i++) {
             getServer().getScheduler().runTaskAsynchronously(this, new AsyncDatabaseWriter());
         }
 
-        getServer().getScheduler().runTaskTimerAsynchronously(this, new DetectWGChanges(this), 20, ConfigManager.timings.DetectWGChanges);
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new DetectWGChanges(this), 20, ConfigManager.expert.Timer_DetectWGChanges);
 
         //Listener
         getServer().getPluginManager().registerEvents(new CheckForNewPlayer(), this);
