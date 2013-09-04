@@ -28,6 +28,9 @@ public class Region {
     @ManyToMany(mappedBy="ownsRegions", cascade=CascadeType.ALL)
     private List<Player> owners;
 
+    @ManyToMany(mappedBy="memberInRegions", cascade=CascadeType.ALL)
+    private List<Player> members;
+
     public Integer getId() {
         return id;
     }
@@ -94,5 +97,13 @@ public class Region {
 
     public void setOwners(List<Player> owners) {
         this.owners = owners;
+    }
+
+    public List<Player> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<Player> members) {
+        this.members = members;
     }
 }

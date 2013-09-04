@@ -23,6 +23,9 @@ public class Player {
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Region> ownsRegions;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Region> memberInRegions;
+
     public Integer getId() {
         return id;
     }
@@ -45,5 +48,13 @@ public class Player {
 
     public void setOwnsRegions(List<Region> ownsRegions) {
         this.ownsRegions = ownsRegions;
+    }
+
+    public List<Region> getMemberInRegions() {
+        return memberInRegions;
+    }
+
+    public void setMemberInRegions(List<Region> memberInRegions) {
+        this.memberInRegions = memberInRegions;
     }
 }
