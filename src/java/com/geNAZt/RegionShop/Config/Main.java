@@ -3,6 +3,7 @@ package com.geNAZt.RegionShop.Config;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created for YEAHWH.AT
@@ -23,4 +24,5 @@ public class Main extends Config {
     public String DB_password = "bukkit";
     public String DB_driver = "org.sqlite.JDBC";
     public String Chat_prefix = "[RS] ";
+    public ArrayList<String> World_enabledWorlds = new ArrayList<String>();
 }

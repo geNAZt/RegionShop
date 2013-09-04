@@ -39,6 +39,16 @@ public class DetectWGChanges extends BukkitRunnable {
         //Get all worlds
         List<World> worldList = Bukkit.getServer().getWorlds();
         for(World world : worldList) {
+            //Check if World is enabled
+            if(!ConfigManager.main.World_enabledWorlds.contains(world.getName())) {
+                //Check if old data is in the list
+                if(lastCheckState.containsKey(world)) {
+                    lastCheckState.remove(world);
+                }
+
+                continue;
+            }
+
             //Create temporary null HashMap
             HashMap<String, ProtectedRegion> worldRegions;
 
