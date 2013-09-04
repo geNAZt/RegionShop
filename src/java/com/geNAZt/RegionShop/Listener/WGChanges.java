@@ -27,7 +27,9 @@ public class WGChanges implements Listener {
 
         //If its not in the db check if valid and if it is insert it into the db
         if(region == null) {
-
+            region = new Region();
+            region.setName(event.getRegion().getId());
+            region.setRegion(event.getRegion().getId());
         }
     }
 }
