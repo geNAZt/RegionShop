@@ -3,6 +3,7 @@ package com.geNAZt.RegionShop.Data.Tasks;
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Events.WGChangeRegionEvent;
 import com.geNAZt.RegionShop.Events.WGNewRegionEvent;
+import com.geNAZt.RegionShop.Events.WGRemoveRegionEvent;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.sk89q.worldguard.bukkit.WGBukkit;
 import com.sk89q.worldguard.protection.managers.RegionManager;
@@ -77,6 +78,9 @@ public class DetectWGChanges extends BukkitRunnable {
                         //Has the region changed ?
                         ProtectedRegion protectedRegion = worldRegions.get(region.getKey());
                         if(!protectedRegion.equals(region.getValue())) {
+                            //Store the new Region
+                            worldRegions.put(region.getKey(), region.getValue());
+
                             //Generate a new Event
                             final WGChangeRegionEvent wgChangeRegionEvent = new WGChangeRegionEvent(protectedRegion, region.getValue(), world);
 
@@ -87,13 +91,31 @@ public class DetectWGChanges extends BukkitRunnable {
                                     Bukkit.getPluginManager().callEvent(wgChangeRegionEvent);
                                 }
                             });
-
-                            //Store the new Region
-                            worldRegions.put(region.getKey(), region.getValue());
                         }
                     }
                 }
             }
+
+            //Check if Regions where removed
+            for(Map.Entry<String, ProtectedRegion> region : worldRegions.entrySet()) {
+                //This region is deleted ?
+                if(!wgRegions.containsKey(region.getKey())) {
+                    //Remove it in our collection
+                    worldRegions.remove(region.getKey());
+
+                    //Generate a new Event
+                    final WGRemoveRegionEvent wgRemoveRegionEvent = new WGRemoveRegionEvent(region.getValue(), world);
+
+                    //Shedule the event
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            Bukkit.getPluginManager().callEvent(wgRemoveRegionEvent);
+                        }
+                    });
+                }
+            }
+
 
             //Save the HashMap
             lastCheckState.put(world, worldRegions);
