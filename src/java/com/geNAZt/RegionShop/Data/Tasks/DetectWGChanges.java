@@ -70,6 +70,11 @@ public class DetectWGChanges extends BukkitRunnable {
                 if(matcher.matches()) {
                     //Is this region new ?
                     if(!worldRegions.containsKey(region.getKey())) {
+                        //Region is not in the list but maybe it is invalid ?
+                        if(region.getValue().getOwners().getPlayers().isEmpty()) {
+                            continue;
+                        }
+
                         //This is a new Region
                         worldRegions.put(region.getKey(), region.getValue());
 

@@ -26,12 +26,8 @@ public class WGChanges implements Listener {
                 findUnique();
 
         //If its not in the db check if valid and if it is insert it into the db
-        if(region == null && isValidRegion(event.getRegion(), event.getWorld())) {
+        if(region == null) {
 
         }
-    }
-
-    private boolean isValidRegion(ProtectedRegion region, World world) {
-        return !region.getOwners().getPlayers().isEmpty();
     }
 }
