@@ -1,6 +1,5 @@
 package com.geNAZt.RegionShop.Listener;
 
-import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Model.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,13 +13,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class CheckForNewPlayer implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = Database.getServer().find(Player.class).where().eq("name", event.getPlayer().getName()).findUnique();
-
-        if(player == null) {
-            Player player1 = new Player();
-            player1.setName(event.getPlayer().getName());
-
-            Database.getQueue().add(player1);
+        //If a new User logs in save him
+        if(!Player.isStored(event.getPlayer())) {
+            Player.insertNewPlayer(event.getPlayer());
         }
     }
 }

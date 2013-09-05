@@ -1,5 +1,6 @@
-package com.geNAZt.RegionShop.Config;
+package com.geNAZt.RegionShop.Config.Files;
 
+import com.geNAZt.RegionShop.Config.Config;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.ChatColor;
 

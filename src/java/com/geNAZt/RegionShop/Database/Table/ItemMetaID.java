@@ -1,4 +1,4 @@
-package com.geNAZt.RegionShop.Database.Model;
+package com.geNAZt.RegionShop.Database.Table;
 
 import javax.persistence.Embeddable;
 

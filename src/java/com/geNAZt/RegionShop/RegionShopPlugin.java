@@ -1,12 +1,13 @@
 package com.geNAZt.RegionShop;
 
+import com.avaje.ebean.bean.EntityBean;
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Data.Tasks.AsyncDatabaseWriter;
 import com.geNAZt.RegionShop.Data.Tasks.DetectWGChanges;
 import com.geNAZt.RegionShop.Database.Database;
 
 import com.geNAZt.RegionShop.Database.Manager;
-import com.geNAZt.RegionShop.Database.Model.*;
+import com.geNAZt.RegionShop.Database.Table.*;
 import com.geNAZt.RegionShop.Listener.CheckForNewPlayer;
 import com.geNAZt.RegionShop.Listener.WGChanges;
 import com.geNAZt.RegionShop.Util.Logger;
@@ -66,11 +67,23 @@ public class RegionShopPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        Logger.info("===== Disabling RegionShop =====");
+
         //Close all threads
+        Logger.info("----- Stopping all Tasks -----");
         getServer().getScheduler().cancelTasks(this);
 
-        //Disable the Plugin in the Manager
-        getServer().getPluginManager().disablePlugin(this);
+        //Check if the Database has flushed
+        Logger.info("----- Shutting down Database Connection -----");
+        if(!Database.getQueue().isEmpty()) {
+            //It has not completly flushed. Get all SQL Statements and save them to files
+            while(!Database.getQueue().isEmpty()) {
+                Logger.info("Remaining Queue Size: " + Database.getQueue().size());
+
+                Object entity = Database.getQueue().poll();
+                Database.getServer().save(entity);
+            }
+        }
 
         //Log it
         getLogger().info("===== RegionShop Disabled =====");

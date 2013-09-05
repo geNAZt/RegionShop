@@ -2,8 +2,8 @@ package com.geNAZt.RegionShop.Util;
 
 import com.avaje.ebean.EbeanServer;
 import com.geNAZt.RegionShop.Database.Database;
-import com.geNAZt.RegionShop.Database.Model.ItemMeta;
-import com.geNAZt.RegionShop.Database.Model.ItemMetaID;
+import com.geNAZt.RegionShop.Database.Table.ItemMeta;
+import com.geNAZt.RegionShop.Database.Table.ItemMetaID;
 import org.bukkit.inventory.ItemStack;
 
 /**

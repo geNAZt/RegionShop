@@ -1,5 +1,8 @@
 package com.geNAZt.RegionShop.Config;
 
+import com.geNAZt.RegionShop.Config.Files.Expert;
+import com.geNAZt.RegionShop.Config.Files.Language;
+import com.geNAZt.RegionShop.Config.Files.Main;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 
 /**

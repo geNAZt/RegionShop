@@ -1,5 +1,8 @@
-package com.geNAZt.RegionShop.Config;
+package com.geNAZt.RegionShop.Config.Files;
 
+import com.geNAZt.RegionShop.Config.Config;
+import com.geNAZt.RegionShop.Config.Group;
+import com.geNAZt.RegionShop.Config.GroupRentMode;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -22,7 +25,7 @@ public class Main extends Config {
         };
 
         //Set the default group
-        this.Groups.add(new Group());
+        this.Group_Groups.add(new Group());
 
         //Enable all worlds
         List<World> worlds = Bukkit.getWorlds();
@@ -37,12 +40,16 @@ public class Main extends Config {
     public String DB_driver = "org.sqlite.JDBC";
     public String Chat_prefix = "[RS] ";
     public ArrayList<String> World_enabledWorlds = new ArrayList<String>();
-    public ArrayList<Group> Groups = new ArrayList<Group>();
-    public String Groups_default = "Default";
+    public String Group_defaultGroup = "Default";
+    public Boolean Group_use = true;
+    public Boolean Group_calcRent = true;
+    public Integer Group_rentInterval = 7*24*60*60;
+    public GroupRentMode Group_rentMode = GroupRentMode.SPLIT_OWNERS;
+    public ArrayList<Group> Group_Groups = new ArrayList<Group>();
 
     //Get a group by its name
     public Group getGroup(String name) {
-        for(Group group : Groups) {
+        for(Group group : Group_Groups) {
             if(group.Name.equals(name)) {
                 return group;
             }

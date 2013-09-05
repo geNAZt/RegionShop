@@ -1,60 +1,29 @@
 package com.geNAZt.RegionShop.Database.Model;
 
-import com.avaje.ebean.annotation.CacheStrategy;
-
-import javax.persistence.*;
-import java.util.List;
+import com.geNAZt.RegionShop.Database.Database;
+import org.bukkit.OfflinePlayer;
 
 /**
  * Created for YEAHWH.AT
- * User: geNAZt (fabian.fassbender42@googlemail.com)
- * Date: 31.08.13
+ * User: fabian
+ * Date: 05.09.13
  */
-
-@CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by name")
-@Entity()
-@Table(name = "Player")
 public class Player {
-    @Id
-    private Integer id;
+    //Store a new User in the Database
+    public static void insertNewPlayer(OfflinePlayer player) {
+        com.geNAZt.RegionShop.Database.Table.Player player1 = new com.geNAZt.RegionShop.Database.Table.Player();
+        player1.setName(player.getName());
 
-    private String name;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Region> ownsRegions;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Region> memberInRegions;
-
-    public Integer getId() {
-        return id;
+        Database.getQueue().add(player1);
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    //Check if a User is inside the database
+    public static boolean isStored(OfflinePlayer player) {
+        return Database.getServer().
+                find(com.geNAZt.RegionShop.Database.Table.Player.class).
+                    where().
+                        eq("name", player.getName()).
+                findUnique() != null;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Region> getOwnsRegions() {
-        return ownsRegions;
-    }
-
-    public void setOwnsRegions(List<Region> ownsRegions) {
-        this.ownsRegions = ownsRegions;
-    }
-
-    public List<Region> getMemberInRegions() {
-        return memberInRegions;
-    }
-
-    public void setMemberInRegions(List<Region> memberInRegions) {
-        this.memberInRegions = memberInRegions;
     }
 }

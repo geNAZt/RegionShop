@@ -1,12 +1,9 @@
 package com.geNAZt.RegionShop.Listener;
 
 import com.geNAZt.RegionShop.Database.Database;
-import com.geNAZt.RegionShop.Database.Model.Region;
+import com.geNAZt.RegionShop.Database.Table.Region;
 import com.geNAZt.RegionShop.Events.WGNewRegionEvent;
 
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-
-import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
