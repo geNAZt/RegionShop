@@ -75,13 +75,23 @@ public class RegionShopPlugin extends JavaPlugin {
 
         //Check if the Database has flushed
         Logger.info("----- Shutting down Database Connection -----");
-        if(!Database.getQueue().isEmpty()) {
+        if(!Database.getSaveQueue().isEmpty()) {
             //It has not completly flushed. Get all SQL Statements and save them to files
-            while(!Database.getQueue().isEmpty()) {
-                Logger.info("Remaining Queue Size: " + Database.getQueue().size());
+            while(!Database.getSaveQueue().isEmpty()) {
+                Logger.info("Remaining Queue Size: " + Database.getSaveQueue().size());
 
-                Object entity = Database.getQueue().poll();
+                Object entity = Database.getSaveQueue().poll();
                 Database.getServer().save(entity);
+            }
+        }
+
+        if(!Database.getUpdateQueue().isEmpty()) {
+            //It has not completly flushed. Get all SQL Statements and save them to files
+            while(!Database.getUpdateQueue().isEmpty()) {
+                Logger.info("Remaining Queue Size: " + Database.getUpdateQueue().size());
+
+                Object entity = Database.getUpdateQueue().poll();
+                Database.getServer().update(entity);
             }
         }
 

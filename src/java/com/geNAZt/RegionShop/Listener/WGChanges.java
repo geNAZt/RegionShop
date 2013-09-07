@@ -1,9 +1,10 @@
 package com.geNAZt.RegionShop.Listener;
 
-import com.geNAZt.RegionShop.Database.Database;
-import com.geNAZt.RegionShop.Database.Table.Region;
+import com.geNAZt.RegionShop.Database.Model.Region;
+import com.geNAZt.RegionShop.Events.WGChangeRegionEvent;
 import com.geNAZt.RegionShop.Events.WGNewRegionEvent;
 
+import com.geNAZt.RegionShop.Util.Logger;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -16,17 +17,18 @@ public class WGChanges implements Listener {
     @EventHandler
     public void onNewWGRegion(WGNewRegionEvent event) {
         //Check if region is in DB
-        Region region = Database.getServer().find(Region.class).
-                where().
-                    eq("region", event.getRegion().getId()).
-                    eq("world", event.getWorld().getName()).
-                findUnique();
+        if(!Region.isStored(event.getRegion(), event.getWorld())) {
+            if(!Region.store(event.getRegion(), event.getWorld())) {
+                Logger.error("Error storing a new Region");
+            }
+        }
+    }
 
-        //If its not in the db check if valid and if it is insert it into the db
-        if(region == null) {
-            region = new Region();
-            region.setName(event.getRegion().getId());
-            region.setRegion(event.getRegion().getId());
+    @EventHandler
+    public void onChangeWGRegion(WGChangeRegionEvent event) {
+        //Check if region is in DB
+        if(Region.isStored(event.getNewRegion(), event.getWorld())) {
+            Region.update(event.getNewRegion(), event.getWorld());
         }
     }
 }

@@ -13,7 +13,8 @@ public class Database {
     //Store the Database instance
     private static EbeanServer server;
     //A new and empty ArrayQueue *blingbling*
-    private static ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<Object>(5000);
+    private static ArrayBlockingQueue<Object> saveQueue = new ArrayBlockingQueue<Object>(5000);
+    private static ArrayBlockingQueue<Object> updateQueue = new ArrayBlockingQueue<Object>(5000);
 
     //Set the Database instance to a valid Conneciton
     public static void setServer(EbeanServer server1) {
@@ -26,7 +27,12 @@ public class Database {
     }
 
     //Get the DatabaseQueue which handles all writes in an async way
-    public static ArrayBlockingQueue<Object> getQueue() {
-        return queue;
+    public static synchronized ArrayBlockingQueue<Object> getSaveQueue() {
+        return saveQueue;
+    }
+
+    //Get the DatabaseQueue which handles all Updates in an async way
+    public static synchronized ArrayBlockingQueue<Object> getUpdateQueue() {
+        return updateQueue;
     }
 }

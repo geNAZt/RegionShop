@@ -21,9 +21,11 @@ public class Player {
     private String name;
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="Region_Owner")
     private List<Region> ownsRegions;
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="Region_Member")
     private List<Region> memberInRegions;
 
     public Integer getId() {

@@ -6,6 +6,9 @@ package com.geNAZt.RegionShop.Database.Table;
  * Date: 05.06.13
  */
 import com.avaje.ebean.annotation.CacheStrategy;
+import com.avaje.ebean.annotation.EnumMapping;
+import com.geNAZt.RegionShop.Config.Group;
+import com.geNAZt.RegionShop.Config.GroupRentMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,8 +22,8 @@ public class Region {
     private String name;
     private String region;
     private String world;
+    private String currentGroup;
     private Boolean bundle;
-    private String owner;
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy="region")
     private List<Items> items;
@@ -83,14 +86,6 @@ public class Region {
         this.items = items;
     }
 
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
     public List<Player> getOwners() {
         return owners;
     }
@@ -105,5 +100,13 @@ public class Region {
 
     public void setMembers(List<Player> members) {
         this.members = members;
+    }
+
+    public String getCurrentGroup() {
+        return currentGroup;
+    }
+
+    public void setCurrentGroup(String currentGroup) {
+        this.currentGroup = currentGroup;
     }
 }
