@@ -11,7 +11,6 @@ import java.util.List;
  * Date: 31.08.13
  */
 
-@CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by name")
 @Entity()
 @Table(name = "Player")
 public class Player {

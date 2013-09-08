@@ -13,7 +13,6 @@ import com.geNAZt.RegionShop.Config.GroupRentMode;
 import javax.persistence.*;
 import java.util.List;
 
-@CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by region")
 @Entity()
 @Table(name = "Region")
 public class Region {

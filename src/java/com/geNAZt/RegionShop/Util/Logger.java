@@ -17,9 +17,9 @@ public class Logger {
     }
 
     public static synchronized void debug(String message) {
-        if (plugin.getConfig().getBoolean("debug", false)) {
+
             plugin.getLogger().info("[DEBUG] " + message);
-        }
+
     }
 
     public static synchronized void warn(String message) {

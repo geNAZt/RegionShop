@@ -26,6 +26,8 @@ public class WGChanges implements Listener {
 
     @EventHandler
     public void onChangeWGRegion(WGChangeRegionEvent event) {
+        Logger.info("Got CHANGE event");
+
         //Check if region is in DB
         if(Region.isStored(event.getNewRegion(), event.getWorld())) {
             Region.update(event.getNewRegion(), event.getWorld());

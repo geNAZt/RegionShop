@@ -12,22 +12,17 @@ import org.bukkit.event.HandlerList;
  */
 public class WGChangeRegionEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
-    private ProtectedRegion oldRegion;
+
     private ProtectedRegion newRegion;
     private World world;
 
-    public WGChangeRegionEvent(ProtectedRegion oldRegion, ProtectedRegion newRegion, World world) {
-        this.oldRegion = oldRegion;
+    public WGChangeRegionEvent(ProtectedRegion newRegion, World world) {
         this.newRegion = newRegion;
         this.world = world;
     }
 
     public World getWorld() {
         return world;
-    }
-
-    public ProtectedRegion getOldRegion() {
-        return oldRegion;
     }
 
     public ProtectedRegion getNewRegion() {

@@ -1,19 +1,21 @@
 package com.geNAZt.RegionShop.Data.Tasks;
 
 import com.geNAZt.RegionShop.Config.ConfigManager;
+import com.geNAZt.RegionShop.Database.Database;
+import com.geNAZt.RegionShop.Database.Model.Region;
+import com.geNAZt.RegionShop.Database.Table.Player;
 import com.geNAZt.RegionShop.Events.WGChangeRegionEvent;
 import com.geNAZt.RegionShop.Events.WGNewRegionEvent;
 import com.geNAZt.RegionShop.Events.WGRemoveRegionEvent;
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Util.Logger;
 import com.sk89q.worldguard.bukkit.WGBukkit;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,7 +26,7 @@ import java.util.regex.Pattern;
  */
 public class DetectWGChanges extends BukkitRunnable {
     //Save the State of the last run
-    private HashMap<World, HashMap<String, ProtectedRegion>> lastCheckState = new HashMap<World, HashMap<String, ProtectedRegion>>();
+    private HashMap<World, ArrayList<String>> lastCheckState = new HashMap<World, ArrayList<String>>();
     //Create the test Pattern
     private Pattern regex = Pattern.compile("(.*)" + ConfigManager.expert.Misc_regexPattern + "(.*)");
     //Hold the instance of the Plugin
@@ -49,12 +51,12 @@ public class DetectWGChanges extends BukkitRunnable {
                 continue;
             }
 
-            //Create temporary null HashMap
-            HashMap<String, ProtectedRegion> worldRegions;
+            //Create temporary null ArrayList
+            ArrayList<String> worldRegions;
 
             //Check if world is in lastCheckState list
             if(!lastCheckState.containsKey(world)) {
-                worldRegions = new HashMap<String, ProtectedRegion>();
+                worldRegions = new ArrayList<String>();
             } else {
                 worldRegions = lastCheckState.get(world);
             }
@@ -69,14 +71,14 @@ public class DetectWGChanges extends BukkitRunnable {
                 //Check if region is a ShopRegion
                 if(matcher.matches()) {
                     //Is this region new ?
-                    if(!worldRegions.containsKey(region.getKey())) {
+                    if(!worldRegions.contains(region.getKey())) {
                         //Region is not in the list but maybe it is invalid ?
                         if(region.getValue().getOwners().getPlayers().isEmpty()) {
                             continue;
                         }
 
                         //This is a new Region
-                        worldRegions.put(region.getKey(), region.getValue());
+                        worldRegions.add(region.getKey());
 
                         //Generate a new Event
                         final WGNewRegionEvent wgNewRegionEvent = new WGNewRegionEvent(region.getValue(), world);
@@ -90,13 +92,11 @@ public class DetectWGChanges extends BukkitRunnable {
                         });
                     } else {
                         //Has the region changed ?
-                        ProtectedRegion protectedRegion = worldRegions.get(region.getKey());
-                        if(!protectedRegion.equals(region.getValue())) {
-                            //Store the new Region
-                            worldRegions.put(region.getKey(), region.getValue());
+                        com.geNAZt.RegionShop.Database.Table.Region region1 = Region.get(region.getValue(), world);
 
+                        if(region1.getOwners().size() != region.getValue().getOwners().getPlayers().size() || region1.getMembers().size() != region.getValue().getMembers().getPlayers().size()) {
                             //Generate a new Event
-                            final WGChangeRegionEvent wgChangeRegionEvent = new WGChangeRegionEvent(protectedRegion, region.getValue(), world);
+                            final WGChangeRegionEvent wgChangeRegionEvent = new WGChangeRegionEvent(region.getValue(), world);
 
                             //Shedule the event
                             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new BukkitRunnable() {
@@ -111,14 +111,14 @@ public class DetectWGChanges extends BukkitRunnable {
             }
 
             //Check if Regions where removed
-            for(Map.Entry<String, ProtectedRegion> region : worldRegions.entrySet()) {
+            for(String region : worldRegions) {
                 //This region is deleted ?
-                if(!wgRegions.containsKey(region.getKey())) {
+                if(!wgRegions.containsKey(region)) {
                     //Remove it in our collection
-                    worldRegions.remove(region.getKey());
+                    worldRegions.remove(region);
 
                     //Generate a new Event
-                    final WGRemoveRegionEvent wgRemoveRegionEvent = new WGRemoveRegionEvent(region.getValue(), world);
+                    final WGRemoveRegionEvent wgRemoveRegionEvent = new WGRemoveRegionEvent(region, world);
 
                     //Shedule the event
                     Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new BukkitRunnable() {

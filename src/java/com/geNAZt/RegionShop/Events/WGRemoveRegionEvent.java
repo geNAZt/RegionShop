@@ -1,6 +1,5 @@
 package com.geNAZt.RegionShop.Events;
 
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.World;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -12,10 +11,10 @@ import org.bukkit.event.HandlerList;
  */
 public class WGRemoveRegionEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
-    private ProtectedRegion region;
+    private String region;
     private World world;
 
-    public WGRemoveRegionEvent(ProtectedRegion region, World world) {
+    public WGRemoveRegionEvent(String region, World world) {
         this.region = region;
         this.world = world;
     }
@@ -24,7 +23,7 @@ public class WGRemoveRegionEvent extends Event {
         return world;
     }
 
-    public ProtectedRegion getRegion() {
+    public String getRegion() {
         return region;
     }
 
