@@ -4,6 +4,7 @@ import com.geNAZt.RegionShop.Database.Model.Region;
 import com.geNAZt.RegionShop.Events.WGChangeRegionEvent;
 import com.geNAZt.RegionShop.Events.WGNewRegionEvent;
 
+import com.geNAZt.RegionShop.Events.WGRemoveRegionEvent;
 import com.geNAZt.RegionShop.Util.Logger;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,11 +27,21 @@ public class WGChanges implements Listener {
 
     @EventHandler
     public void onChangeWGRegion(WGChangeRegionEvent event) {
-        Logger.info("Got CHANGE event");
-
         //Check if region is in DB
         if(Region.isStored(event.getNewRegion(), event.getWorld())) {
-            Region.update(event.getNewRegion(), event.getWorld());
+            if(!Region.update(event.getNewRegion(), event.getWorld())) {
+                Logger.error("Error updating a region");
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDeleteWGRegion(WGRemoveRegionEvent event) {
+        //Check if region is in DB
+        if(Region.isStored(event.getRegion(), event.getWorld())) {
+            if(!Region.remove(event.getRegion(), event.getWorld())) {
+                Logger.error("Error deleting a region");
+            }
         }
     }
 }

@@ -117,6 +117,32 @@ public class Region {
         return true;
     }
 
+    //Remove the Region
+    public static synchronized boolean remove(String region, World world) {
+        //Check if Region is stored
+        if(!isStored(region, world)) {
+            return false;
+        }
+
+        //Get the region
+        com.geNAZt.RegionShop.Database.Table.Region region1 = get(region, world);
+
+        Database.getServer().deleteManyToManyAssociations(region1, "owners");
+        Database.getServer().deleteManyToManyAssociations(region1, "members");
+        Database.getServer().delete(region1);
+
+        return true;
+    }
+
+    //Get the stored region
+    public static synchronized com.geNAZt.RegionShop.Database.Table.Region get(String region, World world) {
+        return Database.getServer().find(com.geNAZt.RegionShop.Database.Table.Region.class).
+                    where().
+                        eq("region", region).
+                        eq("world", world.getName()).
+                    findUnique();
+    }
+
     //Get the stored region
     public static synchronized com.geNAZt.RegionShop.Database.Table.Region get(ProtectedRegion region, World world) {
         return Database.getServer().find(com.geNAZt.RegionShop.Database.Table.Region.class).
@@ -124,6 +150,11 @@ public class Region {
                         eq("region", region.getId()).
                         eq("world", world.getName()).
                     findUnique();
+    }
+
+    //Check if Region is already in the database
+    public static synchronized boolean isStored(String region, World world) {
+        return get(region, world) != null;
     }
 
     //Check if Region is already in the database
