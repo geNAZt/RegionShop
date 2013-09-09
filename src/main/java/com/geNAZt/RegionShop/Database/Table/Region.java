@@ -19,6 +19,12 @@ public class Region {
     private String world;
     private String currentGroup;
     private Boolean bundle;
+    private Double minX;
+    private Double minY;
+    private Double minZ;
+    private Double maxX;
+    private Double maxY;
+    private Double maxZ;
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy="region")
     private List<Items> items;
@@ -103,5 +109,53 @@ public class Region {
 
     public void setCurrentGroup(String currentGroup) {
         this.currentGroup = currentGroup;
+    }
+
+    public Double getMaxY() {
+        return maxY;
+    }
+
+    public void setMaxY(Double maxY) {
+        this.maxY = maxY;
+    }
+
+    public Double getMinX() {
+        return minX;
+    }
+
+    public void setMinX(Double minX) {
+        this.minX = minX;
+    }
+
+    public Double getMinY() {
+        return minY;
+    }
+
+    public void setMinY(Double minY) {
+        this.minY = minY;
+    }
+
+    public Double getMinZ() {
+        return minZ;
+    }
+
+    public void setMinZ(Double minZ) {
+        this.minZ = minZ;
+    }
+
+    public Double getMaxX() {
+        return maxX;
+    }
+
+    public void setMaxX(Double maxX) {
+        this.maxX = maxX;
+    }
+
+    public Double getMaxZ() {
+        return maxZ;
+    }
+
+    public void setMaxZ(Double maxZ) {
+        this.maxZ = maxZ;
     }
 }
