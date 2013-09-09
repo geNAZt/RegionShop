@@ -18,11 +18,14 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Date: 05.06.13
  */
 public class RegionShopPlugin extends JavaPlugin {
+    private static RegionShopPlugin instance;
+
     @Override
     public void onEnable() {
         //Logger first
         Logger.init(this);
         Logger.debug("===== Bootup RegionShop =====");
+        instance = this;
 
         //Init Config
         Logger.debug("----- Loading Config -----");
@@ -94,5 +97,9 @@ public class RegionShopPlugin extends JavaPlugin {
 
         //Log it
         getLogger().info("===== RegionShop Disabled =====");
+    }
+
+    public static RegionShopPlugin getInstance() {
+        return instance;
     }
 }
