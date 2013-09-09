@@ -174,7 +174,6 @@ public class Manager {
 
         db.setClasses(databaseModels);
         db.setName("RegionShop");
-        db.setLoggingLevel(LogLevel.NONE);
 
         DataSourceConfig ds = new DataSourceConfig();
         ds.setDriver(ConfigManager.main.DB_driver);

@@ -8,6 +8,7 @@ import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Manager;
 import com.geNAZt.RegionShop.Database.Table.*;
 import com.geNAZt.RegionShop.Listener.CheckForNewPlayer;
+import com.geNAZt.RegionShop.Listener.PlayerMove;
 import com.geNAZt.RegionShop.Util.Logger;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -54,6 +55,7 @@ public class RegionShopPlugin extends JavaPlugin {
 
         //Listener
         getServer().getPluginManager().registerEvents(new CheckForNewPlayer(), this);
+        getServer().getPluginManager().registerEvents(new PlayerMove(), this);
 
         //Shop Commands
         //getCommand("shop").setExecutor(new ShopExecutor(this));
@@ -99,7 +101,7 @@ public class RegionShopPlugin extends JavaPlugin {
         getLogger().info("===== RegionShop Disabled =====");
     }
 
-    public static RegionShopPlugin getInstance() {
+    public static synchronized RegionShopPlugin getInstance() {
         return instance;
     }
 }

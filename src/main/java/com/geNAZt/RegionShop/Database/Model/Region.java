@@ -5,6 +5,7 @@ import com.geNAZt.RegionShop.Database.Database;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 
@@ -18,6 +19,23 @@ import java.util.List;
  * Date: 05.09.13
  */
 public class Region {
+    //Check if user is inside a Region
+    public static synchronized com.geNAZt.RegionShop.Database.Table.Region isIn(org.bukkit.entity.Player player) {
+        Location playerLoc = player.getLocation();
+
+        return Database.getServer().find(com.geNAZt.RegionShop.Database.Table.Region.class).
+                where().
+                    conjunction().
+                        le("min_x", playerLoc.getBlockX()).
+                        le("min_y", playerLoc.getBlockY()).
+                        le("min_z", playerLoc.getBlockZ()).
+                        ge("max_x", playerLoc.getBlockX()).
+                        ge("max_y", playerLoc.getBlockY()).
+                        ge("max_z", playerLoc.getBlockZ()).
+                    endJunction().
+                findUnique();
+    }
+
     //Update an existing Region
     public static synchronized boolean update(ProtectedRegion region, World world) {
         //Check if region is stored
@@ -169,8 +187,10 @@ public class Region {
     public static synchronized com.geNAZt.RegionShop.Database.Table.Region get(String region, World world) {
         return Database.getServer().find(com.geNAZt.RegionShop.Database.Table.Region.class).
                     where().
-                        eq("region", region).
-                        eq("world", world.getName()).
+                        conjunction().
+                            eq("region", region).
+                            eq("world", world.getName()).
+                        endJunction().
                     findUnique();
     }
 
@@ -178,8 +198,10 @@ public class Region {
     public static synchronized com.geNAZt.RegionShop.Database.Table.Region get(ProtectedRegion region, World world) {
         return Database.getServer().find(com.geNAZt.RegionShop.Database.Table.Region.class).
                     where().
-                        eq("region", region.getId()).
-                        eq("world", world.getName()).
+                        conjunction().
+                            eq("region", region.getId()).
+                            eq("world", world.getName()).
+                        endJunction().
                     findUnique();
     }
 

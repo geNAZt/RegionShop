@@ -21,7 +21,7 @@ public class Expert extends Config {
     }
 
     public Integer DB_maxConnections = 3;
-    public Integer Timer_DetectWGChanges = 60*20;
+    public Integer Timer_DetectWGChanges = 5*20;
     public Integer Tasks_AsyncDatabaseWriters = 1;
     public String Misc_regexPattern = "regionshop";
 }

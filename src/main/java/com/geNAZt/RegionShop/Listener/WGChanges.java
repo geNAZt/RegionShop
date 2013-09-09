@@ -24,6 +24,8 @@ public class WGChanges {
 
     public static void changeRegion(WGChangeRegionEvent event) {
         //Check if region is in DB
+        Logger.info("Got change event");
+
         if(Region.isStored(event.getNewRegion(), event.getWorld())) {
             if(!Region.update(event.getNewRegion(), event.getWorld())) {
                 Logger.error("Error updating a region");
