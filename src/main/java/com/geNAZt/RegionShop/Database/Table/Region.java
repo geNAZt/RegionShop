@@ -5,10 +5,6 @@ package com.geNAZt.RegionShop.Database.Table;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 05.06.13
  */
-import com.avaje.ebean.annotation.CacheStrategy;
-import com.avaje.ebean.annotation.EnumMapping;
-import com.geNAZt.RegionShop.Config.Group;
-import com.geNAZt.RegionShop.Config.GroupRentMode;
 
 import javax.persistence.*;
 import java.util.List;

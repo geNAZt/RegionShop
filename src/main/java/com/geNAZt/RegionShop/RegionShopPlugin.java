@@ -1,6 +1,5 @@
 package com.geNAZt.RegionShop;
 
-import com.avaje.ebean.bean.EntityBean;
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Data.Tasks.AsyncDatabaseWriter;
 import com.geNAZt.RegionShop.Data.Tasks.DetectWGChanges;
@@ -9,7 +8,6 @@ import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Manager;
 import com.geNAZt.RegionShop.Database.Table.*;
 import com.geNAZt.RegionShop.Listener.CheckForNewPlayer;
-import com.geNAZt.RegionShop.Listener.WGChanges;
 import com.geNAZt.RegionShop.Util.Logger;
 
 import org.bukkit.plugin.java.JavaPlugin;

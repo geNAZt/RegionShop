@@ -6,8 +6,6 @@ import com.geNAZt.RegionShop.Events.WGNewRegionEvent;
 
 import com.geNAZt.RegionShop.Events.WGRemoveRegionEvent;
 import com.geNAZt.RegionShop.Util.Logger;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 /**
  * Created for YEAHWH.AT

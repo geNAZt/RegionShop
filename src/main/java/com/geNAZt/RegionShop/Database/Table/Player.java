@@ -1,7 +1,5 @@
 package com.geNAZt.RegionShop.Database.Table;
 
-import com.avaje.ebean.annotation.CacheStrategy;
-
 import javax.persistence.*;
 import java.util.List;
 

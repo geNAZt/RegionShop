@@ -2,7 +2,6 @@ package com.geNAZt.RegionShop.Database.Model;
 
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Database.Database;
-import com.geNAZt.RegionShop.Util.Logger;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
