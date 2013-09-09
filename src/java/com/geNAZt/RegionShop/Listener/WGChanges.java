@@ -14,9 +14,8 @@ import org.bukkit.event.Listener;
  * User: fabian
  * Date: 03.09.13
  */
-public class WGChanges implements Listener {
-    @EventHandler
-    public void onNewWGRegion(WGNewRegionEvent event) {
+public class WGChanges {
+    public static void newRegion(WGNewRegionEvent event) {
         //Check if region is in DB
         if(!Region.isStored(event.getRegion(), event.getWorld())) {
             if(!Region.store(event.getRegion(), event.getWorld())) {
@@ -25,8 +24,7 @@ public class WGChanges implements Listener {
         }
     }
 
-    @EventHandler
-    public void onChangeWGRegion(WGChangeRegionEvent event) {
+    public static void changeRegion(WGChangeRegionEvent event) {
         //Check if region is in DB
         if(Region.isStored(event.getNewRegion(), event.getWorld())) {
             if(!Region.update(event.getNewRegion(), event.getWorld())) {
@@ -35,8 +33,7 @@ public class WGChanges implements Listener {
         }
     }
 
-    @EventHandler
-    public void onDeleteWGRegion(WGRemoveRegionEvent event) {
+    public static void removeRegion(WGRemoveRegionEvent event) {
         //Check if region is in DB
         if(Region.isStored(event.getRegion(), event.getWorld())) {
             if(!Region.remove(event.getRegion(), event.getWorld())) {

@@ -7,6 +7,7 @@ import com.geNAZt.RegionShop.Database.Table.Player;
 import com.geNAZt.RegionShop.Events.WGChangeRegionEvent;
 import com.geNAZt.RegionShop.Events.WGNewRegionEvent;
 import com.geNAZt.RegionShop.Events.WGRemoveRegionEvent;
+import com.geNAZt.RegionShop.Listener.WGChanges;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.Logger;
 import com.sk89q.worldguard.bukkit.WGBukkit;
@@ -83,13 +84,8 @@ public class DetectWGChanges extends BukkitRunnable {
                         //Generate a new Event
                         final WGNewRegionEvent wgNewRegionEvent = new WGNewRegionEvent(region.getValue(), world);
 
-                        //Shedule the event
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                Bukkit.getPluginManager().callEvent(wgNewRegionEvent);
-                            }
-                        });
+                        //Shedule the change
+                        WGChanges.newRegion(wgNewRegionEvent);
                     } else {
                         //Has the region changed ?
                         com.geNAZt.RegionShop.Database.Table.Region region1 = Region.get(region.getValue(), world);
@@ -98,13 +94,8 @@ public class DetectWGChanges extends BukkitRunnable {
                             //Generate a new Event
                             final WGChangeRegionEvent wgChangeRegionEvent = new WGChangeRegionEvent(region.getValue(), world);
 
-                            //Shedule the event
-                            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    Bukkit.getPluginManager().callEvent(wgChangeRegionEvent);
-                                }
-                            });
+                            //Shedule the change
+                            WGChanges.changeRegion(wgChangeRegionEvent);
                         }
                     }
                 }
@@ -121,12 +112,7 @@ public class DetectWGChanges extends BukkitRunnable {
                     final WGRemoveRegionEvent wgRemoveRegionEvent = new WGRemoveRegionEvent(region, world);
 
                     //Shedule the event
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            Bukkit.getPluginManager().callEvent(wgRemoveRegionEvent);
-                        }
-                    });
+                    WGChanges.removeRegion(wgRemoveRegionEvent);
                 }
             }
 

@@ -53,7 +53,6 @@ public class RegionShopPlugin extends JavaPlugin {
 
         //Listener
         getServer().getPluginManager().registerEvents(new CheckForNewPlayer(), this);
-        getServer().getPluginManager().registerEvents(new WGChanges(), this);
 
         //Shop Commands
         //getCommand("shop").setExecutor(new ShopExecutor(this));
