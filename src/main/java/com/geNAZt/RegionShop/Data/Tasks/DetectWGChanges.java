@@ -7,6 +7,7 @@ import com.geNAZt.RegionShop.Events.WGNewRegionEvent;
 import com.geNAZt.RegionShop.Events.WGRemoveRegionEvent;
 import com.geNAZt.RegionShop.Listener.WGChanges;
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.WGBukkit;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Bukkit;
@@ -87,7 +88,21 @@ public class DetectWGChanges extends BukkitRunnable {
                         //Has the region changed ?
                         com.geNAZt.RegionShop.Database.Table.Region region1 = Region.get(region.getValue(), world);
 
-                        if(region1.getOwners().size() != region.getValue().getOwners().getPlayers().size() || region1.getMembers().size() != region.getValue().getMembers().getPlayers().size()) {
+                        //Get the position markers
+                        BlockVector min = region.getValue().getMinimumPoint();
+                        BlockVector max = region.getValue().getMaximumPoint();
+
+                        //Check if region changed
+                        if(
+                            region1.getMinX() != min.getX() ||  //Check minimal points
+                            region1.getMinY() != min.getY() ||
+                            region1.getMinZ() != min.getZ() ||
+                            region1.getMaxX() != max.getX() ||  //Check maximal points
+                            region1.getMaxY() != max.getY() ||
+                            region1.getMaxZ() != max.getZ() ||
+                            region1.getOwners().size() != region.getValue().getOwners().getPlayers().size() || //Size of owners has changed
+                            region1.getMembers().size() != region.getValue().getMembers().getPlayers().size() // Size of members has changed
+                          ) {
                             //Generate a new Event
                             final WGChangeRegionEvent wgChangeRegionEvent = new WGChangeRegionEvent(region.getValue(), world);
 
