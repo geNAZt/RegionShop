@@ -2,6 +2,7 @@ package com.geNAZt.RegionShop.Database.Model;
 
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Database.Database;
+import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -24,6 +25,24 @@ public class Region {
             return false;
         }
 
+        com.geNAZt.RegionShop.Database.Table.Region region1 = get(region, world);
+
+        //Update the position
+        BlockVector min = region.getMinimumPoint();
+        BlockVector max = region.getMaximumPoint();
+
+        //Save min position
+        region1.setMinX(min.getX());
+        region1.setMinY(min.getY());
+        region1.setMinZ(min.getZ());
+
+        //Save max position
+        region1.setMaxX(max.getX());
+        region1.setMaxY(max.getY());
+        region1.setMaxZ(max.getZ());
+
+        Database.getServer().update(region1);
+
         //Store new Owners and members
         return insertOwners(region, world) && insertMembers(region, world);
     }
@@ -42,6 +61,19 @@ public class Region {
         region1.setName(region.getId());
         region1.setRegion(region.getId());
         region1.setWorld(world.getName());
+
+        BlockVector min = region.getMinimumPoint();
+        BlockVector max = region.getMaximumPoint();
+
+        //Save min position
+        region1.setMinX(min.getX());
+        region1.setMinY(min.getY());
+        region1.setMinZ(min.getZ());
+
+        //Save max position
+        region1.setMaxX(max.getX());
+        region1.setMaxY(max.getY());
+        region1.setMaxZ(max.getZ());
 
         Database.getServer().save(region1);
 
