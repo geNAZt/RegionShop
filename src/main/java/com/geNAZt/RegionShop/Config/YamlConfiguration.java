@@ -74,7 +74,7 @@ public class YamlConfiguration extends FileConfiguration {
 
     @Override
     protected String buildHeader() {
-        return null;
+        return "";
     }
 
     protected void convertMapsToSections(Map<?, ?> input, ConfigurationSection section) {
