@@ -7,6 +7,7 @@ import com.geNAZt.RegionShop.Database.Database;
 
 import com.geNAZt.RegionShop.Database.Manager;
 import com.geNAZt.RegionShop.Database.Table.*;
+import com.geNAZt.RegionShop.Interface.CLI.CommandExecutor;
 import com.geNAZt.RegionShop.Listener.CheckForNewPlayer;
 import com.geNAZt.RegionShop.Listener.PlayerMove;
 import com.geNAZt.RegionShop.Util.Logger;
@@ -58,7 +59,7 @@ public class RegionShopPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
 
         //Shop Commands
-        //getCommand("shop").setExecutor(new ShopExecutor(this));
+        getCommand("shop").setExecutor(new CommandExecutor());
 
         Logger.info("===== RegionShop enabled =====");
     }
