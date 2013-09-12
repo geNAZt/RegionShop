@@ -1,4 +1,4 @@
-package com.geNAZt.RegionShop.Config;
+package com.geNAZt.RegionShop.Config.Sub;
 
 /**
  * Created for YEAHWH.AT

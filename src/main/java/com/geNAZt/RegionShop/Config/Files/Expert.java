@@ -1,9 +1,14 @@
 package com.geNAZt.RegionShop.Config.Files;
 
 import com.geNAZt.RegionShop.Config.Config;
+import com.geNAZt.RegionShop.Config.Sub.Location;
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created for YEAHWH.AT
@@ -18,10 +23,17 @@ public class Expert extends Config {
             "If you change something here the whole Server could be messed up after it",
             "You will find an exact documentation about all Config Settings at https://github.com/geNAZt/RegionShop/wiki"
         };
+
+        //Set zero locations for all worlds
+        List<World> worlds = Bukkit.getWorlds();
+        for(World world : worlds) {
+            this.Shop_Teleport.put(world.getName(), new Location());
+        }
     }
 
     public Integer DB_maxConnections = 3;
     public Integer Timer_DetectWGChanges = 5*20;
     public Integer Tasks_AsyncDatabaseWriters = 1;
     public String Misc_regexPattern = "regionshop";
+    public HashMap<String, Location> Shop_Teleport = new HashMap<String, Location>();
 }

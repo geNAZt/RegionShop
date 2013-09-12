@@ -24,4 +24,5 @@ public class Language extends Config {
     public String Shop_Leave = ChatColor.GOLD + "You have left " + ChatColor.DARK_GREEN + "%name" +  ChatColor.GOLD + ". Bye!";
     public String List_HelpText_InsideRegion = ChatColor.GOLD + "/shop list" + ChatColor.RESET + ": List items in the shop (inside a shopregion)";
     public String List_HelpText_OutSideRegion = ChatColor.GOLD + "/shop list" + ChatColor.RESET + ": List all shops (outside a shopregion)";
+    public String Admin_SetTeleport_HelpText = ChatColor.GOLD + "/shop admin setteleport" + ChatColor.RESET + ": Set the Teleportion point for /shop to where you stand";
 }

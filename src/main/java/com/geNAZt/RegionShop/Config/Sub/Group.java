@@ -1,4 +1,6 @@
-package com.geNAZt.RegionShop.Config;
+package com.geNAZt.RegionShop.Config.Sub;
+
+import com.geNAZt.RegionShop.Config.Config;
 
 /**
  * Created for YEAHWH.AT

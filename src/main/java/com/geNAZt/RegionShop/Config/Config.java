@@ -1,7 +1,5 @@
 package com.geNAZt.RegionShop.Config;
 
-import org.bukkit.configuration.file.YamlConfiguration;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

@@ -4,6 +4,11 @@ import com.geNAZt.RegionShop.Config.Files.Expert;
 import com.geNAZt.RegionShop.Config.Files.Language;
 import com.geNAZt.RegionShop.Config.Files.Main;
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
+
+import java.io.FileReader;
 
 /**
  * Created for YEAHWH.AT
@@ -16,6 +21,8 @@ public class ConfigManager {
     public static Language language;
 
     public static void init(RegionShopPlugin plugin) {
+        Yaml y = new Yaml(new CustomClassLoaderConstructor(RegionShopPlugin.class.getClassLoader()));
+
         try {
             expert = new Expert(plugin);
             expert.init();

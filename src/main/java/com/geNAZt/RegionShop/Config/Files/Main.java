@@ -1,8 +1,8 @@
 package com.geNAZt.RegionShop.Config.Files;
 
 import com.geNAZt.RegionShop.Config.Config;
-import com.geNAZt.RegionShop.Config.Group;
-import com.geNAZt.RegionShop.Config.GroupRentMode;
+import com.geNAZt.RegionShop.Config.Sub.Group;
+import com.geNAZt.RegionShop.Config.Sub.GroupRentMode;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
