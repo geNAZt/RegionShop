@@ -6,5 +6,5 @@ package com.geNAZt.RegionShop.Interface.CLI;
  * Date: 03.09.13
  */
 public interface CLICommand {
-    public String[] getHelp();
+
 }

@@ -6,9 +6,9 @@ package com.geNAZt.RegionShop.Config.Sub;
  * Date: 10.09.13
  */
 public class Location {
-    public Integer x = 0;
-    public Integer y = 0;
-    public Integer z = 0;
+    public Double x = 0.0;
+    public Double y = 0.0;
+    public Double z = 0.0;
     public float yaw = 0.0F;
     public float pitch = 0.0F;
 }

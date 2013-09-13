@@ -1,6 +1,5 @@
-package com.geNAZt.RegionShop.Util;
+package com.geNAZt.RegionShop.Database.Model;
 
-import com.avaje.ebean.EbeanServer;
 import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Table.ItemMeta;
 import com.geNAZt.RegionShop.Database.Table.ItemMetaID;
@@ -13,9 +12,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class Item {
     private static boolean hasMeta(ItemStack itemStack) {
-        EbeanServer db = Database.getServer();
-
-        ItemMeta itemMeta = db.find(ItemMeta.class).
+        ItemMeta itemMeta = Database.getServer().find(ItemMeta.class).
                 where().
                     eq("item_id", itemStack.getTypeId()).
                     eq("data_value", itemStack.getData().getData()).
@@ -25,13 +22,11 @@ public class Item {
     }
 
     private static void createMeta(ItemStack itemStack) {
-        EbeanServer db = Database.getServer();
-
         ItemMeta itemMeta = new ItemMeta();
         itemMeta.setId(new ItemMetaID(itemStack.getTypeId(), itemStack.getData().getData()));
         itemMeta.setMaxStackSize(itemStack.getType().getMaxStackSize());
         itemMeta.setMaxDurability(itemStack.getType().getMaxDurability());
 
-        db.save(itemMeta);
+        Database.getServer().save(itemMeta);
     }
 }
