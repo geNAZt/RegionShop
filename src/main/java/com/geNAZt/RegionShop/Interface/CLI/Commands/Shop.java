@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
  */
 //This Shop Command is used to let the player teleport to the global shop teleportion point
 public class Shop implements CLICommand {
-    @Command(command="shop admin setteleport", arguments=0, permission="rs.command.admin.setteleport", helpKey="Command_Admin_SetTeleport_HelpText")
+    @Command(command="shop admin setteleport", arguments=0, permission="rs.command.admin.setteleport", helpKey="Command_Admin_SetTeleport_HelpText", helpPage="admin")
     public static void settp(CommandSender sender, String[] args) {
         //This command is not enabled for console
         if(!(sender instanceof Player)) {
@@ -59,7 +59,7 @@ public class Shop implements CLICommand {
         player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Admin_SetTeleport_Success.replace("%world", world.getName()));
     }
 
-    @Command(command="shop", arguments=0, permission="rs.command.shop", helpKey="Command_Shop_HelpText")
+    @Command(command="shop", arguments=0, permission="rs.command.shop", helpKey="Command_Shop_HelpText", helpPage="consumer")
     public static void tp(CommandSender sender, String[] args) {
         //This command is not enabled for console
         if(!(sender instanceof Player)) {

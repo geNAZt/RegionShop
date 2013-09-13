@@ -15,4 +15,5 @@ public @interface Command {
     int arguments();
     String permission();
     String helpKey();
+    String helpPage();
 }

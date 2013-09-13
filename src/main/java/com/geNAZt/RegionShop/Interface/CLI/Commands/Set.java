@@ -20,7 +20,7 @@ import org.bukkit.inventory.ItemStack;
  * Date: 06.06.13
  */
 public class Set implements CLICommand {
-    @Command(command="shop set", arguments=4, permission="rs.command.set", helpKey="Command_Set_HelpText")
+    @Command(command="shop set", arguments=4, permission="rs.command.set", helpKey="Command_Set_HelpText", helpPage="owner")
     public void execute(Player player, String[] args) {
         Integer buy, sell, amount, shopItemId;
 

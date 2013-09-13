@@ -2,10 +2,13 @@ package com.geNAZt.RegionShop.Interface.CLI;
 
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Interface.CLI.Commands.Add;
+import com.geNAZt.RegionShop.Interface.CLI.Commands.Help;
+import com.geNAZt.RegionShop.Interface.CLI.Commands.Set;
 import com.geNAZt.RegionShop.Interface.CLI.Commands.Shop;
 import org.bukkit.command.CommandSender;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -19,6 +22,7 @@ import java.util.HashMap;
  */
 public class CommandExecutor implements org.bukkit.command.CommandExecutor{
     private HashMap<String, com.geNAZt.RegionShop.Data.Struct.Command> commandMap = new HashMap<String, com.geNAZt.RegionShop.Data.Struct.Command>();
+    private static HashMap<String, ArrayList<String>> help = new HashMap<String, ArrayList<String>>();
 
     public CommandExecutor() {
         //Load all commands
@@ -26,6 +30,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor{
 
         commands.add(new Shop());
         commands.add(new Add());
+        commands.add(new Help());
+        commands.add(new Set());
 
         //Map all given commands
         for(CLICommand cmd : commands) {
@@ -37,9 +43,41 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor{
                         if(annotation instanceof Command) {
                             Command aCmd = (Command)annotation;
 
+                            //Save the help to the command
+                            if(!help.containsKey(aCmd.helpPage())) {
+                                help.put(aCmd.helpPage(), new ArrayList<String>());
+                            }
+
+                            ArrayList<String> helpPage = help.get(aCmd.helpPage());
+
+                            for (Field field : ConfigManager.language.getClass().getDeclaredFields()) {
+                                if(field.getName().equals(aCmd.helpKey())) {
+                                    try {
+                                        Object value = field.get(ConfigManager.language);
+                                        if (value instanceof String) {
+                                            helpPage.add((String) value);
+                                        }
+
+                                        if (value instanceof ArrayList) {
+                                            ArrayList<String> strings = (ArrayList<String>) value;
+
+                                            for(String helpText : strings) {
+                                                helpPage.add(helpText);
+                                            }
+                                        }
+                                    } catch (IllegalAccessException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+
+                            help.put(aCmd.helpPage(), helpPage);
+
+                            //Save the command
                             com.geNAZt.RegionShop.Data.Struct.Command command = new com.geNAZt.RegionShop.Data.Struct.Command();
                             command.annotation = aCmd;
                             command.command = method;
+
                             commandMap.put(aCmd.command(), command);
                         }
                     }
@@ -96,5 +134,13 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor{
         }
 
         return false;
+    }
+
+    public static ArrayList<String> getHelpPage() {
+        return ConfigManager.language.Command_Help_Default;
+    }
+
+    public static ArrayList<String> getHelpPage(String helpPage) {
+        return help.get(helpPage);
     }
 }

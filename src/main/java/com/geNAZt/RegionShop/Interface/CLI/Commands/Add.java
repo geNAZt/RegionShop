@@ -5,8 +5,7 @@ import com.geNAZt.RegionShop.Data.Storage.InRegion;
 import com.geNAZt.RegionShop.Interface.CLI.CLICommand;
 import com.geNAZt.RegionShop.Interface.CLI.Command;
 import com.geNAZt.RegionShop.Util.ItemName;
-import com.geNAZt.RegionShop.Util.Logger;
-import org.bukkit.ChatColor;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -19,7 +18,7 @@ import java.util.List;
  * Date: 13.09.13
  */
 public class Add implements CLICommand {
-    @Command(command="shop add", arguments=3, permission="rs.command.add", helpKey="Command_Add_HelpText")
+    @Command(command="shop add", arguments=3, permission="rs.command.add", helpKey="Command_Add_HelpText", helpPage="owner")
     public static void add(CommandSender sender, String[] args) {
         //This command is not enabled for console
         if(!(sender instanceof Player)) {
