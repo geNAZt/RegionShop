@@ -5,6 +5,8 @@ import com.geNAZt.RegionShop.Config.Sub.Group;
 import com.geNAZt.RegionShop.Data.Storage.InRegion;
 import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Model.Item;
+import com.geNAZt.RegionShop.Database.Model.Transaction;
+import com.geNAZt.RegionShop.Database.Table.Enchantment;
 import com.geNAZt.RegionShop.Database.Table.Items;
 import com.geNAZt.RegionShop.Database.Table.Region;
 import com.geNAZt.RegionShop.RegionShopPlugin;
@@ -12,6 +14,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created for YEAHWH.AT
@@ -36,7 +40,7 @@ public class Add {
         Group group = ConfigManager.main.getGroup(shop.getItemStorage().getSetting());
 
         //Check if there is place in the Storage
-        if(shop.getItemStorage().getItems().size() + item.getAmount() >= group.Storage) {
+        if(shop.getItemStorage().getItemAmount() + item.getAmount() >= group.Storage) {
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Add_FullStorage);
 
             return -1;
@@ -47,21 +51,18 @@ public class Add {
             //It is new. Convert it into the Database
             Item.toDBItem(item, InRegion.get(player), player.getName(), buy, sell, amount);
 
-            //Transaction.generateTransaction(player, ShopTransaction.TransactionType.ADD, shop.getName(), player.getWorld().getName(), player.getName(), item.getTypeId(), item.getAmount(), sell.doubleValue(), buy.doubleValue(), amount);
+            //Save a Transaction for it
+            Transaction.generateTransaction(player, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.ADD, shop.getName(), player.getWorld().getName(), player.getName(), item.getTypeId(), item.getAmount(), sell.doubleValue(), buy.doubleValue(), amount);
 
             return 0;
         } else {
             boolean found = false;
             Integer itemID = 0;
 
-            /*for(Items it : dbItem) {
+            for(Items it : dbItem) {
                 //Check if enchantments are the same
-                List<ShopItemEnchantments> enchantments = plugin.getDatabase().find(ShopItemEnchantments.class).
-                        where().
-                            eq("shop_item_id", it.getId()).
-                        findList();
-
-                Map<Enchantment, Integer> enchOnItem = item.getEnchantments();
+                Set<Enchantment> enchantments = it.getEnchantments();
+                Map<org.bukkit.enchantments.Enchantment, Integer> enchOnItem = item.getEnchantments();
 
                 if((enchantments == null || enchantments.isEmpty()) && (enchOnItem == null || enchOnItem.isEmpty())) {
                     found = true;
@@ -77,8 +78,8 @@ public class Add {
                     }
 
                     Integer foundEnchs = 0;
-                    for(Map.Entry<Enchantment, Integer> ench : enchOnItem.entrySet()) {
-                        for(ShopItemEnchantments enchI : enchantments) {
+                    for(Map.Entry<org.bukkit.enchantments.Enchantment, Integer> ench : enchOnItem.entrySet()) {
+                        for(Enchantment enchI : enchantments) {
                             if(enchI.getEnchId().equals(ench.getKey().getId()) && enchI.getEnchLvl().equals(ench.getValue())) {
                                 foundEnchs++;
                             }
@@ -98,13 +99,12 @@ public class Add {
                 return itemID;
             } else {
                 //It is new. Convert it into the Database
-                ItemConverter.toDBItem(item, player.getWorld(), player.getName(), shop.getItemStorage(), buy, sell, amount);
+                Item.toDBItem(item, InRegion.get(player), player.getName(), buy, sell, amount);
 
-                Transaction.generateTransaction(player, ShopTransaction.TransactionType.ADD, shop.getName(), player.getWorld().getName(), player.getName(), item.getTypeId(), item.getAmount(), sell.doubleValue(), buy.doubleValue(), amount);
+                Transaction.generateTransaction(player, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.ADD, shop.getName(), player.getWorld().getName(), player.getName(), item.getTypeId(), item.getAmount(), sell.doubleValue(), buy.doubleValue(), amount);
 
                 return 0;
-            }*/
-            return 0;
+            }
         }
     }
 }

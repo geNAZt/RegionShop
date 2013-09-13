@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @CacheStrategy(useBeanCache=true, readOnly=false)
 @SuppressWarnings("UnusedDeclaration")
 @Entity()
-@Table(name = "Enchantment")
+@Table(name = "rs_enchantment")
 public class Enchantment {
     @Id
     private Integer id;

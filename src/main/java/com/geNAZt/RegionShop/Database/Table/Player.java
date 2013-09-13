@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 @Entity()
-@Table(name = "Player")
+@Table(name = "rs_player")
 public class Player {
     @Id
     private Integer id;
@@ -18,11 +18,11 @@ public class Player {
     private String name;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name="Region_Owner")
+    @JoinTable(name="rs_region_owner")
     private List<Region> ownsRegions;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name="Region_Member")
+    @JoinTable(name="rs_region_member")
     private List<Region> memberInRegions;
 
     public Integer getId() {

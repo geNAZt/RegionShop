@@ -6,14 +6,11 @@ package com.geNAZt.RegionShop.Database.Table;
  * Date: 01.09.13
  */
 
-import com.avaje.ebean.annotation.CacheStrategy;
-
 import javax.persistence.*;
 
 @SuppressWarnings("UnusedDeclaration")
-@CacheStrategy(useBeanCache=true, readOnly=false)
 @Entity()
-@Table(name = "ItemMeta")
+@Table(name = "rs_itemmeta")
 public class ItemMeta {
     @EmbeddedId
     private ItemMetaID id;

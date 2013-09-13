@@ -13,7 +13,7 @@ import java.util.List;
 
 @CacheStrategy(useBeanCache=true, readOnly=false)
 @Entity()
-@Table(name = "Region")
+@Table(name = "rs_region")
 public class Region {
     @Id
     private Integer id;

@@ -14,7 +14,7 @@ import java.util.Date;
 
 @SuppressWarnings("UnusedDeclaration")
 @Entity()
-@Table(name = "Transaction")
+@Table(name = "rs_transaction")
 public class Transaction {
     @Id
     private Integer id;

@@ -14,7 +14,7 @@ import java.util.Set;
 @CacheStrategy(useBeanCache=true, readOnly=false)
 @SuppressWarnings("UnusedDeclaration")
 @Entity()
-@Table(name = "Items")
+@Table(name = "rs_items")
 public class Items {
     @Id
     private Integer id;

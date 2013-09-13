@@ -17,9 +17,7 @@ public class Logger {
     }
 
     public static synchronized void debug(String message) {
-
-            plugin.getLogger().info("[DEBUG] " + message);
-
+        plugin.getLogger().info("[DEBUG] " + message);
     }
 
     public static synchronized void warn(String message) {

@@ -165,7 +165,7 @@ public class Manager {
     public EbeanServer createDatabaseConnection() {
         ServerConfig db = new ServerConfig();
         db.setDefaultServer(false);
-        db.setRegister(false);
+        db.setRegister(true);
 
         ArrayList<Class<?>> databaseModels = new ArrayList<Class<?>>();
         for(Map.Entry<Class<?>, Boolean> databaseModel : this.databaseModels.entrySet()) {

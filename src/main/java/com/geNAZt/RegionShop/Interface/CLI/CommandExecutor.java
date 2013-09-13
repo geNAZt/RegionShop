@@ -1,5 +1,6 @@
 package com.geNAZt.RegionShop.Interface.CLI;
 
+import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Interface.CLI.Commands.Add;
 import com.geNAZt.RegionShop.Interface.CLI.Commands.Shop;
 import org.bukkit.command.CommandSender;
@@ -67,7 +68,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor{
                 }
 
                 if(realArgs.length < command1.annotation.arguments()) {
-                    continue;
+                    commandSender.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_NotEnoughArguments);
+                    return true;
                 }
 
                 try {

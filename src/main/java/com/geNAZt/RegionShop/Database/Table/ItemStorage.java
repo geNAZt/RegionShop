@@ -10,7 +10,7 @@ import java.util.Set;
  */
 
 @Entity()
-@Table(name = "ItemStorage")
+@Table(name = "rs_itemstorage")
 public class ItemStorage {
     @Id
     private Integer id;
@@ -22,6 +22,7 @@ public class ItemStorage {
     private Set<Items> items;
     private String setting;
     private String name;
+    private Integer itemAmount = 0;
 
     public String getSetting() {
         return setting;
@@ -61,5 +62,13 @@ public class ItemStorage {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getItemAmount() {
+        return itemAmount;
+    }
+
+    public void setItemAmount(Integer itemAmount) {
+        this.itemAmount = itemAmount;
     }
 }

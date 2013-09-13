@@ -3,7 +3,6 @@ package com.geNAZt.RegionShop.Database.Model;
 import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Table.*;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.inventory.ItemStack;
@@ -77,7 +76,6 @@ public class Item {
         newItem.setCurrentAmount(item.getAmount());
         newItem.setDurability(item.getDurability());
         newItem.setOwner(owner);
-        newItem.setStackable(item.getMaxStackSize() != 1);
         newItem.setCustomName((item.getItemMeta().hasDisplayName()) ? item.getItemMeta().getDisplayName() : null);
 
         newItem.setBuy(buy);
@@ -97,6 +95,10 @@ public class Item {
                 Database.getServer().save(ench);
             }
         }
+
+        region.getItemStorage().setItemAmount(region.getItemStorage().getItemAmount() + item.getAmount());
+
+        Database.getServer().update(region.getItemStorage());
 
         return newItem;
     }
