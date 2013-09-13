@@ -6,9 +6,12 @@ package com.geNAZt.RegionShop.Database.Table;
  * Date: 05.06.13
  */
 
+import com.avaje.ebean.annotation.CacheStrategy;
+
 import javax.persistence.*;
 import java.util.List;
 
+@CacheStrategy(useBeanCache=true, readOnly=false)
 @Entity()
 @Table(name = "Region")
 public class Region {

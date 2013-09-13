@@ -198,6 +198,8 @@ public class Manager {
 
         if(!checkDDL()) installDDL();
 
+        this.dbs.runCacheWarming();
+
         return dbs;
     }
 }

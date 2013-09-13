@@ -1,5 +1,7 @@
 package com.geNAZt.RegionShop.Core;
 
+import com.geNAZt.RegionShop.Config.ConfigManager;
+import com.geNAZt.RegionShop.Config.Sub.Group;
 import com.geNAZt.RegionShop.Data.Storage.InRegion;
 import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Model.Item;
@@ -30,6 +32,15 @@ public class Add {
                         eq("customName", (item.getItemMeta().hasDisplayName()) ? item.getItemMeta().getDisplayName() : null).
                     endJunction().
                 findList();
+
+        Group group = ConfigManager.main.getGroup(shop.getItemStorage().getSetting());
+
+        //Check if there is place in the Storage
+        if(shop.getItemStorage().getItems().size() + item.getAmount() >= group.Storage) {
+            player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Add_FullStorage);
+
+            return -1;
+        }
 
         //Check if item is already in the Database
         if (dbItem == null || dbItem.isEmpty()) {

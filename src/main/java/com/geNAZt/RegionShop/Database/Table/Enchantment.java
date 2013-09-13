@@ -6,11 +6,14 @@ package com.geNAZt.RegionShop.Database.Table;
  * Date: 05.06.13
  */
 
+import com.avaje.ebean.annotation.CacheStrategy;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+@CacheStrategy(useBeanCache=true, readOnly=false)
 @SuppressWarnings("UnusedDeclaration")
 @Entity()
 @Table(name = "Enchantment")
