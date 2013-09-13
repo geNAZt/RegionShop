@@ -42,6 +42,8 @@ public class RegionShopPlugin extends JavaPlugin {
         manager.addModel(Items.class);
         manager.addModel(ItemMeta.class);
         manager.addModel(ItemMetaID.class, false);
+        manager.addModel(ItemStorage.class);
+        manager.addModel(Enchantment.class);
 
         Database.setServer(manager.createDatabaseConnection());
 

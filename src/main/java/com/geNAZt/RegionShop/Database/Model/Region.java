@@ -2,6 +2,7 @@ package com.geNAZt.RegionShop.Database.Model;
 
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Database.Database;
+import com.geNAZt.RegionShop.Database.Table.ItemStorage;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Bukkit;
@@ -72,13 +73,17 @@ public class Region {
             return false;
         }
 
+        //Create new ItemStorage
+        ItemStorage itemStorage = new ItemStorage();
+        itemStorage.setName("r_" + region.getId());
+        itemStorage.setSetting(ConfigManager.main.Group_defaultGroup);
+
         //Create a new Region
         com.geNAZt.RegionShop.Database.Table.Region region1 = new com.geNAZt.RegionShop.Database.Table.Region();
-        region1.setBundle(false);
-        region1.setCurrentGroup(ConfigManager.main.Group_defaultGroup);
         region1.setName(region.getId());
         region1.setRegion(region.getId());
         region1.setWorld(world.getName());
+        region1.setItemStorage(itemStorage);
 
         BlockVector min = region.getMinimumPoint();
         BlockVector max = region.getMaximumPoint();
@@ -93,8 +98,8 @@ public class Region {
         region1.setMaxY(max.getY());
         region1.setMaxZ(max.getZ());
 
+        Database.getServer().save(itemStorage);
         Database.getServer().save(region1);
-
 
         //Insert all owners
         return insertOwners(region, world) && insertMembers(region, world);

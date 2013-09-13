@@ -14,20 +14,17 @@ import java.util.List;
 public class Region {
     @Id
     private Integer id;
+    @ManyToOne
+    private ItemStorage itemStorage;
     private String name;
     private String region;
     private String world;
-    private String currentGroup;
-    private Boolean bundle;
     private Double minX;
     private Double minY;
     private Double minZ;
     private Double maxX;
     private Double maxY;
     private Double maxZ;
-
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="region")
-    private List<Items> items;
 
     @ManyToMany(mappedBy="ownsRegions", cascade=CascadeType.ALL)
     private List<Player> owners;
@@ -67,26 +64,6 @@ public class Region {
         this.world = world;
     }
 
-    public Boolean getBundle() {
-        return bundle;
-    }
-
-    public Boolean isBundle() {
-        return bundle;
-    }
-
-    public void setBundle(Boolean bundle) {
-        this.bundle = bundle;
-    }
-
-    public List<Items> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Items> items) {
-        this.items = items;
-    }
-
     public List<Player> getOwners() {
         return owners;
     }
@@ -101,14 +78,6 @@ public class Region {
 
     public void setMembers(List<Player> members) {
         this.members = members;
-    }
-
-    public String getCurrentGroup() {
-        return currentGroup;
-    }
-
-    public void setCurrentGroup(String currentGroup) {
-        this.currentGroup = currentGroup;
     }
 
     public Double getMaxY() {
@@ -157,5 +126,13 @@ public class Region {
 
     public void setMaxZ(Double maxZ) {
         this.maxZ = maxZ;
+    }
+
+    public ItemStorage getItemStorage() {
+        return itemStorage;
+    }
+
+    public void setItemStorage(ItemStorage itemStorage) {
+        this.itemStorage = itemStorage;
     }
 }

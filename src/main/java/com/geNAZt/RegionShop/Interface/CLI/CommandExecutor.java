@@ -1,5 +1,6 @@
 package com.geNAZt.RegionShop.Interface.CLI;
 
+import com.geNAZt.RegionShop.Interface.CLI.Commands.Add;
 import com.geNAZt.RegionShop.Interface.CLI.Commands.Shop;
 import org.bukkit.command.CommandSender;
 
@@ -23,6 +24,7 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor{
         ArrayList<CLICommand> commands = new ArrayList<CLICommand>();
 
         commands.add(new Shop());
+        commands.add(new Add());
 
         //Map all given commands
         for(CLICommand cmd : commands) {

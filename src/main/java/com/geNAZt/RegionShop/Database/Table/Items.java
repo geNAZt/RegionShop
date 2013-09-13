@@ -7,6 +7,7 @@ package com.geNAZt.RegionShop.Database.Table;
  */
 
 import javax.persistence.*;
+import java.util.Set;
 
 @SuppressWarnings("UnusedDeclaration")
 @Entity()
@@ -16,10 +17,13 @@ public class Items {
     private Integer id;
 
     @ManyToOne
-    protected Region region;
+    protected ItemStorage itemStorage;
 
-    private Integer itemID;
-    private Byte dataID;
+    @ManyToOne
+    protected ItemMeta meta;
+
+    @OneToMany
+    protected Set<Enchantment> enchantments;
 
     private Integer buy;
     private Integer sell;
@@ -27,17 +31,9 @@ public class Items {
     private Integer unitAmount;
 
     private String customName;
+    private String owner;
 
     private Short durability;
-    private boolean stackable;
-
-    public boolean isStackable() {
-        return stackable;
-    }
-
-    public void setStackable(boolean stackable) {
-        this.stackable = stackable;
-    }
 
     public Short getDurability() {
         return durability;
@@ -53,22 +49,6 @@ public class Items {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getItemID() {
-        return itemID;
-    }
-
-    public void setItemID(Integer itemID) {
-        this.itemID = itemID;
-    }
-
-    public Byte getDataID() {
-        return dataID;
-    }
-
-    public void setDataID(Byte dataID) {
-        this.dataID = dataID;
     }
 
     public Integer getCurrentAmount() {
@@ -111,11 +91,35 @@ public class Items {
         this.customName = customName;
     }
 
-    public Region getRegion() {
-        return region;
+    public ItemMeta getMeta() {
+        return meta;
     }
 
-    public void setRegion(Region region) {
-        this.region = region;
+    public void setMeta(ItemMeta meta) {
+        this.meta = meta;
+    }
+
+    public ItemStorage getItemStorage() {
+        return itemStorage;
+    }
+
+    public void setItemStorage(ItemStorage itemStorage) {
+        this.itemStorage = itemStorage;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public Set<Enchantment> getEnchantments() {
+        return enchantments;
+    }
+
+    public void setEnchantments(Set<Enchantment> enchantments) {
+        this.enchantments = enchantments;
     }
 }

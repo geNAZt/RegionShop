@@ -2,7 +2,6 @@ package com.geNAZt.RegionShop.Listener;
 
 import com.geNAZt.RegionShop.Bukkit.Util.Chat;
 import com.geNAZt.RegionShop.Bukkit.Util.ItemName;
-import com.geNAZt.RegionShop.Core.Equip;
 import com.geNAZt.RegionShop.Data.Storages.DropStorage;
 import com.geNAZt.RegionShop.Data.Struct.Region;
 import org.bukkit.ChatColor;

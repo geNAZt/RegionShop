@@ -16,13 +16,8 @@ public class ItemMeta {
     private ItemMetaID id;
 
     private String name;
-    private Integer itemID;
-    private byte dataValue;
     private Integer maxStackSize;
     private short maxDurability;
-
-    private Double sell;
-    private Double buy;
 
     public ItemMetaID getId() {
         return id;
@@ -38,38 +33,6 @@ public class ItemMeta {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getItemID() {
-        return itemID;
-    }
-
-    public void setItemID(Integer itemID) {
-        this.itemID = itemID;
-    }
-
-    public byte getDataValue() {
-        return dataValue;
-    }
-
-    public void setDataValue(byte dataValue) {
-        this.dataValue = dataValue;
-    }
-
-    public Double getSell() {
-        return sell;
-    }
-
-    public void setSell(Double sell) {
-        this.sell = sell;
-    }
-
-    public Double getBuy() {
-        return buy;
-    }
-
-    public void setBuy(Double buy) {
-        this.buy = buy;
     }
 
     public Integer getMaxStackSize() {

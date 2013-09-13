@@ -6,7 +6,6 @@ import com.geNAZt.RegionShop.Bukkit.Bridges.WorldGuardBridge;
 import com.geNAZt.RegionShop.Bukkit.Util.Chat;
 import com.geNAZt.RegionShop.Bukkit.Util.Resolver;
 import com.geNAZt.RegionShop.Core.Add;
-import com.geNAZt.RegionShop.Core.Equip;
 import com.geNAZt.RegionShop.Data.Storages.ListStorage;
 import com.geNAZt.RegionShop.Data.Storages.SignChestEquipStorage;
 import com.geNAZt.RegionShop.Database.Database.ItemConverter;
