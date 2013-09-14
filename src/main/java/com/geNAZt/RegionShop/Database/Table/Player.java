@@ -1,5 +1,7 @@
 package com.geNAZt.RegionShop.Database.Table;
 
+import com.avaje.ebean.annotation.CacheStrategy;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import java.util.List;
  * Date: 31.08.13
  */
 
+@CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by id")
 @Entity()
 @Table(name = "rs_player")
 public class Player {

@@ -1,5 +1,7 @@
 package com.geNAZt.RegionShop.Database.Table;
 
+import com.avaje.ebean.annotation.CacheStrategy;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -9,6 +11,7 @@ import java.util.Set;
  * Date: 13.09.13
  */
 
+@CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by id")
 @Entity()
 @Table(name = "rs_itemstorage")
 public class ItemStorage {
@@ -23,6 +26,7 @@ public class ItemStorage {
     private String setting;
     private String name;
     private Integer itemAmount = 0;
+    private boolean servershop = false;
 
     public String getSetting() {
         return setting;
@@ -70,5 +74,13 @@ public class ItemStorage {
 
     public void setItemAmount(Integer itemAmount) {
         this.itemAmount = itemAmount;
+    }
+
+    public boolean isServershop() {
+        return servershop;
+    }
+
+    public void setServershop(boolean servershop) {
+        this.servershop = servershop;
     }
 }

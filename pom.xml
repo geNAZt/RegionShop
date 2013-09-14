@@ -79,6 +79,15 @@
             <id>sk89q-repo</id>
             <url>http://maven.sk89q.com/repo/</url>
         </repository>
+        <repository>
+            <id>vault-repo</id>
+            <url>http://ci.herocraftonline.com/plugin/repository/everything</url>
+        </repository>
+        <repository>
+            <id>comphenix-rep</id>
+            <name>Comphenix Maven Releases</name>
+            <url>http://repo.comphenix.net/content/groups/public</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -100,6 +109,18 @@
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>1.5.2-R1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>Vault</artifactId>
+            <version>1.2.27</version>
+            <scope>compile</scope>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.earth2me.essentials</groupId>
+            <artifactId>Essentials</artifactId>
+            <version>Dev2.12.53</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

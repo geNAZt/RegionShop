@@ -1,5 +1,6 @@
 package com.geNAZt.RegionShop;
 
+import com.earth2me.essentials.Essentials;
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Data.Tasks.AsyncDatabaseWriter;
 import com.geNAZt.RegionShop.Data.Tasks.DetectWGChanges;
@@ -10,8 +11,10 @@ import com.geNAZt.RegionShop.Database.Table.*;
 import com.geNAZt.RegionShop.Interface.CLI.CommandExecutor;
 import com.geNAZt.RegionShop.Listener.CheckForNewPlayer;
 import com.geNAZt.RegionShop.Listener.PlayerMove;
+import com.geNAZt.RegionShop.Util.EssentialBridge;
 import com.geNAZt.RegionShop.Util.Logger;
 
+import com.geNAZt.RegionShop.Util.VaultBridge;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -32,6 +35,8 @@ public class RegionShopPlugin extends JavaPlugin {
         //Init Config
         Logger.debug("----- Loading Config -----");
         ConfigManager.init(this);
+        VaultBridge.init(this);
+        EssentialBridge.init(this);
 
         //Database
         Logger.debug("----- Connecting Database -----");

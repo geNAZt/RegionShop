@@ -3,6 +3,7 @@ package com.geNAZt.RegionShop.Config.Files;
 import com.geNAZt.RegionShop.Config.Config;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 
+import com.geNAZt.RegionShop.Util.ItemName;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 
@@ -56,7 +57,7 @@ public class Language extends Config {
     public ArrayList<String> Command_List_Header_InsideRegion = new ArrayList<String>();
     public String Command_List_NoShops = ChatColor.RED + "No shops available";
     public String Command_List_PrintShop = ChatColor.GREEN + "%name" + ChatColor.GOLD + " - Owners: " + ChatColor.GRAY + "%owners";
-    public String Command_List_NextPage = ChatColor.GREEN + "/shop list %page" + ChatColor.GOLD + "for the next page";
+    public String Command_List_NextPage = ChatColor.GOLD + "Type " + ChatColor.GREEN + "/shop list %page " + ChatColor.GOLD + "for the next page";
     public String Command_List_Legend_Owner = ChatColor.YELLOW + "Legend: " + ChatColor.RED + "%dmg" + ChatColor.YELLOW + " damaged, " + ChatColor.RED + "%ench" + ChatColor.YELLOW + " enchanted, " + ChatColor.RED + "%name" + ChatColor.YELLOW + " renamed, " + ChatColor.RED + "%notrdy" + ChatColor.YELLOW + " not ready";
     public String Command_List_Legend_Consumer = ChatColor.YELLOW + "Legend: " + ChatColor.RED + "%dmg" + ChatColor.YELLOW + " damaged, " + ChatColor.RED + "%ench" + ChatColor.YELLOW + " enchanted, " + ChatColor.RED + "%name" + ChatColor.YELLOW + " renamed";
     public String Command_List_Item_Main = ChatColor.DARK_GREEN + "%amount" + " " + ChatColor.GREEN + "%name" + ChatColor.DARK_GREEN + " for (S)" + ChatColor.GREEN + "%sell" + "$" + ChatColor.DARK_GREEN + " (B)" + ChatColor.GREEN + "%buy" + "$/" + "%unitamount" + ChatColor.DARK_GREEN + " Unit(s) from " + ChatColor.GREEN + "%owner" + ChatColor.DARK_GREEN + " (" + ChatColor.GRAY + "#" + "%id" + ChatColor.DARK_GREEN + ")";
@@ -96,4 +97,16 @@ public class Language extends Config {
     public String Command_Help_NoHelp = ChatColor.RED + "No HelpPage found";
     public ArrayList<String> Command_Help_Header = new ArrayList<String>();
     public String Command_Help_NoPermission = ChatColor.RED + "You have no permission to view this Help";
+
+    //Buy Command
+    public String Command_Buy_HelpText = ChatColor.GOLD + "/shop buy " + ChatColor.RED + "shopItemID " +  ChatColor.GREEN + "amount" + ChatColor.RESET + ": Buy (" + ChatColor.GREEN + "amount" + ChatColor.RESET + " pcs. of) " + ChatColor.RED + "shopItemID " + ChatColor.RESET + "from the shop";
+    public String Command_Buy_NotInRegion = ChatColor.RED +  "You are not inside a shop";
+    public String Command_Buy_InvalidArguments = ChatColor.RED +  "Only numbers as shopItemId and amount values allowed";
+    public String Command_Buy_ItemNotFound = ChatColor.RED +  "This shopItem could not be found";
+    public String Command_Buy_NotEnoughItems = ChatColor.RED +  "This shop has not enough items in stock";
+    public String Command_Buy_OwnerHint = ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + "%player" + ChatColor.DARK_GREEN + " bought " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " from your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + "%price" + "$";
+    public String Command_Buy_PlayerHint = ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + "%price" + "$" + ChatColor.DARK_GREEN + " from shop";
+    public String Command_Buy_OwnerHintEmptyShop = ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + "%item" + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ")";
+    public String Command_Buy_NoSell = ChatColor.RED +  "This Shop doesn't sell this Item";
+    public String Command_Buy_NotEnoughMoney = ChatColor.RED +  "You have not enough money for this. You need %price$";
 }

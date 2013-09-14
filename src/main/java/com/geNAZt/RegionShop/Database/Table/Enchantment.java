@@ -8,12 +8,9 @@ package com.geNAZt.RegionShop.Database.Table;
 
 import com.avaje.ebean.annotation.CacheStrategy;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-@CacheStrategy(useBeanCache=true, readOnly=false)
+@CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by id")
 @SuppressWarnings("UnusedDeclaration")
 @Entity()
 @Table(name = "rs_enchantment")
@@ -22,6 +19,7 @@ public class Enchantment {
     private Integer id;
 
     @ManyToOne
+    @JoinColumn(name="items_id", referencedColumnName="id")
     private Items item;
     private Integer enchId;
     private Integer enchLvl;

@@ -1,8 +1,7 @@
 package com.geNAZt.RegionShop.Database.Table;
 
-import com.avaje.ebean.annotation.CacheStrategy;
-
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 /**
  * Created for YEAHWH.AT
@@ -11,7 +10,7 @@ import javax.persistence.Embeddable;
  */
 
 @Embeddable
-public class ItemMetaID {
+public class ItemMetaID implements Serializable{
     private Integer itemID;
     private Byte dataValue;
 

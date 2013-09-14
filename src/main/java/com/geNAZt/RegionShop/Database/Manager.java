@@ -11,6 +11,7 @@ import com.avaje.ebeaninternal.api.SpiEbeanServer;
 import com.avaje.ebeaninternal.server.ddl.DdlGenerator;
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Util.Logger;
 
 import javax.persistence.PersistenceException;
 import java.io.BufferedReader;
@@ -47,6 +48,8 @@ public class Manager {
         DdlGenerator gen = serv.getDdlGenerator();
 
         String createSQL = gen.generateCreateDdl();
+
+        Logger.info(createSQL);
 
         if (serv.getDatabasePlatform().getName().contains("sqlite")) {
             createSQL = validateCreateDDLSqlite(createSQL);

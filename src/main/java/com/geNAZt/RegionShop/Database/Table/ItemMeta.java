@@ -6,8 +6,11 @@ package com.geNAZt.RegionShop.Database.Table;
  * Date: 01.09.13
  */
 
+import com.avaje.ebean.annotation.CacheStrategy;
+
 import javax.persistence.*;
 
+@CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by id.itemID")
 @SuppressWarnings("UnusedDeclaration")
 @Entity()
 @Table(name = "rs_itemmeta")

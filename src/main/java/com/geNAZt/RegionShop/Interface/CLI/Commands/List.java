@@ -94,7 +94,7 @@ public class List implements CLICommand {
         }
 
         if(qryPage.hasNext()) {
-            player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_List_NextPage.replace("%page", ((Integer) (page+2)).toString()));
+            player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_List_NextPage.replace("%page", ((Integer) (page+1)).toString()));
         }
 
     }
@@ -240,7 +240,7 @@ public class List implements CLICommand {
             }
 
             if (qryPage.hasNext()) {
-                player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_List_NextPage.replace("%page", ((Integer) (page+2)).toString()));
+                player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_List_NextPage.replace("%page", ((Integer) (page+1)).toString()));
             }
         } else {
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_List_ShopEmpty);

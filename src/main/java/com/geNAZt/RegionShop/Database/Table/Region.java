@@ -11,7 +11,7 @@ import com.avaje.ebean.annotation.CacheStrategy;
 import javax.persistence.*;
 import java.util.List;
 
-@CacheStrategy(useBeanCache=true, readOnly=false)
+@CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by id")
 @Entity()
 @Table(name = "rs_region")
 public class Region {
