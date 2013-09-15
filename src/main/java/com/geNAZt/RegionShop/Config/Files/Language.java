@@ -39,6 +39,10 @@ public class Language extends Config {
 
         Command_List_Header_InsideRegion.add(ChatColor.YELLOW + "-- " + ChatColor.GOLD + "List of items in " + ChatColor.GREEN + "%name" + ChatColor.YELLOW + " -- " + ChatColor.GOLD + "Page " + ChatColor.RED + "%page" + ChatColor.GOLD + "/" + ChatColor.RED + "%maxpage" + ChatColor.YELLOW + " --");
         Command_List_Header_InsideRegion.add(" ");
+
+        Command_Result_Header.add(ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Result for search: " + ChatColor.GREEN + "%search" + ChatColor.YELLOW + " -- " + ChatColor.GOLD + "Page " + ChatColor.RED + "%page" + ChatColor.GOLD + "/" + ChatColor.RED + "%maxpage" + ChatColor.YELLOW + " --");
+        Command_Result_Header.add(ChatColor.YELLOW + "Legend: " + ChatColor.RED + "%dmg" + ChatColor.YELLOW + " damaged, " + ChatColor.RED + "%ench" + ChatColor.YELLOW + " enchanted, " + ChatColor.RED + "%name" + ChatColor.YELLOW + " renamed");
+        Command_Result_Header.add(" ");
     }
 
     //System Messages
@@ -116,7 +120,22 @@ public class Language extends Config {
     public String Command_Sell_NoItemInHand = ChatColor.RED +  "You have no item in the hand";
     public String Command_Sell_NoEnchantedOrRenamed = ChatColor.RED + "You can't sell enchanted / custom renamed Items into a shop";
     public String Command_Sell_NoBuy = ChatColor.RED + "This shop does not buy this item";
-    public String Command_Sell_OwnerHint = ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + "%player" + ChatColor.DARK_GREEN + " has sold " + ChatColor.GREEN + "%amount" + " " + "%item" + ChatColor.DARK_GREEN + " to your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + "%price" + "$";
+    public String Command_Sell_OwnerHint = ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + "%player" + ChatColor.DARK_GREEN + " has sold " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " to your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + "%price" + "$";
     public String Command_Sell_PlayerHint = ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + "%amount" + " " + "%item" + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + "%price" + "$" + ChatColor.DARK_GREEN + " to shop";
     public String Command_Sell_NotEnoughMoney = ChatColor.RED + "None of the Item Owners has enough Money";
+
+    //Search Command
+    public String Command_Search_HelpText = ChatColor.GOLD + "/shop search " + ChatColor.RED + "ItemID/ItemName" + ChatColor.RESET + ": Search for " + ChatColor.RED + "ItemID/ItemName";
+    public String Command_Search_NoHit = ChatColor.RED + "No items found for your search";
+
+    //Result Command
+    public String Command_Result_HelpText = ChatColor.GOLD + "/shop result " + ChatColor.RED + "page" + ChatColor.RESET + ": Browse to page " + ChatColor.RED + "page";
+    public String Command_Result_InvalidArguments = ChatColor.RED + "Only numbers as page value allowed";
+    public String Command_Result_NoResults = ChatColor.RED + "You have no results";
+    public String Command_Result_InvalidPage = ChatColor.RED + "Invalid page";
+    public ArrayList<String> Command_Result_Header = new ArrayList<String>();
+    public String Command_Result_Item_Main = ChatColor.DARK_GREEN + "%amount " + ChatColor.GREEN + "%item" + ChatColor.DARK_GREEN + " for (S)" + ChatColor.GREEN + "%sell$" + ChatColor.DARK_GREEN + " (B)" + ChatColor.GREEN + "%buy$/%unitamount Unit(s)" + ChatColor.DARK_GREEN + " at " + ChatColor.GREEN + "%shop " + ChatColor.GRAY + "#%id";
+    public String Command_Result_Item_Dmg = " " + ChatColor.RED + "%dmg";
+    public String Command_Result_Item_Ench = " " + ChatColor.GREEN + "%ench";
+    public String Command_Result_Item_Name = " " + ChatColor.YELLOW + "%name";
 }

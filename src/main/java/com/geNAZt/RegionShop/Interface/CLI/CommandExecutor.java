@@ -32,6 +32,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor{
         commands.add(new List());
         commands.add(new Buy());
         commands.add(new Sell());
+        commands.add(new Search());
+        commands.add(new Result());
 
         //Map all given commands
         for(CLICommand cmd : commands) {
