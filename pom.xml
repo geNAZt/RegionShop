@@ -119,8 +119,6 @@
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>Vault</artifactId>
             <version>1.2.27</version>
-            <scope>compile</scope>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>com.earth2me.essentials</groupId>
@@ -131,8 +129,6 @@
             <groupId>com.acrobot.chestshop</groupId>
             <artifactId>chestshop</artifactId>
             <version>3.50</version>
-            <scope>compile</scope>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
