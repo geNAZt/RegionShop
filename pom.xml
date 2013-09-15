@@ -88,11 +88,6 @@
             <name>Comphenix Maven Releases</name>
             <url>http://repo.comphenix.net/content/groups/public</url>
         </repository>
-        <repository>
-            <id>regularbox-rep</id>
-            <name>regularbox Repository</name>
-            <url>http://repo.regularbox.com/artifactory/repo/</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -135,8 +130,8 @@
             <groupId>com.acrobot.chestshop</groupId>
             <artifactId>chestshop</artifactId>
             <version>3.50</version>
-            <scope>compile</scope>
-            <type>jar</type>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/ChestShop.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
