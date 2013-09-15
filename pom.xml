@@ -114,8 +114,6 @@
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>1.5.2-R1.0</version>
-            <scope>compile</scope>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
@@ -128,15 +126,11 @@
             <groupId>com.earth2me.essentials</groupId>
             <artifactId>Essentials</artifactId>
             <version>Dev2.12.53</version>
-            <scope>compile</scope>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>com.acrobot.chestshop</groupId>
             <artifactId>chestshop</artifactId>
             <version>3.50</version>
-            <scope>compile</scope>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
