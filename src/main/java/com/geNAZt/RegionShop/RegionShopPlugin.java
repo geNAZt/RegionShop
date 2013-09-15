@@ -2,6 +2,7 @@ package com.geNAZt.RegionShop;
 
 import com.earth2me.essentials.Essentials;
 import com.geNAZt.RegionShop.Config.ConfigManager;
+import com.geNAZt.RegionShop.Converter.ChestShopConverter;
 import com.geNAZt.RegionShop.Data.Tasks.AsyncDatabaseWriter;
 import com.geNAZt.RegionShop.Data.Tasks.DetectWGChanges;
 import com.geNAZt.RegionShop.Database.Database;
@@ -68,6 +69,11 @@ public class RegionShopPlugin extends JavaPlugin {
 
         //Shop Commands
         getCommand("shop").setExecutor(new CommandExecutor());
+
+        //Maybe a converter ?
+        if(ConfigManager.expert.Converter.equals("chestshop")) {
+            new ChestShopConverter(this);
+        }
 
         Logger.info("===== RegionShop enabled =====");
     }

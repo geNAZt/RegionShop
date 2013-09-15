@@ -36,4 +36,5 @@ public class Expert extends Config {
     public Integer Tasks_AsyncDatabaseWriters = 1;
     public String Misc_regexPattern = "regionshop";
     public HashMap<String, Location> Shop_Teleport = new HashMap<String, Location>();
+    public String Converter = "chestshop";
 }
