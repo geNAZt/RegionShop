@@ -75,12 +75,12 @@ public class Region {
 
         //Create new ItemStorage
         ItemStorage itemStorage = new ItemStorage();
-        itemStorage.setName("r_" + region.getId());
+        itemStorage.setName("r_" + region.getId().toLowerCase());
         itemStorage.setSetting(ConfigManager.main.Group_defaultGroup);
 
         //Create a new Region
         com.geNAZt.RegionShop.Database.Table.Region region1 = new com.geNAZt.RegionShop.Database.Table.Region();
-        region1.setName(region.getId());
+        region1.setName(region.getId().toLowerCase());
         region1.setRegion(region.getId());
         region1.setWorld(world.getName());
         region1.setItemStorage(itemStorage);
@@ -193,7 +193,7 @@ public class Region {
         return Database.getServer().find(com.geNAZt.RegionShop.Database.Table.Region.class).
                     where().
                         conjunction().
-                            eq("region", region).
+                            eq("region", region.toLowerCase()).
                             eq("world", world.getName()).
                         endJunction().
                     findUnique();
@@ -204,7 +204,7 @@ public class Region {
         return Database.getServer().find(com.geNAZt.RegionShop.Database.Table.Region.class).
                     where().
                         conjunction().
-                            eq("region", region.getId()).
+                            eq("region", region.getId().toLowerCase()).
                             eq("world", world.getName()).
                         endJunction().
                     findUnique();
