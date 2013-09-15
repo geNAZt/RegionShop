@@ -112,9 +112,6 @@ public class DetectWGChanges extends BukkitRunnable {
                             region1.getOwners().size() != region.getValue().getOwners().getPlayers().size() || //Size of owners has changed
                             region1.getMembers().size() != region.getValue().getMembers().getPlayers().size() // Size of members has changed
                           ) {
-                            Logger.debug(((Integer)region1.getOwners().size()).toString());
-                            Logger.debug(((Integer)region.getValue().getOwners().getPlayers().size()).toString());
-
                             //Generate a new Event
                             final WGChangeRegionEvent wgChangeRegionEvent = new WGChangeRegionEvent(region.getValue(), world);
 

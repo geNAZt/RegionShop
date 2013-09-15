@@ -49,8 +49,6 @@ public class Manager {
 
         String createSQL = gen.generateCreateDdl();
 
-        Logger.info(createSQL);
-
         if (serv.getDatabasePlatform().getName().contains("sqlite")) {
             createSQL = validateCreateDDLSqlite(createSQL);
         }
