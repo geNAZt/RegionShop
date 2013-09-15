@@ -142,4 +142,14 @@ public class Language extends Config {
     //Reload Command
     public String Command_Reload_HelpText = ChatColor.GOLD + "/shop admin reload " + ChatColor.RESET + ": Reloads Language, parts of the Config. THIS IS NOT RECOMMENDED !";
     public String Command_Reload_Success = ChatColor.YELLOW + "Reloaded " + ChatColor.GOLD + "Config/Language";
+
+    //Filter Command
+    public String Command_Filter_HelpText = ChatColor.GOLD + "/shop filter " + ChatColor.RED + "filter" + ChatColor.RESET + ": Filter the result";
+    public String Command_Filter_InvalidSyntax = ChatColor.RED + "Error in Filtersyntax. %filter has no :";
+    public String Command_Filter_Damage_InvalidArguments = ChatColor.RED + "Damagefilter has a non numeric argument";
+    public String Command_Filter_Ench_InvalidOperator = ChatColor.RED + "Invalid Ench operator";
+    public String Command_Filter_Ench_InvalidEnchID = ChatColor.RED + "Invalid EnchID";
+    public String Command_Filter_Ench_InvalidArguments = ChatColor.RED + "Ench selector has a non numeric argument";
+    public String Command_Filter_Price_InvalidArguments = ChatColor.RED + "Pricefilter has a non numeric argument";
+    public String Command_Filter_NoResults = ChatColor.RED + "You have no results";
 }
