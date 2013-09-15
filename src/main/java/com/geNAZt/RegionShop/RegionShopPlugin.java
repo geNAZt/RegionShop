@@ -12,6 +12,7 @@ import com.geNAZt.RegionShop.Database.Table.*;
 import com.geNAZt.RegionShop.Interface.CLI.CommandExecutor;
 import com.geNAZt.RegionShop.Listener.CheckForNewPlayer;
 import com.geNAZt.RegionShop.Listener.PlayerMove;
+import com.geNAZt.RegionShop.Listener.PlayerQuit;
 import com.geNAZt.RegionShop.Util.EssentialBridge;
 import com.geNAZt.RegionShop.Util.Logger;
 
@@ -66,6 +67,7 @@ public class RegionShopPlugin extends JavaPlugin {
         //Listener
         getServer().getPluginManager().registerEvents(new CheckForNewPlayer(), this);
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
+        getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
 
         //Shop Commands
         getCommand("shop").setExecutor(new CommandExecutor());
