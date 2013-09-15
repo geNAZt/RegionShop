@@ -88,6 +88,14 @@ public class DetectWGChanges extends BukkitRunnable {
                         //Has the region changed ?
                         com.geNAZt.RegionShop.Database.Table.Region region1 = Region.get(region.getValue(), world);
 
+                        //Check if region is in database
+                        if(region1 == null) {
+                            //Remove it in our collection
+                            worldRegions.remove(region);
+
+                            continue;
+                        }
+
                         //Get the position markers
                         BlockVector min = region.getValue().getMinimumPoint();
                         BlockVector max = region.getValue().getMaximumPoint();
