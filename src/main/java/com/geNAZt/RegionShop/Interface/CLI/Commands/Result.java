@@ -91,7 +91,7 @@ public class Result implements CLICommand {
 
             String message = ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Result_Item_Main.
                     replace("%amount", amount).
-                    replace("%name", itemName).
+                    replace("%item", itemName).
                     replace("%sell", item.getSell().toString()).
                     replace("%buy", item.getBuy().toString()).
                     replace("%unitamount", item.getUnitAmount().toString()).

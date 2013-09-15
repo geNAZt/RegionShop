@@ -43,6 +43,15 @@ public class Language extends Config {
         Command_Result_Header.add(ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Result for search: " + ChatColor.GREEN + "%search" + ChatColor.YELLOW + " -- " + ChatColor.GOLD + "Page " + ChatColor.RED + "%page" + ChatColor.GOLD + "/" + ChatColor.RED + "%maxpage" + ChatColor.YELLOW + " --");
         Command_Result_Header.add(ChatColor.YELLOW + "Legend: " + ChatColor.RED + "%dmg" + ChatColor.YELLOW + " damaged, " + ChatColor.RED + "%ench" + ChatColor.YELLOW + " enchanted, " + ChatColor.RED + "%name" + ChatColor.YELLOW + " renamed");
         Command_Result_Header.add(" ");
+
+        Command_Detail_Header.add(ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Detail view " + ChatColor.YELLOW + "-- " + ChatColor.RED + "%owner's " + ChatColor.GREEN + "%item" + ChatColor.GRAY + " #%id");
+        Command_Detail_Header.add(" ");
+
+        Command_Detail_Ench_Header.add(" ");
+        Command_Detail_Ench_Header.add(ChatColor.GREEN + "Enchantments:");
+
+        Command_Detail_Potion_Header.add(" ");
+        Command_Detail_Potion_Header.add(ChatColor.GREEN + "Potion effects:");
     }
 
     //System Messages
@@ -152,4 +161,18 @@ public class Language extends Config {
     public String Command_Filter_Ench_InvalidArguments = ChatColor.RED + "Ench selector has a non numeric argument";
     public String Command_Filter_Price_InvalidArguments = ChatColor.RED + "Pricefilter has a non numeric argument";
     public String Command_Filter_NoResults = ChatColor.RED + "You have no results";
+
+    //Detail Command
+    public String Command_Detail_HelpText = ChatColor.GOLD + "/shop detail " + ChatColor.RED + "shopItemID" + ChatColor.RESET + ": Display details of " + ChatColor.RED + "shopItemID";
+    public String Command_Detail_InvalidArguments = ChatColor.RED + "Only numbers as argument allowed";
+    public ArrayList<String> Command_Detail_Header = new ArrayList<String>();
+    public String Command_Detail_Sell = ChatColor.GREEN + "%sell$ " + ChatColor.GOLD + "selling price";
+    public String Command_Detail_Buy = ChatColor.GREEN + "%buy$ " + ChatColor.GOLD + "buying price";
+    public String Command_Detail_Damage = ChatColor.RED + "%dmg% " + ChatColor.GOLD + "damaged";
+    public String Command_Detail_CustomName = "     " + ChatColor.GOLD + "Custom name: " + ChatColor.GRAY + "%name";
+    public ArrayList<String> Command_Detail_Ench_Header = new ArrayList<String>();
+    public String Command_Detail_Ench_Main = "    " + ChatColor.DARK_GREEN + "%ench Level " + ChatColor.GREEN + "%lvl";
+    public ArrayList<String> Command_Detail_Potion_Header = new ArrayList<String>();
+    public String Command_Detail_Potion_Main = "    " + ChatColor.DARK_GREEN + "%potion: Amplifier " + ChatColor.GREEN +"%amplifier" + ChatColor.DARK_GREEN + ", Duration " + ChatColor.GREEN + "%durations";
+    public String Command_Detail_NotFound = ChatColor.RED + "This Shopitem could not be found";
 }
