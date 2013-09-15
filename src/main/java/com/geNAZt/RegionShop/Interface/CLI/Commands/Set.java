@@ -10,6 +10,7 @@ import com.geNAZt.RegionShop.Interface.CLI.CLICommand;
 import com.geNAZt.RegionShop.Interface.CLI.Command;
 
 import com.geNAZt.RegionShop.Util.ItemName;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -21,7 +22,15 @@ import org.bukkit.inventory.ItemStack;
  */
 public class Set implements CLICommand {
     @Command(command="shop set", arguments=4, permission="rs.command.set", helpKey="Command_Set_HelpText", helpPage="owner")
-    public void execute(Player player, String[] args) {
+    public static void set(CommandSender sender, String[] args) {
+        //Check if sender is a player
+        if(!(sender instanceof Player)) {
+            sender.sendMessage("Only for Players");
+            return;
+        }
+
+        Player player = (Player) sender;
+
         Float buy, sell;
         Integer amount, shopItemId;
 

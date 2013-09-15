@@ -52,12 +52,16 @@ public class Language extends Config {
 
         Command_Detail_Potion_Header.add(" ");
         Command_Detail_Potion_Header.add(ChatColor.GREEN + "Potion effects:");
+
+        Command_Equip_MultipleShops.add(ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Shop Selector" + ChatColor.YELLOW + " -- To select a shop: " + ChatColor.GOLD +"/shop equip " + ChatColor.RED + "shopname");
+        Command_Equip_MultipleShops.add(" ");
     }
 
     //System Messages
     public String Add_FullStorage = ChatColor.RED + "Your Shop is full. Please remove/sell some Items or upgrade your Shop";
     public String Shop_Enter = ChatColor.GOLD + "You have entered " + ChatColor.DARK_GREEN + "%name" +  ChatColor.GOLD + ". Type " + ChatColor.GREEN + "/shop list " + ChatColor.GOLD + "to list the items";
     public String Shop_Leave = ChatColor.GOLD + "You have left " + ChatColor.DARK_GREEN + "%name" +  ChatColor.GOLD + ". Bye!";
+    public String Equip_Add_Item = ChatColor.GOLD + "Added "+ ChatColor.GREEN + "%item" + ChatColor.GOLD + " to the shop.";
 
     //Commands
     public String Command_NotEnoughArguments = ChatColor.RED + "You have not given all arguments needed";
@@ -191,4 +195,15 @@ public class Language extends Config {
     public String Command_Remove_NotAllItemsFit = ChatColor.RED + "Not all Items has fit into your Inventory. Please remove again if you have more Place";
     public String Command_Remove_Success = ChatColor.GOLD + "Item has been removed from your Shop";
     public String Command_Remove_NotFound = ChatColor.RED + "No Item found for this shopItemID";
+
+    //Equip Command
+    public String Command_Equip_HelpText = ChatColor.GOLD + "/shop equip" + ChatColor.RESET + ": Toggle " + ChatColor.GRAY + "quick add";
+    public String Command_Equip_Disabled = ChatColor.GOLD + "Quick add mode for " + ChatColor.GREEN + "%shop" + ChatColor.GOLD + " disabled.";
+    public String Command_Equip_NoShopFound = ChatColor.RED +  "No Shops found.";
+    public ArrayList<String> Command_Equip_MultipleShops = new ArrayList<String>();
+    public String Command_Equip_ShopName = ChatColor.GREEN + "%name";
+    public String Command_Equip_Enabled = ChatColor.GOLD + "Quick add mode for " + ChatColor.GREEN + "%name" + ChatColor.GOLD + " enabled. Drop items to add them to your shop stock";
+    public String Command_Equip_NotOwner = ChatColor.RED + "You are not an owner of this shop";
+    public String Command_Equip_Selected = ChatColor.GOLD + "Shop " + ChatColor.GREEN + "%name" + ChatColor.GOLD + " selected";
+    public String Command_Equip_ShopNotFound = ChatColor.RED + "This region could not be found";
 }
