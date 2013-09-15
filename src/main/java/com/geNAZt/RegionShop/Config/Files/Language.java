@@ -183,4 +183,12 @@ public class Language extends Config {
     public String Command_Name_TooLong = ChatColor.RED + "Name length must be under %amount chars";
     public String Command_Name_NotOwner = ChatColor.RED + "You are not an owner in this shop";
     public String Command_Name_NotInRegion = ChatColor.RED + "You are not inside a shop";
+
+    //Remove Command
+    public String Command_Remove_HelpText = ChatColor.GOLD + "/shop remove " + ChatColor.RED + "shopItemID" + ChatColor.RESET + ": Remove the "+ ChatColor.RED + "shopItemID" + ChatColor.RESET + " out of the Shop";
+    public String Command_Remove_InvalidArguments = ChatColor.RED +  "Only numbers as shopItemID value allowed";
+    public String Command_Remove_NotYourItem = ChatColor.RED + "This is not your Item";
+    public String Command_Remove_NotAllItemsFit = ChatColor.RED + "Not all Items has fit into your Inventory. Please remove again if you have more Place";
+    public String Command_Remove_Success = ChatColor.GOLD + "Item has been removed from your Shop";
+    public String Command_Remove_NotFound = ChatColor.RED + "No Item found for this shopItemID";
 }
