@@ -190,7 +190,13 @@ public class Region {
 
     //Get the stored region
     public static synchronized com.geNAZt.RegionShop.Database.Table.Region get(String region, World world) {
+        return get(region, world, true);
+    }
+
+    //Get the stored region
+    public static synchronized com.geNAZt.RegionShop.Database.Table.Region get(String region, World world, Boolean caching) {
         return Database.getServer().find(com.geNAZt.RegionShop.Database.Table.Region.class).
+                    setUseCache(caching).
                     where().
                         conjunction().
                             eq("region", region.toLowerCase()).
@@ -199,9 +205,14 @@ public class Region {
                     findUnique();
     }
 
-    //Get the stored region
     public static synchronized com.geNAZt.RegionShop.Database.Table.Region get(ProtectedRegion region, World world) {
+        return get(region, world, true);
+    }
+
+    //Get the stored region
+    public static synchronized com.geNAZt.RegionShop.Database.Table.Region get(ProtectedRegion region, World world, Boolean caching) {
         return Database.getServer().find(com.geNAZt.RegionShop.Database.Table.Region.class).
+                    setUseCache(caching).
                     where().
                         conjunction().
                             eq("region", region.getId().toLowerCase()).

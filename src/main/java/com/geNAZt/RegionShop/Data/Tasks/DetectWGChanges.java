@@ -7,6 +7,7 @@ import com.geNAZt.RegionShop.Events.WGNewRegionEvent;
 import com.geNAZt.RegionShop.Events.WGRemoveRegionEvent;
 import com.geNAZt.RegionShop.Listener.WGChanges;
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Util.Logger;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.WGBukkit;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -86,7 +87,7 @@ public class DetectWGChanges extends BukkitRunnable {
                         WGChanges.newRegion(wgNewRegionEvent);
                     } else {
                         //Has the region changed ?
-                        com.geNAZt.RegionShop.Database.Table.Region region1 = Region.get(region.getValue(), world);
+                        com.geNAZt.RegionShop.Database.Table.Region region1 = Region.get(region.getValue(), world, false);
 
                         //Check if region is in database
                         if(region1 == null) {
@@ -111,6 +112,9 @@ public class DetectWGChanges extends BukkitRunnable {
                             region1.getOwners().size() != region.getValue().getOwners().getPlayers().size() || //Size of owners has changed
                             region1.getMembers().size() != region.getValue().getMembers().getPlayers().size() // Size of members has changed
                           ) {
+                            Logger.debug(((Integer)region1.getOwners().size()).toString());
+                            Logger.debug(((Integer)region.getValue().getOwners().getPlayers().size()).toString());
+
                             //Generate a new Event
                             final WGChangeRegionEvent wgChangeRegionEvent = new WGChangeRegionEvent(region.getValue(), world);
 

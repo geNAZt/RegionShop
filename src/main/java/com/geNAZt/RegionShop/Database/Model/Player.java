@@ -44,7 +44,7 @@ public class Player {
         if(isStored(player)) return;
 
         com.geNAZt.RegionShop.Database.Table.Player player1 = new com.geNAZt.RegionShop.Database.Table.Player();
-        player1.setName(player.getName());
+        player1.setName(player.getName().toLowerCase());
 
         Database.getServer().save(player1);
     }
