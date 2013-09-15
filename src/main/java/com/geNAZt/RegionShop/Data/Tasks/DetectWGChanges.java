@@ -91,7 +91,7 @@ public class DetectWGChanges extends BukkitRunnable {
                         //Check if region is in database
                         if(region1 == null) {
                             //Remove it in our collection
-                            worldRegions.remove(region);
+                            worldRegions.remove(region.getKey());
 
                             continue;
                         }
