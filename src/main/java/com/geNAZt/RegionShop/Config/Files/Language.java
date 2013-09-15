@@ -138,4 +138,8 @@ public class Language extends Config {
     public String Command_Result_Item_Dmg = " " + ChatColor.RED + "%dmg";
     public String Command_Result_Item_Ench = " " + ChatColor.GREEN + "%ench";
     public String Command_Result_Item_Name = " " + ChatColor.YELLOW + "%name";
+
+    //Reload Command
+    public String Command_Reload_HelpText = ChatColor.GOLD + "/shop admin reload " + ChatColor.RESET + ": Reloads Language, parts of the Config. THIS IS NOT RECOMMENDED !";
+    public String Command_Reload_Success = ChatColor.YELLOW + "Reloaded " + ChatColor.GOLD + "Config/Language";
 }
