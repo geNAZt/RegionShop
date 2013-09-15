@@ -37,4 +37,6 @@ public class Expert extends Config {
     public String Misc_regexPattern = "regionshop";
     public HashMap<String, Location> Shop_Teleport = new HashMap<String, Location>();
     public String Converter = "chestshop";
+    public Boolean OnlyASCII = true;
+    public Integer MaxShopName = 30;
 }

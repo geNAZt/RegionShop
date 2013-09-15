@@ -2,12 +2,18 @@ package com.geNAZt.RegionShop.Interface.CLI.Commands;
 
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Config.InvalidConfigurationException;
+import com.geNAZt.RegionShop.Database.Database;
+import com.geNAZt.RegionShop.Database.Table.Region;
 import com.geNAZt.RegionShop.Interface.CLI.CLICommand;
 import com.geNAZt.RegionShop.Interface.CLI.Command;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 /**
  * Created for YEAHWH.AT
@@ -69,6 +75,27 @@ public class Shop implements CLICommand {
 
         //Cast to player
         Player player = (Player) sender;
+
+        //Check if we can teleport to a Shop
+        if(args.length > 0 && player.hasPermission("rs.command.shop.teleporttoshop")) {
+            String name = StringUtils.join(args, " ");
+
+            Region region = Database.getServer().find(Region.class).
+                    where().
+                        eq("name", name).
+                    findUnique();
+
+            Vector min = new Vector(region.getMinX(), region.getMinY(), region.getMinZ());
+            Vector max = new Vector(region.getMaxX(), region.getMaxY(), region.getMaxZ());
+
+            Vector mid = min.getMidpoint(max);
+
+            Location location = new Location(Bukkit.getWorld(region.getWorld()), mid.getBlockX(), mid.getBlockY(), mid.getBlockZ());
+
+            player.teleport(location);
+
+            return;
+        }
 
         //Get the world the player is in
         World world = player.getWorld();

@@ -175,4 +175,12 @@ public class Language extends Config {
     public ArrayList<String> Command_Detail_Potion_Header = new ArrayList<String>();
     public String Command_Detail_Potion_Main = "    " + ChatColor.DARK_GREEN + "%potion: Amplifier " + ChatColor.GREEN +"%amplifier" + ChatColor.DARK_GREEN + ", Duration " + ChatColor.GREEN + "%durations";
     public String Command_Detail_NotFound = ChatColor.RED + "This Shopitem could not be found";
+
+    //Name Command
+    public String Command_Name_HelpText = ChatColor.GOLD + "/shop name " + ChatColor.RED + "shopname" + ChatColor.RESET + ": Rename your shop to " + ChatColor.RED + "shopname";
+    public String Command_Name_AlreadyTaken = ChatColor.RED + "This name is already given to another shop";
+    public String Command_Name_OnlyASCII = ChatColor.RED + "You can only use ASCII characters for the name";
+    public String Command_Name_TooLong = ChatColor.RED + "Name length must be under %amount chars";
+    public String Command_Name_NotOwner = ChatColor.RED + "You are not an owner in this shop";
+    public String Command_Name_NotInRegion = ChatColor.RED + "You are not inside a shop";
 }
