@@ -22,12 +22,13 @@ import org.bukkit.inventory.ItemStack;
 public class Set implements CLICommand {
     @Command(command="shop set", arguments=4, permission="rs.command.set", helpKey="Command_Set_HelpText", helpPage="owner")
     public void execute(Player player, String[] args) {
-        Integer buy, sell, amount, shopItemId;
+        Float buy, sell;
+        Integer amount, shopItemId;
 
         try {
             shopItemId = Integer.parseInt(args[0]);
-            buy = Integer.parseInt(args[2]);
-            sell = Integer.parseInt(args[1]);
+            buy = Float.parseFloat(args[2]);
+            sell = Float.parseFloat(args[1]);
             amount = Integer.parseInt(args[3]);
         } catch (NumberFormatException e) {
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Set_InvalidArguments);

@@ -30,11 +30,12 @@ public class Add implements CLICommand {
         Player player = (Player) sender;
 
         //Convert arguments
-        Integer buy, sell, amount;
+        Float buy, sell;
+        Integer amount;
 
         try {
-            buy = Integer.parseInt(args[1]);
-            sell = Integer.parseInt(args[0]);
+            buy = Float.parseFloat(args[1]);
+            sell = Float.parseFloat(args[0]);
             amount = Integer.parseInt(args[2]);
         } catch (NumberFormatException e) {
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Add_InvalidArguments);

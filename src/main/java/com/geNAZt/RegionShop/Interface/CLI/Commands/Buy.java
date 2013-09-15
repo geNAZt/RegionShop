@@ -86,7 +86,7 @@ public class Buy implements CLICommand {
             iStack.setAmount(wishAmount);
 
             Economy eco = VaultBridge.economy;
-            Float price = (((float) wishAmount / (float) item.getUnitAmount()) * (float) item.getSell());
+            Float price = (((float) wishAmount / (float) item.getUnitAmount()) * item.getSell());
 
             if (eco.has(player.getName(), price)) {
                 HashMap<Integer, ItemStack> notFitItems = player.getInventory().addItem(iStack);
@@ -118,7 +118,7 @@ public class Buy implements CLICommand {
                             replace("%price", price.toString()));
                     }
 
-                    eco.depositPlayer(item.getOwner(), ((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell());
+                    eco.depositPlayer(item.getOwner(), price);
 
                     if(item.getCurrentAmount() == 0) {
                         if (onOwner != null) {
@@ -131,7 +131,7 @@ public class Buy implements CLICommand {
                     Transaction.generateTransaction(owner, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.SELL, region.getName(), player.getWorld().getName(), player.getName(), item.getMeta().getId().getItemID(), wishAmount, 0.0, item.getSell().doubleValue(), item.getUnitAmount());
                 }
 
-                eco.withdrawPlayer(player.getName(), ((float)wishAmount / (float)item.getUnitAmount()) * (float)item.getSell());
+                eco.withdrawPlayer(player.getName(), price);
                 player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Buy_PlayerHint.
                         replace("%player", player.getDisplayName()).
                         replace("%amount", wishAmount.toString()).

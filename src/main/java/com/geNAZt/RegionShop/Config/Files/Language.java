@@ -109,4 +109,14 @@ public class Language extends Config {
     public String Command_Buy_OwnerHintEmptyShop = ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + "%item" + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ")";
     public String Command_Buy_NoSell = ChatColor.RED +  "This Shop doesn't sell this Item";
     public String Command_Buy_NotEnoughMoney = ChatColor.RED +  "You have not enough money for this. You need %price$";
+
+    //Sell Command
+    public String Command_Sell_HelpText = ChatColor.GOLD + "/shop sell "+ ChatColor.RESET + ": Sell the current Item in Hand to the shop";
+    public String Command_Sell_NotInRegion = ChatColor.RED + "You are not inside a shop";
+    public String Command_Sell_NoItemInHand = ChatColor.RED +  "You have no item in the hand";
+    public String Command_Sell_NoEnchantedOrRenamed = ChatColor.RED + "You can't sell enchanted / custom renamed Items into a shop";
+    public String Command_Sell_NoBuy = ChatColor.RED + "This shop does not buy this item";
+    public String Command_Sell_OwnerHint = ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + "%player" + ChatColor.DARK_GREEN + " has sold " + ChatColor.GREEN + "%amount" + " " + "%item" + ChatColor.DARK_GREEN + " to your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + "%price" + "$";
+    public String Command_Sell_PlayerHint = ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + "%amount" + " " + "%item" + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + "%price" + "$" + ChatColor.DARK_GREEN + " to shop";
+    public String Command_Sell_NotEnoughMoney = ChatColor.RED + "None of the Item Owners has enough Money";
 }

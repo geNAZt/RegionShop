@@ -23,7 +23,7 @@ import java.util.Set;
  * Date: 16.07.13
  */
 public class Add {
-    public static Integer add(ItemStack item, Player player, Region shop, Integer sell, Integer buy, Integer amount) {
+    public static Integer add(ItemStack item, Player player, Region shop, Float sell, Float buy, Integer amount) {
         //Ask Database for this Item
         List<Items> dbItem = Database.getServer().find(Items.class).
                 where().

@@ -63,7 +63,7 @@ public class Item {
         return iStack;
     }
 
-    public static Items toDBItem(ItemStack item, com.geNAZt.RegionShop.Database.Table.Region region, String owner, Integer buy, Integer sell, Integer amount) {
+    public static Items toDBItem(ItemStack item, com.geNAZt.RegionShop.Database.Table.Region region, String owner, Float buy, Float sell, Integer amount) {
         if(!hasMeta(item)) {
             createMeta(item);
         }

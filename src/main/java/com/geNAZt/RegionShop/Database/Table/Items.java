@@ -28,8 +28,8 @@ public class Items {
     @OneToMany
     protected Set<Enchantment> enchantments;
 
-    private Integer buy;
-    private Integer sell;
+    private Float buy;
+    private Float sell;
     private Integer currentAmount;
     private Integer unitAmount;
 
@@ -62,19 +62,19 @@ public class Items {
         this.currentAmount = currentAmount;
     }
 
-    public Integer getBuy() {
+    public Float getBuy() {
         return buy;
     }
 
-    public void setBuy(Integer buy) {
+    public void setBuy(Float buy) {
         this.buy = buy;
     }
 
-    public Integer getSell() {
+    public Float getSell() {
         return sell;
     }
 
-    public void setSell(Integer sell) {
+    public void setSell(Float sell) {
         this.sell = sell;
     }
 
