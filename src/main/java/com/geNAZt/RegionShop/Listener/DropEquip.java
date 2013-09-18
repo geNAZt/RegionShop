@@ -23,19 +23,22 @@ public class DropEquip implements Listener {
 
             ItemStack droppedItem = event.getItemDrop().getItemStack();
 
-            if(Equip.equip(droppedItem, event.getPlayer(), region) == 0) {
+            Integer mode;
+            if((mode = Equip.equip(droppedItem, event.getPlayer(), region)) == 0) {
                 event.getItemDrop().remove();
             } else {
-                event.getItemDrop().remove();
+                if(mode != -1) {
+                    event.getItemDrop().remove();
 
-                String itemName;
-                if (droppedItem.getItemMeta().hasDisplayName()) {
-                    itemName = ItemName.getDataName(droppedItem) + droppedItem.getItemMeta().getDisplayName();
-                } else {
-                    itemName = ItemName.getDataName(droppedItem) + droppedItem.getType().toString();
+                    String itemName;
+                    if (droppedItem.getItemMeta().hasDisplayName()) {
+                        itemName = ItemName.getDataName(droppedItem) + droppedItem.getItemMeta().getDisplayName();
+                    } else {
+                        itemName = ItemName.getDataName(droppedItem) + droppedItem.getType().toString();
+                    }
+
+                    event.getPlayer().sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Equip_Add_Item.replace("%item", ItemName.nicer(itemName)));
                 }
-
-                event.getPlayer().sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Equip_Add_Item.replace("%item", ItemName.nicer(itemName)));
             }
         }
     }

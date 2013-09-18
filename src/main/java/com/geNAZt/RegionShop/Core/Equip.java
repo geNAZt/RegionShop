@@ -1,5 +1,7 @@
 package com.geNAZt.RegionShop.Core;
 
+import com.geNAZt.RegionShop.Config.ConfigManager;
+import com.geNAZt.RegionShop.Config.Sub.Group;
 import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Model.Item;
 import com.geNAZt.RegionShop.Database.Model.Transaction;
@@ -15,6 +17,15 @@ import org.bukkit.inventory.ItemStack;
  */
 public class Equip {
     public static Integer equip(ItemStack item, Player player, Region shop) {
+        Group group = ConfigManager.main.getGroup(shop.getItemStorage().getSetting());
+
+        //Check if there is place in the Storage
+        if(shop.getItemStorage().getItemAmount() + item.getAmount() >= group.Storage) {
+            player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Add_FullStorage);
+
+            return -1;
+        }
+
         Items dbItem = Database.getServer().find(Items.class).
                 where().
                     conjunction().

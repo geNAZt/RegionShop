@@ -111,6 +111,7 @@ public class Language extends Config {
     public String Command_Shop_NotEnabled = ChatColor.RED + "You can not be teleported because the World is not enabled for Shopping";
 
     //Add command
+    public String Command_Add_HelpText = ChatColor.GOLD + "/shop add " + ChatColor.RED + "sellprice buyprice amount" + ChatColor.RESET + ": Add current item in hand to the shop stock";
     public String Command_Add_NotInRegion = ChatColor.RED + "You can not add Items if you are not in a Shop";
     public String Command_Add_NotOwnerInThisRegion = ChatColor.RED + "You are not an Owner of this Shop";
     public String Command_Add_NoItemInHand = ChatColor.RED +  "You have no item in the hand";

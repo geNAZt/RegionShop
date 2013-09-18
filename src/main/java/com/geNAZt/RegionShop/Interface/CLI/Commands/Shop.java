@@ -84,6 +84,8 @@ public class Shop implements CLICommand {
                         eq("name", name).
                     findUnique();
 
+            if(region == null) return;
+
             Vector min = new Vector(region.getMinX(), region.getMinY(), region.getMinZ());
             Vector max = new Vector(region.getMaxX(), region.getMaxY(), region.getMaxZ());
 
