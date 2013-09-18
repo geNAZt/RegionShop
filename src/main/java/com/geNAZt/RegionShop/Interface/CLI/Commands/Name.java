@@ -43,7 +43,7 @@ public class Name implements CLICommand {
             }
 
             if (isOwner) {
-                Region region1 = Database.getServer().find(Region.class).where().eq("name", name).findUnique();
+                Region region1 = Database.getServer().find(Region.class).where().eq("lcname", name.toLowerCase()).findUnique();
 
                 if(region1 != null) {
                     player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Name_AlreadyTaken);
@@ -63,6 +63,7 @@ public class Name implements CLICommand {
                 }
 
                 region.setName(name);
+                region.setLcName(name.toLowerCase());
                 Database.getServer().update(region);
 
                 return;

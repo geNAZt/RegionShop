@@ -20,6 +20,7 @@ public class Region {
     @ManyToOne
     private ItemStorage itemStorage;
     private String name;
+    private String lcName;
     private String region;
     private String world;
     private Double minX;
@@ -139,5 +140,11 @@ public class Region {
         this.itemStorage = itemStorage;
     }
 
+    public String getLcName() {
+        return lcName;
+    }
 
+    public void setLcName(String lcName) {
+        this.lcName = lcName;
+    }
 }

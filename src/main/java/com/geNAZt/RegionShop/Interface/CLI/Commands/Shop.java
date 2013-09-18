@@ -81,7 +81,7 @@ public class Shop implements CLICommand {
 
             Region region = Database.getServer().find(Region.class).
                     where().
-                        eq("name", name).
+                        eq("lcName", name.toLowerCase()).
                     findUnique();
 
             if(region == null) return;
