@@ -203,7 +203,7 @@ public class List implements CLICommand {
                 String itemName = ItemName.getDataName(iStack) + niceItemName;
 
                 String message = ConfigManager.main.Chat_prefix + ConfigManager.language.Command_List_Item_Main.
-                        replace("%amount", amount).
+                        replace("%amount", (region.getItemStorage().isServershop()) ? Character.toString((char)0x221E) : amount).
                         replace("%name", itemName).
                         replace("%sell", item.getSell().toString()).
                         replace("%buy", item.getBuy().toString()).
