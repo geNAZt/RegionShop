@@ -106,7 +106,7 @@ public class Language extends Config {
     public String Command_Admin_SetTeleport_WorldNotEnabled = ChatColor.RED + "Can not set a Teleportion Point for " + ChatColor.DARK_RED + " %world " + ChatColor.RED + ". The World is not enabled";
 
     //Shop command (Teleport)
-    public String Command_Shop_HelpText = ChatColor.GOLD + "/shop" + ChatColor.RESET + ": Use this Command to get to the global Shop Teleport Point";
+    public String Command_Shop_HelpText = ChatColor.GOLD + "/shop " + ChatColor.GREEN + "name" + ChatColor.RESET + ": Use this Command to get to the global Shop Teleport Point or to the Shop under "+ ChatColor.GREEN + "name";
     public String Command_Shop_NoTPPoint = ChatColor.RED + "This World has no Teleportion Point setup";
     public String Command_Shop_NotEnabled = ChatColor.RED + "You can not be teleported because the World is not enabled for Shopping";
 
