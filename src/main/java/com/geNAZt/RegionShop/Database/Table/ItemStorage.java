@@ -11,7 +11,6 @@ import java.util.Set;
  * Date: 13.09.13
  */
 
-@CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by id")
 @Entity()
 @Table(name = "rs_itemstorage")
 public class ItemStorage {

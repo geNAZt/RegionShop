@@ -139,6 +139,8 @@ public class Buy implements CLICommand {
                         replace("%shop", region.getName()).
                         replace("%price", price.toString()));
 
+                item.setSold(item.getSold() + wishAmount);
+
                 if (item.getCurrentAmount() > 0 || item.getItemStorage().isServershop()) {
                     Database.getServer().update(item);
                 } else {

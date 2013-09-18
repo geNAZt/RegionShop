@@ -10,6 +10,7 @@ import com.avaje.ebean.annotation.CacheStrategy;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by id")
 @Entity()
@@ -138,4 +139,6 @@ public class Region {
     public void setItemStorage(ItemStorage itemStorage) {
         this.itemStorage = itemStorage;
     }
+
+
 }

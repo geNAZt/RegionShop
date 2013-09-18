@@ -11,7 +11,6 @@ import com.avaje.ebean.annotation.CacheStrategy;
 import javax.persistence.*;
 import java.util.Set;
 
-@CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by id")
 @SuppressWarnings("UnusedDeclaration")
 @Entity()
 @Table(name = "rs_items")
@@ -32,6 +31,9 @@ public class Items {
     private Float sell;
     private Integer currentAmount;
     private Integer unitAmount;
+
+    private Integer sold = 0;
+    private Integer bought = 0;
 
     private String customName;
     private String owner;
@@ -124,5 +126,21 @@ public class Items {
 
     public void setEnchantments(Set<Enchantment> enchantments) {
         this.enchantments = enchantments;
+    }
+
+    public Integer getSold() {
+        return sold;
+    }
+
+    public void setSold(Integer sold) {
+        this.sold = sold;
+    }
+
+    public Integer getBought() {
+        return bought;
+    }
+
+    public void setBought(Integer bought) {
+        this.bought = bought;
     }
 }

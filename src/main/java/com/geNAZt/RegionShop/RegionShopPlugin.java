@@ -1,10 +1,8 @@
 package com.geNAZt.RegionShop;
 
-import com.earth2me.essentials.Essentials;
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Converter.ChestShopConverter;
-import com.geNAZt.RegionShop.Data.Tasks.AsyncDatabaseWriter;
-import com.geNAZt.RegionShop.Data.Tasks.DetectWGChanges;
+import com.geNAZt.RegionShop.Data.Tasks.*;
 import com.geNAZt.RegionShop.Database.Database;
 
 import com.geNAZt.RegionShop.Database.Manager;
@@ -53,6 +51,8 @@ public class RegionShopPlugin extends JavaPlugin {
         manager.addModel(ItemStorage.class);
         manager.addModel(Enchantment.class);
         manager.addModel(Transaction.class);
+        manager.addModel(ServerItemAverage.class);
+        manager.addModel(CustomerSign.class);
 
         Database.setServer(manager.createDatabaseConnection());
 
@@ -64,6 +64,9 @@ public class RegionShopPlugin extends JavaPlugin {
         }
 
         getServer().getScheduler().runTaskTimerAsynchronously(this, new DetectWGChanges(this), 20, ConfigManager.expert.Timer_DetectWGChanges);
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new ItemAverageTask(), ConfigManager.expert.Timer_ItemAverageTask, ConfigManager.expert.Timer_ItemAverageTask);
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new PriceRecalculateTask(), ConfigManager.expert.Timer_PriceRecalculateTask, ConfigManager.expert.Timer_PriceRecalculateTask);
+        getServer().getScheduler().runTaskLaterAsynchronously(this, new IntegrateServershop(), 100);
 
         //Listener
         getServer().getPluginManager().registerEvents(new CheckForNewPlayer(), this);

@@ -112,6 +112,7 @@ public class Sell implements CLICommand {
 
                     player.getInventory().removeItem(itemInHand);
                     item.setCurrentAmount(item.getCurrentAmount() + itemInHand.getAmount());
+                    item.setBought(item.getBought() + itemInHand.getAmount());
                     Database.getServer().update(item);
 
                     Transaction.generateTransaction(player, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.SELL, region.getName(), player.getWorld().getName(), item.getOwner(), item.getMeta().getId().getItemID(), itemInHand.getAmount(), 0.0, item.getBuy().doubleValue(), item.getUnitAmount());

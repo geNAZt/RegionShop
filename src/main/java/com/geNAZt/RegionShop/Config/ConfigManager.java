@@ -3,6 +3,7 @@ package com.geNAZt.RegionShop.Config;
 import com.geNAZt.RegionShop.Config.Files.Expert;
 import com.geNAZt.RegionShop.Config.Files.Language;
 import com.geNAZt.RegionShop.Config.Files.Main;
+import com.geNAZt.RegionShop.Config.Files.Servershop;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.yaml.snakeyaml.Yaml;
@@ -19,10 +20,9 @@ public class ConfigManager {
     public static Main main;
     public static Expert expert;
     public static Language language;
+    public static Servershop servershop;
 
     public static void init(RegionShopPlugin plugin) {
-        Yaml y = new Yaml(new CustomClassLoaderConstructor(RegionShopPlugin.class.getClassLoader()));
-
         try {
             expert = new Expert(plugin);
             expert.init();
@@ -32,6 +32,9 @@ public class ConfigManager {
 
             main = new Main(plugin);
             main.init();
+
+            servershop = new Servershop(plugin);
+            servershop.init();
         } catch(InvalidConfigurationException e) {
             e.printStackTrace();
         }
