@@ -54,7 +54,12 @@ public class Language extends Config {
         Command_Equip_MultipleShops.add(" ");
     }
 
-    //System Messages
+    //Command Executer Messages
+    public String Command_NoPermission = ChatColor.RED + "Insufficient permission.";
+    public String Command_NotEnoughArguments = ChatColor.RED + "You have not given all arguments needed";
+    public String Command_NotKnown = ChatColor.RED + "Command is not know. Maybe try /shop help ?";
+
+    //Enter and Leave Message
     public String Shop_Enter = ChatColor.GOLD + "You have entered " + ChatColor.DARK_GREEN + "%name" +  ChatColor.GOLD + ". Type " + ChatColor.GREEN + "/shop list " + ChatColor.GOLD + "to list the items";
     public String Shop_Leave = ChatColor.GOLD + "You have left " + ChatColor.DARK_GREEN + "%name" +  ChatColor.GOLD + ". Bye!";
 
@@ -78,9 +83,6 @@ public class Language extends Config {
     public String Buy_NotEnoughMoney = ChatColor.RED +  "You have not enough money for this. You need %price$";
     public String Buy_OwnerHintEmptyShop = ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + "%item" + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ")";
     public String Buy_OwnerHint = ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + "%player" + ChatColor.DARK_GREEN + " bought " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " from your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + "%price" + "$";
-
-    //Commands
-    public String Command_NotEnoughArguments = ChatColor.RED + "You have not given all arguments needed";
 
     //List Command
     public ArrayList<String> Command_List_HelpText = new ArrayList<String>();

@@ -109,7 +109,7 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor{
                 com.geNAZt.RegionShop.Data.Struct.Command command1 = commandMap.get(identifier);
 
                 if (!commandSender.hasPermission(command1.annotation.permission())) {
-                    commandSender.sendMessage("Insufficient permission.");
+                    commandSender.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_NoPermission);
                     return true;
                 }
 
@@ -141,7 +141,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor{
             }
         }
 
-        return false;
+        commandSender.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_NotKnown);
+        return true;
     }
 
     public static ArrayList<String> getHelpPage() {
