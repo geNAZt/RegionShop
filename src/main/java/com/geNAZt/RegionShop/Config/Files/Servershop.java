@@ -27,10 +27,10 @@ public class Servershop extends Config {
         item.buy = 0.5F;
         item.sell = 1.0F;
         item.maxItemRecalc = 50;
-        item.limitSellPriceFactor = 5.0;
-        item.limitBuyPriceFactor = 2.0;
-        item.limitSellPriceUnderFactor = 0.6;
-        item.limitBuyPriceUnderFactor = 0.4;
+        item.limitSellPriceFactor = 5.0F;
+        item.limitBuyPriceFactor = 2.0F;
+        item.limitSellPriceUnderFactor = 0.6F;
+        item.limitBuyPriceUnderFactor = 0.4F;
 
         ArrayList<Item> items = new ArrayList<Item>();
         items.add(item);

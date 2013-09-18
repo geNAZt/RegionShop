@@ -68,13 +68,13 @@ public class PriceRecalculateTask extends BukkitRunnable {
                         bought = boughtDec.intValue();
                     }
 
-                    Double sellPriceDiff = ((double) sold / (item.maxItemRecalc / 30.0));
-                    Double buyPriceDiff;
+                    Float sellPriceDiff = (sold / (item.maxItemRecalc / 30.0F));
+                    Float buyPriceDiff;
 
                     if(bought > 0) {
-                        buyPriceDiff = ((item.maxItemRecalc / 30.0) / (double) bought);
+                        buyPriceDiff = ((item.maxItemRecalc / 30.0F) / bought);
                     } else {
-                        buyPriceDiff = 2.0;
+                        buyPriceDiff = 2.0F;
                     }
 
                     Logger.debug("Calc. sellPriceDiff: " + sellPriceDiff);
