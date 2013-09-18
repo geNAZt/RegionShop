@@ -21,7 +21,7 @@ public class Add implements CLICommand {
     public static void add(CommandSender sender, String[] args) {
         //This command is not enabled for console
         if(!(sender instanceof Player)) {
-            sender.sendMessage("Only for Players");
+            sender.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_OnlyForPlayers);
             return;
         }
 

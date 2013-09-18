@@ -27,7 +27,7 @@ public class Detail implements CLICommand {
     public static void detail(CommandSender sender, String[] args) {
         //Check if sender is a player
         if(!(sender instanceof Player)) {
-            sender.sendMessage("Only for Players");
+            sender.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_OnlyForPlayers);
             return;
         }
 

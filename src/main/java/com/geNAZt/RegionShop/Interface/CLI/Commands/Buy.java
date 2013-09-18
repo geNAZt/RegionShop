@@ -20,7 +20,7 @@ public class Buy implements CLICommand {
     public static void buy(CommandSender sender, String[] args) {
         //Check if sender is a player
         if(!(sender instanceof Player)) {
-            sender.sendMessage("Only for Players");
+            sender.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_OnlyForPlayers);
             return;
         }
 

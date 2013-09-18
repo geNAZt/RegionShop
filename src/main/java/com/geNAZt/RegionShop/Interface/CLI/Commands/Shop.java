@@ -25,7 +25,7 @@ public class Shop implements CLICommand {
     public static void settp(CommandSender sender, String[] args) {
         //This command is not enabled for console
         if(!(sender instanceof Player)) {
-            sender.sendMessage("Only for Players");
+            sender.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_OnlyForPlayers);
             return;
         }
 
@@ -68,7 +68,7 @@ public class Shop implements CLICommand {
     public static void tp(CommandSender sender, String[] args) {
         //This command is not enabled for console
         if(!(sender instanceof Player)) {
-            sender.sendMessage("Only for Players");
+            sender.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_OnlyForPlayers);
             return;
         }
 

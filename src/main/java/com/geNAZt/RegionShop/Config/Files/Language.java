@@ -58,6 +58,7 @@ public class Language extends Config {
     public String Command_NoPermission = ChatColor.RED + "Insufficient permission.";
     public String Command_NotEnoughArguments = ChatColor.RED + "You have not given all arguments needed";
     public String Command_NotKnown = ChatColor.RED + "Command is not know. Maybe try /shop help ?";
+    public String Command_OnlyForPlayers = ChatColor.RED + "Command only for Players";
 
     //Enter and Leave Message
     public String Shop_Enter = ChatColor.GOLD + "You have entered " + ChatColor.DARK_GREEN + "%name" +  ChatColor.GOLD + ". Type " + ChatColor.GREEN + "/shop list " + ChatColor.GOLD + "to list the items";
