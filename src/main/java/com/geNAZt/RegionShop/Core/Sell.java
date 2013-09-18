@@ -24,6 +24,20 @@ import java.util.List;
  */
 public class Sell {
     public static void sell(ItemStack itemStack, List<Items> items, Player player, Region region) {
+        java.util.List<com.geNAZt.RegionShop.Database.Table.Player> playerList = region.getOwners();
+        boolean isOwner = false;
+
+        for(com.geNAZt.RegionShop.Database.Table.Player player1 : playerList) {
+            if(player1.getName().equals(player.getName().toLowerCase())) {
+                isOwner = true;
+            }
+        }
+
+        if(isOwner) {
+            player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sell_NotYourItem);
+            return;
+        }
+
         //Check if there is Place inside the Shop
         Group group = ConfigManager.main.getGroup(region.getItemStorage().getSetting());
         if(region.getItemStorage().getItemAmount() + itemStack.getAmount() >= group.Storage) {
@@ -90,6 +104,20 @@ public class Sell {
     }
 
     public static void sell(ItemStack itemStack, Items item, Player player, Region region) {
+        java.util.List<com.geNAZt.RegionShop.Database.Table.Player> playerList = region.getOwners();
+        boolean isOwner = false;
+
+        for(com.geNAZt.RegionShop.Database.Table.Player player1 : playerList) {
+            if(player1.getName().equals(player.getName().toLowerCase())) {
+                isOwner = true;
+            }
+        }
+
+        if(isOwner) {
+            player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sell_NotYourItem);
+            return;
+        }
+
         if(item.getBuy() <= 0.0) {
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sell_DoesNotBuy);
             return;

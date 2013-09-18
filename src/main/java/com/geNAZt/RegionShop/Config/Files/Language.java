@@ -76,6 +76,7 @@ public class Language extends Config {
     public String Sell_PlayerHint = ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + "%amount" + " " + "%item" + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + "%price" + "$" + ChatColor.DARK_GREEN + " to shop";
     public String Sell_OwnerHasNotEnoughMoney = ChatColor.RED + "The Item Owner has not enough Money";
     public String Sell_FullStorage = ChatColor.RED + "You can not sell to this Shop. It is full";
+    public String Sell_NotYourItem = ChatColor.RED + "You can't sell into Shops you own. Please use /shop equip or /shop add";
 
     //Buy Core
     public String Buy_NoSell = ChatColor.RED +  "This Shop doesn't sell this Item";
@@ -84,6 +85,7 @@ public class Language extends Config {
     public String Buy_NotEnoughMoney = ChatColor.RED +  "You have not enough money for this. You need %price$";
     public String Buy_OwnerHintEmptyShop = ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + "%item" + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ")";
     public String Buy_OwnerHint = ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + "%player" + ChatColor.DARK_GREEN + " bought " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " from your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + "%price" + "$";
+    public String Buy_NotYourItems = ChatColor.RED + "You can't buy the items you own. Please use /shop remove";
 
     //List Command
     public ArrayList<String> Command_List_HelpText = new ArrayList<String>();

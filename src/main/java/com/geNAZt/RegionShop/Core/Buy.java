@@ -26,6 +26,20 @@ import java.util.Map;
  */
 public class Buy {
     public static void buy(Items item, Player player, Region region, Integer wishAmount) {
+        java.util.List<com.geNAZt.RegionShop.Database.Table.Player> playerList = region.getOwners();
+        boolean isOwner = false;
+
+        for(com.geNAZt.RegionShop.Database.Table.Player player1 : playerList) {
+            if(player1.getName().equals(player.getName().toLowerCase())) {
+                isOwner = true;
+            }
+        }
+
+        if (isOwner) {
+            player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Buy_NotYourItems);
+            return;
+        }
+
         if (item.getSell() <= 0) {
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Buy_NoSell);
             return;
