@@ -8,7 +8,9 @@ package com.geNAZt.RegionShop.Database.Table;
 
 import com.avaje.ebean.annotation.CacheStrategy;
 
-import javax.persistence.*;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by id.itemID")
 @SuppressWarnings("UnusedDeclaration")

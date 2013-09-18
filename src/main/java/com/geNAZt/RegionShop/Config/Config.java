@@ -1,10 +1,6 @@
 package com.geNAZt.RegionShop.Config;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 
 public abstract class Config extends ConfigObject {
     protected transient File CONFIG_FILE = null;

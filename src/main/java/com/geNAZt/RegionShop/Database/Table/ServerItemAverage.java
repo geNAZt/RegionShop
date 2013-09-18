@@ -6,9 +6,11 @@ package com.geNAZt.RegionShop.Database.Table;
  * Date: 21.06.13
  */
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.util.Date;
-import java.util.Set;
 
 @SuppressWarnings("UnusedDeclaration")
 @Entity()

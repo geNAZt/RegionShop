@@ -9,7 +9,6 @@ import com.geNAZt.RegionShop.Database.Model.Transaction;
 import com.geNAZt.RegionShop.Database.Table.Enchantment;
 import com.geNAZt.RegionShop.Database.Table.Items;
 import com.geNAZt.RegionShop.Database.Table.Region;
-import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

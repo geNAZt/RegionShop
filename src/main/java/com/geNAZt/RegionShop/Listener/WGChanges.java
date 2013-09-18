@@ -3,7 +3,6 @@ package com.geNAZt.RegionShop.Listener;
 import com.geNAZt.RegionShop.Database.Model.Region;
 import com.geNAZt.RegionShop.Events.WGChangeRegionEvent;
 import com.geNAZt.RegionShop.Events.WGNewRegionEvent;
-
 import com.geNAZt.RegionShop.Events.WGRemoveRegionEvent;
 import com.geNAZt.RegionShop.Util.Logger;
 

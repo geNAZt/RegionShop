@@ -2,9 +2,6 @@ package com.geNAZt.RegionShop.Config.Files;
 
 import com.geNAZt.RegionShop.Config.Config;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-
-import com.geNAZt.RegionShop.Util.ItemName;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 
 import java.io.File;
@@ -58,10 +55,29 @@ public class Language extends Config {
     }
 
     //System Messages
-    public String Add_FullStorage = ChatColor.RED + "Your Shop is full. Please remove/sell some Items or upgrade your Shop";
     public String Shop_Enter = ChatColor.GOLD + "You have entered " + ChatColor.DARK_GREEN + "%name" +  ChatColor.GOLD + ". Type " + ChatColor.GREEN + "/shop list " + ChatColor.GOLD + "to list the items";
     public String Shop_Leave = ChatColor.GOLD + "You have left " + ChatColor.DARK_GREEN + "%name" +  ChatColor.GOLD + ". Bye!";
+
+    //Add Core
+    public String Add_FullStorage = ChatColor.RED + "Your Shop is full. Please remove/sell some Items or upgrade your Shop";
+
+    //Equip Core
     public String Equip_Add_Item = ChatColor.GOLD + "Added "+ ChatColor.GREEN + "%item" + ChatColor.GOLD + " to the shop.";
+
+    //Sell Core
+    public String Sell_DoesNotBuy = ChatColor.RED + "This shop does not buy this item";
+    public String Sell_OwnerHint = ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + "%player" + ChatColor.DARK_GREEN + " has sold " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " to your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + "%price" + "$";
+    public String Sell_PlayerHint = ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + "%amount" + " " + "%item" + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + "%price" + "$" + ChatColor.DARK_GREEN + " to shop";
+    public String Sell_OwnerHasNotEnoughMoney = ChatColor.RED + "The Item Owner has not enough Money";
+    public String Sell_FullStorage = ChatColor.RED + "You can not sell to this Shop. It is full";
+
+    //Buy Core
+    public String Buy_NoSell = ChatColor.RED +  "This Shop doesn't sell this Item";
+    public String Buy_NotEnoughItems = ChatColor.RED +  "This shop has not enough items in stock";
+    public String Buy_PlayerHint = ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + "%price" + "$" + ChatColor.DARK_GREEN + " from shop";
+    public String Buy_NotEnoughMoney = ChatColor.RED +  "You have not enough money for this. You need %price$";
+    public String Buy_OwnerHintEmptyShop = ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + "%item" + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ")";
+    public String Buy_OwnerHint = ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + "%player" + ChatColor.DARK_GREEN + " bought " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " from your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + "%price" + "$";
 
     //Commands
     public String Command_NotEnoughArguments = ChatColor.RED + "You have not given all arguments needed";
@@ -88,11 +104,11 @@ public class Language extends Config {
     public String Command_Admin_SetTeleport_HelpText = ChatColor.GOLD + "/shop admin setteleport" + ChatColor.RESET + ": Set the Teleportion point for /shop to where you stand";
     public String Command_Admin_SetTeleport_Success = ChatColor.GOLD + "Successfully set Teleportion point in World " + ChatColor.GREEN + "%world";
     public String Command_Admin_SetTeleport_WorldNotEnabled = ChatColor.RED + "Can not set a Teleportion Point for " + ChatColor.DARK_RED + " %world " + ChatColor.RED + ". The World is not enabled";
-    public String Command_Shop_NotEnabled = ChatColor.RED + "You can not be teleported because the World is not enabled for Shopping";
 
     //Shop command (Teleport)
-    public String Command_Shop_NoTPPoint = ChatColor.RED + "This World has no Teleportion Point setup";
     public String Command_Shop_HelpText = ChatColor.GOLD + "/shop" + ChatColor.RESET + ": Use this Command to get to the global Shop Teleport Point";
+    public String Command_Shop_NoTPPoint = ChatColor.RED + "This World has no Teleportion Point setup";
+    public String Command_Shop_NotEnabled = ChatColor.RED + "You can not be teleported because the World is not enabled for Shopping";
 
     //Add command
     public String Command_Add_NotInRegion = ChatColor.RED + "You can not add Items if you are not in a Shop";
@@ -109,8 +125,8 @@ public class Language extends Config {
     public String Command_Set_Success = ChatColor.GOLD + "Item " + ChatColor.GREEN + "%itemname" + ChatColor.GOLD + " now sells for " + ChatColor.GREEN + "%sell" + ChatColor.GOLD + ", buys for " + ChatColor.GREEN + "%buy" + ChatColor.GOLD + ", per " + ChatColor.GREEN + "%amount" + ChatColor.GOLD + " unit(s)";
 
     //Help Command
-    public ArrayList<String> Command_Help_Default = new ArrayList<String>();
     public String Command_Help_HelpText = ChatColor.GOLD + "If you are here.... You are even to stupid to use the Help :X";
+    public ArrayList<String> Command_Help_Default = new ArrayList<String>();
     public String Command_Help_NoHelp = ChatColor.RED + "No HelpPage found";
     public ArrayList<String> Command_Help_Header = new ArrayList<String>();
     public String Command_Help_NoPermission = ChatColor.RED + "You have no permission to view this Help";
@@ -120,12 +136,6 @@ public class Language extends Config {
     public String Command_Buy_NotInRegion = ChatColor.RED +  "You are not inside a shop";
     public String Command_Buy_InvalidArguments = ChatColor.RED +  "Only numbers as shopItemId and amount values allowed";
     public String Command_Buy_ItemNotFound = ChatColor.RED +  "This shopItem could not be found";
-    public String Command_Buy_NotEnoughItems = ChatColor.RED +  "This shop has not enough items in stock";
-    public String Command_Buy_OwnerHint = ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + "%player" + ChatColor.DARK_GREEN + " bought " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " from your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + "%price" + "$";
-    public String Command_Buy_PlayerHint = ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + "%price" + "$" + ChatColor.DARK_GREEN + " from shop";
-    public String Command_Buy_OwnerHintEmptyShop = ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + "%item" + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ")";
-    public String Command_Buy_NoSell = ChatColor.RED +  "This Shop doesn't sell this Item";
-    public String Command_Buy_NotEnoughMoney = ChatColor.RED +  "You have not enough money for this. You need %price$";
 
     //Sell Command
     public String Command_Sell_HelpText = ChatColor.GOLD + "/shop sell "+ ChatColor.RESET + ": Sell the current Item in Hand to the shop";
@@ -133,9 +143,6 @@ public class Language extends Config {
     public String Command_Sell_NoItemInHand = ChatColor.RED +  "You have no item in the hand";
     public String Command_Sell_NoEnchantedOrRenamed = ChatColor.RED + "You can't sell enchanted / custom renamed Items into a shop";
     public String Command_Sell_NoBuy = ChatColor.RED + "This shop does not buy this item";
-    public String Command_Sell_OwnerHint = ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + "%player" + ChatColor.DARK_GREEN + " has sold " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " to your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + "%price" + "$";
-    public String Command_Sell_PlayerHint = ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + "%amount" + " " + "%item" + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + "%price" + "$" + ChatColor.DARK_GREEN + " to shop";
-    public String Command_Sell_NotEnoughMoney = ChatColor.RED + "None of the Item Owners has enough Money";
 
     //Search Command
     public String Command_Search_HelpText = ChatColor.GOLD + "/shop search " + ChatColor.RED + "ItemID/ItemName" + ChatColor.RESET + ": Search for " + ChatColor.RED + "ItemID/ItemName";
@@ -206,4 +213,16 @@ public class Language extends Config {
     public String Command_Equip_NotOwner = ChatColor.RED + "You are not an owner of this shop";
     public String Command_Equip_Selected = ChatColor.GOLD + "Shop " + ChatColor.GREEN + "%name" + ChatColor.GOLD + " selected";
     public String Command_Equip_ShopNotFound = ChatColor.RED + "This region could not be found";
+
+    //Customer Sign
+    public String Sign_Customer_NotInRegion = ChatColor.RED + "You are not inside a Shop";
+    public String Sign_Customer_NotOwner = ChatColor.RED + "You are not a owner of this Shop";
+    public String Sign_Customer_InvalidItemID = ChatColor.RED + "ItemID is not a number";
+    public String Sign_Customer_NotFoundItemID = ChatColor.RED + "ItemID could not be found";
+    public String Sign_Customer_NotYourItem = ChatColor.RED + "You do not own this Item";
+
+    //Customer Sign Interact
+    public String Interact_Customer_NotInRegion = ChatColor.RED + "You are not inside a shop region.";
+    public String Interact_Customer_Sell_NoItemInHand = ChatColor.RED +  "You have no item in the hand";
+    public String Interact_Customer_Sell_WrongItem = ChatColor.RED + "You can't sell this here";
 }

@@ -1,10 +1,8 @@
 package com.geNAZt.RegionShop.Data.Tasks;
 
 import com.avaje.ebean.EbeanServer;
-
 import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Util.Logger;
-
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.ArrayBlockingQueue;

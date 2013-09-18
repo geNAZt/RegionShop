@@ -6,7 +6,6 @@ import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Table.Region;
 import com.geNAZt.RegionShop.Interface.CLI.CLICommand;
 import com.geNAZt.RegionShop.Interface.CLI.Command;
-
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

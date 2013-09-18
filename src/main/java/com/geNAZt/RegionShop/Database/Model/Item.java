@@ -1,7 +1,9 @@
 package com.geNAZt.RegionShop.Database.Model;
 
 import com.geNAZt.RegionShop.Database.Database;
-import com.geNAZt.RegionShop.Database.Table.*;
+import com.geNAZt.RegionShop.Database.Table.ItemMeta;
+import com.geNAZt.RegionShop.Database.Table.ItemMetaID;
+import com.geNAZt.RegionShop.Database.Table.Items;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;

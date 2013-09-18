@@ -5,7 +5,6 @@ import com.geNAZt.RegionShop.Database.Table.Items;
 import com.geNAZt.RegionShop.Interface.CLI.CLICommand;
 import com.geNAZt.RegionShop.Interface.CLI.Command;
 import com.geNAZt.RegionShop.Util.ItemName;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

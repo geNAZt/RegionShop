@@ -41,7 +41,6 @@ public class Main extends Config {
     public String Chat_prefix = "[RS] ";
     public ArrayList<String> World_enabledWorlds = new ArrayList<String>();
     public String Group_defaultGroup = "Default";
-    public Boolean Group_use = true;
     public Boolean Group_calcRent = true;
     public Integer Group_rentInterval = 7*24*60*60;
     public GroupRentMode Group_rentMode = GroupRentMode.SPLIT_OWNERS;

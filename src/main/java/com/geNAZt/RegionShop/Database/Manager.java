@@ -2,7 +2,6 @@ package com.geNAZt.RegionShop.Database;
 
 import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
-import com.avaje.ebean.LogLevel;
 import com.avaje.ebean.Transaction;
 import com.avaje.ebean.config.DataSourceConfig;
 import com.avaje.ebean.config.ServerConfig;
@@ -11,7 +10,6 @@ import com.avaje.ebeaninternal.api.SpiEbeanServer;
 import com.avaje.ebeaninternal.server.ddl.DdlGenerator;
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-import com.geNAZt.RegionShop.Util.Logger;
 
 import javax.persistence.PersistenceException;
 import java.io.BufferedReader;

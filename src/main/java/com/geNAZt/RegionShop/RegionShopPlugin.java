@@ -4,17 +4,13 @@ import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Converter.ChestShopConverter;
 import com.geNAZt.RegionShop.Data.Tasks.*;
 import com.geNAZt.RegionShop.Database.Database;
-
 import com.geNAZt.RegionShop.Database.Manager;
 import com.geNAZt.RegionShop.Database.Table.*;
-import com.geNAZt.RegionShop.Interface.CLI.CommandExecutor;
-import com.geNAZt.RegionShop.Listener.CheckForNewPlayer;
-import com.geNAZt.RegionShop.Listener.DropEquip;
-import com.geNAZt.RegionShop.Listener.PlayerMove;
-import com.geNAZt.RegionShop.Listener.PlayerQuit;
+import com.geNAZt.RegionShop.Interface.Sign.CommandExecutor;
+import com.geNAZt.RegionShop.Interface.Sign.Interact.Customer;
+import com.geNAZt.RegionShop.Listener.*;
 import com.geNAZt.RegionShop.Util.EssentialBridge;
 import com.geNAZt.RegionShop.Util.Logger;
-
 import com.geNAZt.RegionShop.Util.VaultBridge;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -73,9 +69,13 @@ public class RegionShopPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
         getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
         getServer().getPluginManager().registerEvents(new DropEquip(), this);
+        getServer().getPluginManager().registerEvents(new CommandExecutor(), this);
+        getServer().getPluginManager().registerEvents(new SignInteractPrepare(), this);
+        getServer().getPluginManager().registerEvents(new Customer(), this);
+        getServer().getPluginManager().registerEvents(new SignDestroy(), this);
 
         //Shop Commands
-        getCommand("shop").setExecutor(new CommandExecutor());
+        getCommand("shop").setExecutor(new com.geNAZt.RegionShop.Interface.CLI.CommandExecutor());
 
         //Maybe a converter ?
         if(ConfigManager.expert.Converter.equals("chestshop")) {

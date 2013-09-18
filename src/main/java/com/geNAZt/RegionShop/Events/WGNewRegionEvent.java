@@ -1,7 +1,6 @@
 package com.geNAZt.RegionShop.Events;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-
 import org.bukkit.World;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

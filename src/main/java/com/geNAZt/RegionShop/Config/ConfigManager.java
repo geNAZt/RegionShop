@@ -5,11 +5,6 @@ import com.geNAZt.RegionShop.Config.Files.Language;
 import com.geNAZt.RegionShop.Config.Files.Main;
 import com.geNAZt.RegionShop.Config.Files.Servershop;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
-
-import java.io.FileReader;
 
 /**
  * Created for YEAHWH.AT

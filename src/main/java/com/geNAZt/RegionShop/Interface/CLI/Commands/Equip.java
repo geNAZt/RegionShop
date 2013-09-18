@@ -2,7 +2,6 @@ package com.geNAZt.RegionShop.Interface.CLI.Commands;
 
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Data.Storage.Drop;
-import com.geNAZt.RegionShop.Data.Storage.InRegion;
 import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Table.Region;
 import com.geNAZt.RegionShop.Interface.CLI.CLICommand;

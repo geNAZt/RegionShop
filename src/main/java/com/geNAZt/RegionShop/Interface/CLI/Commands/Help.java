@@ -4,7 +4,6 @@ import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Interface.CLI.CLICommand;
 import com.geNAZt.RegionShop.Interface.CLI.Command;
 import com.geNAZt.RegionShop.Interface.CLI.CommandExecutor;
-
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;

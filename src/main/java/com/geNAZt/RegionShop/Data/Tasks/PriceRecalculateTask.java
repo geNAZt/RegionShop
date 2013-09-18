@@ -9,7 +9,6 @@ import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Table.CustomerSign;
 import com.geNAZt.RegionShop.Database.Table.Items;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-import com.geNAZt.RegionShop.Util.Logger;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -77,9 +76,6 @@ public class PriceRecalculateTask extends BukkitRunnable {
                         buyPriceDiff = 2.0F;
                     }
 
-                    Logger.debug("Calc. sellPriceDiff: " + sellPriceDiff);
-                    Logger.debug("Calc. buyPriceDiff: "+ buyPriceDiff);
-
                     if(sellPriceDiff > 1.0) {
                         //Preis geht rauf
                         if(sellPriceDiff > item.limitSellPriceFactor) {
@@ -102,17 +98,11 @@ public class PriceRecalculateTask extends BukkitRunnable {
                         }
                     }
 
-                    Logger.debug("Corr. sellPriceDiff: "+ sellPriceDiff);
-                    Logger.debug("Corr. buyPriceDiff: "+ buyPriceDiff);
-
                     Float newSellPrice = item.sell;
                     newSellPrice *= sellPriceDiff;
 
                     Float newBuyPrice = item.buy;
                     newBuyPrice *= buyPriceDiff;
-
-                    Logger.debug("New sellPrice: "+ newSellPrice);
-                    Logger.debug("New buyPrice: "+ newBuyPrice);
 
                     itemInShop.setBuy(newBuyPrice);
                     itemInShop.setSell(newSellPrice);
@@ -127,8 +117,8 @@ public class PriceRecalculateTask extends BukkitRunnable {
                                 endJunction().
                             findUnique();
 
-                    final double newSellPriceRead = newSellPrice;
-                    final double newBuyPriceRead = newBuyPrice;
+                    final Float newSellPriceRead = Math.round(newSellPrice * 100) / 100.0F;
+                    final Float newBuyPriceRead = Math.round(newBuyPrice * 100) / 100.0F;
 
                     if(customerSign != null) {
                         RegionShopPlugin.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(RegionShopPlugin.getInstance(), new Runnable() {
@@ -143,7 +133,6 @@ public class PriceRecalculateTask extends BukkitRunnable {
                                 }
                             }
                         });
-
                     }
                 }
             }

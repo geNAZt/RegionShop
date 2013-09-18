@@ -6,13 +6,6 @@ package com.geNAZt.RegionShop.Config;
  * Date: 12.09.13
  */
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.logging.Level;
-
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -25,6 +18,13 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.representer.Representer;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
+import java.util.logging.Level;
 
 public class YamlConfiguration extends FileConfiguration {
     protected static final String COMMENT_PREFIX = "# ";
