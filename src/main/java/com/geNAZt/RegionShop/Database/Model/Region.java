@@ -81,6 +81,7 @@ public class Region {
         //Create a new Region
         com.geNAZt.RegionShop.Database.Table.Region region1 = new com.geNAZt.RegionShop.Database.Table.Region();
         region1.setName(region.getId().toLowerCase());
+        region1.setLcName(region.getId().toLowerCase());
         region1.setRegion(region.getId());
         region1.setWorld(world.getName());
         region1.setItemStorage(itemStorage);
