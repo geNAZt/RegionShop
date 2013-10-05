@@ -89,7 +89,7 @@ public class DetectWGChanges extends BukkitRunnable {
                         WGChanges.newRegion(wgNewRegionEvent);
                     } else {
                         //Has the region changed ?
-                        com.geNAZt.RegionShop.Database.Table.Region region1 = Region.get(region.getValue(), world, false);
+                        com.geNAZt.RegionShop.Database.Table.Region region1 = Region.get(region.getValue(), world, true);
 
                         //Check if region is in database
                         if(region1 == null) {

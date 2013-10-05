@@ -66,6 +66,7 @@ public class RegionShopPlugin extends JavaPlugin {
         getServer().getScheduler().runTaskTimerAsynchronously(this, new PriceRecalculateTask(), ConfigManager.expert.Timer_PriceRecalculateTask, ConfigManager.expert.Timer_PriceRecalculateTask);
         getServer().getScheduler().runTaskLaterAsynchronously(this, new IntegrateServershop(), 100);
         getServer().getScheduler().runTaskTimerAsynchronously(this, new DisplayItemOverChest(), ConfigManager.expert.Timer_DisplayItemTask, ConfigManager.expert.Timer_DisplayItemTask);
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new CacheWarming(), 0, 10*20);
 
         //Listener
         getServer().getPluginManager().registerEvents(new CheckForNewPlayer(), this);
@@ -80,6 +81,7 @@ public class RegionShopPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CheckChestProtection(), this);
         getServer().getPluginManager().registerEvents(new EquipOnChestClose(), this);
         getServer().getPluginManager().registerEvents(new PretendDisplaysToPickup(), this);
+        getServer().getPluginManager().registerEvents(new RestoreOnChestOpen(), this);
 
         //Shop Commands
         getCommand("shop").setExecutor(new com.geNAZt.RegionShop.Interface.CLI.CommandExecutor());

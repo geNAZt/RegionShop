@@ -21,8 +21,8 @@ public class Player {
 
     //Get one User
     public static com.geNAZt.RegionShop.Database.Table.Player get(OfflinePlayer player) {
-        return Database.getServer().
-                    find(com.geNAZt.RegionShop.Database.Table.Player.class).
+        return Database.getServer().find(com.geNAZt.RegionShop.Database.Table.Player.class).
+                    setUseQueryCache(true).
                     where().
                         eq("name", player.getName().toLowerCase()).
                     findUnique();

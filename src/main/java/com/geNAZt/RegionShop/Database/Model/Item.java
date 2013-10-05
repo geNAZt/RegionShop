@@ -46,6 +46,7 @@ public class Item {
         iStack.setDurability(item.getDurability());
 
         List<com.geNAZt.RegionShop.Database.Table.Enchantment> enchants = Database.getServer().find(com.geNAZt.RegionShop.Database.Table.Enchantment.class).
+                setUseQueryCache(true).
                 where().
                     eq("item", item).
                 findList();

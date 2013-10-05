@@ -16,7 +16,7 @@ import java.util.List;
 public class ItemAverageTask extends BukkitRunnable {
     @Override
     public void run() {
-        List<Items> itemsList = Database.getServer().find(Items.class).findList();
+        List<Items> itemsList = Database.getServer().find(Items.class).setUseQueryCache(true).findList();
 
         for(Items items : itemsList) {
             if(!items.getItemStorage().getRegions().iterator().hasNext()) continue;

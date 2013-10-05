@@ -1,5 +1,8 @@
 package com.geNAZt.RegionShop.Database.Table;
 
+import com.avaje.ebean.annotation.CacheStrategy;
+import com.avaje.ebean.annotation.CacheTuning;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -12,6 +15,8 @@ import java.util.Set;
  * Date: 13.09.13
  */
 
+@CacheTuning(maxIdleSecs=30, maxSecsToLive=3600, maxSize=5000)
+@CacheStrategy(useBeanCache=true, readOnly=true, warmingQuery="order by id")
 @Entity()
 @Table(name = "rs_itemstorage")
 public class ItemStorage {

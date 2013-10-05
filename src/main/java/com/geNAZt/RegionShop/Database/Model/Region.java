@@ -24,17 +24,7 @@ public class Region {
     public static synchronized com.geNAZt.RegionShop.Database.Table.Region isIn(org.bukkit.entity.Player player) {
         Location playerLoc = player.getLocation();
 
-        return Database.getServer().find(com.geNAZt.RegionShop.Database.Table.Region.class).
-                where().
-                    conjunction().
-                        le("min_x", playerLoc.getBlockX()).
-                        le("min_y", playerLoc.getBlockY()).
-                        le("min_z", playerLoc.getBlockZ()).
-                        ge("max_x", playerLoc.getBlockX()).
-                        ge("max_y", playerLoc.getBlockY()).
-                        ge("max_z", playerLoc.getBlockZ()).
-                    endJunction().
-                findUnique();
+        return com.geNAZt.RegionShop.cache.Region.isIn(playerLoc);
     }
 
     //Update an existing Region
@@ -198,6 +188,7 @@ public class Region {
     public static synchronized com.geNAZt.RegionShop.Database.Table.Region get(String region, World world, Boolean caching) {
         return Database.getServer().find(com.geNAZt.RegionShop.Database.Table.Region.class).
                     setUseCache(caching).
+                    setUseQueryCache(caching).
                     where().
                         conjunction().
                             eq("region", region.toLowerCase()).
@@ -214,6 +205,7 @@ public class Region {
     public static synchronized com.geNAZt.RegionShop.Database.Table.Region get(ProtectedRegion region, World world, Boolean caching) {
         return Database.getServer().find(com.geNAZt.RegionShop.Database.Table.Region.class).
                     setUseCache(caching).
+                    setUseQueryCache(caching).
                     where().
                         conjunction().
                             eq("region", region.getId().toLowerCase()).

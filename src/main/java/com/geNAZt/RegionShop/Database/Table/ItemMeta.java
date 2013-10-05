@@ -7,12 +7,14 @@ package com.geNAZt.RegionShop.Database.Table;
  */
 
 import com.avaje.ebean.annotation.CacheStrategy;
+import com.avaje.ebean.annotation.CacheTuning;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by id.itemID")
+@CacheTuning(maxIdleSecs=30, maxSecsToLive=3600, maxSize=5000)
+@CacheStrategy(useBeanCache=true, readOnly=true, warmingQuery="order by id.itemID")
 @SuppressWarnings("UnusedDeclaration")
 @Entity()
 @Table(name = "rs_itemmeta")

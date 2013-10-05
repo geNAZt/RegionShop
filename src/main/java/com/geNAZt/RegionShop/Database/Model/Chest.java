@@ -86,6 +86,7 @@ public class Chest {
     public static synchronized com.geNAZt.RegionShop.Database.Table.Chest get(Block chest, World world, Boolean caching) {
         return Database.getServer().find(com.geNAZt.RegionShop.Database.Table.Chest.class).
                     setUseCache(caching).
+                    setUseQueryCache(caching).
                     where().
                         conjunction().
                             eq("chestX", chest.getX()).

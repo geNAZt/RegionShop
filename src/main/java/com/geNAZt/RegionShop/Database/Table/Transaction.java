@@ -6,6 +6,7 @@ package com.geNAZt.RegionShop.Database.Table;
  * Date: 05.06.13
  */
 import com.avaje.ebean.annotation.CacheStrategy;
+import com.avaje.ebean.annotation.CacheTuning;
 import com.avaje.ebean.annotation.EnumMapping;
 
 import javax.persistence.Entity;
@@ -13,7 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
-@CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by id")
+@CacheTuning(maxIdleSecs=30, maxSecsToLive=3600, maxSize=5000)
+@CacheStrategy(useBeanCache=true, readOnly=true, warmingQuery="order by id")
 @SuppressWarnings("UnusedDeclaration")
 @Entity()
 @Table(name = "rs_transaction")

@@ -6,14 +6,12 @@ package com.geNAZt.RegionShop.Database.Table;
  * Date: 05.06.13
  */
 
-import com.avaje.ebean.annotation.CacheStrategy;
 import com.geNAZt.RegionShop.Database.ItemStorageHolder;
 
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
 
-@CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by id")
 @Entity()
 @Table(name = "rs_region")
 public class Region implements ItemStorageHolder {

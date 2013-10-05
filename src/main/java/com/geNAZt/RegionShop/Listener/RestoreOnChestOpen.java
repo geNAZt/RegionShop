@@ -36,6 +36,8 @@ public class RestoreOnChestOpen implements Listener {
 
             //Check if Chest is a ChestShop
             com.geNAZt.RegionShop.Database.Table.Chest chest1 = Database.getServer().find(com.geNAZt.RegionShop.Database.Table.Chest.class).
+                    setUseCache(false).
+                    setUseQueryCache(false).
                     where().
                         eq("world", event.getPlayer().getWorld().getName()).
                         eq("chestY", chest.getY()).

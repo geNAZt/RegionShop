@@ -38,8 +38,8 @@ public class PriceRecalculateTask extends BukkitRunnable {
                                     "FROM (SELECT " +
                                     "`bought`," +
                                     "`sold`" +
-                                    "FROM `rs_itemaverage` LEFT JOIN `rs_region` ON `region_id` == `rs_region`.`id`" +
-                                    "WHERE `item_id` = :itemid AND `data_value` = :datavalue AND `date` > :date AND `rs_region`.`region` = :region ORDER BY `rs_itemaverage`.`id` DESC) x").
+                                    " FROM `rs_itemaverage` LEFT JOIN `rs_region` ON `region_id` = `rs_region`.`id`" +
+                                    " WHERE `item_id` = :itemid AND `data_value` = :datavalue AND `date` > :date AND `rs_region`.`region` = :region ORDER BY `rs_itemaverage`.`id` DESC) x").
                             setParameter("itemid", item.itemID).
                             setParameter("datavalue", item.dataValue).
                             setParameter("date", calendar.getTime().getTime()).
