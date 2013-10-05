@@ -47,7 +47,7 @@ public class Name implements CLICommand {
             }
 
             if (isOwner) {
-                Region region1 = Database.getServer().find(Region.class).where().eq("lcname", name.toLowerCase()).findUnique();
+                Region region1 = Database.getServer().find(Region.class).where().eq("lcName", name.toLowerCase()).findUnique();
 
                 if(region1 != null) {
                     player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Name_AlreadyTaken);
@@ -65,6 +65,8 @@ public class Name implements CLICommand {
                     player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Name_TooLong.replace("%amount", ConfigManager.expert.MaxShopName.toString()));
                     return;
                 }
+
+                player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Name_Success);
 
                 region.setName(name);
                 region.setLcName(name.toLowerCase());

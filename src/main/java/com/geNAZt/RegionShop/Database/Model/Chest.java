@@ -119,10 +119,12 @@ public class Chest {
 
             Database.getServer().delete(item);
             Database.getServer().delete(chest.getItemStorage());
+            Database.getServer().deleteManyToManyAssociations(chest, "owners");
             Database.getServer().delete(chest);
         } else {
             Database.getServer().delete(item);
             Database.getServer().delete(chest.getItemStorage());
+            Database.getServer().deleteManyToManyAssociations(chest, "owners");
             Database.getServer().delete(chest);
         }
     }

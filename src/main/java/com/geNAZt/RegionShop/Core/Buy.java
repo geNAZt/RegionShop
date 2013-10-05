@@ -60,6 +60,8 @@ public class Buy {
                 }
             }
 
+            player.updateInventory();
+
             price = (((float) wishAmount / (float) item.getUnitAmount()) * item.getSell());
 
             String niceItemName = ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString());
@@ -102,7 +104,8 @@ public class Buy {
                     replace("%amount", wishAmount.toString()).
                     replace("%item", niceItemName).
                     replace("%shop", region.getName()).
-                    replace("%price", price.toString()));
+                    replace("%price", price.toString()).
+                    replace("%owner", item.getOwner()));
 
             item.setSold(item.getSold() + wishAmount);
 

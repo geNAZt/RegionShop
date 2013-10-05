@@ -86,7 +86,7 @@ public class Language extends Config {
     //Sell Core
     public String Sell_DoesNotBuy = ChatColor.RED + "This shop does not buy this item";
     public String Sell_OwnerHint = ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + "%player" + ChatColor.DARK_GREEN + " has sold " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " to your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + "%price" + "$";
-    public String Sell_PlayerHint = ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + "%amount" + " " + "%item" + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + "%price" + "$" + ChatColor.DARK_GREEN + " to shop";
+    public String Sell_PlayerHint = ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + "%amount" + " " + "%item" + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + "%price" + "$" + ChatColor.DARK_GREEN + " to %owner";
     public String Sell_OwnerHasNotEnoughMoney = ChatColor.RED + "The Item Owner has not enough Money";
     public String Sell_FullStorage = ChatColor.RED + "You can not sell to this Shop. It is full";
     public String Sell_NotYourItem = ChatColor.RED + "You can't sell into Shops you own. Please use /shop equip or /shop add";
@@ -94,7 +94,7 @@ public class Language extends Config {
     //Buy Core
     public String Buy_NoSell = ChatColor.RED +  "This Shop doesn't sell this Item";
     public String Buy_NotEnoughItems = ChatColor.RED +  "This shop has not enough items in stock";
-    public String Buy_PlayerHint = ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + "%price" + "$" + ChatColor.DARK_GREEN + " from shop";
+    public String Buy_PlayerHint = ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + "%price" + "$" + ChatColor.DARK_GREEN + " from %owner";
     public String Buy_NotEnoughMoney = ChatColor.RED +  "You have not enough money for this. You need %price$";
     public String Buy_OwnerHintEmptyShop = ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + "%item" + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ")";
     public String Buy_OwnerHint = ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + "%player" + ChatColor.DARK_GREEN + " bought " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " from your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + "%price" + "$";
@@ -213,6 +213,7 @@ public class Language extends Config {
     public String Command_Name_TooLong = ChatColor.RED + "Name length must be under %amount chars";
     public String Command_Name_NotOwner = ChatColor.RED + "You are not an owner in this shop";
     public String Command_Name_NotInRegion = ChatColor.RED + "You are not inside a shop";
+    public String Command_Name_Success = ChatColor.GOLD + "Shop has been renamed";
 
     //Remove Command
     public String Command_Remove_HelpText = ChatColor.GOLD + "/shop remove " + ChatColor.RED + "shopItemID" + ChatColor.RESET + ": Remove the "+ ChatColor.RED + "shopItemID" + ChatColor.RESET + " out of the Shop";

@@ -28,7 +28,7 @@ public class Player {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name="rs_chest_owner")
-    private List<Region> ownsChests;
+    private List<Chest> ownsChests;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name="rs_region_member")
@@ -66,11 +66,11 @@ public class Player {
         this.memberInRegions = memberInRegions;
     }
 
-    public List<Region> getOwnsChests() {
+    public List<Chest> getOwnsChests() {
         return ownsChests;
     }
 
-    public void setOwnsChests(List<Region> ownsChests) {
+    public void setOwnsChests(List<Chest> ownsChests) {
         this.ownsChests = ownsChests;
     }
 }

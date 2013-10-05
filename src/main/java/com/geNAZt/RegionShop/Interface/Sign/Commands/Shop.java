@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  * Date: 10.06.13
  */
 public class Shop implements SignCommand {
-    private static Pattern pattern = Pattern.compile("([0-9.]+):([0-9.]+)");
+    private static Pattern pattern = Pattern.compile(".*([0-9.]+):([0-9.]+).*");
     private static Pattern intPattern = Pattern.compile("([0-9]+)");
 
     @Command(command="thisisimpossibletowriteonasign", permission="rs.sign.shop")
@@ -157,7 +157,7 @@ public class Shop implements SignCommand {
         for(Integer line = 0; line < 4; line++) {
             event.setLine(line, ConfigManager.language.Sign_Shop_SignText.get(line).
                     replace("%player",  event.getPlayer().getDisplayName()).
-                    replace("%itemname", itemName).
+                    replace("%itemname", ItemName.nicer(itemName)).
                     replace("%amount", amount.toString()).
                     replace("%sell", sell.toString()).
                     replace("%buy", buy.toString()));

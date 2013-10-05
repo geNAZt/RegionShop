@@ -3,6 +3,7 @@ package com.geNAZt.RegionShop.Interface.CLI.Commands;
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Config.InvalidConfigurationException;
 import com.geNAZt.RegionShop.Database.Database;
+import com.geNAZt.RegionShop.Database.Table.Chest;
 import com.geNAZt.RegionShop.Database.Table.Region;
 import com.geNAZt.RegionShop.Interface.CLI.CLICommand;
 import com.geNAZt.RegionShop.Interface.CLI.Command;
@@ -10,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -78,26 +80,36 @@ public class Shop implements CLICommand {
         //Check if we can teleport to a Shop
         if(args.length > 0 && player.hasPermission("rs.command.shop.teleporttoshop")) {
             String name = StringUtils.join(args, " ");
+            Integer id = 0;
 
-            Region region = Database.getServer().find(Region.class).
-                    where().
-                        eq("lcName", name.toLowerCase()).
-                    findUnique();
+            try {
+                id = Integer.parseInt(name);
 
-            if(region == null) {
-                sender.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_NotKnown);
+                Chest chest = Database.getServer().find(Chest.class).where().eq("id", id).findUnique();
+                Location location = new Location(Bukkit.getWorld(chest.getWorld()), chest.getChestX(), chest.getChestY() + 2, chest.getChestZ());
 
-                return;
+                player.teleport(location);
+            } catch(NumberFormatException e) {
+                Region region = Database.getServer().find(Region.class).
+                        where().
+                            eq("lcName", name.toLowerCase()).
+                        findUnique();
+
+                if(region == null) {
+                    sender.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_NotKnown);
+
+                    return;
+                }
+
+                Vector min = new Vector(region.getMinX(), region.getMinY(), region.getMinZ());
+                Vector max = new Vector(region.getMaxX(), region.getMaxY(), region.getMaxZ());
+
+                Vector mid = min.getMidpoint(max);
+
+                Location location = new Location(Bukkit.getWorld(region.getWorld()), mid.getBlockX(), mid.getBlockY(), mid.getBlockZ());
+
+                player.teleport(location);
             }
-
-            Vector min = new Vector(region.getMinX(), region.getMinY(), region.getMinZ());
-            Vector max = new Vector(region.getMaxX(), region.getMaxY(), region.getMaxZ());
-
-            Vector mid = min.getMidpoint(max);
-
-            Location location = new Location(Bukkit.getWorld(region.getWorld()), mid.getBlockX(), mid.getBlockY(), mid.getBlockZ());
-
-            player.teleport(location);
 
             return;
         }

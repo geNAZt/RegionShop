@@ -102,7 +102,7 @@ public class Result implements CLICommand {
                     replace("%buy", item.getBuy().toString()).
                     replace("%unitamount", item.getUnitAmount().toString()).
                     replace("%shop", shop).
-                    replace("%id", item.getId().toString());
+                    replace("%id", (!item.getItemStorage().getRegions().isEmpty()) ? item.getId().toString() : item.getItemStorage().getChests().iterator().next().getId().toString());
 
             Integer perDmg = 0;
             if (iStack.getDurability() > 0 && item.getMeta().getId().getItemID() != 373 && item.getMeta().getMaxStackSize() == 1) {

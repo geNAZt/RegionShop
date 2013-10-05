@@ -83,7 +83,8 @@ public class Sell {
                             replace("%amount", ((Integer)itemStack.getAmount()).toString()).
                             replace("%item", itemName).
                             replace("%shop", region.getName()).
-                            replace("%price", price.toString()));
+                            replace("%price", price.toString()).
+                            replace("%owner", item.getOwner()));
 
                     player.getInventory().removeItem(itemStack);
                     item.setCurrentAmount(item.getCurrentAmount() + itemStack.getAmount());
