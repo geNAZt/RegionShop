@@ -84,7 +84,11 @@ public class Shop implements CLICommand {
                         eq("lcName", name.toLowerCase()).
                     findUnique();
 
-            if(region == null) return;
+            if(region == null) {
+                sender.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_NotKnown);
+
+                return;
+            }
 
             Vector min = new Vector(region.getMinX(), region.getMinY(), region.getMinZ());
             Vector max = new Vector(region.getMaxX(), region.getMaxY(), region.getMaxZ());

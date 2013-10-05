@@ -9,9 +9,11 @@ import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Table.CustomerSign;
 import com.geNAZt.RegionShop.Database.Table.Items;
 import com.geNAZt.RegionShop.RegionShopPlugin;
+import com.geNAZt.RegionShop.Util.ItemName;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Calendar;
@@ -52,6 +54,8 @@ public class PriceRecalculateTask extends BukkitRunnable {
                                 eq("meta.id.dataValue", item.dataValue).
                                 eq("itemStorage.regions.region", shop.Region).
                             findUnique();
+
+                    if(itemInShop == null) continue;
 
                     Double soldDec = (Double) row.get("sold");
                     Double boughtDec = (Double) row.get("bought");
@@ -100,9 +104,11 @@ public class PriceRecalculateTask extends BukkitRunnable {
 
                     Float newSellPrice = item.sell;
                     newSellPrice *= sellPriceDiff;
+                    newSellPrice = Math.round(newSellPrice * 100) / 100.0F;
 
                     Float newBuyPrice = item.buy;
                     newBuyPrice *= buyPriceDiff;
+                    newBuyPrice = Math.round(newBuyPrice * 100) / 100.0F;
 
                     itemInShop.setBuy(newBuyPrice);
                     itemInShop.setSell(newSellPrice);
@@ -117,8 +123,7 @@ public class PriceRecalculateTask extends BukkitRunnable {
                                 endJunction().
                             findUnique();
 
-                    final Float newSellPriceRead = Math.round(newSellPrice * 100) / 100.0F;
-                    final Float newBuyPriceRead = Math.round(newBuyPrice * 100) / 100.0F;
+                    final Items items = itemInShop;
 
                     if(customerSign != null) {
                         RegionShopPlugin.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(RegionShopPlugin.getInstance(), new Runnable() {
@@ -128,7 +133,22 @@ public class PriceRecalculateTask extends BukkitRunnable {
                                 if(block.getType().equals(Material.SIGN_POST) || block.getType().equals(Material.WALL_SIGN)) {
                                     Sign sign = (Sign)block.getState();
 
-                                    sign.setLine(2, "B " + newSellPriceRead + "$:S " + newBuyPriceRead + "$");
+                                    //Get the nice name
+                                    ItemStack itemStack = com.geNAZt.RegionShop.Database.Model.Item.fromDBItem(items);
+                                    String itemName = ItemName.getDataName(itemStack) + itemStack.getType().toString();
+                                    if (itemStack.getItemMeta().hasDisplayName()) {
+                                        itemName = "(" + itemStack.getItemMeta().getDisplayName() + ")";
+                                    }
+
+                                    for(Integer line = 0; line < 4; line++) {
+                                        sign.setLine(line, ConfigManager.language.Sign_Customer_SignText.get(line).
+                                                replace("%id", items.getId().toString()).
+                                                replace("%itemname", itemName).
+                                                replace("%amount", items.getUnitAmount().toString()).
+                                                replace("%sell", items.getSell().toString()).
+                                                replace("%buy", items.getBuy().toString()));
+                                    }
+
                                     sign.update();
                                 }
                             }

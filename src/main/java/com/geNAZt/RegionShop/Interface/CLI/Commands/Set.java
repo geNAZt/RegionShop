@@ -47,12 +47,16 @@ public class Set implements CLICommand {
                 find(Items.class).
                 where().
                     eq("id", shopItemId).
-                    eq("owner", player.getName()).
                 findUnique();
 
         if (item == null) {
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Set_InvalidItem);
         } else {
+            if(!item.getOwner().equals(player.getName()) && !player.hasPermission("rs.bypass.set")) {
+                player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Set_InvalidItem);
+                return;
+            }
+
             item.setBuy(buy);
             item.setSell(sell);
             item.setUnitAmount(amount);

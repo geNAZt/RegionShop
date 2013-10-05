@@ -87,6 +87,10 @@ public class Equip implements CLICommand {
                 }
             }
 
+            if(player.hasPermission("rs.bypass.equip")) {
+                isOwner = true;
+            }
+
             if (!isOwner) {
                 player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Equip_NotOwner);
                 return;

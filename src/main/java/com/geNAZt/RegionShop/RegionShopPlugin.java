@@ -8,6 +8,7 @@ import com.geNAZt.RegionShop.Database.Manager;
 import com.geNAZt.RegionShop.Database.Table.*;
 import com.geNAZt.RegionShop.Interface.Sign.CommandExecutor;
 import com.geNAZt.RegionShop.Interface.Sign.Interact.Customer;
+import com.geNAZt.RegionShop.Interface.Sign.Interact.Shop;
 import com.geNAZt.RegionShop.Listener.*;
 import com.geNAZt.RegionShop.Util.EssentialBridge;
 import com.geNAZt.RegionShop.Util.Logger;
@@ -49,6 +50,7 @@ public class RegionShopPlugin extends JavaPlugin {
         manager.addModel(Transaction.class);
         manager.addModel(ServerItemAverage.class);
         manager.addModel(CustomerSign.class);
+        manager.addModel(Chest.class);
 
         Database.setServer(manager.createDatabaseConnection());
 
@@ -63,6 +65,7 @@ public class RegionShopPlugin extends JavaPlugin {
         getServer().getScheduler().runTaskTimerAsynchronously(this, new ItemAverageTask(), ConfigManager.expert.Timer_ItemAverageTask, ConfigManager.expert.Timer_ItemAverageTask);
         getServer().getScheduler().runTaskTimerAsynchronously(this, new PriceRecalculateTask(), ConfigManager.expert.Timer_PriceRecalculateTask, ConfigManager.expert.Timer_PriceRecalculateTask);
         getServer().getScheduler().runTaskLaterAsynchronously(this, new IntegrateServershop(), 100);
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new DisplayItemOverChest(), ConfigManager.expert.Timer_DisplayItemTask, ConfigManager.expert.Timer_DisplayItemTask);
 
         //Listener
         getServer().getPluginManager().registerEvents(new CheckForNewPlayer(), this);
@@ -72,7 +75,11 @@ public class RegionShopPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CommandExecutor(), this);
         getServer().getPluginManager().registerEvents(new SignInteractPrepare(), this);
         getServer().getPluginManager().registerEvents(new Customer(), this);
+        getServer().getPluginManager().registerEvents(new Shop(), this);
         getServer().getPluginManager().registerEvents(new SignDestroy(), this);
+        getServer().getPluginManager().registerEvents(new CheckChestProtection(), this);
+        getServer().getPluginManager().registerEvents(new EquipOnChestClose(), this);
+        getServer().getPluginManager().registerEvents(new PretendDisplaysToPickup(), this);
 
         //Shop Commands
         getCommand("shop").setExecutor(new com.geNAZt.RegionShop.Interface.CLI.CommandExecutor());
@@ -82,6 +89,7 @@ public class RegionShopPlugin extends JavaPlugin {
             new ChestShopConverter(this);
         }
 
+        MCStats.init(this);
         Logger.info("===== RegionShop enabled =====");
     }
 
@@ -100,7 +108,6 @@ public class RegionShopPlugin extends JavaPlugin {
         //Check if the Database has flushed
         Logger.info("----- Shutting down Database Connection -----");
         if(!Database.getSaveQueue().isEmpty()) {
-            //It has not completly flushed. Get all SQL Statements and save them to files
             while(!Database.getSaveQueue().isEmpty()) {
                 Logger.info("Remaining Queue Size: " + Database.getSaveQueue().size());
 
@@ -110,7 +117,6 @@ public class RegionShopPlugin extends JavaPlugin {
         }
 
         if(!Database.getUpdateQueue().isEmpty()) {
-            //It has not completly flushed. Get all SQL Statements and save them to files
             while(!Database.getUpdateQueue().isEmpty()) {
                 Logger.info("Remaining Queue Size: " + Database.getUpdateQueue().size());
 

@@ -4,6 +4,7 @@ import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Config.Sub.Group;
 import com.geNAZt.RegionShop.Data.Storage.InRegion;
 import com.geNAZt.RegionShop.Database.Database;
+import com.geNAZt.RegionShop.Database.ItemStorageHolder;
 import com.geNAZt.RegionShop.Database.Model.Item;
 import com.geNAZt.RegionShop.Database.Model.Transaction;
 import com.geNAZt.RegionShop.Database.Table.Enchantment;
@@ -22,7 +23,7 @@ import java.util.Set;
  * Date: 16.07.13
  */
 public class Add {
-    public static Integer add(ItemStack item, Player player, Region shop, Float sell, Float buy, Integer amount) {
+    public static Integer add(ItemStack item, Player player, ItemStorageHolder shop, Float sell, Float buy, Integer amount) {
         //Ask Database for this Item
         List<Items> dbItem = Database.getServer().find(Items.class).
                 where().
@@ -48,7 +49,7 @@ public class Add {
         //Check if item is already in the Database
         if (dbItem == null || dbItem.isEmpty()) {
             //It is new. Convert it into the Database
-            Item.toDBItem(item, InRegion.get(player), player.getName(), buy, sell, amount);
+            Item.toDBItem(item, shop, player.getName(), buy, sell, amount);
 
             //Save a Transaction for it
             Transaction.generateTransaction(player, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.ADD, shop.getName(), player.getWorld().getName(), player.getName(), item.getTypeId(), item.getAmount(), sell.doubleValue(), buy.doubleValue(), amount);
@@ -98,7 +99,7 @@ public class Add {
                 return itemID;
             } else {
                 //It is new. Convert it into the Database
-                Item.toDBItem(item, InRegion.get(player), player.getName(), buy, sell, amount);
+                Item.toDBItem(item, shop, player.getName(), buy, sell, amount);
 
                 Transaction.generateTransaction(player, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.ADD, shop.getName(), player.getWorld().getName(), player.getName(), item.getTypeId(), item.getAmount(), sell.doubleValue(), buy.doubleValue(), amount);
 

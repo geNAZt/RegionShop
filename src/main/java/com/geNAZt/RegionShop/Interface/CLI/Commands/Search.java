@@ -14,6 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
@@ -41,7 +42,7 @@ public class Search implements CLICommand {
         Pattern r = Pattern.compile("(.*)" + search + "(.*)", Pattern.CASE_INSENSITIVE);
         ParsedItem parsedItem = Parser.parseItemID(search);
 
-        List<Items> items = Database.getServer().find(Items.class).
+        List<Items> itemsRegion = Database.getServer().find(Items.class).
                 where().
                     conjunction().
                         eq("itemStorage.regions.world", player.getWorld().getName()).
@@ -53,7 +54,22 @@ public class Search implements CLICommand {
                     endJunction().
                 findList();
 
-        if(items != null) {
+        List<Items> itemsChest = Database.getServer().find(Items.class).
+                where().
+                    conjunction().
+                        eq("itemStorage.chests.world", player.getWorld().getName()).
+                        gt("unitAmount", 0).
+                        disjunction().
+                            gt("sell", 0).
+                            gt("buy", 0).
+                        endJunction().
+                    endJunction().
+                findList();
+
+        List<Items> items = new ArrayList<Items>(itemsRegion);
+        items.addAll(itemsChest);
+
+        if(!items.isEmpty()) {
             for(Items item : items) {
                 ItemStack iStack = Item.fromDBItem(item);
 

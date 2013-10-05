@@ -40,7 +40,7 @@ public class Customer implements Listener {
 
         Region region = InRegion.get(event.getParent().getPlayer());
 
-        if(event.getParent().getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+        if(event.getParent().getAction().equals(Action.LEFT_CLICK_BLOCK) && event.getParent().getPlayer().hasPermission("rs.sign.customer.sell")) {
             ItemStack itemStack = event.getParent().getPlayer().getItemInHand();
 
             if(itemStack == null || itemStack.getType().getId() == 0) {
@@ -54,7 +54,7 @@ public class Customer implements Listener {
             }
 
             Sell.sell(itemStack, customerSign.getItem(), event.getParent().getPlayer(), region);
-        } else if(event.getParent().getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        } else if(event.getParent().getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getParent().getPlayer().hasPermission("rs.sign.customer.buy")) {
             Buy.buy(customerSign.getItem(), event.getParent().getPlayer(), region, customerSign.getItem().getUnitAmount());
         }
     }

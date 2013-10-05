@@ -1,6 +1,8 @@
 package com.geNAZt.RegionShop.Listener;
 
+import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Database.Database;
+import com.geNAZt.RegionShop.Database.Table.Chest;
 import com.geNAZt.RegionShop.Database.Table.CustomerSign;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -19,11 +21,21 @@ import org.bukkit.material.Sign;
 public class SignDestroy implements Listener {
     @EventHandler
     public void onBlockBrak(BlockBreakEvent  event) {
+        //Check if Event is in an enabled world
+        if(!ConfigManager.main.World_enabledWorlds.contains(event.getPlayer().getWorld().getName())) {
+            return;
+        }
+
         checkDestroy(event, true);
     }
 
     @EventHandler
     public void onBlockPhysics(BlockPhysicsEvent event) {
+        //Check if Event is in an enabled world
+        if(!ConfigManager.main.World_enabledWorlds.contains(event.getBlock().getWorld().getName())) {
+            return;
+        }
+
         checkDestroy(event, false);
     }
 
@@ -34,53 +46,33 @@ public class SignDestroy implements Listener {
 
             Block attachedBlock = b.getRelative(s.getAttachedFace());
             if (attachedBlock.getType() == Material.AIR || playerBreak) {
-                /*//Look for ChestEquip Signs
-                ShopChestEquipSign chestEquipSign = plugin.getDatabase().find(ShopChestEquipSign.class).
-                        where().
-                            conjunction().
-                                eq("world", event.getBlock().getWorld().getName()).
-                                eq("x", event.getBlock().getX()).
-                                eq("y", event.getBlock().getY()).
-                                eq("z", event.getBlock().getZ()).
-                            endJunction().
-                        findUnique();
-
-                if(chestEquipSign != null) {
-                    plugin.getDatabase().delete(chestEquipSign);
-                    SignChestEquipStorage.removeSign(b);
-                    return;
+                BlockBreakEvent event1 = null;
+                if(playerBreak) {
+                    event1 = (BlockBreakEvent) event;
                 }
 
-                //Look for SellSigns
-                ShopAddSign addSign = plugin.getDatabase().find(ShopAddSign.class).
+                //Look for ChestShops
+                Chest chest = Database.getServer().find(Chest.class).
                         where().
                             conjunction().
                                 eq("world", event.getBlock().getWorld().getName()).
-                                eq("x", event.getBlock().getX()).
-                                eq("y", event.getBlock().getY()).
-                                eq("z", event.getBlock().getZ()).
+                                eq("signX", event.getBlock().getX()).
+                                eq("signY", event.getBlock().getY()).
+                                eq("signZ", event.getBlock().getZ()).
                             endJunction().
                         findUnique();
 
-                if(addSign != null) {
-                    plugin.getDatabase().delete(addSign);
-                    return;
+                if(chest != null) {
+                    if(playerBreak) {
+                        if(chest.getOwners().iterator().next().getName().equals(event1.getPlayer().getName().toLowerCase()) || event1.getPlayer().hasPermission("rs.bypass.destroy.chestshop")) {
+                            com.geNAZt.RegionShop.Database.Model.Chest.remove(chest);
+                        } else {
+                            event1.setCancelled(true);
+                        }
+                    } else {
+                        com.geNAZt.RegionShop.Database.Model.Chest.remove(chest);
+                    }
                 }
-
-                //Look for Equip Signs
-                ShopEquipSign equipSign = plugin.getDatabase().find(ShopEquipSign.class).
-                        where().
-                            conjunction().
-                                eq("world", event.getBlock().getWorld().getName()).
-                                eq("x", event.getBlock().getX()).
-                                eq("y", event.getBlock().getY()).
-                                eq("z", event.getBlock().getZ()).
-                            endJunction().
-                        findUnique();
-
-                if(equipSign != null) {
-                    plugin.getDatabase().delete(equipSign);
-                }  */
 
                 //Look for Customer Signs
                 CustomerSign customerSign = Database.getServer().find(CustomerSign.class).
@@ -94,7 +86,15 @@ public class SignDestroy implements Listener {
                         findUnique();
 
                 if(customerSign != null) {
-                    Database.getServer().delete(customerSign);
+                    if(playerBreak) {
+                        if(customerSign.getOwner().equals(event1.getPlayer().getName().toLowerCase()) || event1.getPlayer().hasPermission("rs.bypass.destroy.customersign")) {
+                            Database.getServer().delete(customerSign);
+                        } else {
+                            event1.setCancelled(true);
+                        }
+                    } else {
+                        Database.getServer().delete(customerSign);
+                    }
                 }
             }
         }

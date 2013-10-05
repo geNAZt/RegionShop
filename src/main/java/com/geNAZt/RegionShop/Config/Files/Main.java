@@ -27,6 +27,16 @@ public class Main extends Config {
         //Set the default group
         this.Group_Groups.add(new Group());
 
+        Group normalChest = new Group();
+        normalChest.Storage = 27*64;
+        normalChest.Name = "Normal Chest";
+
+        this.Group_Groups.add(normalChest);
+
+        Group doubleChest = new Group();
+        doubleChest.Storage = 54*64;
+        doubleChest.Name = "Double Chest";
+
         //Enable all worlds
         List<World> worlds = Bukkit.getWorlds();
         for(World world : worlds) {
@@ -41,6 +51,7 @@ public class Main extends Config {
     public String Chat_prefix = "[RS] ";
     public ArrayList<String> World_enabledWorlds = new ArrayList<String>();
     public String Group_defaultGroup = "Default";
+    public String Group_defaultChestShop = "Normal Chest";
     public Boolean Group_calcRent = true;
     public Integer Group_rentInterval = 7*24*60*60;
     public GroupRentMode Group_rentMode = GroupRentMode.SPLIT_OWNERS;

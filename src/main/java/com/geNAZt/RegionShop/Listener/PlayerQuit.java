@@ -20,6 +20,6 @@ public class PlayerQuit implements Listener {
 
         if (Drop.has(event.getPlayer())) Drop.remove(event.getPlayer());
 
-        if(Search.has(event.getPlayer())) Search.remove(event.getPlayer());
+        if (Search.has(event.getPlayer())) Search.remove(event.getPlayer());
     }
 }

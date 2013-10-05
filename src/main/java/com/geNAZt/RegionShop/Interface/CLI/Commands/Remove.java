@@ -46,7 +46,7 @@ public class Remove implements CLICommand {
                     findUnique();
 
         if(item != null) {
-            if(!item.getOwner().equals(player.getName())) {
+            if(!item.getOwner().equals(player.getName()) && !player.hasPermission("rs.bypass.remove")) {
                 player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Remove_NotYourItem);
                 return;
             }

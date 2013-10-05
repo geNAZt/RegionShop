@@ -4,6 +4,7 @@ import com.geNAZt.RegionShop.Database.Table.Region;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created for YEAHWH.AT
@@ -27,5 +28,13 @@ public class InRegion {
 
     public static synchronized Region get(Player player) {
         return playersInRegions.get(player);
+    }
+
+    public static synchronized void remove(Region region) {
+        for(Map.Entry<Player, Region> entry : playersInRegions.entrySet()) {
+            if(entry.getValue().getLcName().equals(region.getLcName())) {
+                playersInRegions.remove(entry.getKey());
+            }
+        }
     }
 }

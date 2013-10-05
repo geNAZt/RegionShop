@@ -1,6 +1,8 @@
 package com.geNAZt.RegionShop.Interface.Sign;
 
+import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Interface.Sign.Commands.Customer;
+import com.geNAZt.RegionShop.Interface.Sign.Commands.Shop;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
@@ -24,6 +26,7 @@ public class CommandExecutor implements Listener {
         ArrayList<SignCommand> commands = new ArrayList<SignCommand>();
 
         commands.add(new Customer());
+        commands.add(new Shop());
 
         //Map all given commands
         for(SignCommand cmd : commands) {
@@ -50,24 +53,39 @@ public class CommandExecutor implements Listener {
 
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
-        if(!event.getLine(0).equals("[RegionShop]")) return;
+        //Check if Event is in an enabled world
+        if(!ConfigManager.main.World_enabledWorlds.contains(event.getPlayer().getWorld().getName())) {
+            return;
+        }
 
-        if(commandMap.containsKey(event.getLine(1))) {
-            com.geNAZt.RegionShop.Data.Struct.SignCommand command1 = commandMap.get(event.getLine(1));
+        //Check if Sign is a Shop creation
+        com.geNAZt.RegionShop.Data.Struct.SignCommand command1;
 
-            if (!event.getPlayer().hasPermission(command1.annotation.permission())) {
-                event.getPlayer().sendMessage("Insufficient permission.");
-                event.getBlock().breakNaturally();
+        if(Shop.checkForShop(event)) {
+            command1 = commandMap.get("thisisimpossibletowriteonasign");
+        } else {
+            //Check if RegionShop is part of the Sign
+            if(!event.getLine(0).equals("[RegionShop]")) return;
+
+            if(commandMap.containsKey(event.getLine(1))) {
+                command1 = commandMap.get(event.getLine(1));
+            } else {
                 return;
             }
+        }
 
-            try {
-                command1.command.invoke(null, event);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
+        if (!event.getPlayer().hasPermission(command1.annotation.permission())) {
+            event.getPlayer().sendMessage("Insufficient permission.");
+            event.getBlock().breakNaturally();
+            return;
+        }
+
+        try {
+            command1.command.invoke(null, event);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
     }
 }

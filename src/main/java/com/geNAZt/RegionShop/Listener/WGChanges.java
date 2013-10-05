@@ -1,5 +1,6 @@
 package com.geNAZt.RegionShop.Listener;
 
+import com.geNAZt.RegionShop.Data.Storage.InRegion;
 import com.geNAZt.RegionShop.Database.Model.Region;
 import com.geNAZt.RegionShop.Events.WGChangeRegionEvent;
 import com.geNAZt.RegionShop.Events.WGNewRegionEvent;
@@ -27,6 +28,7 @@ public class WGChanges {
 
         if(Region.isStored(event.getNewRegion(), event.getWorld())) {
             if(!Region.update(event.getNewRegion(), event.getWorld())) {
+                InRegion.remove(Region.get(event.getNewRegion(), event.getWorld()));
                 Logger.error("Error updating a region");
             }
         }

@@ -1,6 +1,7 @@
 package com.geNAZt.RegionShop.Database.Model;
 
 import com.geNAZt.RegionShop.Database.Database;
+import com.geNAZt.RegionShop.Database.ItemStorageHolder;
 import com.geNAZt.RegionShop.Database.Table.ItemMeta;
 import com.geNAZt.RegionShop.Database.Table.ItemMetaID;
 import com.geNAZt.RegionShop.Database.Table.Items;
@@ -65,7 +66,7 @@ public class Item {
         return iStack;
     }
 
-    public static Items toDBItem(ItemStack item, com.geNAZt.RegionShop.Database.Table.Region region, String owner, Float buy, Float sell, Integer amount) {
+    public static Items toDBItem(ItemStack item, ItemStorageHolder region, String owner, Float buy, Float sell, Integer amount) {
         if(!hasMeta(item)) {
             createMeta(item);
         }

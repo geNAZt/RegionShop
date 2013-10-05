@@ -17,6 +17,11 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class PlayerMove implements Listener {
     @EventHandler
     public void onPlayerMove(final PlayerMoveEvent event) {
+        //Check if Event is in an enabled world
+        if(!ConfigManager.main.World_enabledWorlds.contains(event.getPlayer().getWorld().getName())) {
+            return;
+        }
+
         //Since we only do DB operations we can do it async
         Bukkit.getServer().getScheduler().runTaskAsynchronously(RegionShopPlugin.getInstance(), new Runnable() {
             @Override

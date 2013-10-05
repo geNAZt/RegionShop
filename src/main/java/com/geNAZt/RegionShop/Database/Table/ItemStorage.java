@@ -22,6 +22,9 @@ public class ItemStorage {
     private Set<Region> regions;
 
     @OneToMany
+    private Set<Chest> chests;
+
+    @OneToMany
     private Set<Items> items;
     private String setting;
     private String name;
@@ -82,5 +85,13 @@ public class ItemStorage {
 
     public void setServershop(boolean servershop) {
         this.servershop = servershop;
+    }
+
+    public Set<Chest> getChests() {
+        return chests;
+    }
+
+    public void setChests(Set<Chest> chests) {
+        this.chests = chests;
     }
 }

@@ -18,6 +18,11 @@ import org.bukkit.inventory.ItemStack;
 public class DropEquip implements Listener {
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
+        //Check if Event is in an enabled world
+        if(!ConfigManager.main.World_enabledWorlds.contains(event.getPlayer().getWorld().getName())) {
+            return;
+        }
+
         if (Drop.has(event.getPlayer())) {
             Region region = Drop.get(event.getPlayer());
 

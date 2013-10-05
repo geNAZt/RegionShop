@@ -2,6 +2,7 @@ package com.geNAZt.RegionShop.Core;
 
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Database.Database;
+import com.geNAZt.RegionShop.Database.ItemStorageHolder;
 import com.geNAZt.RegionShop.Database.Model.Item;
 import com.geNAZt.RegionShop.Database.Model.Transaction;
 import com.geNAZt.RegionShop.Database.Table.ItemStorage;
@@ -25,17 +26,8 @@ import java.util.Map;
  * Date: 18.09.13
  */
 public class Buy {
-    public static void buy(Items item, Player player, Region region, Integer wishAmount) {
-        java.util.List<com.geNAZt.RegionShop.Database.Table.Player> playerList = region.getOwners();
-        boolean isOwner = false;
-
-        for(com.geNAZt.RegionShop.Database.Table.Player player1 : playerList) {
-            if(player1.getName().equals(player.getName().toLowerCase())) {
-                isOwner = true;
-            }
-        }
-
-        if (isOwner) {
+    public static void buy(Items item, Player player, ItemStorageHolder region, Integer wishAmount) {
+        if (item.getOwner().toLowerCase().equals(player.getName().toLowerCase())) {
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Buy_NotYourItems);
             return;
         }
@@ -118,12 +110,7 @@ public class Buy {
             itemStorage.setItemAmount(itemStorage.getItemAmount() - wishAmount);
 
             Database.getServer().update(itemStorage);
-
-            if (item.getCurrentAmount() > 0 || item.getItemStorage().isServershop()) {
-                Database.getServer().update(item);
-            } else {
-                Database.getServer().delete(item);
-            }
+            Database.getServer().update(item);
 
             Transaction.generateTransaction(player, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.BUY, region.getName(), player.getWorld().getName(), item.getOwner(), item.getMeta().getId().getItemID(), wishAmount, item.getSell().doubleValue(), 0.0, item.getUnitAmount());
         } else {

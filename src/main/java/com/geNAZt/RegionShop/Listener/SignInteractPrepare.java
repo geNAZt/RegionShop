@@ -1,5 +1,6 @@
 package com.geNAZt.RegionShop.Listener;
 
+import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Events.SignInteract;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,6 +17,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class SignInteractPrepare implements Listener {
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
+        //Check if Event is in an enabled world
+        if(!ConfigManager.main.World_enabledWorlds.contains(event.getPlayer().getWorld().getName())) {
+            return;
+        }
+
         Block blk = event.getClickedBlock();
         if(blk == null) {
             return;

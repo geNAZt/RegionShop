@@ -52,9 +52,15 @@ public class Add implements CLICommand {
         boolean isOwner = false;
 
         for(com.geNAZt.RegionShop.Database.Table.Player player1 : playerList) {
+            System.out.println(player1.getName());
+
             if(player1.getName().equals(player.getName().toLowerCase())) {
                 isOwner = true;
             }
+        }
+
+        if(player.hasPermission("rs.bypass.add")) {
+            isOwner = true;
         }
 
         if(!isOwner) {

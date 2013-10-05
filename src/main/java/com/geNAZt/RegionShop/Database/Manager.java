@@ -2,6 +2,7 @@ package com.geNAZt.RegionShop.Database;
 
 import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
+import com.avaje.ebean.LogLevel;
 import com.avaje.ebean.Transaction;
 import com.avaje.ebean.config.DataSourceConfig;
 import com.avaje.ebean.config.ServerConfig;
@@ -173,6 +174,9 @@ public class Manager {
 
         db.setClasses(databaseModels);
         db.setName("RegionShop");
+        /*db.setLoggingToJavaLogger(true);
+        db.setDebugSql(true);
+        db.setLoggingLevel(LogLevel.SQL);*/
 
         DataSourceConfig ds = new DataSourceConfig();
         ds.setDriver(ConfigManager.main.DB_driver);

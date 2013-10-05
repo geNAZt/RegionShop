@@ -3,6 +3,7 @@ package com.geNAZt.RegionShop.Core;
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Config.Sub.Group;
 import com.geNAZt.RegionShop.Database.Database;
+import com.geNAZt.RegionShop.Database.ItemStorageHolder;
 import com.geNAZt.RegionShop.Database.Model.Item;
 import com.geNAZt.RegionShop.Database.Model.Transaction;
 import com.geNAZt.RegionShop.Database.Table.Items;
@@ -16,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
  * Date: 20.07.13
  */
 public class Equip {
-    public static Integer equip(ItemStack item, Player player, Region shop) {
+    public static Integer equip(ItemStack item, Player player, ItemStorageHolder shop) {
         Group group = ConfigManager.main.getGroup(shop.getItemStorage().getSetting());
 
         //Check if there is place in the Storage
@@ -40,7 +41,9 @@ public class Equip {
 
         if (dbItem != null) {
             dbItem.setCurrentAmount(dbItem.getCurrentAmount() + item.getAmount());
+            dbItem.getItemStorage().setItemAmount(dbItem.getItemStorage().getItemAmount() + item.getAmount());
 
+            Database.getServer().update(dbItem.getItemStorage());
             Database.getServer().update(dbItem);
 
             Transaction.generateTransaction(player, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.EQUIP, shop.getName(), shop.getWorld(), dbItem.getOwner(), dbItem.getMeta().getId().getItemID(), item.getAmount(), dbItem.getSell().doubleValue(), dbItem.getBuy().doubleValue(), dbItem.getUnitAmount());
@@ -48,6 +51,10 @@ public class Equip {
             return 0;
         } else {
             dbItem = Item.toDBItem(item, shop, player.getName(), 0.0F, 0.0F, 0);
+
+            dbItem.getItemStorage().setItemAmount(dbItem.getItemStorage().getItemAmount() + item.getAmount());
+
+            Database.getServer().update(dbItem.getItemStorage());
 
             Transaction.generateTransaction(player, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.EQUIP, shop.getName(), player.getWorld().getName(), player.getName(), dbItem.getMeta().getId().getItemID(), item.getAmount(), 0.0, 0.0, 0);
 

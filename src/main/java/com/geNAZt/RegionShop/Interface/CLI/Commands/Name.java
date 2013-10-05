@@ -42,6 +42,10 @@ public class Name implements CLICommand {
                 }
             }
 
+            if(player.hasPermission("rs.bypass.name")) {
+                isOwner = true;
+            }
+
             if (isOwner) {
                 Region region1 = Database.getServer().find(Region.class).where().eq("lcname", name.toLowerCase()).findUnique();
 

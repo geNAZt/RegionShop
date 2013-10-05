@@ -5,6 +5,7 @@ package com.geNAZt.RegionShop.Database.Table;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 05.06.13
  */
+import com.avaje.ebean.annotation.CacheStrategy;
 import com.avaje.ebean.annotation.EnumMapping;
 
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
+@CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by id")
 @SuppressWarnings("UnusedDeclaration")
 @Entity()
 @Table(name = "rs_transaction")

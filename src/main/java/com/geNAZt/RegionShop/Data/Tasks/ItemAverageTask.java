@@ -20,6 +20,7 @@ public class ItemAverageTask extends BukkitRunnable {
 
         for(Items items : itemsList) {
             if(!items.getItemStorage().getRegions().iterator().hasNext()) continue;
+            if(!items.getItemStorage().isServershop()) continue;
 
             ServerItemAverage item = new ServerItemAverage();
             item.setSold(items.getSold());
@@ -31,9 +32,7 @@ public class ItemAverageTask extends BukkitRunnable {
 
             Database.getServer().save(item);
 
-            if(items.getItemStorage().isServershop()) {
-                items.setCurrentAmount(99999);
-            }
+            items.setCurrentAmount(99999);
 
             items.setBought(0);
             items.setSold(0);

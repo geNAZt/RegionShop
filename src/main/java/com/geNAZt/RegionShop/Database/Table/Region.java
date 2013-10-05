@@ -7,14 +7,16 @@ package com.geNAZt.RegionShop.Database.Table;
  */
 
 import com.avaje.ebean.annotation.CacheStrategy;
+import com.geNAZt.RegionShop.Database.ItemStorageHolder;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.List;
 
 @CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by id")
 @Entity()
 @Table(name = "rs_region")
-public class Region {
+public class Region implements ItemStorageHolder {
     @Id
     private Integer id;
     @ManyToOne
@@ -29,6 +31,7 @@ public class Region {
     private Double maxX;
     private Double maxY;
     private Double maxZ;
+    private Date lastRent;
 
     @ManyToMany(mappedBy="ownsRegions", cascade=CascadeType.ALL)
     private List<Player> owners;
@@ -146,5 +149,13 @@ public class Region {
 
     public void setLcName(String lcName) {
         this.lcName = lcName;
+    }
+
+    public Date getLastRent() {
+        return lastRent;
+    }
+
+    public void setLastRent(Date lastRent) {
+        this.lastRent = lastRent;
     }
 }

@@ -52,12 +52,25 @@ public class Language extends Config {
 
         Command_Equip_MultipleShops.add(ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Shop Selector" + ChatColor.YELLOW + " -- To select a shop: " + ChatColor.GOLD +"/shop equip " + ChatColor.RED + "shopname");
         Command_Equip_MultipleShops.add(" ");
+
+        Command_Transcation_Header.add(ChatColor.YELLOW + "-- " + ChatColor.GOLD + "Transactionlog -- " + ChatColor.GOLD + "Page " + ChatColor.RED + "%page" + ChatColor.GOLD + "/" + ChatColor.RED + "%maxpage" + ChatColor.YELLOW + " --");
+        Command_Transcation_Header.add(ChatColor.YELLOW + "Legend: " + ChatColor.DARK_GREEN + "You have bought" + ChatColor.RESET + " - " + ChatColor.DARK_RED + "You have sold" + ChatColor.RESET + " - " + ChatColor.GOLD + "You have equipped" + ChatColor.RESET + " - " + ChatColor.YELLOW + "You added/set Item" + ChatColor.RESET + " - " + ChatColor.DARK_AQUA + "You have removed");
+
+        Sign_Customer_SignText.add("ID: %id");
+        Sign_Customer_SignText.add("%itemname");
+        Sign_Customer_SignText.add("%amountx for");
+        Sign_Customer_SignText.add("S %sell$:B %buy$");
+
+        Sign_Shop_SignText.add("%player");
+        Sign_Shop_SignText.add("%itemname");
+        Sign_Shop_SignText.add("%amountx for");
+        Sign_Shop_SignText.add("S %sell$:B %buy$");
     }
 
     //Command Executer Messages
     public String Command_NoPermission = ChatColor.RED + "Insufficient permission.";
     public String Command_NotEnoughArguments = ChatColor.RED + "You have not given all arguments needed";
-    public String Command_NotKnown = ChatColor.RED + "Command is not know. Maybe try /shop help ?";
+    public String Command_NotKnown = ChatColor.RED + "Command is not known. Maybe try /shop help ?";
     public String Command_OnlyForPlayers = ChatColor.RED + "Command only for Players";
 
     //Enter and Leave Message
@@ -226,9 +239,32 @@ public class Language extends Config {
     public String Sign_Customer_InvalidItemID = ChatColor.RED + "ItemID is not a number";
     public String Sign_Customer_NotFoundItemID = ChatColor.RED + "ItemID could not be found";
     public String Sign_Customer_NotYourItem = ChatColor.RED + "You do not own this Item";
+    public ArrayList<String> Sign_Customer_SignText = new ArrayList<String>();
 
     //Customer Sign Interact
     public String Interact_Customer_NotInRegion = ChatColor.RED + "You are not inside a shop region.";
     public String Interact_Customer_Sell_NoItemInHand = ChatColor.RED +  "You have no item in the hand";
     public String Interact_Customer_Sell_WrongItem = ChatColor.RED + "You can't sell this here";
+
+    //Shop Sign
+    public String Sign_Shop_NoChest = ChatColor.RED + "There is no Chest around the Sign";
+    public String Sign_Shop_InvalidAmount = ChatColor.RED + "The amount (2nd Line) is not a Number";
+    public String Sign_Shop_NoValidBuySellLine = ChatColor.RED + "The Buy/Sell Line is invalid. It must be <sell>:<buy>";
+    public String Sign_Shop_InvalidBuySell = ChatColor.RED + "The Buy/Sell value must be a floating Number. For example 1.0 or 1.7";
+    public String Sign_Shop_ChestIsEmpty = ChatColor.RED + "The Chest is empty. First add items into the Chest and then make the Sign.";
+    public ArrayList<String> Sign_Shop_SignText = new ArrayList<String>();
+
+    //Shop Sign Interact
+    public String Interact_Shop_Sell_NoItemInHand = ChatColor.RED +  "You have no item in the hand";
+    public String Interact_Shop_Sell_WrongItem = ChatColor.RED + "You can't sell this here";
+
+    //Chest Protection
+    public String Protection_Chest_NotOwner = ChatColor.RED + "You are not the owner of this Chest";
+
+    //Transaction Command
+    public String Command_Transaction_HelpText = ChatColor.GOLD + "/shop transaction " + ChatColor.GREEN + "page" + ChatColor.RESET + ": See your Transaction log";
+    public String Command_Transaction_InvalidArguments = ChatColor.RED + "Only numbers as page value";
+    public String Command_Transaction_InvalidPage = ChatColor.RED + "Invalid page";
+    public ArrayList<String> Command_Transcation_Header = new ArrayList<String>();
+    public String Command_Transaction_DateFormat = "dd.MM.yy HH:mm:ss";
 }

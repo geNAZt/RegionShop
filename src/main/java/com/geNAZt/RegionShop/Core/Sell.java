@@ -3,6 +3,7 @@ package com.geNAZt.RegionShop.Core;
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Config.Sub.Group;
 import com.geNAZt.RegionShop.Database.Database;
+import com.geNAZt.RegionShop.Database.ItemStorageHolder;
 import com.geNAZt.RegionShop.Database.Model.Transaction;
 import com.geNAZt.RegionShop.Database.Table.ItemStorage;
 import com.geNAZt.RegionShop.Database.Table.Items;
@@ -15,7 +16,9 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created for YEAHWH.AT
@@ -23,7 +26,7 @@ import java.util.List;
  * Date: 18.09.13
  */
 public class Sell {
-    public static void sell(ItemStack itemStack, List<Items> items, Player player, Region region) {
+    public static void sell(ItemStack itemStack, List<Items> items, Player player, ItemStorageHolder region) {
         java.util.List<com.geNAZt.RegionShop.Database.Table.Player> playerList = region.getOwners();
         boolean isOwner = false;
 
@@ -103,7 +106,7 @@ public class Sell {
         player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sell_OwnerHasNotEnoughMoney);
     }
 
-    public static void sell(ItemStack itemStack, Items item, Player player, Region region) {
+    public static void sell(ItemStack itemStack, Items item, Player player, ItemStorageHolder region) {
         java.util.List<com.geNAZt.RegionShop.Database.Table.Player> playerList = region.getOwners();
         boolean isOwner = false;
 
