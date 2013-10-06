@@ -19,6 +19,7 @@ permissions:
   rs.use:
     description: Wildcard permission set for RegionShop
     children:
+      rs.command.shop: true
       rs.command.shop.teleporttoshop: true
       rs.command.help: true
       rs.command.list: true
