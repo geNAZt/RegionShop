@@ -91,7 +91,7 @@ public class RegionShopPlugin extends JavaPlugin {
             new ChestShopConverter(this);
         }
 
-        MCStats.init(this);
+        //MCStats.init(this);
         Logger.info("===== RegionShop enabled =====");
     }
 
