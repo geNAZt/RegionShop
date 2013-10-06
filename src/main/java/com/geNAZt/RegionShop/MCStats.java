@@ -3,9 +3,6 @@ package com.geNAZt.RegionShop;
 import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Table.Chest;
 import com.geNAZt.RegionShop.Database.Table.Region;
-import org.mcstats.Metrics;
-
-import java.io.IOException;
 
 /**
  * Created for YEAHWH.AT
