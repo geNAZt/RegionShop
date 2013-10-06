@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -33,6 +34,12 @@ public class DisplayItemOverChest extends BukkitRunnable {
             }
 
             if(!found) {
+                Iterator itemsIterator = chest.getItemStorage().getItems().iterator();
+                if(!itemsIterator.hasNext()) {
+                    RegionShopPlugin.getInstance().getLogger().warning("Found Chest without item. Maybe wrong deletion: " + chest.getId());
+                    continue;
+                }
+
                 final ItemStack itemStack = Item.fromDBItem(chest.getItemStorage().getItems().iterator().next());
                 itemStack.setAmount(1);
 

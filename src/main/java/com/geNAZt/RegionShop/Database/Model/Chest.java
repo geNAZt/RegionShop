@@ -109,23 +109,25 @@ public class Chest {
         //Get the chest
         Block chest1 = Bukkit.getWorld(chest.getWorld()).getBlockAt(chest.getChestX(), chest.getChestY(), chest.getChestZ());
 
-        if(chest1.getType().equals(Material.CHEST)) {
-            //Remove the ItemDrop above it
-            for (Entity ent : Bukkit.getWorld(chest.getWorld()).getEntities()) {
-                if(ent.getLocation().getBlockY() == chest1.getY()+1 && ent.getLocation().getBlockX() == chest1.getX() && ent.getLocation().getBlockZ() == chest1.getZ()) {
-                    ent.remove();
+        try {
+            if(chest1.getType().equals(Material.CHEST)) {
+                //Remove the ItemDrop above it
+                for (Entity ent : Bukkit.getWorld(chest.getWorld()).getEntities()) {
+                    if(ent.getLocation().getBlockY() == chest1.getY()+1 && ent.getLocation().getBlockX() == chest1.getX() && ent.getLocation().getBlockZ() == chest1.getZ()) {
+                        ent.remove();
+                    }
                 }
-            }
 
-            Database.getServer().delete(item);
-            Database.getServer().delete(chest.getItemStorage());
-            Database.getServer().deleteManyToManyAssociations(chest, "owners");
-            Database.getServer().delete(chest);
-        } else {
-            Database.getServer().delete(item);
-            Database.getServer().delete(chest.getItemStorage());
-            Database.getServer().deleteManyToManyAssociations(chest, "owners");
-            Database.getServer().delete(chest);
-        }
+                Database.getServer().delete(item);
+                Database.getServer().deleteManyToManyAssociations(chest, "owners");
+                Database.getServer().delete(chest);
+                Database.getServer().delete(chest.getItemStorage());
+            } else {
+                Database.getServer().delete(item);
+                Database.getServer().deleteManyToManyAssociations(chest, "owners");
+                Database.getServer().delete(chest);
+                Database.getServer().delete(chest.getItemStorage());
+            }
+        } catch(RuntimeException e) { }
     }
 }
