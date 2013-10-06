@@ -43,7 +43,7 @@ class MCStats {
 
             metrics.start();
             RegionShopPlugin.getInstance().getLogger().info("Started profiling...");
-        } catch (IOException e) {
+        } catch (Exception e) {
             RegionShopPlugin.getInstance().getLogger().warning(e.getMessage());
         }
     }
