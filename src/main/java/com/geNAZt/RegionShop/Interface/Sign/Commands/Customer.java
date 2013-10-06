@@ -83,7 +83,7 @@ public class Customer implements SignCommand {
         for(Integer line = 0; line < 4; line++) {
             event.setLine(line, ConfigManager.language.Sign_Customer_SignText.get(line).
                     replace("%id", item.getId().toString()).
-                    replace("%itemname", itemName).
+                    replace("%itemname", ItemName.nicer(itemName)).
                     replace("%amount", item.getUnitAmount().toString()).
                     replace("%sell", item.getSell().toString()).
                     replace("%buy", item.getBuy().toString()));
