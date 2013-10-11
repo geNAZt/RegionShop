@@ -268,4 +268,11 @@ public class Language extends Config {
     public String Command_Transaction_InvalidPage = ChatColor.RED + "Invalid page";
     public ArrayList<String> Command_Transcation_Header = new ArrayList<String>();
     public String Command_Transaction_DateFormat = "dd.MM.yy HH:mm:ss";
+
+    //Group Command
+    public String Command_Group_HelpText = ChatColor.GOLD + "/shop admin group " + ChatColor.RED + "id group" + ChatColor.RESET + ": Set the group of the shop to " + ChatColor.RED + "group";
+    public String Command_Group_NotFound = ChatColor.RED + "The group you have selected could not be found";
+    public String Command_Group_InvalidID = ChatColor.RED + "The ID you have given is invalid. r:<id> or c:<id>";
+    public String Command_Group_IDNotFound = ChatColor.RED + "The ID you have given has not been found.";
+    public String Command_Group_Success = ChatColor.GOLD + "Shop has been assigned to the new Group";
 }
