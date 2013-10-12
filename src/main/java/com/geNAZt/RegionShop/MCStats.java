@@ -13,8 +13,9 @@ class MCStats {
     public static void init(RegionShopPlugin plugin) {
         try {
             Metrics metrics = new Metrics(plugin);
+            Metrics.Graph graph = metrics.createGraph("# of Shops");
 
-            metrics.addCustomData(new Metrics.Plotter("Total Shops") {
+            graph.addPlotter(new Metrics.Plotter("Total Shops") {
                 @Override
                 public int getValue() {
                     Integer regionShopCount = Database.getServer().find(Region.class).findRowCount();
@@ -24,14 +25,14 @@ class MCStats {
                 }
             });
 
-            metrics.addCustomData(new Metrics.Plotter("Region Shops") {
+            graph.addPlotter(new Metrics.Plotter("Region Shops") {
                 @Override
                 public int getValue() {
                     return Database.getServer().find(Region.class).findRowCount();
                 }
             });
 
-            metrics.addCustomData(new Metrics.Plotter("Chest Shops") {
+            graph.addPlotter(new Metrics.Plotter("Chest Shops") {
                 @Override
                 public int getValue() {
                     return Database.getServer().find(Chest.class).findRowCount();
