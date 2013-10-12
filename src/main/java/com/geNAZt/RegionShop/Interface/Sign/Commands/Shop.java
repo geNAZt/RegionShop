@@ -63,13 +63,13 @@ public class Shop implements SignCommand {
             return;
         }
 
-        //Parse the third line (<buy>:<sell>)
+        //Parse the third line (<sell>:<buy>)
         Matcher matcher = pattern.matcher(lines[2]);
         Float buy = 0.0F, sell = 0.0F;
         if(matcher.find()) {
             try {
-                buy = Float.parseFloat(matcher.group(1));
-                sell = Float.parseFloat(matcher.group(2));
+                sell = Float.parseFloat(matcher.group(1));
+                buy = Float.parseFloat(matcher.group(2));
             } catch(NumberFormatException e) {
                 event.getPlayer().sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sign_Shop_InvalidBuySell);
                 event.getBlock().breakNaturally();
