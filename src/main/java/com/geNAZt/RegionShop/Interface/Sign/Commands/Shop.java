@@ -159,8 +159,8 @@ public class Shop implements SignCommand {
                     replace("%player",  event.getPlayer().getName()).
                     replace("%itemname", ItemName.nicer(itemName)).
                     replace("%amount", amount.toString()).
-                    replace("%sell", buy.toString()).
-                    replace("%buy", sell.toString()));
+                    replace("%sell", sell.toString()).
+                    replace("%buy", buy.toString()));
         }
     }
 

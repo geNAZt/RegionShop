@@ -250,7 +250,7 @@ public class Language extends Config {
     //Shop Sign
     public String Sign_Shop_NoChest = ChatColor.RED + "There is no Chest around the Sign";
     public String Sign_Shop_InvalidAmount = ChatColor.RED + "The amount (2nd Line) is not a Number";
-    public String Sign_Shop_NoValidBuySellLine = ChatColor.RED + "The Buy/Sell Line is invalid. It must be <sell>:<buy>";
+    public String Sign_Shop_NoValidBuySellLine = ChatColor.RED + "The Buy/Sell Line is invalid. It must be <buy>:<sell>";
     public String Sign_Shop_InvalidBuySell = ChatColor.RED + "The Buy/Sell value must be a floating Number. For example 1.0 or 1.7";
     public String Sign_Shop_ChestIsEmpty = ChatColor.RED + "The Chest is empty. First add items into the Chest and then make the Sign.";
     public ArrayList<String> Sign_Shop_SignText = new ArrayList<String>();
