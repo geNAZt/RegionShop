@@ -118,7 +118,7 @@ public class Shop implements SignCommand {
                 firstData = itemStack.getData().getData();
                 firstItemStack = itemStack;
 
-                if(Add.add(itemStack, event.getPlayer(), chest1, buy, sell, amount) == -1) {
+                if(Add.add(itemStack, event.getPlayer(), chest1, sell, buy, amount) == -1) {
                     event.getBlock().breakNaturally();
                     return;
                 }
