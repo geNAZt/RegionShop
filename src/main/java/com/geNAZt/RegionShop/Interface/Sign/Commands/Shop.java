@@ -156,11 +156,11 @@ public class Shop implements SignCommand {
 
         for(Integer line = 0; line < 4; line++) {
             event.setLine(line, ConfigManager.language.Sign_Shop_SignText.get(line).
-                    replace("%player",  event.getPlayer().getDisplayName()).
+                    replace("%player",  event.getPlayer().getName()).
                     replace("%itemname", ItemName.nicer(itemName)).
                     replace("%amount", amount.toString()).
-                    replace("%sell", sell.toString()).
-                    replace("%buy", buy.toString()));
+                    replace("%sell", buy.toString()).
+                    replace("%buy", sell.toString()));
         }
     }
 
@@ -169,7 +169,7 @@ public class Shop implements SignCommand {
         Matcher matcher1 = intPattern.matcher(event.getLine(1));
 
         return (event.getLine(0).equals("") || //If first line is blank thats ok
-                event.getLine(0).toLowerCase().contains(event.getPlayer().getDisplayName().toLowerCase())) && //If first line contains the owner name thats ok
+                event.getLine(0).toLowerCase().contains(event.getPlayer().getName().toLowerCase())) && //If first line contains the owner name thats ok
                 matcher1.matches() && //The second line must be a Integer
                 matcher.matches(); //The third line mus match the Regex
     }
