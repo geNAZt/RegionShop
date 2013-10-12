@@ -55,7 +55,7 @@ public class DisplayItemOverChest extends BukkitRunnable {
                         droppedItem.setVelocity(new Vector(0, 0.1, 0));
                         NMS.safeGuard(droppedItem);
 
-                        Sign sign = (Sign) Bukkit.getWorld(chest.getWorld()).getBlockAt(chest.getSignX(), chest.getSignY(), chest.getSignZ());
+                        Sign sign = (Sign) Bukkit.getWorld(chest.getWorld()).getBlockAt(chest.getSignX(), chest.getSignY(), chest.getSignZ()).getState();
 
                         //Get the nice name
                         String itemName = ItemName.getDataName(itemStack) + itemStack.getType().toString();
