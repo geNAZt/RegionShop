@@ -27,56 +27,53 @@ import java.util.List;
 public class DisplayItemOverChest extends BukkitRunnable {
     @Override
     public void run() {
-        List<Chest> chestList  = Database.getServer().find(Chest.class).findList();
+        List<Chest> chestList = Database.getServer().find(Chest.class).findList();
 
-        for(final Chest chest : chestList) {
-            boolean found = false;
+        for (final Chest chest : chestList) {
             for (Entity ent : Bukkit.getWorld(chest.getWorld()).getEntities()) {
-                if(ent.getLocation().getBlockY() == chest.getChestY()+1 && ent.getLocation().getBlockX() == chest.getChestX() && ent.getLocation().getBlockZ() == chest.getChestZ()) {
-                    found = true;
+                if (ent.getLocation().getBlockY() == chest.getChestY() + 1 && ent.getLocation().getBlockX() == chest.getChestX() && ent.getLocation().getBlockZ() == chest.getChestZ()) {
+                    ent.remove();
                 }
             }
 
-            if(!found) {
-                Iterator itemsIterator = chest.getItemStorage().getItems().iterator();
-                if(!itemsIterator.hasNext()) {
-                    RegionShopPlugin.getInstance().getLogger().warning("Found Chest without item. Maybe wrong deletion: " + chest.getId());
-                    continue;
-                }
+            Iterator itemsIterator = chest.getItemStorage().getItems().iterator();
+            if (!itemsIterator.hasNext()) {
+                RegionShopPlugin.getInstance().getLogger().warning("Found Chest without item. Maybe wrong deletion: " + chest.getId());
+                continue;
+            }
 
-                final Items items = chest.getItemStorage().getItems().iterator().next();
-                final ItemStack itemStack = Item.fromDBItem(items);
-                itemStack.setAmount(1);
+            final Items items = chest.getItemStorage().getItems().iterator().next();
+            final ItemStack itemStack = Item.fromDBItem(items);
+            itemStack.setAmount(1);
 
-                Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(RegionShopPlugin.getInstance(), new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        org.bukkit.entity.Item droppedItem = Bukkit.getWorld(chest.getWorld()).dropItem(new Location(Bukkit.getWorld(chest.getWorld()), (double) chest.getChestX() + 0.5, (double)chest.getChestY() + 1.2, (double)chest.getChestZ() + 0.5), itemStack);
-                        droppedItem.setVelocity(new Vector(0, 0.1, 0));
-                        NMS.safeGuard(droppedItem);
+            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(RegionShopPlugin.getInstance(), new BukkitRunnable() {
+                @Override
+                public void run() {
+                    org.bukkit.entity.Item droppedItem = Bukkit.getWorld(chest.getWorld()).dropItem(new Location(Bukkit.getWorld(chest.getWorld()), (double) chest.getChestX() + 0.5, (double) chest.getChestY() + 1.2, (double) chest.getChestZ() + 0.5), itemStack);
+                    droppedItem.setVelocity(new Vector(0, 0.1, 0));
+                    NMS.safeGuard(droppedItem);
 
-                        Sign sign = (Sign) Bukkit.getWorld(chest.getWorld()).getBlockAt(chest.getSignX(), chest.getSignY(), chest.getSignZ()).getState();
+                    Sign sign = (Sign) Bukkit.getWorld(chest.getWorld()).getBlockAt(chest.getSignX(), chest.getSignY(), chest.getSignZ()).getState();
 
-                        //Get the nice name
-                        String itemName = ItemName.getDataName(itemStack) + itemStack.getType().toString();
-                        if (itemStack.getItemMeta().hasDisplayName()) {
-                            itemName += "(" + itemStack.getItemMeta().getDisplayName() + ")";
-                        }
-
-
-                        for(Integer line = 0; line < 4; line++) {
-                            sign.setLine(line, ConfigManager.language.Sign_Shop_SignText.get(line).
-                                    replace("%player",  chest.getOwners().iterator().next().getName()).
-                                    replace("%itemname", ItemName.nicer(itemName)).
-                                    replace("%amount", items.getUnitAmount().toString()).
-                                    replace("%sell", items.getSell().toString()).
-                                    replace("%buy", items.getBuy().toString()));
-                        }
-
-                        sign.update();
+                    //Get the nice name
+                    String itemName = ItemName.getDataName(itemStack) + itemStack.getType().toString();
+                    if (itemStack.getItemMeta().hasDisplayName()) {
+                        itemName += "(" + itemStack.getItemMeta().getDisplayName() + ")";
                     }
-                });
-            }
+
+
+                    for (Integer line = 0; line < 4; line++) {
+                        sign.setLine(line, ConfigManager.language.Sign_Shop_SignText.get(line).
+                                replace("%player", chest.getOwners().iterator().next().getName()).
+                                replace("%itemname", ItemName.nicer(itemName)).
+                                replace("%amount", items.getUnitAmount().toString()).
+                                replace("%sell", items.getSell().toString()).
+                                replace("%buy", items.getBuy().toString()));
+                    }
+
+                    sign.update();
+                }
+            });
         }
     }
 }
