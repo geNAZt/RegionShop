@@ -16,7 +16,7 @@ import java.util.Set;
  */
 
 @CacheTuning(maxIdleSecs=30, maxSecsToLive=3600, maxSize=5000)
-@CacheStrategy(useBeanCache=true, readOnly=true, warmingQuery="order by id")
+@CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by id")
 @Entity()
 @Table(name = "rs_itemstorage")
 public class ItemStorage {
