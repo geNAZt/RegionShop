@@ -31,7 +31,7 @@ public class PriceRecalculateTask extends BukkitRunnable {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, -60);
 
-        Database.getServer().delete(Database.getServer().find(ServerItemAverage.class).where().le("date", calendar.getTime().getTime()).findList());
+        Database.getServer().delete(Database.getServer().find(ServerItemAverage.class).where().le("date", calendar.getTime()).findList());
 
         for(ServerShop shop : ConfigManager.servershop.ServerShops) {
             Calendar calendar1 = Calendar.getInstance();
@@ -49,7 +49,7 @@ public class PriceRecalculateTask extends BukkitRunnable {
                                     " WHERE `item_id` = :itemid AND `data_value` = :datavalue AND `date` > :date AND `rs_region`.`region` = :region ORDER BY `rs_itemaverage`.`id` DESC) x").
                             setParameter("itemid", item.itemID).
                             setParameter("datavalue", item.dataValue).
-                            setParameter("date", calendar1.getTime().getTime()).
+                            setParameter("date", calendar1.getTime()).
                             setParameter("region", shop.Region);
 
                 SqlRow row = query.findUnique();
