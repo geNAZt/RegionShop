@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  * Date: 10.06.13
  */
 public class Shop implements SignCommand {
-    private static Pattern pattern = Pattern.compile(".*([0-9.]+):([0-9.]+).*");
+    private static Pattern pattern = Pattern.compile("[^0-9\\.]*([0-9\\.]+):([0-9\\.]+)[^0-9\\.]*");
     private static Pattern intPattern = Pattern.compile("([0-9]+)");
 
     @Command(command="thisisimpossibletowriteonasign", permission="rs.sign.shop")
