@@ -17,6 +17,7 @@ import org.bukkit.block.Sign;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 /**
@@ -63,8 +64,8 @@ public class PriceRecalculateTask extends BukkitRunnable {
 
                     if(itemInShop == null) continue;
 
-                    Double soldDec = (Double) row.get("sold");
-                    Double boughtDec = (Double) row.get("bought");
+                    Double soldDec = ((BigDecimal) row.get("sold")).doubleValue();
+                    Double boughtDec = ((BigDecimal) row.get("bought")).doubleValue();
 
                     Integer sold = 0;
                     Integer bought = 0;
