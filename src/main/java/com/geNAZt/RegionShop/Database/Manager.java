@@ -11,12 +11,7 @@ import com.avaje.ebean.config.dbplatform.SQLitePlatform;
 import com.avaje.ebeaninternal.api.SpiEbeanServer;
 import com.avaje.ebeaninternal.server.ddl.DdlGenerator;
 import com.geNAZt.RegionShop.Config.ConfigManager;
-import com.geNAZt.RegionShop.Database.Table.Items;
-import com.geNAZt.RegionShop.Database.Table.Region;
 import com.geNAZt.RegionShop.RegionShopPlugin;
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.persistence.PersistenceException;
 import java.io.BufferedReader;
@@ -180,9 +175,8 @@ public class Manager {
 
         db.setClasses(databaseModels);
         db.setName("RegionShop");
-        /*db.setLoggingToJavaLogger(true);
-        db.setDebugSql(true);
-        db.setLoggingLevel(LogLevel.SQL);*/
+        db.setLoggingLevel(LogLevel.NONE);
+        db.setLoggingToJavaLogger(false);
 
         DataSourceConfig ds = new DataSourceConfig();
         ds.setDriver(ConfigManager.main.DB_driver);
