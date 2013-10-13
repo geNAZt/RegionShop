@@ -11,6 +11,7 @@ import com.avaje.ebean.annotation.CacheTuning;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Set;
 
 @SuppressWarnings("UnusedDeclaration")
@@ -30,7 +31,7 @@ public class Items {
     protected Set<Enchantment> enchantments;
 
     @Version
-    protected Date lastUpdate;
+    protected Timestamp lastUpdate;
 
     private Float buy;
     private Float sell;
@@ -149,11 +150,11 @@ public class Items {
         this.bought = bought;
     }
 
-    public Date getLastUpdate() {
+    public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Date lastUpdate) {
+    public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 }
