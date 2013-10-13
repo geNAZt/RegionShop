@@ -13,7 +13,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @CacheTuning(maxIdleSecs=30, maxSecsToLive=3600, maxSize=5000)
-@CacheStrategy(useBeanCache=true, readOnly=true, warmingQuery="order by id")
+@CacheStrategy(useBeanCache=true, readOnly=false, warmingQuery="order by id")
 @SuppressWarnings("UnusedDeclaration")
 @Entity()
 @Table(name = "rs_items")
