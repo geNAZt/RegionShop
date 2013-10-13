@@ -1,6 +1,7 @@
 package com.geNAZt.RegionShop.Util;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Dye;
 import org.bukkit.material.FlowerPot;
@@ -30,9 +31,10 @@ public class ItemName {
 
     public static String getDataName(ItemStack item) {
         Integer itemId = item.getType().getId();
+        Material itemMat = item.getType();
 
         //Saplings / Wood / Leaves
-        if (itemId == 5 || itemId == 6 || itemId == 17 || itemId == 18) {
+        if (itemMat.equals(Material.WOOD) || itemMat.equals(Material.SAPLING) || itemMat.equals(Material.LEAVES)) {
             MaterialData data = item.getData();
 
             if(data.getData() == 0) {
@@ -53,7 +55,7 @@ public class ItemName {
         }
 
         //Sandstone
-        if (itemId == 24) {
+        if (itemMat.equals(Material.SANDSTONE)) {
             MaterialData data = item.getData();
 
             if(data.getData() == 1) {
@@ -66,14 +68,14 @@ public class ItemName {
         }
 
         //Wool
-        if (itemId == 35) {
+        if (itemMat.equals(Material.WOOL)) {
             Wool wool = (Wool) item.getData();
 
             return nicer(wool.getColor().toString()) + " ";
         }
 
         //Double / Normal Slabs
-        if (itemId == 43 || itemId == 44) {
+        if (itemMat.equals(Material.STEP) || itemMat.equals(Material.DOUBLE_STEP)) {
             MaterialData data = item.getData();
 
             if(data.getData() == 0) {
@@ -110,7 +112,7 @@ public class ItemName {
         }
 
         //Stone Bricks
-        if (itemId == 98) {
+        if (itemMat.equals(Material.SMOOTH_BRICK)) {
             MaterialData data = item.getData();
 
             if(data.getData() == 1) {
@@ -127,7 +129,7 @@ public class ItemName {
         }
 
         //Cobblestone Wall
-        if (itemId == 139) {
+        if (itemMat.equals(Material.COBBLE_WALL)) {
             MaterialData data = item.getData();
 
             if(data.getData() == 1) {
@@ -136,14 +138,14 @@ public class ItemName {
         }
 
         //Flower Pot
-        if (itemId == 140) {
+        if (itemMat.equals(Material.FLOWER_POT)) {
             FlowerPot data = (FlowerPot) item.getData();
 
             return nicer(data.getContents().getItemType().name()) + " ";
         }
 
         //Quartz
-        if (itemId == 155) {
+        if (itemMat.equals(Material.QUARTZ_BLOCK)) {
             MaterialData data = item.getData();
 
             if (data.getData() == 1) {
@@ -164,21 +166,27 @@ public class ItemName {
         }
 
         //Dye
-        if (itemId == 351) {
+        if (itemMat.equals(Material.INK_SACK)) {
             Dye dye = (Dye) item.getData();
 
             return nicer(dye.getColor().toString());
         }
 
         //Potions
-        if (itemId == 373) {
+        if (itemMat.equals(Material.POTION)) {
+            MaterialData data = item.getData();
+
+            if(data.getData() == 0) {
+                return "";
+            }
+
             Potion ptn = Potion.fromItemStack(item);
 
             return ((ptn.hasExtendedDuration()) ? "Extended " : "") + ((ptn.isSplash()) ? "Splash " : "") + nicer(ptn.getType().getEffectType().getName()) + " Lvl " + ptn.getLevel() + " ";
         }
 
         //Mob head
-        if (itemId == 397) {
+        if (itemMat.equals(Material.SKULL_ITEM)) {
             MaterialData data = item.getData();
 
             if(data.getData() == 0) {
