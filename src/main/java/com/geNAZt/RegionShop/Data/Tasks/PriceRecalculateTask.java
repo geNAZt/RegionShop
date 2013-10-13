@@ -8,6 +8,7 @@ import com.geNAZt.RegionShop.Config.Sub.ServerShop;
 import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Table.CustomerSign;
 import com.geNAZt.RegionShop.Database.Table.Items;
+import com.geNAZt.RegionShop.Database.Table.ServerItemAverage;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.ItemName;
 import org.bukkit.Material;
@@ -26,9 +27,14 @@ import java.util.Calendar;
 public class PriceRecalculateTask extends BukkitRunnable {
     @Override
     public void run() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, (-60 * 24 * 7));
+
+        Database.getServer().delete(Database.getServer().find(ServerItemAverage.class).where().le("date", calendar.getTime().getTime()).findList());
+
         for(ServerShop shop : ConfigManager.servershop.ServerShops) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.MINUTE, -30);
+            Calendar calendar1 = Calendar.getInstance();
+            calendar1.add(Calendar.MINUTE, -30);
 
             for(Item item : shop.Items) {
                 SqlQuery query = Database.getServer().
@@ -42,7 +48,7 @@ public class PriceRecalculateTask extends BukkitRunnable {
                                     " WHERE `item_id` = :itemid AND `data_value` = :datavalue AND `date` > :date AND `rs_region`.`region` = :region ORDER BY `rs_itemaverage`.`id` DESC) x").
                             setParameter("itemid", item.itemID).
                             setParameter("datavalue", item.dataValue).
-                            setParameter("date", calendar.getTime().getTime()).
+                            setParameter("date", calendar1.getTime().getTime()).
                             setParameter("region", shop.Region);
 
                 SqlRow row = query.findUnique();
