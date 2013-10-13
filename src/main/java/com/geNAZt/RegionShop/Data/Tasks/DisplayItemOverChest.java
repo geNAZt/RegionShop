@@ -27,28 +27,29 @@ import java.util.List;
 public class DisplayItemOverChest extends BukkitRunnable {
     @Override
     public void run() {
-        List<Chest> chestList = Database.getServer().find(Chest.class).findList();
+        final List<Chest> chestList = Database.getServer().find(Chest.class).findList();
 
-        for (final Chest chest : chestList) {
-            for (Entity ent : Bukkit.getWorld(chest.getWorld()).getEntities()) {
-                if (ent.getLocation().getBlockY() == chest.getChestY() + 1 && ent.getLocation().getBlockX() == chest.getChestX() && ent.getLocation().getBlockZ() == chest.getChestZ()) {
-                    ent.remove();
-                }
-            }
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(RegionShopPlugin.getInstance(), new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Chest chest : chestList) {
+                    for (Entity ent : Bukkit.getWorld(chest.getWorld()).getEntities()) {
+                        if (ent.getLocation().getBlockY() == chest.getChestY() + 1 && ent.getLocation().getBlockX() == chest.getChestX() && ent.getLocation().getBlockZ() == chest.getChestZ()) {
+                            ent.remove();
+                        }
+                    }
 
-            Iterator itemsIterator = chest.getItemStorage().getItems().iterator();
-            if (!itemsIterator.hasNext()) {
-                RegionShopPlugin.getInstance().getLogger().warning("Found Chest without item. Maybe wrong deletion: " + chest.getId());
-                continue;
-            }
+                    Iterator itemsIterator = chest.getItemStorage().getItems().iterator();
+                    if (!itemsIterator.hasNext()) {
+                        RegionShopPlugin.getInstance().getLogger().warning("Found Chest without item. Maybe wrong deletion: " + chest.getId());
+                        continue;
+                    }
 
-            final Items items = chest.getItemStorage().getItems().iterator().next();
-            final ItemStack itemStack = Item.fromDBItem(items);
-            itemStack.setAmount(1);
+                    final Items items = chest.getItemStorage().getItems().iterator().next();
+                    final ItemStack itemStack = Item.fromDBItem(items);
+                    itemStack.setAmount(1);
 
-            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(RegionShopPlugin.getInstance(), new BukkitRunnable() {
-                @Override
-                public void run() {
+
                     org.bukkit.entity.Item droppedItem = Bukkit.getWorld(chest.getWorld()).dropItem(new Location(Bukkit.getWorld(chest.getWorld()), (double) chest.getChestX() + 0.5, (double) chest.getChestY() + 1.2, (double) chest.getChestZ() + 0.5), itemStack);
                     droppedItem.setVelocity(new Vector(0, 0.1, 0));
                     NMS.safeGuard(droppedItem);
@@ -73,7 +74,8 @@ public class DisplayItemOverChest extends BukkitRunnable {
 
                     sign.update();
                 }
-            });
-        }
+
+            }
+        });
     }
 }
