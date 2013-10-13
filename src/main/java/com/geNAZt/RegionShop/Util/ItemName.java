@@ -28,7 +28,7 @@ public class ItemName {
         Integer itemId = item.getType().getId();
 
         //Saplings / Wood / Leaves
-        if (itemId == 6 || itemId == 17 || itemId == 18) {
+        if (itemId == 5 || itemId == 6 || itemId == 17 || itemId == 18) {
             MaterialData data = item.getData();
 
             if(data.getData() == 0) {
