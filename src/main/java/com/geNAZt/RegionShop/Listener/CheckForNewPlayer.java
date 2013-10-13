@@ -2,6 +2,7 @@ package com.geNAZt.RegionShop.Listener;
 
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Data.Storage.InRegion;
+import com.geNAZt.RegionShop.Data.Storage.Update;
 import com.geNAZt.RegionShop.Database.Model.Player;
 import com.geNAZt.RegionShop.Database.Model.Region;
 import com.geNAZt.RegionShop.RegionShopPlugin;
@@ -18,6 +19,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class CheckForNewPlayer implements Listener {
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent event) {
+        //Check if player can be shown update informations
+        if(event.getPlayer().hasPermission("rs.update") && Update.isUpdate()) {
+            event.getPlayer().sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Updater_NewUpdate.replace("%version", Update.getVersion()).replace("%link", Update.getLink()));
+        }
+
         //Since we only do DB operations we can do it async
         Bukkit.getServer().getScheduler().runTaskAsynchronously(RegionShopPlugin.getInstance(), new Runnable() {
             @Override

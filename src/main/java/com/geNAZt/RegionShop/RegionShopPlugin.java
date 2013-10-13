@@ -2,6 +2,7 @@ package com.geNAZt.RegionShop;
 
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Converter.ChestShopConverter;
+import com.geNAZt.RegionShop.Data.Storage.Update;
 import com.geNAZt.RegionShop.Data.Tasks.*;
 import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Manager;
@@ -29,6 +30,12 @@ public class RegionShopPlugin extends JavaPlugin {
         Logger.init(this);
         Logger.debug("===== Bootup RegionShop =====");
         instance = this;
+
+        //Check for Update
+        Updater updater = new Updater(this, 59082, this.getFile(), Updater.UpdateType.NO_DOWNLOAD, false);
+        Update.setUpdate(updater.getResult() == Updater.UpdateResult.UPDATE_AVAILABLE);
+        Update.setVersion(updater.getLatestName());
+        Update.setLink(updater.getLatestFileLink());
 
         //Init Config
         Logger.debug("----- Loading Config -----");

@@ -67,6 +67,9 @@ public class Language extends Config {
         Sign_Shop_SignText.add("S %sell$:B %buy$");
     }
 
+    //Updater
+    public String Updater_NewUpdate = ChatColor.GOLD + "There is a new Version of RegionShop available: " + ChatColor.DARK_GREEN + "%version" + ChatColor.GOLD + ". You can download it here: " + ChatColor.DARK_GREEN + "%link";
+
     //Command Executer Messages
     public String Command_NoPermission = ChatColor.RED + "Insufficient permission.";
     public String Command_NotEnoughArguments = ChatColor.RED + "You have not given all arguments needed";
