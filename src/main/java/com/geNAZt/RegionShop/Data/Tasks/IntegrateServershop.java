@@ -55,8 +55,12 @@ public class IntegrateServershop extends BukkitRunnable {
                 //Not found => create
                 if(!found) {
                     ItemStack itemStack = new ItemStack(item.itemID);
-                    if(item.dataValue != 0) {
-                        itemStack.getData().setData(item.dataValue) ;
+                    if(item.dataValue > 0) {
+                        if(item.dataValue < 128) {
+                            itemStack.getData().setData(item.dataValue.byteValue());
+                        } else {
+                            itemStack.setDurability(item.dataValue);
+                        }
                     }
 
                     Items newItems = com.geNAZt.RegionShop.Database.Model.Item.toDBItem(itemStack, region, "Servershop", item.buy, item.sell, 1);

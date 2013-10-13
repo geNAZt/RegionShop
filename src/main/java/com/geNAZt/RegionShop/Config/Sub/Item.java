@@ -7,7 +7,7 @@ package com.geNAZt.RegionShop.Config.Sub;
  */
 public class Item {
     public Integer itemID;
-    public Byte dataValue;
+    public Short dataValue;
     public Float buy;
     public Float sell;
     public Integer maxItemRecalc;
