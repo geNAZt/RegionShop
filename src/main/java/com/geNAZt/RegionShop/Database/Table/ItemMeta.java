@@ -13,8 +13,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@CacheTuning(maxIdleSecs=30, maxSecsToLive=3600, maxSize=5000)
-@CacheStrategy(useBeanCache=true, readOnly=true, warmingQuery="order by id.itemID")
 @SuppressWarnings("UnusedDeclaration")
 @Entity()
 @Table(name = "rs_itemmeta")

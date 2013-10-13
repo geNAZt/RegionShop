@@ -14,8 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
-@CacheTuning(maxIdleSecs=30, maxSecsToLive=3600, maxSize=5000)
-@CacheStrategy(useBeanCache=true, readOnly=true, warmingQuery="order by id")
 @SuppressWarnings("UnusedDeclaration")
 @Entity()
 @Table(name = "rs_transaction")

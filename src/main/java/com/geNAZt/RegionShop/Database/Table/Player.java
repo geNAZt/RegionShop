@@ -12,8 +12,6 @@ import java.util.List;
  * Date: 31.08.13
  */
 
-@CacheTuning(maxIdleSecs=30, maxSecsToLive=3600, maxSize=5000)
-@CacheStrategy(useBeanCache=true, readOnly=true, warmingQuery="order by id")
 @Entity()
 @Table(name = "rs_player")
 public class Player {
