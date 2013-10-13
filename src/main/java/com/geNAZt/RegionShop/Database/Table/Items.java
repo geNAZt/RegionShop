@@ -10,6 +10,7 @@ import com.avaje.ebean.annotation.CacheStrategy;
 import com.avaje.ebean.annotation.CacheTuning;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.Set;
 
 @SuppressWarnings("UnusedDeclaration")
@@ -17,7 +18,6 @@ import java.util.Set;
 @Table(name = "rs_items")
 public class Items {
     @Id
-    @Version
     private Integer id;
 
     @ManyToOne
@@ -28,6 +28,9 @@ public class Items {
 
     @OneToMany
     protected Set<Enchantment> enchantments;
+
+    @Version
+    protected Date lastUpdate;
 
     private Float buy;
     private Float sell;
@@ -144,5 +147,13 @@ public class Items {
 
     public void setBought(Integer bought) {
         this.bought = bought;
+    }
+
+    public Date getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 }
