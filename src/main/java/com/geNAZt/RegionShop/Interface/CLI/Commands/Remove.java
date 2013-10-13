@@ -41,6 +41,8 @@ public class Remove implements CLICommand {
         }
 
         Items item = Database.getServer().find(Items.class).
+                    setUseCache(false).
+                    setReadOnly(false).
                     where().
                         eq("id", shopItemId).
                     findUnique();
