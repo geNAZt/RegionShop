@@ -67,19 +67,8 @@ public class PriceRecalculateTask extends BukkitRunnable {
 
                     if(itemInShop == null) continue;
 
-                    Double soldDec = ((BigDecimal) row.get("sold")).doubleValue();
-                    Double boughtDec = ((BigDecimal) row.get("bought")).doubleValue();
-
-                    Integer sold = 0;
-                    Integer bought = 0;
-
-                    if(soldDec != null) {
-                        sold = soldDec.intValue();
-                    }
-
-                    if(boughtDec != null) {
-                        bought = boughtDec.intValue();
-                    }
+                    Integer sold = ((BigDecimal) row.get("sold")).intValueExact();
+                    Integer bought = ((BigDecimal) row.get("bought")).intValueExact();
 
                     Float sellPriceDiff = (sold / (item.maxItemRecalc / 30.0F));
                     Float buyPriceDiff;

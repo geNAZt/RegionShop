@@ -16,6 +16,7 @@ import java.util.List;
 @Table(name = "rs_region")
 public class Region implements ItemStorageHolder {
     @Id
+    @Version
     private Integer id;
     @ManyToOne
     private ItemStorage itemStorage;

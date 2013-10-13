@@ -19,6 +19,7 @@ import java.util.Set;
 @Table(name = "rs_items")
 public class Items {
     @Id
+    @Version
     private Integer id;
 
     @ManyToOne

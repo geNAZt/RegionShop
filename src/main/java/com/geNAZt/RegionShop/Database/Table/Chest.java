@@ -19,6 +19,7 @@ import java.util.List;
 @Table(name = "rs_chest")
 public class Chest implements ItemStorageHolder {
     @Id
+    @Version
     private Integer id;
 
     @ManyToOne

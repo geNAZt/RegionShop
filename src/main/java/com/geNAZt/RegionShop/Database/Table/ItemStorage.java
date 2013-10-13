@@ -3,10 +3,7 @@ package com.geNAZt.RegionShop.Database.Table;
 import com.avaje.ebean.annotation.CacheStrategy;
 import com.avaje.ebean.annotation.CacheTuning;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 /**
@@ -21,6 +18,7 @@ import java.util.Set;
 @Table(name = "rs_itemstorage")
 public class ItemStorage {
     @Id
+    @Version
     private Integer id;
 
     @OneToMany
