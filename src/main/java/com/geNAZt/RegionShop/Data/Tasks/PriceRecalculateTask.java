@@ -142,7 +142,7 @@ public class PriceRecalculateTask extends BukkitRunnable {
                                     for(Integer line = 0; line < 4; line++) {
                                         sign.setLine(line, ConfigManager.language.Sign_Customer_SignText.get(line).
                                                 replace("%id", items.getId().toString()).
-                                                replace("%itemname", itemName).
+                                                replace("%itemname", ItemName.nicer(itemName)).
                                                 replace("%amount", items.getUnitAmount().toString()).
                                                 replace("%sell", items.getSell().toString()).
                                                 replace("%buy", items.getBuy().toString()));
