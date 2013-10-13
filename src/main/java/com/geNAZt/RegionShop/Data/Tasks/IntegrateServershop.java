@@ -46,7 +46,7 @@ public class IntegrateServershop extends BukkitRunnable {
             for(Item item : shop.Items) {
                 boolean found = false;
                 for(Items items : itemsSet) {
-                    if(items.getMeta().getId().getItemID().equals(item.itemID) && items.getMeta().getId().getDataValue().equals(item.dataValue)) {
+                    if(items.getMeta().getId().getItemID().equals(item.itemID) && items.getMeta().getId().getDataValue().equals(item.dataValue.byteValue())) {
                         found = true;
                         break;
                     }
@@ -72,7 +72,7 @@ public class IntegrateServershop extends BukkitRunnable {
             for(Items items : itemsSet) {
                 boolean found = false;
                 for(Item item : shop.Items) {
-                    if(items.getMeta().getId().getItemID().equals(item.itemID) && items.getMeta().getId().getDataValue().equals(item.dataValue)) {
+                    if(items.getMeta().getId().getItemID().equals(item.itemID) && items.getMeta().getId().getDataValue().equals(item.dataValue.byteValue())) {
                         found = true;
                         break;
                     }

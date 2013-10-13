@@ -57,6 +57,8 @@ public class PriceRecalculateTask extends BukkitRunnable {
                 if(!row.isEmpty()) {
                     Items itemInShop = Database.getServer().find(Items.class).
                             setUseCache(false).
+                            setReadOnly(false).
+                            setUseQueryCache(false).
                             where().
                                 eq("meta.id.itemID", item.itemID).
                                 eq("meta.id.dataValue", item.dataValue).
