@@ -2,8 +2,10 @@ package com.geNAZt.RegionShop.Interface.CLI.Commands;
 
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Config.InvalidConfigurationException;
+import com.geNAZt.RegionShop.Data.Tasks.IntegrateServershop;
 import com.geNAZt.RegionShop.Interface.CLI.CLICommand;
 import com.geNAZt.RegionShop.Interface.CLI.Command;
+import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -18,6 +20,9 @@ public class Reload implements CLICommand {
             ConfigManager.language.reload();
             ConfigManager.main.reload();
             ConfigManager.expert.reload();
+            ConfigManager.servershop.reload();
+
+            RegionShopPlugin.getInstance().getServer().getScheduler().runTaskLaterAsynchronously(RegionShopPlugin.getInstance(), new IntegrateServershop(), 100);
         } catch (InvalidConfigurationException e) {
             e.printStackTrace();
             sender.sendMessage("Fatal error in reloading RegionShop");
