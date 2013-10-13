@@ -29,7 +29,7 @@ public class PriceRecalculateTask extends BukkitRunnable {
     @Override
     public void run() {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, (-60 * 24 * 7));
+        calendar.add(Calendar.MINUTE, -60);
 
         Database.getServer().delete(Database.getServer().find(ServerItemAverage.class).where().le("date", calendar.getTime().getTime()).findList());
 
