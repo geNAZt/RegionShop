@@ -1,5 +1,6 @@
 package com.geNAZt.RegionShop.Data.Tasks;
 
+import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.cache.Region;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -12,5 +13,7 @@ public class CacheWarming extends BukkitRunnable {
     @Override
     public void run() {
         Region.warmCache();
+
+        Database.getServer().runCacheWarming();
     }
 }
