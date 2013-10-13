@@ -15,13 +15,17 @@ import org.bukkit.potion.Potion;
  */
 public class ItemName {
     public static String nicer(String itemName) {
-        String [] itemPieces = itemName.split("_");
+        if(itemName.contains("_")) {
+            String[] itemPieces = itemName.split("_");
 
-        for(Integer i = 0;i<itemPieces.length;i++) {
-            itemPieces[i] = StringUtils.capitalize(itemPieces[i].toLowerCase());
+            for(Integer i = 0;i<itemPieces.length;i++) {
+                itemPieces[i] = StringUtils.capitalize(itemPieces[i].toLowerCase());
+            }
+
+            return StringUtils.join(itemPieces, " ");
+        } else {
+            return StringUtils.capitalize(itemName.toLowerCase());
         }
-
-        return StringUtils.join(itemPieces, " ");
     }
 
     public static String getDataName(ItemStack item) {
