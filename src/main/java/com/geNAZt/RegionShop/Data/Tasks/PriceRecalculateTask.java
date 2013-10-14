@@ -70,11 +70,11 @@ public class PriceRecalculateTask extends BukkitRunnable {
                     }
                 }
 
-                Float newSellPrice = item.sell * sellPriceDiff;
-                Float newBuyPrice = item.buy * buyPriceDiff;
+                Float newSellPrice = Math.round(item.sell * sellPriceDiff / 100) * 100.0F;
+                Float newBuyPrice = Math.round(item.buy * buyPriceDiff / 100) * 100.0F;
 
-                itemInShop.setBuy(itemInShop.getBuy() + ((itemInShop.getBuy() - newBuyPrice) / 100));
-                itemInShop.setSell(itemInShop.getSell() + ((itemInShop.getSell() - newSellPrice) / 100));
+                itemInShop.setBuy(newBuyPrice);
+                itemInShop.setSell(newSellPrice);
                 itemInShop.setCurrentAmount(99999);
                 itemInShop.setBought(0);
                 itemInShop.setSold(0);
