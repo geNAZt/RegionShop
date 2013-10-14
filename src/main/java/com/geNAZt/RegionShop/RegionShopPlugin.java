@@ -55,7 +55,6 @@ public class RegionShopPlugin extends JavaPlugin {
         manager.addModel(ItemStorage.class);
         manager.addModel(Enchantment.class);
         manager.addModel(Transaction.class);
-        manager.addModel(ServerItemAverage.class);
         manager.addModel(CustomerSign.class);
         manager.addModel(Chest.class);
 
@@ -69,8 +68,7 @@ public class RegionShopPlugin extends JavaPlugin {
         }
 
         getServer().getScheduler().runTaskTimerAsynchronously(this, new DetectWGChanges(this), 20, ConfigManager.expert.Timer_DetectWGChanges);
-        getServer().getScheduler().runTaskTimerAsynchronously(this, new ItemAverageTask(), ConfigManager.expert.Timer_ItemAverageTask, ConfigManager.expert.Timer_ItemAverageTask);
-        getServer().getScheduler().runTaskTimerAsynchronously(this, new PriceRecalculateTask(), ConfigManager.expert.Timer_PriceRecalculateTask, ConfigManager.expert.Timer_PriceRecalculateTask);
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new PriceRecalculateTask(), 60 * 20, 60 * 20);
         getServer().getScheduler().runTaskLaterAsynchronously(this, new IntegrateServershop(), 100);
         getServer().getScheduler().runTaskTimerAsynchronously(this, new DisplayItemOverChest(), ConfigManager.expert.Timer_DisplayItemTask, ConfigManager.expert.Timer_DisplayItemTask);
         getServer().getScheduler().runTaskTimerAsynchronously(this, new CacheWarming(), 20, ConfigManager.expert.Timer_CacheWarmingTask);
