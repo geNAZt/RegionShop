@@ -70,12 +70,14 @@ public class PriceRecalculateTask extends BukkitRunnable {
                     }
                 }
 
+                System.out.println(sellPriceDiff);
+
                 Float newSellPrice = item.sell;
-                newSellPrice *= sellPriceDiff;
+                newSellPrice *= 1 + sellPriceDiff;
                 newSellPrice = Math.round(newSellPrice * 100) / 100.0F;
 
                 Float newBuyPrice = item.buy;
-                newBuyPrice *= buyPriceDiff;
+                newBuyPrice *= 1 + buyPriceDiff;
                 newBuyPrice = Math.round(newBuyPrice * 100) / 100.0F;
 
                 itemInShop.setBuy((itemInShop.getBuy() - newBuyPrice) / 100);
