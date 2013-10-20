@@ -172,6 +172,44 @@ public class ItemName {
             return nicer(dye.getColor().toString());
         }
 
+        //Carpet
+        if (itemMat.equals(Material.CARPET)) {
+            switch(item.getData().getData()) {
+                case 1:
+                    return "Orange ";
+                case 2:
+                    return "Magenta ";
+                case 3:
+                    return "Light Blue ";
+                case 4:
+                    return "Yellow ";
+                case 5:
+                    return "Lime ";
+                case 6:
+                    return "Pink ";
+                case 7:
+                    return "Gray ";
+                case 8:
+                    return "Light Gray ";
+                case 9:
+                    return "Cyan ";
+                case 10:
+                    return "Purple ";
+                case 11:
+                    return "Blue ";
+                case 12:
+                    return "Brown ";
+                case 13:
+                    return "Green ";
+                case 14:
+                    return "Red ";
+                case 15:
+                    return "Black ";
+                default:
+                    return "White ";
+            }
+        }
+
         //Potions
         if (itemMat.equals(Material.POTION)) {
             MaterialData data = item.getData();
