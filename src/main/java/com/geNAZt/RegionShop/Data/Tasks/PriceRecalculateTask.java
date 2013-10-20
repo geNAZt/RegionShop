@@ -6,13 +6,19 @@ import com.geNAZt.RegionShop.Config.Sub.ServerShop;
 import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Table.CustomerSign;
 import com.geNAZt.RegionShop.Database.Table.Items;
+import com.geNAZt.RegionShop.Database.Table.Region;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.ItemName;
+import com.geNAZt.RegionShop.Util.NMS;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 /**
  * Created for YEAHWH.AT
@@ -22,7 +28,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class PriceRecalculateTask extends BukkitRunnable {
     @Override
     public void run() {
-        for (ServerShop shop : ConfigManager.servershop.ServerShops) {
+        for (final ServerShop shop : ConfigManager.servershop.ServerShops) {
             for (Item item : shop.Items) {
                 Items itemInShop = Database.getServer().find(Items.class).
                         setUseCache(false).
@@ -116,6 +122,22 @@ public class PriceRecalculateTask extends BukkitRunnable {
                                 }
 
                                 sign.update();
+
+                                if(shop.Showcase) {
+                                    itemStack.setAmount(1);
+
+                                    Region region = items.getItemStorage().getRegions().iterator().next();
+
+                                    for (Entity ent : Bukkit.getWorld(region.getWorld()).getEntities()) {
+                                        if (ent.getLocation().getBlockY() == sign.getY() - 1 && ent.getLocation().getBlockX() == sign.getX() && ent.getLocation().getBlockZ() == sign.getZ()) {
+                                            ent.remove();
+                                        }
+                                    }
+
+                                    org.bukkit.entity.Item droppedItem = Bukkit.getWorld(region.getWorld()).dropItem(new Location(Bukkit.getWorld(region.getWorld()), (double) sign.getX() + 0.5, (double) sign.getY() - 0.8, (double) sign.getZ() + 0.5), itemStack);
+                                    droppedItem.setVelocity(new Vector(0, 0.1, 0));
+                                    NMS.safeGuard(droppedItem);
+                                }
                             }
                         }
                     });
