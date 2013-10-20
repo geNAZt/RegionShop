@@ -26,6 +26,8 @@ import org.bukkit.util.Vector;
  * Date: 16.06.13
  */
 public class PriceRecalculateTask extends BukkitRunnable {
+    private Integer updateShowcase = 0;
+
     @Override
     public void run() {
         for (final ServerShop shop : ConfigManager.servershop.ServerShops) {
@@ -123,7 +125,9 @@ public class PriceRecalculateTask extends BukkitRunnable {
 
                                 sign.update();
 
-                                if(shop.Showcase) {
+                                updateShowcase++;
+                                if(shop.Showcase && updateShowcase > 20) {
+                                    updateShowcase = 0;
                                     itemStack.setAmount(1);
 
                                     Region region = items.getItemStorage().getRegions().iterator().next();

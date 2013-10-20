@@ -42,7 +42,11 @@ public class Item {
 
     public static ItemStack fromDBItem(Items item) {
         ItemStack iStack = new ItemStack(Material.getMaterial(item.getMeta().getId().getItemID()), 1);
-        iStack.getData().setData(item.getMeta().getId().getDataValue());
+
+        if(item.getMeta().getId().getDataValue() > 0) {
+            iStack.getData().setData(item.getMeta().getId().getDataValue());
+        }
+
         iStack.setDurability(item.getDurability());
 
         List<com.geNAZt.RegionShop.Database.Table.Enchantment> enchants = Database.getServer().find(com.geNAZt.RegionShop.Database.Table.Enchantment.class).

@@ -173,7 +173,7 @@ public class ItemName {
         }
 
         //Carpet
-        if (itemMat.equals(Material.CARPET)) {
+        if (itemMat.getId() == 171) {
             switch(item.getData().getData()) {
                 case 1:
                     return "Orange ";
