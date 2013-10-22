@@ -36,7 +36,7 @@ public class PretendDisplaysToPickup implements Listener {
                 findUnique();
 
         if(chest != null) {
-            //event.setCancelled(true);
+            event.setCancelled(true);
         }
     }
 }
