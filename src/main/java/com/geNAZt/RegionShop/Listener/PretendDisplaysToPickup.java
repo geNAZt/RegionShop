@@ -2,6 +2,7 @@ package com.geNAZt.RegionShop.Listener;
 
 import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Table.Chest;
+import com.geNAZt.RegionShop.Database.Table.CustomerSign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -21,6 +22,18 @@ public class PretendDisplaysToPickup implements Listener {
                 eq("chestY", event.getItem().getLocation().getBlockY()-1).
                 eq("chestZ", event.getItem().getLocation().getBlockZ()).
             findUnique();
+
+        if(chest != null) {
+            event.setCancelled(true);
+        }
+
+        //Check if Item is a Display of a Chest
+        CustomerSign customerSign = Database.getServer().find(CustomerSign.class).
+                where().
+                    eq("x", event.getItem().getLocation().getBlockX()).
+                    eq("y", event.getItem().getLocation().getBlockY()+1).
+                    eq("y", event.getItem().getLocation().getBlockZ()).
+                findUnique();
 
         if(chest != null) {
             event.setCancelled(true);
