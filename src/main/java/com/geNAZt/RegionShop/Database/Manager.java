@@ -183,7 +183,7 @@ public class Manager {
         ds.setUrl(ConfigManager.main.DB_url.replaceAll("\\{DIR\\}", plugin.getDataFolder().getPath().replaceAll("\\\\", "/") + "/"));
         ds.setUsername(ConfigManager.main.DB_username);
         ds.setPassword(ConfigManager.main.DB_password);
-        ds.setIsolationLevel(Transaction.READ_COMMITTED);
+        ds.setIsolationLevel(Transaction.READ_UNCOMMITTED);
         ds.setMaxConnections(ConfigManager.expert.DB_maxConnections);
 
         if (ds.getDriver().contains("sqlite")) {
