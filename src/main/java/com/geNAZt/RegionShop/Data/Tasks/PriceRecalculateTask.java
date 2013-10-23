@@ -5,6 +5,7 @@ import com.geNAZt.RegionShop.Config.Sub.Item;
 import com.geNAZt.RegionShop.Config.Sub.ServerShop;
 import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Table.CustomerSign;
+import com.geNAZt.RegionShop.Database.Table.ItemStorage;
 import com.geNAZt.RegionShop.Database.Table.Items;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.ItemName;
@@ -38,8 +39,8 @@ public class PriceRecalculateTask extends BukkitRunnable {
 
                 if (itemInShop == null) continue;
 
-                Integer sold = (itemInShop.getSold() * 4) * 60;
-                Integer bought = (itemInShop.getBought() * 4) * 60;
+                Integer sold = (itemInShop.getSold()) * 60;
+                Integer bought = (itemInShop.getBought()) * 60;
 
                 Float sellPriceDiff = (float) sold / item.maxItemRecalc;
                 Float buyPriceDiff;
@@ -123,6 +124,11 @@ public class PriceRecalculateTask extends BukkitRunnable {
                     });
                 }
             }
+
+            //Reset the ItemStorage to avoid "Shop is full you cant sell"
+            ItemStorage itemStorage = Database.getServer().find(ItemStorage.class).where().eq("regions.region", shop.Region).findUnique();
+            itemStorage.setItemAmount(0);
+            Database.getServer().update(itemStorage);
         }
     }
 }
