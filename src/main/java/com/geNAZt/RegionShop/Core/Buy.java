@@ -52,8 +52,6 @@ public class Buy {
             ItemStack iStack = Item.fromDBItem(item);
             iStack.setAmount(wishAmount);
 
-            System.out.println(iStack.getData().toString());
-
             HashMap<Integer, ItemStack> notFitItems = player.getInventory().addItem(iStack);
             if (!notFitItems.isEmpty()) {
                 for(Map.Entry<Integer, ItemStack> notFitItem : notFitItems.entrySet()) {
