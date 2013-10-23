@@ -7,14 +7,10 @@ import com.geNAZt.RegionShop.Database.Table.Chest;
 import com.geNAZt.RegionShop.Database.Table.Items;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.ItemName;
-import com.geNAZt.RegionShop.Util.NMS;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.block.Sign;
-import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +20,7 @@ import java.util.List;
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 04.10.13
  */
-public class DisplayItemOverChest extends BukkitRunnable {
+public class SignOnChest extends BukkitRunnable {
     @Override
     public void run() {
         final List<Chest> chestList = Database.getServer().find(Chest.class).findList();
@@ -33,12 +29,6 @@ public class DisplayItemOverChest extends BukkitRunnable {
             @Override
             public void run() {
                 for (Chest chest : chestList) {
-                    for (Entity ent : Bukkit.getWorld(chest.getWorld()).getEntities()) {
-                        if (ent.getLocation().getBlockY() == chest.getChestY() + 1 && ent.getLocation().getBlockX() == chest.getChestX() && ent.getLocation().getBlockZ() == chest.getChestZ()) {
-                            ent.remove();
-                        }
-                    }
-
                     Iterator itemsIterator = chest.getItemStorage().getItems().iterator();
                     if (!itemsIterator.hasNext()) {
                         RegionShopPlugin.getInstance().getLogger().warning("Found Chest without item. Maybe wrong deletion: " + chest.getId());
@@ -48,11 +38,6 @@ public class DisplayItemOverChest extends BukkitRunnable {
                     final Items items = chest.getItemStorage().getItems().iterator().next();
                     final ItemStack itemStack = Item.fromDBItem(items);
                     itemStack.setAmount(1);
-
-
-                    org.bukkit.entity.Item droppedItem = Bukkit.getWorld(chest.getWorld()).dropItem(new Location(Bukkit.getWorld(chest.getWorld()), (double) chest.getChestX() + 0.5, (double) chest.getChestY() + 1.2, (double) chest.getChestZ() + 0.5), itemStack);
-                    droppedItem.setVelocity(new Vector(0, 0.1, 0));
-                    NMS.safeGuard(droppedItem);
 
                     Sign sign = (Sign) Bukkit.getWorld(chest.getWorld()).getBlockAt(chest.getSignX(), chest.getSignY(), chest.getSignZ()).getState();
 

@@ -6,6 +6,7 @@ import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Model.Item;
 import com.geNAZt.RegionShop.Database.Table.Chest;
 import com.geNAZt.RegionShop.Database.Table.CustomerSign;
+import com.geNAZt.RegionShop.Database.Table.Items;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.NMS;
 import org.bukkit.Bukkit;
@@ -16,6 +17,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -23,6 +26,8 @@ import java.util.List;
  * @date Last changed: 23.10.13 11:56
  */
 public class ShowcaseRefresh extends BukkitRunnable {
+    private HashMap<String, Long> lastTimeRenewed = new HashMap<String, Long>();
+
     @Override
     public void run() {
         RegionShopPlugin.getInstance().getLogger().info("Checking for Showcase Entities");
@@ -42,17 +47,29 @@ public class ShowcaseRefresh extends BukkitRunnable {
                         ServerShop serverShop = ConfigManager.servershop.getServerShopByRegion(customerSign.getRegion().getRegion());
                         if (serverShop == null) continue;
 
+                        //Check if CustomerSign is in lastTimeRenewed Map
+                        if(!lastTimeRenewed.containsKey("cs" + customerSign.getId())) {
+                            lastTimeRenewed.put("cs" + customerSign.getId(), System.currentTimeMillis());
+                        }
+
                         //Loop through all Entities located in the World
+                        boolean found = false;
                         for (final Entity ent : world.getEntities()) {
                             //Get the location of this Entity
                             Location entLocation = ent.getLocation();
                             if (entLocation.getBlockZ() == customerSign.getZ() && entLocation.getBlockY() == customerSign.getY() - 1 && entLocation.getBlockX() == customerSign.getX()) {
-                                ent.remove();
+                                found = true;
+
+                                if(System.currentTimeMillis() - lastTimeRenewed.get("cs" + customerSign.getId()) > 60 * 60 * 1000) {
+                                    lastTimeRenewed.put("cs" + customerSign.getId(), System.currentTimeMillis());
+                                    ent.remove();
+                                    found = false;
+                                }
                             }
                         }
 
                         //Check if a new Entity needs to be dropped
-                        if (serverShop.Showcase) {
+                        if (serverShop.Showcase && !found) {
                             //Get the ItemStack out of the Database
                             ItemStack itemStack = Item.fromDBItem(customerSign.getItem());
 
@@ -66,24 +83,46 @@ public class ShowcaseRefresh extends BukkitRunnable {
 
                     //Check if a Chest is underneath
                     for(final Chest chest : chests) {
+                        //Check if Checst is in lastTimeRenewed Map
+                        if(!lastTimeRenewed.containsKey("ch" + chest.getId())) {
+                            lastTimeRenewed.put("ch" + chest.getId(), System.currentTimeMillis());
+                        }
+
                         //Loop through all Entities located in the World
+                        boolean found = false;
                         for (final Entity ent : world.getEntities()) {
                             //Get the location of this Entity
                             Location entLocation = ent.getLocation();
                             if (entLocation.getBlockZ() == chest.getChestZ() && entLocation.getBlockY() == chest.getChestY() + 1 && entLocation.getBlockX() == chest.getChestX()) {
-                                ent.remove();
+                                found = true;
+
+                                if(System.currentTimeMillis() - lastTimeRenewed.get("ch" + chest.getId()) > 60 * 60 * 1000) {
+                                    lastTimeRenewed.put("ch" + chest.getId(), System.currentTimeMillis());
+                                    ent.remove();
+                                    found = false;
+                                }
                             }
                         }
 
+                        //If not found spawn a new one
+                        if(!found) {
+                            //Check if Iterator is correct
+                            Iterator<Items> itemsIterator = chest.getItemStorage().getItems().iterator();
+                            if (!itemsIterator.hasNext()) {
+                                RegionShopPlugin.getInstance().getLogger().warning("Found Chest without item. Maybe wrong deletion: " + chest.getId());
+                                continue;
+                            }
 
-                        //Get the ItemStack out of the Database
-                        ItemStack itemStack = Item.fromDBItem(chest.getItemStorage().getItems().iterator().next());
 
-                        //Drop the Item
-                        org.bukkit.entity.Item droppedItem = world.dropItem(new Location(world, (double) chest.getChestX() + 0.5, (double) chest.getChestY() + 1.2, (double) chest.getChestZ() + 0.5), itemStack);
-                        droppedItem.setVelocity(new Vector(0, 0.1, 0));
-                        droppedItem.setPickupDelay(Integer.MAX_VALUE);
-                        NMS.safeGuard(droppedItem);
+                            //Get the ItemStack out of the Database
+                            ItemStack itemStack = Item.fromDBItem(itemsIterator.next());
+
+                            //Drop the Item
+                            org.bukkit.entity.Item droppedItem = world.dropItem(new Location(world, (double) chest.getChestX() + 0.5, (double) chest.getChestY() + 1.2, (double) chest.getChestZ() + 0.5), itemStack);
+                            droppedItem.setVelocity(new Vector(0, 0.1, 0));
+                            droppedItem.setPickupDelay(Integer.MAX_VALUE);
+                            NMS.safeGuard(droppedItem);
+                        }
                     }
                 }
             });
