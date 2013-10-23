@@ -36,8 +36,8 @@ public class ShowcaseReloadOnChunkLoad implements Listener {
 
             //Check if Sign is in this Chunk
             if(!(
-                    (event.getChunk().getX() < customerSign.getX() && event.getChunk().getX() + 16 > customerSign.getX()) &&
-                    (event.getChunk().getZ() < customerSign.getZ() && event.getChunk().getZ() + 16 > customerSign.getZ())
+                    (event.getChunk().getX() * 16 < customerSign.getX() && (event.getChunk().getX() * 16) + 16 > customerSign.getX()) &&
+                    (event.getChunk().getZ() * 16 < customerSign.getZ() && (event.getChunk().getZ() * 16) + 16 > customerSign.getZ())
             )) {
                 continue;
             }
@@ -68,8 +68,8 @@ public class ShowcaseReloadOnChunkLoad implements Listener {
         for(final Chest chest : chests) {
             //Check if Chest is in this Chunk
             if(!(
-                    (event.getChunk().getX() < chest.getChestX() && event.getChunk().getX() + 16 > chest.getChestX()) &&
-                    (event.getChunk().getZ() < chest.getChestZ() && event.getChunk().getZ() + 16 > chest.getChestZ())
+                    (event.getChunk().getX() * 16 < chest.getChestX() && (event.getChunk().getX() * 16) + 16 > chest.getChestX()) &&
+                    (event.getChunk().getZ() * 16 < chest.getChestZ() && (event.getChunk().getZ() * 16) + 16 > chest.getChestZ())
             )) {
                 continue;
             }

@@ -7,7 +7,6 @@ import com.geNAZt.RegionShop.Database.Model.Item;
 import com.geNAZt.RegionShop.Database.Model.Transaction;
 import com.geNAZt.RegionShop.Database.Table.ItemStorage;
 import com.geNAZt.RegionShop.Database.Table.Items;
-import com.geNAZt.RegionShop.Database.Table.Region;
 import com.geNAZt.RegionShop.RegionShopPlugin;
 import com.geNAZt.RegionShop.Util.EssentialBridge;
 import com.geNAZt.RegionShop.Util.ItemName;
@@ -52,6 +51,8 @@ public class Buy {
         if (eco.has(player.getName(), price)) {
             ItemStack iStack = Item.fromDBItem(item);
             iStack.setAmount(wishAmount);
+
+            System.out.println(iStack.getData().toString());
 
             HashMap<Integer, ItemStack> notFitItems = player.getInventory().addItem(iStack);
             if (!notFitItems.isEmpty()) {
