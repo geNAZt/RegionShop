@@ -43,4 +43,14 @@ public class Servershop extends Config {
     }
 
     public ArrayList<ServerShop> ServerShops = new ArrayList<ServerShop>();
+
+    public ServerShop getServerShopByRegion(String region) {
+        for(ServerShop serverShop : ServerShops) {
+            if(serverShop.Region.toLowerCase().equals(region.toLowerCase())) {
+                return serverShop;
+            }
+        }
+
+        return null;
+    }
 }
