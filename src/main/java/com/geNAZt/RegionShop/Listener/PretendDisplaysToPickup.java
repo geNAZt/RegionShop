@@ -35,7 +35,7 @@ public class PretendDisplaysToPickup implements Listener {
                     eq("y", event.getItem().getLocation().getBlockZ()).
                 findUnique();
 
-        if(chest != null) {
+        if(customerSign != null) {
             event.setCancelled(true);
         }
     }
