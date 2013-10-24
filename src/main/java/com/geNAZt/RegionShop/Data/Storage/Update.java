@@ -5,7 +5,7 @@ package com.geNAZt.RegionShop.Data.Storage;
  * @date Last changed: 13.10.13 11:14
  */
 public class Update {
-    private static boolean update;
+    private static boolean update = false;
     private static String link;
     private static String version;
 

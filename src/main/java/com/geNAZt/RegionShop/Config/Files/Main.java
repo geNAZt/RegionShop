@@ -44,6 +44,7 @@ public class Main extends Config {
         }
     }
 
+    public Boolean Updater = true;
     public String DB_url = "jdbc:sqlite:{DIR}RegionShop.db";
     public String DB_username = "walrus";
     public String DB_password = "bukkit";

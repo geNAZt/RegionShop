@@ -21,8 +21,6 @@ import org.bukkit.scheduler.BukkitRunnable;
  * Date: 16.06.13
  */
 public class PriceRecalculateTask extends BukkitRunnable {
-    private Integer updateShowcase = 0;
-
     @Override
     public void run() {
         for (final ServerShop shop : ConfigManager.servershop.ServerShops) {
