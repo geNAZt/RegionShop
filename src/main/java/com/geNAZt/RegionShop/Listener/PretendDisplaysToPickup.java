@@ -32,7 +32,7 @@ public class PretendDisplaysToPickup implements Listener {
                 where().
                     eq("x", event.getItem().getLocation().getBlockX()).
                     eq("y", event.getItem().getLocation().getBlockY()+1).
-                    eq("y", event.getItem().getLocation().getBlockZ()).
+                    eq("z", event.getItem().getLocation().getBlockZ()).
                 findUnique();
 
         if(customerSign != null) {
