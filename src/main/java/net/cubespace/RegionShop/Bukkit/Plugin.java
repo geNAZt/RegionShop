@@ -20,6 +20,7 @@ public class Plugin extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        Logger.info("Running on MC " + Version.getMcVersion());
         if(Version.isNewer(Version.getMcVersion(), "1.4.7")) {
             Logger.info("This version of MC is newer then 1.4.7");
         }
@@ -33,7 +34,7 @@ public class Plugin extends JavaPlugin {
     }
 
     /**
-     * @return Plugin Get the instance from the Bukkit Pluginloader
+     * @return Get the instance from the Bukkit Pluginloader
      */
     public static Plugin getInstance() {
         return instance;
