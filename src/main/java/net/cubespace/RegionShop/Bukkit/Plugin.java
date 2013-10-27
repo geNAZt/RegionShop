@@ -1,5 +1,8 @@
 package net.cubespace.RegionShop.Bukkit;
 
+import net.cubespace.RegionShop.Util.Logger;
+import net.cubespace.RegionShop.Util.Version;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -17,6 +20,11 @@ public class Plugin extends JavaPlugin {
      */
     public void onEnable() {
         instance = this;
+
+        //The Bukkit Version has another pattern. Example 1.6.4-R1.0
+        if(Version.isNewer(Bukkit.getBukkitVersion().split("-")[0], "1.4.7")) {
+            Logger.info("This version of MC is newer then 1.4.7");
+        }
     }
 
     /**
