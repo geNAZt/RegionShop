@@ -12,6 +12,7 @@ import java.util.logging.Level;
 public class Logger {
     /**
      * This function tells Bukkit to warn the message out
+     *
      * @param message The message which gets warned to Bukkit
      */
     public static void warn(String message) {
@@ -20,6 +21,7 @@ public class Logger {
 
     /**
      * This function warns out and also prints the Stacktrace of the Exception given
+     *
      * @param message The message which gets warned to Bukkit
      * @param ex The exception which stacktrace will be printed
      */
@@ -30,6 +32,7 @@ public class Logger {
 
     /**
      * This function tells Bukkit to error the message out
+     *
      * @param message The message which gets errord to Bukkit
      */
     public static void error(String message) {
@@ -38,6 +41,7 @@ public class Logger {
 
     /**
      * This function errors out and also prints the Stacktrace of the Exception given
+     *
      * @param message The message which gets errord to Bukkit
      * @param ex The exception which stacktrace will be printed
      */
@@ -48,6 +52,7 @@ public class Logger {
 
     /**
      * This function tells Bukkit to error the message out but it also takes the Plugin down
+     *
      * @param message The message which gets errord to Bukkit before the Plugin shutdown
      */
     public static void fatal(String message) {
@@ -56,7 +61,8 @@ public class Logger {
     }
 
     /**
-     * Thi function fatals out and also prints the Stacktrace of the Exception given
+     * This function fatals out and also prints the Stacktrace of the Exception given
+     *
      * @param message The message which gets fataled to Bukkit
      * @param ex The exception which stacktrace will be printed
      */
@@ -66,8 +72,18 @@ public class Logger {
     }
 
     /**
+     * This function tells the Bukkit Logger to info the string out
+     *
+     * @param message The message which will be printed
+     */
+    public static void info(String message) {
+        Plugin.getInstance().getLogger().info(message);
+    }
+
+    /**
      * This function tells Bukkit to log debug messages, but only if System Property "net.cubespace.RegionShop.Util.Logger.debug" is true
-     * @param message
+     *
+     * @param message The message which will be printed
      */
     public static void debug(String message) {
         if(System.getProperty("net.cubespace.RegionShop.Util.Logger.debug", "false").equals("true")) {
