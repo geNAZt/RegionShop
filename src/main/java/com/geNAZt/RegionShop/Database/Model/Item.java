@@ -88,7 +88,7 @@ public class Item {
         newItem.setCurrentAmount(item.getAmount());
         newItem.setDurability(item.getDurability());
         newItem.setOwner(owner);
-        newItem.setCustomName((item.getItemMeta().hasDisplayName()) ? item.getItemMeta().getDisplayName() : null);
+        newItem.setCustomName((item.getItemMeta() != null && item.getItemMeta().hasDisplayName()) ? item.getItemMeta().getDisplayName() : null);
 
         newItem.setBuy(buy);
         newItem.setSell(sell);
