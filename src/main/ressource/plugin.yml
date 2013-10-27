@@ -1,0 +1,89 @@
+name: RegionShop
+main: net.cubespace.RegionShop.Bukkit.Plugin
+description: A Shop which uses Regions as Shop Basement
+version: 3.0.0
+softdepend: [Vault, WorldGuard, WorldEdit]
+commands:
+    shop:
+       description: RegionShops - Use the WorldGuard Regions as Shopping ground.
+       usage: /shop
+       permission: rs.command.shop
+       permission-message: You don't have Permissions to use the RegionShop
+    convert:
+       description: RegionShops - Use the WorldGuard Regions as Shopping ground.
+       usage: /convert
+       permission: rs.convert
+       permission-message: You don't have Permissions to convert to RegionShop
+
+permissions:
+  rs.use:
+    description: Wildcard permission set for RegionShop
+    children:
+      rs.command.shop: true
+      rs.command.shop.teleporttoshop: true
+      rs.command.help: true
+      rs.command.list: true
+      rs.command.detail: true
+      rs.command.add: true
+      rs.command.set: true
+      rs.command.remove: true
+      rs.command.equip: true
+      rs.command.detail: true
+      rs.command.search: true
+      rs.command.result: true
+      rs.command.sell: true
+      rs.command.buy: true
+      rs.command.transaction: true
+      rs.command.filter: true
+      rs.command.name: true
+      rs.sign.customer: true
+      rs.sign.shop: true
+      rs.sign.customer.buy: true
+      rs.sign.customer.sell: true
+      rs.sign.shop.buy: true
+      rs.sign.shop.sell: true
+  rs.command.help:
+    description: Permission for /shop help
+    default: true
+  rs.command.list:
+    description: Explore the shop catalogue
+    default: true
+  rs.command.shop.teleporttoshop:
+    description: Allows the usage of teleporting to shops
+    default: true
+  rs.command.detail:
+    description: Get more information based on a shop item id
+    default: true
+  rs.command.add:
+    description: Add item in hand to your shop stock
+    default: true
+  rs.command.set:
+    description: Adjust the price or the amount of a specific shop item id
+    default: true
+  rs.command.remove:
+    description: Remove a specific shop item id out of your shop catalogue
+    default: true
+  rs.command.equip:
+    description: Toggle the quick equip mode
+    default: true
+  rs.command.detail:
+    description: Get additional informations about an shop item
+    default: true
+  rs.command.search:
+    description: Search for a specific item on the whole marketplace 
+    default: true
+  rs.command.sell:
+    description: Allows to sell Items to a Shop
+    default: true
+  rs.command.buy:
+    description: Allows to buy Items from a Shop
+    default: true
+  rs.command.name:
+    description: Allows you to change the name of a Shop
+    default: false
+  rs.command.transaction:
+    description: Lets you see the Transaction Log
+    default: true
+  rs.command.filter:
+    description: Filter the Search
+    default: true
