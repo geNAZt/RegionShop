@@ -1,5 +1,6 @@
 package net.cubespace.RegionShop.Util;
 
+import net.cubespace.RegionShop.Bukkit.Plugin;
 import org.apache.commons.lang3.Validate;
 
 import java.util.ArrayList;
@@ -79,5 +80,14 @@ public class Version {
         }
 
         return versionList;
+    }
+
+    /**
+     * Gives you the current Version of RegionShop running
+     *
+     * @return The RegionShop Version
+     */
+    public static String getRegionShopVersion() {
+        return Plugin.getInstance().getDescription().getVersion();
     }
 }
