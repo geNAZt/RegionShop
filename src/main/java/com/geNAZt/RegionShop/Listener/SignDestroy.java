@@ -104,6 +104,14 @@ public class SignDestroy implements Listener {
                             event1.setCancelled(true);
                         }
                     } else {
+                        for (final Entity ent : Bukkit.getWorld(customerSign.getRegion().getWorld()).getEntities()) {
+                            //Get the location of this Entity
+                            Location entLocation = ent.getLocation();
+                            if (entLocation.getBlockZ() == customerSign.getZ() && entLocation.getBlockY() == customerSign.getY() - 1 && entLocation.getBlockX() == customerSign.getX()) {
+                                ent.remove();
+                            }
+                        }
+
                         Database.getServer().delete(customerSign);
                     }
                 }
