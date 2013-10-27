@@ -86,8 +86,8 @@ public class Logger {
      * @param message The message which will be printed
      */
     public static void debug(String message) {
-        if(System.getProperty("net.cubespace.RegionShop.Util.Logger.debug", "false").equals("true")) {
-            Plugin.getInstance().getLogger().log(Level.FINEST, message);
+        if(System.getenv("logger.debug") != null && System.getenv("logger.debug").equals("true")) {
+            Plugin.getInstance().getLogger().log(Level.INFO, message);
         }
     }
 }
