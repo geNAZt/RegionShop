@@ -2,6 +2,7 @@ package net.cubespace.RegionShop.Util;
 
 import net.cubespace.RegionShop.Bukkit.Plugin;
 import org.apache.commons.lang3.Validate;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 
@@ -10,6 +11,13 @@ import java.util.ArrayList;
  * @date Last changed: 27.10.13 12:24
  */
 public class Version {
+    private static String mcVersion;
+
+    //Init the mcVersion Variable. Bukkit Versions look like 1.6.4-R1.0. The first part infront of - is the MC Version
+    static {
+        mcVersion = Bukkit.getBukkitVersion().split("-")[0];
+    }
+
     /**
      * This function checks if a Version is newer as the compareVersion. Both Versions need to be in format like "3.1.2" (major.minor.bugfix)
      *
@@ -89,5 +97,14 @@ public class Version {
      */
     public static String getRegionShopVersion() {
         return Plugin.getInstance().getDescription().getVersion();
+    }
+
+    /**
+     * Gives you the current running MC Version
+     *
+     * @return The MC Version
+     */
+    public static String getMcVersion() {
+        return mcVersion;
     }
 }
