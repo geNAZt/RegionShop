@@ -33,11 +33,11 @@ public class ItemDB extends CSVReader {
      */
     @Override
     public void onLine(String[] line) {
-        Logger.debug("ItemDB - Got new Line: " + line[0] + " - " + line[1] + " - " + line[2] + " - " + line[3] + " - " + line[4]);
-
         ItemDBEntry entry = new ItemDBEntry();
 
         try {
+            Logger.debug("ItemDB - Got new Line: " + line[0] + " - " + line[1] + " - " + line[2] + " - " + line[3] + " - " + line[4]);
+
             entry.setItemID(Integer.parseInt(line[0]));
             entry.setDataValue(Short.parseShort(line[1]));
             entry.setDataName(line[2]);
