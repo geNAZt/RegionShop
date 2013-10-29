@@ -13,6 +13,9 @@ import net.cubespace.RegionShop.Util.Logger;
  * This class is part of the internals for the ItemDB. Please do not instance an object from this.
  */
 public class ItemDB extends CSVReader {
+    /**
+     * Load the CSV from db/dataValues.csv in the JAR
+     */
     public ItemDB() {
         super(Plugin.getInstance().getResource("db/dataValues.csv"));
     }
@@ -44,5 +47,13 @@ public class ItemDB extends CSVReader {
         }
 
         ItemDBStorage.add(entry);
+    }
+
+    /**
+     * The end of the File has reached.
+     */
+    @Override
+    public void onEnd() {
+        ItemDBStorage.enable();
     }
 }

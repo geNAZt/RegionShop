@@ -23,6 +23,10 @@ public abstract class CSVReader {
                 Logger.debug("CSV Reader - Raw Line: " + curLine);
                 onLine(curLine.split("\\;"));
             }
+
+            bufferedReader.close();
+
+            onEnd();
         } catch (Exception e) {
             Logger.error("Could not read CSV File", e);
         }
@@ -34,4 +38,9 @@ public abstract class CSVReader {
      * @param line The ; splitted line
      */
     public abstract void onLine(String[] line);
+
+    /**
+     * This function gets called if the end of the CSV is reached
+     */
+    public abstract void onEnd();
 }

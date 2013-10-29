@@ -3,7 +3,7 @@ package net.cubespace.RegionShop.Data.Storage;
 import net.cubespace.RegionShop.Data.Struct.ItemDBEntry;
 import net.cubespace.RegionShop.Util.Logger;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -12,7 +12,8 @@ import java.util.ArrayList;
  * This Storage holds all Itemnames and Datanames for Items
  */
 public class ItemDBStorage {
-    private static ArrayList<ItemDBEntry> itemDBEntries = new ArrayList<ItemDBEntry>();
+    private static HashMap<String, ItemDBEntry> itemDBEntries = new HashMap<String, ItemDBEntry>();
+    private static Boolean enabled = false;
 
     /**
      * This function adds a new ItemDBEntry into the Storage
@@ -21,8 +22,16 @@ public class ItemDBStorage {
      * @param itemDBEntry The ItemDBEntry to add
      */
     public static void add(ItemDBEntry itemDBEntry) {
-        itemDBEntries.add(itemDBEntry);
+        itemDBEntries.put(itemDBEntry.getItemID() + ":" + itemDBEntry.getDataValue(), itemDBEntry);
+    }
 
-        Logger.debug("ItemDBStorage - Current DB length: " + itemDBEntries.size());
+    /**
+     * This function gets called if the Parser has read all lines.
+     *
+     * @warning This will be called by the Parser. Do not call it by yourself
+     */
+    public static void enable() {
+        Logger.debug("ItemDBStorage - DB length: " + itemDBEntries.size());
+        enabled = true;
     }
 }
