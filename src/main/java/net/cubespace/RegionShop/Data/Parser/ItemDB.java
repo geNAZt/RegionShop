@@ -9,23 +9,27 @@ import net.cubespace.RegionShop.Util.Logger;
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  * @date Last changed: 27.10.13 18:36
+ *
+ * This class is part of the internals for the ItemDB. Please do not instance an object from this.
  */
 public class ItemDB extends CSVReader {
     public ItemDB() {
         super(Plugin.getInstance().getResource("db/dataValues.csv"));
     }
 
+    /**
+     * The line from the CSV Parser
+     *
+     * 0 => ItemID      (Integer)
+     * 1 => DataValue   (Short)
+     * 2 => DataName    (String)
+     * 3 => ItemName    (String)
+     * 4 => MC Version  (String)
+     */
     @Override
     public void onLine(String[] line) {
         Logger.debug("ItemDB - Got new Line: " + line[0] + " - " + line[1] + " - " + line[2] + " - " + line[3] + " - " + line[4]);
 
-        /*
-         * 0 => ItemID
-         * 1 => DataValue
-         * 2 => DataName
-         * 3 => ItemName
-         * 4 => MC Version
-         */
         ItemDBEntry entry = new ItemDBEntry();
 
         try {
