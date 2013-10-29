@@ -174,9 +174,9 @@
 97;0;Stone;Silverfish;0.0.0
 97;1;Cobblestone;Silverfish;0.0.0
 97;2;Stone Brick;Silverfish;0.0.0
-97;3;Mossy Stone;Silverfish;1.7.2
-97;4;Cracked Stone;Silverfish;1.7.2
-97;5;Chiseled Stone Brickï¿½;Silverfish;1.7.2
+97;3;Mossy Stone;Silverfish;1.7.1
+97;4;Cracked Stone;Silverfish;1.7.1
+97;5;Chiseled Stone Brick ;Silverfish;1.7.1
 98;0;;Stone Brick;0.0.0
 98;1;Mossy;Stone Brick;0.0.0
 98;2;Cracked;Stone Brick;0.0.0
@@ -207,3 +207,130 @@
 122;0;;Dragon Egg;0.0.0
 123;0;;Redstone Lamp;1.2.1
 124;0;;Active Redstone Lamp;1.2.1
+125;0;Oak;Wooden Double Slab;1.3.1
+125;1;Spruce;Wooden Double Slab;1.3.1
+125;2;Birch;Wooden Double Slab;1.3.1
+125;3;Jungle;Wooden Double Slab;1.3.1
+125;4;Acacia;Wooden Double Slab;1.7.1
+125;5;Dark Oak;Wooden Double Slab;1.7.1
+126;0;Oak;Wooden Slab;1.3.1
+126;1;Spruce;Wooden Slab;1.3.1
+126;2;Birch;Wooden Slab;1.3.1
+126;3;Jungle;Wooden Slab;1.3.1
+126;4;Acacia;Wooden Slab;1.7.1
+126;5;Dark Oak;Wooden Slab;1.7.1
+127;0;;Cocoa;1.3.1
+128;0;;Sandstone Stairs;1.3.1
+129;0;;Emerald Ore;1.3.1
+130;0;;Ender Chest;1.3.1
+131;0;;Tripwire Hook;1.3.1
+132;0;;Tripwire;1.3.1
+133;0;;Block of Emerald;1.3.1
+134;0;;Spruce Wood Stairs;1.3.1
+135;0;;Birch Wood Stairs;1.3.1
+136;0;;Jungle Wood Stairs;1.3.1
+137;0;;Commandblock;1.4.2
+138;0;;Beacon;1.4.2
+139;0;Cobblestone;Wall;1.4.2
+139;1;Moss Stone;Wall;1.4.2
+140;0;;Flower Pot;1.4.2
+140;1;Poppy;Flower Pot;1.4.2
+140;2;Dandelion;Flower Pot;1.4.2
+140;3;Oak Sapling;Flower Pot;1.4.2
+140;4;Spruce Sapling;Flower Pot;1.4.2
+140;5;Birch Sapling;Flower Pot;1.4.2
+140;6;Jungle Sapling;Flower Pot;1.4.2
+140;7;Red Mushroom;Flower Pot;1.4.2
+140;8;Brown Mushroom;Flower Pot;1.4.2
+140;9;Cactus;Flower Pot;1.4.2
+140;10;Dead Bush;Flower Pot;1.4.2
+140;11;Fern;Flower Pot;1.4.2
+141;0;;Carrot;1.4.2
+142;0;;Potatoes;1.4.2
+143;0;;Wooden Button;1.4.2
+144;0;Skeleton;Mob Head;1.4.2
+144;1;Wither Skeleton;Mob Head;1.4.2
+144;2;Zombie;Mob Head;1.4.2
+144;3;Human;Mob Head;1.4.2
+144;4;Creeper;Mob Head;1.4.2
+145;0;;Anvil ;1.4.2
+146;0;;Trapped Chest;1.5.0
+147;0;Light;Weighted Pressure Plate;1.5.0
+148;0;Heavy;Weighted Pressure Plate;1.5.0
+149;0;;Redstone Comparator;1.5.0
+151;0;;Daylight Sensor;1.5.0
+152;0;;Block of Redstone;1.5.0
+153;0;;Nether Quartz Ore;1.5.0
+154;0;;Hopper;1.5.0
+155;0;;Block of Quartz;1.5.0
+155;1;Chiseled;Quartz Block;1.5.0
+155;2;Pillar (vert);Quartz Block;1.5.0
+155;3;Pillar (s-n);Quartz Block;1.5.0
+155;4;Pillar (e-w);Quartz Block;1.5.0
+156;0;;Quartz Stairs;1.5.0
+157;0;;Activator Rail;1.5.0
+158;0;;Dropper;1.5.0
+159;0;White;Stained Clay;1.6.1
+159;1;Orange;Stained Clay;1.6.1
+159;2;Magenta;Stained Clay;1.6.1
+159;3;Light Blue;Stained Clay;1.6.1
+159;4;Yellow;Stained Clay;1.6.1
+159;5;Lime;Stained Clay;1.6.1
+159;6;Pink;Stained Clay;1.6.1
+159;7;Gray;Stained Clay;1.6.1
+159;8;Light Gray;Stained Clay;1.6.1
+159;9;Cyan;Stained Clay;1.6.1
+159;10;Purple;Stained Clay;1.6.1
+159;11;Blue;Stained Clay;1.6.1
+159;12;Brown;Stained Clay;1.6.1
+159;13;Green;Stained Clay;1.6.1
+159;14;Red;Stained Clay;1.6.1
+159;15;Black;Stained Clay;1.6.1
+160;0;White;Stained Glass Pane;1.7.1
+160;1;Orange;Stained Glass Pane;1.7.1
+160;2;Magenta;Stained Glass Pane;1.7.1
+160;3;Light Blue;Stained Glass Pane;1.7.1
+160;4;Yellow;Stained Glass Pane;1.7.1
+160;5;Lime;Stained Glass Pane;1.7.1
+160;6;Pink;Stained Glass Pane;1.7.1
+160;7;Gray;Stained Glass Pane;1.7.1
+160;8;Light Gray;Stained Glass Pane;1.7.1
+160;9;Cyan;Stained Glass Pane;1.7.1
+160;10;Purple;Stained Glass Pane;1.7.1
+160;11;Blue;Stained Glass Pane;1.7.1
+160;12;Brown;Stained Glass Pane;1.7.1
+160;13;Green;Stained Glass Pane;1.7.1
+160;14;Red;Stained Glass Pane;1.7.1
+160;15;Black;Stained Glass Pane;1.7.1
+161;0;Acacia;Leave;1.7.1
+161;1;Dark Oak;Leave;1.7.1
+162;0;Acacia;Log;1.7.1
+162;1;Dark Oak;Log;1.7.1
+163;0;;Acacia Wood Stairs;1.7.1
+164;0;;Dark Oak Wood Stairs;1.7.1
+170;0;;Hay Block;1.6.1
+171;0;White;Carpet;1.6.1
+171;1;Orange;Carpet;1.6.1
+171;2;Magenta;Carpet;1.6.1
+171;3;Light Blue;Carpet;1.6.1
+171;4;Yellow;Carpet;1.6.1
+171;5;Lime;Carpet;1.6.1
+171;6;Pink;Carpet;1.6.1
+171;7;Gray;Carpet;1.6.1
+171;8;Light Gray;Carpet;1.6.1
+171;9;Cyan;Carpet;1.6.1
+171;10;Purple;Carpet;1.6.1
+171;11;Blue;Carpet;1.6.1
+171;12;Brown;Carpet;1.6.1
+171;13;Green;Carpet;1.6.1
+171;14;Red;Carpet;1.6.1
+171;15;Black;Carpet;1.6.1
+172;0;;Hardened Clay;1.6.1
+173;0;;Block of Coal;1.6.1
+174;0;;Packed Ice;1.7.1
+175;0;;Sunflower;1.7.1
+175;1;;Lilac;1.7.1
+175;2;;Double Tallgrass;1.7.1
+175;3;;Large Fern;1.7.1
+175;4;;Rose Bush;1.7.1
+175;5;;Peony;1.7.1
