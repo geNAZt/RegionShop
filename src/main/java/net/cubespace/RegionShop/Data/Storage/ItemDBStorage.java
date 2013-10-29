@@ -18,7 +18,6 @@ public class ItemDBStorage {
     /**
      * This function adds a new ItemDBEntry into the Storage
      *
-     * @warning This will be filled by the Parser. Do not add ItemDBEntries by yourself
      * @param itemDBEntry The ItemDBEntry to add
      */
     public static void add(ItemDBEntry itemDBEntry) {

@@ -3,8 +3,10 @@ package net.cubespace.RegionShop.Data.Parser;
 import net.cubespace.RegionShop.Bukkit.Plugin;
 import net.cubespace.RegionShop.Data.Storage.ItemDBStorage;
 import net.cubespace.RegionShop.Data.Struct.ItemDBEntry;
+import net.cubespace.RegionShop.Events.ItemDB.PreEnableEvent;
 import net.cubespace.RegionShop.Util.CSVReader;
 import net.cubespace.RegionShop.Util.Logger;
+import org.bukkit.Bukkit;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
@@ -54,6 +56,9 @@ public class ItemDB extends CSVReader {
      */
     @Override
     public void onEnd() {
+        //Fire the Event
+        Bukkit.getPluginManager().callEvent(new PreEnableEvent());
+
         ItemDBStorage.enable();
     }
 }
