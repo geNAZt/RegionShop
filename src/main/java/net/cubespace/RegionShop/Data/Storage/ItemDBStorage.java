@@ -34,4 +34,37 @@ public class ItemDBStorage {
         Logger.debug("ItemDBStorage - DB length: " + itemDBEntries.size());
         enabled = true;
     }
+
+    /**
+     * Lookup an Itemname in the ItemDB
+     *
+     * @param itemID The itemID which should be looked up
+     * @param dataValue The dataValue which should be looked up
+     * @return The Itemname with Datavalue prefix as String
+     */
+    public static String lookup(Integer itemID, Short dataValue) {
+        //Check if storage is enabled
+        if(!enabled) {
+            Logger.warn("Tried to lookup an Item before the ItemDBStorage was ready. Request was: " + itemID + ":" + dataValue);
+            return null;
+        }
+
+        //Check if the itemID:dataValue has a direct hit
+        if(itemDBEntries.containsKey(itemID + ":" + dataValue)) {
+            ItemDBEntry entry = itemDBEntries.get(itemID + ":" + dataValue);
+
+            return entry.getDataName() + " " + entry.getItemName();
+        }
+
+        //Check if there is a 0 dataValue Entry
+        if(itemDBEntries.containsKey(itemID + ":0")) {
+            ItemDBEntry entry = itemDBEntries.get(itemID + ":0");
+
+            return entry.getDataName() + " " + entry.getItemName();
+        }
+
+        //Nothing could be found (maybe new item or bukkitforge)
+        Logger.warn("A item has been found which the ItemDB does not know. Please report an Issue with the ItemID and the Name of the Item");
+        return null;
+    }
 }
