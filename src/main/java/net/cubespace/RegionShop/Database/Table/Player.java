@@ -4,14 +4,13 @@ import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity()
 public class Player {
     @DatabaseField(generatedId = true)
     private Integer id;
-    @Column
+    @DatabaseField(unique = true)
     private String name;
     @ForeignCollectionField(eager = false)
     private ForeignCollection<Chest> ownsChest;
@@ -30,5 +29,13 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ForeignCollection<Chest> getOwnsChest() {
+        return ownsChest;
+    }
+
+    public void setOwnsChest(ForeignCollection<Chest> ownsChest) {
+        this.ownsChest = ownsChest;
     }
 }

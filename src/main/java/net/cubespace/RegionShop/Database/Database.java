@@ -48,6 +48,7 @@ public class Database {
             //Create the tables if not existing
             for(Map.Entry<Class<?>, Dao> dao : daos.entrySet()) {
                 TableUtils.createTableIfNotExists(connectionSource, dao.getKey());
+                dao.getValue().setObjectCache(true);
             }
         } catch (SQLException e) {
             Logger.fatal("Could not connect to the Database", e);
