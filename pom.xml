@@ -14,6 +14,7 @@
                 <directory>${basedir}/src/main/ressource</directory>
                 <includes>
                     <include>*.yml</include>
+                    <include>*.properties</include>
                 </includes>
             </resource>
         </resources>
@@ -53,20 +54,33 @@
                     <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <minimizeJar>true</minimizeJar>
+                            <finalName>${project.artifactId}</finalName>
+                            <artifactSet>
+                                <includes>
+                                    <include>com.j256.ormlite:*</include>
+                                    <include>com.h2database:*</include>
+                                </includes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
     <repositories>
-        <repository>
-            <id>sonatype-oss-public</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
         <repository>
             <id>craftminecraft-dev</id>
             <url>http://repo.craftminecraft.net/content/groups/public/</url>
@@ -80,24 +94,12 @@
             <url>http://maven.sk89q.com/repo/</url>
         </repository>
         <repository>
-            <id>vault-repo</id>
-            <url>http://ci.herocraftonline.com/plugin/repository/everything</url>
-        </repository>
-        <repository>
             <id>comphenix-rep</id>
-            <name>Comphenix Maven Releases</name>
             <url>http://repo.comphenix.net/content/groups/public</url>
         </repository>
     </repositories>
 
     <dependencies>
-        <dependency>
-            <groupId>com.sk89q</groupId>
-            <artifactId>worldedit</artifactId>
-            <version>5.5.8-SNAPSHOT</version>
-            <scope>compile</scope>
-            <type>jar</type>
-        </dependency>
         <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
@@ -134,34 +136,23 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>com.acrobot.chestshop</groupId>
-            <artifactId>chestshop</artifactId>
-            <version>3.50</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/ChestShop.jar</systemPath>
+            <groupId>com.j256.ormlite</groupId>
+            <artifactId>ormlite-core</artifactId>
+            <version>4.47</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
+            <groupId>com.j256.ormlite</groupId>
+            <artifactId>ormlite-jdbc</artifactId>
+            <version>4.47</version>
         </dependency>
         <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <version>${powermock.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito</artifactId>
-            <version>${powermock.version}</version>
-            <scope>test</scope>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.3.173</version>
         </dependency>
     </dependencies>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <powermock.version>1.5</powermock.version>
     </properties>
 </project>
