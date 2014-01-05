@@ -1,6 +1,5 @@
 package com.geNAZt.RegionShop.Core;
 
-import com.avaje.ebean.Ebean;
 import com.avaje.ebean.SqlUpdate;
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Config.Sub.Group;
@@ -100,7 +99,12 @@ public class Sell {
                     ItemStorage itemStorage = region.getItemStorage();
                     itemStorage.setItemAmount(itemStorage.getItemAmount() + itemStack.getAmount());
 
-                    Database.getServer().update(itemStorage);
+                    SqlUpdate update = Database.getServer().createSqlUpdate("UPDATE rs_itemstorage SET item_amount=:amount WHERE id=:id")
+                            .setParameter("amount", itemStorage.getItemAmount())
+                            .setParameter("id", itemStorage.getId());
+
+                    update.execute();
+
                     Database.getServer().update(item);
 
                     Transaction.generateTransaction(player, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.SELL, region.getName(), player.getWorld().getName(), item.getOwner(), item.getMeta().getId().getItemID(), itemStack.getAmount(), 0.0, item.getBuy().doubleValue(), item.getUnitAmount());
@@ -199,7 +203,7 @@ public class Sell {
             ItemStorage itemStorage = region.getItemStorage();
             itemStorage.setItemAmount(itemStorage.getItemAmount() + itemStack.getAmount());
 
-            SqlUpdate update = Ebean.createSqlUpdate("UPDATE rs_itemstorage SET item_amount=:amount WHERE id=:id")
+            SqlUpdate update = Database.getServer().createSqlUpdate("UPDATE rs_itemstorage SET item_amount=:amount WHERE id=:id")
                     .setParameter("amount", itemStorage.getItemAmount())
                     .setParameter("id", itemStorage.getId());
 

@@ -1,6 +1,5 @@
 package com.geNAZt.RegionShop.Core;
 
-import com.avaje.ebean.Ebean;
 import com.avaje.ebean.SqlUpdate;
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Database.Database;
@@ -121,7 +120,7 @@ public class Buy {
             ItemStorage itemStorage = region.getItemStorage();
             itemStorage.setItemAmount(itemStorage.getItemAmount() - wishAmount);
 
-            SqlUpdate update = Ebean.createSqlUpdate("UPDATE rs_itemstorage SET item_amount=:amount WHERE id=:id")
+            SqlUpdate update = Database.getServer().createSqlUpdate("UPDATE rs_itemstorage SET item_amount=:amount WHERE id=:id")
                     .setParameter("amount", itemStorage.getItemAmount())
                     .setParameter("id", itemStorage.getId());
 
