@@ -51,7 +51,13 @@ public class Detail implements CLICommand {
         if (item != null && (((item.getSell() != 0 || item.getBuy() != 0) && item.getUnitAmount() > 0) || item.getOwner().equalsIgnoreCase(player.getName()))) {
             ItemStack iStack = Item.fromDBItem(item);
 
-            String itemName = ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString());
+            String dataName = ItemName.getDataName(iStack);
+            String niceItemName;
+            if(dataName.endsWith(" ")) {
+                niceItemName = dataName + ItemName.nicer(iStack.getType().toString());
+            } else {
+                niceItemName = dataName;
+            }
 
             Integer dmg = 0;
 
@@ -63,7 +69,7 @@ public class Detail implements CLICommand {
             for(String headerLine : ConfigManager.language.Command_Detail_Header) {
                 player.sendMessage(ConfigManager.main.Chat_prefix + headerLine.
                         replace("%owner", item.getOwner()).
-                        replace("%item", itemName).
+                        replace("%item", niceItemName).
                         replace("%id", item.getId().toString()));
             }
 

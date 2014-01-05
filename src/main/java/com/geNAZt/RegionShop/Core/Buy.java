@@ -1,5 +1,7 @@
 package com.geNAZt.RegionShop.Core;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.SqlUpdate;
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.ItemStorageHolder;
@@ -63,7 +65,13 @@ public class Buy {
 
             price = (((float) wishAmount / (float) item.getUnitAmount()) * item.getSell());
 
-            String niceItemName = ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString());
+            String dataName = ItemName.getDataName(iStack);
+            String niceItemName;
+            if(dataName.endsWith(" ")) {
+                niceItemName = dataName + ItemName.nicer(iStack.getType().toString());
+            } else {
+                niceItemName = dataName;
+            }
 
             item.setCurrentAmount(item.getCurrentAmount() - wishAmount);
 
@@ -111,7 +119,12 @@ public class Buy {
             ItemStorage itemStorage = region.getItemStorage();
             itemStorage.setItemAmount(itemStorage.getItemAmount() - wishAmount);
 
-            Database.getServer().update(itemStorage);
+            SqlUpdate update = Ebean.createSqlUpdate("UPDATE rs_itemstorage SET item_amount=:amount WHERE id=:id")
+                    .setParameter("amount", itemStorage.getItemAmount())
+                    .setParameter("id", itemStorage.getId());
+
+            update.execute();
+
             Database.getServer().update(item);
 
             Transaction.generateTransaction(player, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.BUY, region.getName(), player.getWorld().getName(), item.getOwner(), item.getMeta().getId().getItemID(), wishAmount, item.getSell().doubleValue(), 0.0, item.getUnitAmount());

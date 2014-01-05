@@ -199,12 +199,17 @@ public class List implements CLICommand {
                 ItemStack iStack = Item.fromDBItem(item);
 
                 String amount = item.getCurrentAmount().toString();
-                String niceItemName = ItemName.nicer(iStack.getType().toString());
-                String itemName = ItemName.getDataName(iStack) + niceItemName;
+                String dataName = ItemName.getDataName(iStack);
+                String niceItemName;
+                if(dataName.endsWith(" ")) {
+                    niceItemName = dataName + ItemName.nicer(iStack.getType().toString());
+                } else {
+                    niceItemName = dataName;
+                }
 
                 String message = ConfigManager.main.Chat_prefix + ConfigManager.language.Command_List_Item_Main.
                         replace("%amount", (region.getItemStorage().isServershop()) ? Character.toString((char)0x221E) : amount).
-                        replace("%name", itemName).
+                        replace("%name", niceItemName).
                         replace("%sell", item.getSell().toString()).
                         replace("%buy", item.getBuy().toString()).
                         replace("%unitamount", item.getUnitAmount().toString()).

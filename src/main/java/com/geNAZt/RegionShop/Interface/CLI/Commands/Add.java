@@ -83,12 +83,19 @@ public class Add implements CLICommand {
             player.getInventory().removeItem(itemInHand);
 
             //Get the nice name
-            String itemName = ItemName.getDataName(itemInHand) + itemInHand.getType().toString();
-            if (itemInHand.getItemMeta().hasDisplayName()) {
-                itemName = "(" + itemInHand.getItemMeta().getDisplayName() + ")";
+            String dataName = ItemName.getDataName(itemInHand);
+            String niceItemName;
+            if(dataName.endsWith(" ")) {
+                niceItemName = dataName + ItemName.nicer(itemInHand.getType().toString());
+            } else {
+                niceItemName = dataName;
             }
 
-            player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Add_AddedItem.replace("%item", ItemName.nicer(itemName)));
+            if (itemInHand.getItemMeta().hasDisplayName()) {
+                niceItemName = "(" + itemInHand.getItemMeta().getDisplayName() + ")";
+            }
+
+            player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Add_AddedItem.replace("%item", ItemName.nicer(niceItemName)));
         } else {
             if(itemID != -1) {
                 player.sendMessage(ConfigManager.main.Chat_prefix  + ConfigManager.language.Command_Add_ChangeItem.replace("%itemid", itemID.toString()));

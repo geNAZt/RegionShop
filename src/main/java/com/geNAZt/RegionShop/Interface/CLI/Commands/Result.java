@@ -86,7 +86,13 @@ public class Result implements CLICommand {
             ItemStack iStack = entry.getValue();
 
             String amount = item.getCurrentAmount().toString();
-            String itemName = ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString());
+            String dataName = ItemName.getDataName(iStack);
+            String niceItemName;
+            if(dataName.endsWith(" ")) {
+                niceItemName = dataName + ItemName.nicer(iStack.getType().toString());
+            } else {
+                niceItemName = dataName;
+            }
 
             String shop;
             if(!item.getItemStorage().getRegions().isEmpty()) {
@@ -97,7 +103,7 @@ public class Result implements CLICommand {
 
             String message = ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Result_Item_Main.
                     replace("%amount", amount).
-                    replace("%item", itemName).
+                    replace("%item", niceItemName).
                     replace("%sell", item.getSell().toString()).
                     replace("%buy", item.getBuy().toString()).
                     replace("%unitamount", item.getUnitAmount().toString()).

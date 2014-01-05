@@ -102,15 +102,23 @@ public class PriceRecalculateTask extends BukkitRunnable {
 
                                 //Get the nice name
                                 ItemStack itemStack = com.geNAZt.RegionShop.Database.Model.Item.fromDBItem(items);
-                                String itemName = ItemName.getDataName(itemStack) + itemStack.getType().toString();
+
+                                String dataName = ItemName.getDataName(itemStack);
+                                String niceItemName;
+                                if(dataName.endsWith(" ")) {
+                                    niceItemName = dataName + ItemName.nicer(itemStack.getType().toString());
+                                } else {
+                                    niceItemName = dataName;
+                                }
+
                                 if (itemStack.getItemMeta().hasDisplayName()) {
-                                    itemName = "(" + itemStack.getItemMeta().getDisplayName() + ")";
+                                    niceItemName = "(" + itemStack.getItemMeta().getDisplayName() + ")";
                                 }
 
                                 for (Integer line = 0; line < 4; line++) {
                                     sign.setLine(line, ConfigManager.language.Sign_Customer_SignText.get(line).
                                             replace("%id", items.getId().toString()).
-                                            replace("%itemname", ItemName.nicer(itemName)).
+                                            replace("%itemname", ItemName.nicer(niceItemName)).
                                             replace("%amount", items.getUnitAmount().toString()).
                                             replace("%sell", items.getSell().toString()).
                                             replace("%buy", items.getBuy().toString()));
