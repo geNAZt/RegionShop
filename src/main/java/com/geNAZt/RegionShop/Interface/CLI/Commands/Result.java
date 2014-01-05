@@ -90,8 +90,10 @@ public class Result implements CLICommand {
             String niceItemName;
             if(dataName.endsWith(" ")) {
                 niceItemName = dataName + ItemName.nicer(iStack.getType().toString());
-            } else {
+            } else if(!dataName.equals("")) {
                 niceItemName = dataName;
+            } else {
+                niceItemName = ItemName.nicer(iStack.getType().toString());
             }
 
             String shop;

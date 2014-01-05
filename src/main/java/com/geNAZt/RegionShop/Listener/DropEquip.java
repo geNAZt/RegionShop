@@ -39,8 +39,10 @@ public class DropEquip implements Listener {
                     String niceItemName;
                     if(dataName.endsWith(" ")) {
                         niceItemName = dataName + ItemName.nicer(droppedItem.getType().toString());
-                    } else {
+                    } else if(!dataName.equals("")) {
                         niceItemName = dataName;
+                    } else {
+                        niceItemName = ItemName.nicer(droppedItem.getType().toString());
                     }
 
                     if (droppedItem.getItemMeta().hasDisplayName()) {

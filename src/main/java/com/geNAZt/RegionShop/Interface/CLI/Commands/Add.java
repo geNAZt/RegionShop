@@ -87,8 +87,10 @@ public class Add implements CLICommand {
             String niceItemName;
             if(dataName.endsWith(" ")) {
                 niceItemName = dataName + ItemName.nicer(itemInHand.getType().toString());
-            } else {
+            } else if(!dataName.equals("")) {
                 niceItemName = dataName;
+            } else {
+                niceItemName = ItemName.nicer(itemInHand.getType().toString());
             }
 
             if (itemInHand.getItemMeta().hasDisplayName()) {

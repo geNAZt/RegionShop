@@ -79,8 +79,10 @@ public class Customer implements SignCommand {
         String niceItemName;
         if(dataName.endsWith(" ")) {
             niceItemName = dataName + ItemName.nicer(itemStack.getType().toString());
-        } else {
+        } else if(!dataName.equals("")) {
             niceItemName = dataName;
+        } else {
+            niceItemName = ItemName.nicer(itemStack.getType().toString());
         }
 
         if (itemStack.getItemMeta().hasDisplayName()) {

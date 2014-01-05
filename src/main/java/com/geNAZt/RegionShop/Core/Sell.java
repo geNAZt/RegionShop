@@ -59,8 +59,10 @@ public class Sell {
                     String niceItemName;
                     if(dataName.endsWith(" ")) {
                         niceItemName = dataName + ItemName.nicer(itemStack.getType().toString());
-                    } else {
+                    } else if(!dataName.equals("")) {
                         niceItemName = dataName;
+                    } else {
+                        niceItemName = ItemName.nicer(itemStack.getType().toString());
                     }
 
                     if(!region.getItemStorage().isServershop()) {
@@ -147,8 +149,10 @@ public class Sell {
             String niceItemName;
             if(dataName.endsWith(" ")) {
                 niceItemName = dataName + ItemName.nicer(itemStack.getType().toString());
-            } else {
+            }  else if(!dataName.equals("")) {
                 niceItemName = dataName;
+            } else {
+                niceItemName = ItemName.nicer(itemStack.getType().toString());
             }
 
             if(!region.getItemStorage().isServershop()) {
