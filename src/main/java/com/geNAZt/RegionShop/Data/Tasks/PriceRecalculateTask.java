@@ -15,12 +15,64 @@ import org.bukkit.block.Sign;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Created for YEAHWH.AT
  * User: geNAZt (fabian.fassbender42@googlemail.com)
  * Date: 16.06.13
  */
 public class PriceRecalculateTask extends BukkitRunnable {
+    private HashMap<Integer, HashMap<String, ArrayList<Integer>>> recalcCache = new HashMap<Integer, HashMap<String, ArrayList<Integer>>>();
+
+    private void prepareCache(Integer id) {
+        if(!recalcCache.containsKey(id)) {
+            HashMap<String, ArrayList<Integer>> newArrayList = new HashMap<String, ArrayList<Integer>>();
+            newArrayList.put("buy", new ArrayList<Integer>(720));
+            newArrayList.put("sell", new ArrayList<Integer>(720));
+
+            for(Integer i = 0; i < 720; i++) {
+                newArrayList.get("buy").add(0);
+                newArrayList.get("sell").add(0);
+            }
+
+            recalcCache.put(id, newArrayList);
+        }
+    }
+
+    private void addToCache(Integer id, Integer buy, Integer sell) {
+        if(recalcCache.containsKey(id)) {
+            HashMap<String, ArrayList<Integer>> newArrayList = recalcCache.get(id);
+
+            if(newArrayList.get("buy").size() > 720) {
+                newArrayList.get("buy").remove(0);
+            }
+
+            if(newArrayList.get("sell").size() > 720) {
+                newArrayList.get("sell").remove(0);
+            }
+
+            newArrayList.get("sell").add(sell);
+            newArrayList.get("buy").add(buy);
+        }
+    }
+
+    private Integer getAverage(Integer id, String key) {
+        if(recalcCache.containsKey(id)) {
+            Integer amount = 0;
+            ArrayList<Integer> newArrayList = recalcCache.get(id).get(key);
+
+            for(Integer curAmount : newArrayList) {
+                amount += curAmount;
+            }
+
+            return Math.round(amount / newArrayList.size());
+        }
+
+        return 0;
+    }
+
     @Override
     public void run() {
         for (final ServerShop shop : ConfigManager.servershop.ServerShops) {
@@ -37,8 +89,15 @@ public class PriceRecalculateTask extends BukkitRunnable {
 
                 if (itemInShop == null) continue;
 
+                prepareCache(itemInShop.getId());
+
                 Integer sold = (itemInShop.getSold()) * 720;
                 Integer bought = (itemInShop.getBought()) * 720;
+
+                addToCache(itemInShop.getId(), bought, sold);
+
+                sold = getAverage(itemInShop.getId(), "sell");
+                bought = getAverage(itemInShop.getId(), "buy");
 
                 Float sellPriceDiff = (float) sold / item.maxItemRecalc;
                 Float buyPriceDiff;
