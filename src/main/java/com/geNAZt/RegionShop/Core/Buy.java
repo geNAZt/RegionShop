@@ -26,7 +26,7 @@ import java.util.Map;
  * Date: 18.09.13
  */
 public class Buy {
-    public static void buy(Items item, Player player, ItemStorageHolder region, Integer wishAmount) {
+    public static void buy(final Items item, Player player, final ItemStorageHolder region, Integer wishAmount) {
         if (item.getOwner().toLowerCase().equals(player.getName().toLowerCase())) {
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Buy_NotYourItems);
             return;
@@ -117,16 +117,22 @@ public class Buy {
 
             item.setSold(item.getSold() + wishAmount);
 
-            ItemStorage itemStorage = region.getItemStorage();
-            itemStorage.setItemAmount(itemStorage.getItemAmount() - wishAmount);
+            final Integer amount = wishAmount;
+            RegionShopPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(RegionShopPlugin.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    ItemStorage itemStorage = region.getItemStorage();
+                    itemStorage.setItemAmount(itemStorage.getItemAmount() - amount);
 
-            SqlUpdate update = Database.getServer().createSqlUpdate("UPDATE rs_itemstorage SET item_amount=:amount WHERE id=:id")
-                    .setParameter("amount", itemStorage.getItemAmount())
-                    .setParameter("id", itemStorage.getId());
+                    SqlUpdate update = Database.getServer().createSqlUpdate("UPDATE rs_itemstorage SET item_amount=:amount WHERE id=:id")
+                            .setParameter("amount", itemStorage.getItemAmount())
+                            .setParameter("id", itemStorage.getId());
 
-            update.execute();
+                    update.execute();
 
-            Database.getServer().update(item);
+                    Database.getServer().update(item);
+                }
+            });
 
             Transaction.generateTransaction(player, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.BUY, region.getName(), player.getWorld().getName(), item.getOwner(), item.getMeta().getId().getItemID(), wishAmount, item.getSell().doubleValue(), 0.0, item.getUnitAmount());
         } else {

@@ -24,7 +24,7 @@ import java.util.List;
  * Date: 18.09.13
  */
 public class Sell {
-    public static void sell(ItemStack itemStack, List<Items> items, Player player, ItemStorageHolder region) {
+    public static void sell(final ItemStack itemStack, List<Items> items, Player player, final ItemStorageHolder region) {
         java.util.List<com.geNAZt.RegionShop.Database.Table.Player> playerList = region.getOwners();
         boolean isOwner = false;
 
@@ -48,7 +48,7 @@ public class Sell {
         }
 
         //Check all items
-        for(Items item : items) {
+        for(final Items item : items) {
             if (item != null && item.getBuy() > 0) {
                 Economy eco = VaultBridge.economy;
                 Float price = itemStack.getAmount() * item.getBuy();
@@ -96,16 +96,21 @@ public class Sell {
                     item.setCurrentAmount(item.getCurrentAmount() + itemStack.getAmount());
                     item.setBought(item.getBought() + itemStack.getAmount());
 
-                    ItemStorage itemStorage = region.getItemStorage();
-                    itemStorage.setItemAmount(itemStorage.getItemAmount() + itemStack.getAmount());
+                    RegionShopPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(RegionShopPlugin.getInstance(), new Runnable() {
+                        @Override
+                        public void run() {
+                            ItemStorage itemStorage = region.getItemStorage();
+                            itemStorage.setItemAmount(itemStorage.getItemAmount() + itemStack.getAmount());
 
-                    SqlUpdate update = Database.getServer().createSqlUpdate("UPDATE rs_itemstorage SET item_amount=:amount WHERE id=:id")
-                            .setParameter("amount", itemStorage.getItemAmount())
-                            .setParameter("id", itemStorage.getId());
+                            SqlUpdate update = Database.getServer().createSqlUpdate("UPDATE rs_itemstorage SET item_amount=:amount WHERE id=:id")
+                                    .setParameter("amount", itemStorage.getItemAmount())
+                                    .setParameter("id", itemStorage.getId());
 
-                    update.execute();
+                            update.execute();
 
-                    Database.getServer().update(item);
+                            Database.getServer().update(item);
+                        }
+                    });
 
                     Transaction.generateTransaction(player, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.SELL, region.getName(), player.getWorld().getName(), item.getOwner(), item.getMeta().getId().getItemID(), itemStack.getAmount(), 0.0, item.getBuy().doubleValue(), item.getUnitAmount());
 
@@ -118,7 +123,7 @@ public class Sell {
         player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sell_OwnerHasNotEnoughMoney);
     }
 
-    public static void sell(ItemStack itemStack, Items item, Player player, ItemStorageHolder region) {
+    public static void sell(final ItemStack itemStack, final Items item, Player player, final ItemStorageHolder region) {
         java.util.List<com.geNAZt.RegionShop.Database.Table.Player> playerList = region.getOwners();
         boolean isOwner = false;
 
@@ -200,16 +205,21 @@ public class Sell {
             item.setCurrentAmount(item.getCurrentAmount() + itemStack.getAmount());
             item.setBought(item.getBought() + itemStack.getAmount());
 
-            ItemStorage itemStorage = region.getItemStorage();
-            itemStorage.setItemAmount(itemStorage.getItemAmount() + itemStack.getAmount());
+            RegionShopPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(RegionShopPlugin.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    ItemStorage itemStorage = region.getItemStorage();
+                    itemStorage.setItemAmount(itemStorage.getItemAmount() + itemStack.getAmount());
 
-            SqlUpdate update = Database.getServer().createSqlUpdate("UPDATE rs_itemstorage SET item_amount=:amount WHERE id=:id")
-                    .setParameter("amount", itemStorage.getItemAmount())
-                    .setParameter("id", itemStorage.getId());
+                    SqlUpdate update = Database.getServer().createSqlUpdate("UPDATE rs_itemstorage SET item_amount=:amount WHERE id=:id")
+                            .setParameter("amount", itemStorage.getItemAmount())
+                            .setParameter("id", itemStorage.getId());
 
-            update.execute();
+                    update.execute();
 
-            Database.getServer().update(item);
+                    Database.getServer().update(item);
+                }
+            });
 
             Transaction.generateTransaction(player,
                     com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.SELL,
