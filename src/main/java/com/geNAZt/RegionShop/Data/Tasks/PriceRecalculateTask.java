@@ -37,8 +37,8 @@ public class PriceRecalculateTask extends BukkitRunnable {
 
                 if (itemInShop == null) continue;
 
-                Integer sold = (itemInShop.getSold()) * 60;
-                Integer bought = (itemInShop.getBought()) * 60;
+                Integer sold = (itemInShop.getSold()) * 720;
+                Integer bought = (itemInShop.getBought()) * 720;
 
                 Float sellPriceDiff = (float) sold / item.maxItemRecalc;
                 Float buyPriceDiff;
