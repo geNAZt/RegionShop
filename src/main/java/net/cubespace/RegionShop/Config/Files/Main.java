@@ -34,5 +34,5 @@ public class Main extends Config {
     public String DB_password = "bukkit";
     public String Chat_prefix = "[RS] ";
     public ArrayList<String> World_enabledWorlds = new ArrayList<String>();
-
+    public String Expert_WGRegex = "regionshop";
 }

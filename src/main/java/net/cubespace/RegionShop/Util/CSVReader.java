@@ -4,7 +4,6 @@ import java.io.*;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last changed: 27.10.13 18:27
  */
 public abstract class CSVReader {
     /**

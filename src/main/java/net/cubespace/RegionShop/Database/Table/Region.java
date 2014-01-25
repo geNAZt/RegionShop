@@ -27,6 +27,10 @@ public class Region implements ItemStorageHolder {
     private Date lastRent;
     @ForeignCollectionField(eager = false)
     private ForeignCollection<CustomerSign> customerSigns;
+    @ForeignCollectionField(eager = false)
+    private ForeignCollection<Player> owners;
+    @ForeignCollectionField(eager = false)
+    private ForeignCollection<Player> members;
 
     public Integer getId() {
         return id;
@@ -90,5 +94,21 @@ public class Region implements ItemStorageHolder {
 
     public void setCustomerSigns(ForeignCollection<CustomerSign> customerSigns) {
         this.customerSigns = customerSigns;
+    }
+
+    public ForeignCollection<Player> getOwners() {
+        return owners;
+    }
+
+    public void setOwners(ForeignCollection<Player> owners) {
+        this.owners = owners;
+    }
+
+    public ForeignCollection<Player> getMembers() {
+        return members;
+    }
+
+    public void setMembers(ForeignCollection<Player> members) {
+        this.members = members;
     }
 }

@@ -29,7 +29,6 @@ import java.util.logging.Level;
  * But the handling of Custom Tags has changed, so i can save Object from Classes in YML
  *
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last modified 26.10.2013 16:41
  */
 public class YamlConfiguration extends FileConfiguration {
     protected static final String COMMENT_PREFIX = "# ";

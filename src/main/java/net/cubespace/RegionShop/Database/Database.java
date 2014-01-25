@@ -2,6 +2,7 @@ package net.cubespace.RegionShop.Database;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.dao.LruObjectCache;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
@@ -15,22 +16,14 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created for YEAHWH.AT
- * User: geNAZt (fabian.fassbender42@googlemail.com)
- * Date: 31.08.13
- */
 public class Database {
-    //Store the Connection
-    private static ConnectionSource connectionSource;
-
     //Store the DAOs
     private static HashMap<Class<?>, Dao> daos = new HashMap<Class<?>, Dao>();
 
     static {
         try {
             //Try to connect to the Database
-            connectionSource = new JdbcPooledConnectionSource(ConfigManager.main.DB_url.replace("{DIR}", Plugin.getInstance().getDataFolder().getAbsolutePath() + File.separator), ConfigManager.main.DB_username, ConfigManager.main.DB_password);
+            ConnectionSource connectionSource = new JdbcPooledConnectionSource(ConfigManager.main.DB_url.replace("{DIR}", Plugin.getInstance().getDataFolder().getAbsolutePath() + File.separator), ConfigManager.main.DB_username, ConfigManager.main.DB_password);
 
             Logger.debug("Connected to Database: " + connectionSource.getDatabaseType().getDatabaseName());
 
@@ -48,7 +41,7 @@ public class Database {
             //Create the tables if not existing
             for(Map.Entry<Class<?>, Dao> dao : daos.entrySet()) {
                 TableUtils.createTableIfNotExists(connectionSource, dao.getKey());
-                dao.getValue().setObjectCache(true);
+                dao.getValue().setObjectCache(new LruObjectCache(500));
             }
         } catch (SQLException e) {
             Logger.fatal("Could not connect to the Database", e);

@@ -11,7 +11,6 @@ import java.util.List;
 
 /**
  * @author geNAZt (fabian.fassbender42@googlemail.com)
- * @date Last modified 02.11.2013, 16:04
  */
 public class PlayerRepository {
     /**
