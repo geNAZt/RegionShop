@@ -56,7 +56,7 @@ public class ShowcaseReloadOnChunkLoad implements Listener {
                 //Get the ItemStack out of the Database
                 ItemStack itemStack = Item.fromDBItem(customerSign.getItem());
 
-                //Drop the Item
+                //Drop the ItemMetaRepository
                 org.bukkit.entity.Item droppedItem = event.getWorld().dropItem(new Location(event.getWorld(), (double) customerSign.getX() + 0.5, (double) customerSign.getY() - 0.8, (double) customerSign.getZ() + 0.5), itemStack);
                 droppedItem.setVelocity(new Vector(0, 0.1, 0));
                 droppedItem.setPickupDelay(Integer.MAX_VALUE);
@@ -87,7 +87,7 @@ public class ShowcaseReloadOnChunkLoad implements Listener {
             //Get the ItemStack out of the Database
             ItemStack itemStack = Item.fromDBItem(chest.getItemStorage().getItems().iterator().next());
 
-            //Drop the Item
+            //Drop the ItemMetaRepository
             org.bukkit.entity.Item droppedItem = event.getWorld().dropItem(new Location(event.getWorld(), (double) chest.getChestX() + 0.5, (double) chest.getChestY() + 1.2, (double) chest.getChestZ() + 0.5), itemStack);
             droppedItem.setVelocity(new Vector(0, 0.1, 0));
             droppedItem.setPickupDelay(Integer.MAX_VALUE);

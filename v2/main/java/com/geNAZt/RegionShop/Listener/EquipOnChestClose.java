@@ -46,7 +46,7 @@ public class EquipOnChestClose implements Listener {
                 return;
             }
 
-            //Get the Item inside the ChestShop
+            //Get the ItemMetaRepository inside the ChestShop
             Items item = chest1.getItemStorage().getItems().iterator().next();
 
             //Store the Items

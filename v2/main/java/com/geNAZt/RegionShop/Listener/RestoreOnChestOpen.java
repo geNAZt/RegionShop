@@ -49,7 +49,7 @@ public class RestoreOnChestOpen implements Listener {
                 return;
             }
 
-            //Get the Item inside the ChestShop
+            //Get the ItemMetaRepository inside the ChestShop
             Items item = chest1.getItemStorage().getItems().iterator().next();
 
             ItemStack itemStack = Item.fromDBItem(item);

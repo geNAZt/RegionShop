@@ -37,6 +37,8 @@ public class Database {
             daos.put(Transaction.class, DaoManager.createDao(connectionSource, Transaction.class));
             daos.put(CustomerSign.class, DaoManager.createDao(connectionSource, CustomerSign.class));
             daos.put(Chest.class, DaoManager.createDao(connectionSource, Chest.class));
+            daos.put(PlayerMembersRegion.class, DaoManager.createDao(connectionSource, PlayerMembersRegion.class));
+            daos.put(PlayerOwnsRegion.class, DaoManager.createDao(connectionSource, PlayerOwnsRegion.class));
 
             //Create the tables if not existing
             for(Map.Entry<Class<?>, Dao> dao : daos.entrySet()) {
@@ -48,7 +50,7 @@ public class Database {
         }
     }
 
-    public static Dao getDAO(Class<?> entityClass) {
-        return daos.get(entityClass);
+    public static <T> Dao<T, Integer> getDAO(Class<T> entityClass) {
+        return (Dao<T, Integer>) daos.get(entityClass);
     }
 }

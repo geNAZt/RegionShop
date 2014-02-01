@@ -29,7 +29,7 @@ public class Main extends Config {
     }
 
     public Boolean Updater = true;
-    public String DB_url = "jdbc:h2:{DIR}RegionShop.db.h2";
+    public String DB_url = "jdbc:sqlite:{DIR}RegionShop.db";
     public String DB_username = "walrus";
     public String DB_password = "bukkit";
     public String Chat_prefix = "[RS] ";

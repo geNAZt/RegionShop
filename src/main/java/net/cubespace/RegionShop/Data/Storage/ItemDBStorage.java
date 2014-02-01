@@ -44,7 +44,7 @@ public class ItemDBStorage {
     public static String lookup(Integer itemID, Short dataValue) {
         //Check if storage is enabled
         if(!enabled) {
-            Logger.warn("Tried to lookup an Item before the ItemDBStorage was ready. Request was: " + itemID + ":" + dataValue);
+            Logger.warn("Tried to lookup an ItemMetaRepository before the ItemDBStorage was ready. Request was: " + itemID + ":" + dataValue);
             return null;
         }
 
@@ -63,7 +63,7 @@ public class ItemDBStorage {
         }
 
         //Nothing could be found (maybe new item or bukkitforge)
-        Logger.warn("A item has been found which the ItemDB does not know. Please report an Issue with the ItemID and the Name of the Item");
+        Logger.warn("A item has been found which the ItemDB does not know. Please report an Issue with the ItemID and the Name of the ItemMetaRepository");
         return null;
     }
 }

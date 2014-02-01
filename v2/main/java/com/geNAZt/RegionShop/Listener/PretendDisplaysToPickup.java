@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 public class PretendDisplaysToPickup implements Listener {
     @EventHandler
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-        //Check if Item is a Display of a Chest
+        //Check if ItemMetaRepository is a Display of a Chest
         Chest chest = Database.getServer().find(Chest.class).
             where().
                 eq("chestX", event.getItem().getLocation().getBlockX()).
@@ -27,7 +27,7 @@ public class PretendDisplaysToPickup implements Listener {
             event.setCancelled(true);
         }
 
-        //Check if Item is a Display of a Chest
+        //Check if ItemMetaRepository is a Display of a Chest
         CustomerSign customerSign = Database.getServer().find(CustomerSign.class).
                 where().
                     eq("x", event.getItem().getLocation().getBlockX()).

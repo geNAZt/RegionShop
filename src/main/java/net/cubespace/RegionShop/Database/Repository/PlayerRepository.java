@@ -23,7 +23,8 @@ public class PlayerRepository {
         List<Boolean> returnList = new ArrayList<Boolean>();
 
         for(OfflinePlayer player : players) {
-            returnList.add(insert(player));
+            if(player != null)
+                returnList.add(insert(player));
         }
 
         return returnList;
@@ -76,7 +77,9 @@ public class PlayerRepository {
         player1.setName(player.getName().toLowerCase());
 
         try {
-            Database.getDAO(Player.class).create(player1);
+            if(!isStored(player))
+                Database.getDAO(Player.class).create(player1);
+
             return true;
         } catch(SQLException e) {
             Logger.warn("Could not persist a Player", e);

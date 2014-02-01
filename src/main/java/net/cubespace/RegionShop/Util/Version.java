@@ -1,7 +1,7 @@
 package net.cubespace.RegionShop.Util;
 
 import net.cubespace.RegionShop.Bukkit.Plugin;
-import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -71,7 +71,7 @@ public class Version {
      */
     private static ArrayList<Integer> convertVersion(String version) {
         //Validate the Input
-        Validate.matchesPattern(version, "[0-9]+\\.[0-9]+\\.[0-9]+");
+        Validate.isTrue(version.matches("[0-9]+\\.[0-9]+\\.[0-9]+"), "Not a real Version");
 
         //Split the string
         String[] versionSplit = version.split("\\.");

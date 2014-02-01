@@ -11,7 +11,7 @@ public class ItemMeta {
     @DatabaseField(uniqueCombo = true)
     private Integer itemID;
     @DatabaseField(uniqueCombo = true)
-    private Short dataValue;
+    private byte dataValue;
 
     public Integer getId() {
         return id;
@@ -29,11 +29,11 @@ public class ItemMeta {
         this.itemID = itemID;
     }
 
-    public Short getDataValue() {
+    public byte getDataValue() {
         return dataValue;
     }
 
-    public void setDataValue(Short dataValue) {
+    public void setDataValue(byte dataValue) {
         this.dataValue = dataValue;
     }
 }

@@ -82,7 +82,7 @@ public class PriceRecalculateTask extends BukkitRunnable {
 
                 Database.getServer().update(itemInShop);
 
-                //Check if Item has a Sign
+                //Check if ItemMetaRepository has a Sign
                 final CustomerSign customerSign = Database.getServer().find(CustomerSign.class).
                         where().
                         conjunction().

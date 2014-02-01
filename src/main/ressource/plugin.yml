@@ -2,7 +2,7 @@ name: RegionShop
 main: net.cubespace.RegionShop.Bukkit.Plugin
 description: A Shop which uses Regions as Shop Basement
 version: 3.0.0
-softdepend: [Vault, WorldGuard, WorldEdit]
+depend: [Vault, WorldGuard, WorldEdit]
 commands:
     shop:
        description: RegionShops - Use the WorldGuard Regions as Shopping ground.

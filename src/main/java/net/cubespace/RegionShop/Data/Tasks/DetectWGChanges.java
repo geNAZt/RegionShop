@@ -9,6 +9,7 @@ import net.cubespace.RegionShop.Database.Table.Region;
 import net.cubespace.RegionShop.Events.WorldGuard.WGChangeRegionEvent;
 import net.cubespace.RegionShop.Events.WorldGuard.WGNewRegionEvent;
 import net.cubespace.RegionShop.Events.WorldGuard.WGRemoveRegionEvent;
+import net.cubespace.RegionShop.Util.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -54,9 +55,7 @@ public class DetectWGChanges extends BukkitRunnable {
                                         eq("world", world.getName()).
                                 queryForFirst();
                     } catch (SQLException e) {
-                        Plugin.getInstance().getLogger().warning("Could not get Region due to a SQL Exceptio");
-                        e.printStackTrace();
-
+                        Logger.warn("Could not get Region for checking", e);
                         continue;
                     }
 
@@ -95,7 +94,11 @@ public class DetectWGChanges extends BukkitRunnable {
 
             //Check if Regions where removed
             try {
-                for(Region region : (List<Region>) Database.getDAO(Region.class).queryForEq("world", world.getName())) {
+                List<Region> regionList = (List<Region>) Database.getDAO(Region.class).queryForEq("world", world.getName());
+
+                if(regionList == null) return;
+
+                for(Region region : regionList) {
                     //This region is deleted ?
                     if(!wgRegions.containsKey(region.getRegion())) {
                         //Generate a new Event
@@ -109,8 +112,7 @@ public class DetectWGChanges extends BukkitRunnable {
                     }
                 }
             } catch (SQLException e) {
-                Plugin.getInstance().getLogger().warning("Could not get Regions due to a SQL Exceptio");
-                e.printStackTrace();
+                Logger.error("Could not get Region List", e);
             }
         }
     }

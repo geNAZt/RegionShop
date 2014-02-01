@@ -24,7 +24,7 @@ import java.util.Set;
  */
 public class Add {
     public static Integer add(ItemStack item, Player player, ItemStorageHolder shop, Float sell, Float buy, Integer amount) {
-        //Ask Database for this Item
+        //Ask Database for this ItemMetaRepository
         List<Items> dbItem = Database.getServer().find(Items.class).
                 where().
                     conjunction().
@@ -95,7 +95,7 @@ public class Add {
             }
 
             if(found) {
-                //Item is already added
+                //ItemMetaRepository is already added
                 return itemID;
             } else {
                 //It is new. Convert it into the Database

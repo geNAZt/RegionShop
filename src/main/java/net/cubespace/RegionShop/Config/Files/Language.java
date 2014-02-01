@@ -1,23 +1,21 @@
-package com.geNAZt.RegionShop.Config.Files;
+package net.cubespace.RegionShop.Config.Files;
 
-import com.geNAZt.RegionShop.Config.Config;
-import com.geNAZt.RegionShop.RegionShopPlugin;
+import net.cubespace.RegionShop.Bukkit.Plugin;
+import net.cubespace.RegionShop.Config.Config;
 import org.bukkit.ChatColor;
 
 import java.io.File;
 import java.util.ArrayList;
 
 /**
- * Created for YEAHWH.AT
- * User: fabian
- * Date: 02.09.13
+ * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 public class Language extends Config {
-    public Language(RegionShopPlugin plugin) {
-        CONFIG_FILE = new File(plugin.getDataFolder() + File.separator + "config" + File.separator + "language.yml");
+    public Language() {
+        CONFIG_FILE = new File(Plugin.getInstance().getDataFolder() + File.separator + "config" + File.separator + "language.yml");
         CONFIG_HEADER = new String[]{
-            "This file holds all Language Strings. If you need to install another language",
-            "You can find them at http://cube-sapce.net/RegionShop/Language"
+                "This file holds all Language Strings. If you need to install another language",
+                "You can find them at http://cube-sapce.net/RegionShop/Language"
         };
 
         Command_List_HelpText.add(ChatColor.GOLD + "/shop list" + ChatColor.RESET + ": List items in the shop (inside a shopregion)");
@@ -67,9 +65,6 @@ public class Language extends Config {
         Sign_Shop_SignText.add("S %sell$:B %buy$");
     }
 
-    //Updater
-    public String Updater_NewUpdate = ChatColor.GOLD + "There is a new Version of RegionShop available: " + ChatColor.DARK_GREEN + "%version" + ChatColor.GOLD + ". You can download it here: " + ChatColor.DARK_GREEN + "%link";
-
     //Command Executer Messages
     public String Command_NoPermission = ChatColor.RED + "Insufficient permission.";
     public String Command_NotEnoughArguments = ChatColor.RED + "You have not given all arguments needed";
@@ -89,7 +84,7 @@ public class Language extends Config {
     //Sell Core
     public String Sell_DoesNotBuy = ChatColor.RED + "This shop does not buy this item";
     public String Sell_OwnerHint = ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + "%player" + ChatColor.DARK_GREEN + " has sold " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " to your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + "%price" + "$";
-    public String Sell_PlayerHint = ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + "%amount" + " " + "%item" + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + "%price" + "$" + ChatColor.DARK_GREEN + " to %owner";
+    public String Sell_PlayerHint = ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + "%amount" + " " + "%item" + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + "%price" + "$" + ChatColor.DARK_GREEN + " to shop";
     public String Sell_OwnerHasNotEnoughMoney = ChatColor.RED + "The ItemMetaRepository Owner has not enough Money";
     public String Sell_FullStorage = ChatColor.RED + "You can not sell to this Shop. It is full";
     public String Sell_NotYourItem = ChatColor.RED + "You can't sell into Shops you own. Please use /shop equip or /shop add";
@@ -97,7 +92,7 @@ public class Language extends Config {
     //Buy Core
     public String Buy_NoSell = ChatColor.RED +  "This Shop doesn't sell this ItemMetaRepository";
     public String Buy_NotEnoughItems = ChatColor.RED +  "This shop has not enough items in stock";
-    public String Buy_PlayerHint = ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + "%price" + "$" + ChatColor.DARK_GREEN + " from %owner";
+    public String Buy_PlayerHint = ChatColor.DARK_GREEN + "You have bought " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + "%price" + "$" + ChatColor.DARK_GREEN + " from shop";
     public String Buy_NotEnoughMoney = ChatColor.RED +  "You have not enough money for this. You need %price$";
     public String Buy_OwnerHintEmptyShop = ChatColor.DARK_GREEN + "ShopItem " + ChatColor.GREEN + "%item" + ChatColor.DARK_GREEN + " is empty. It has been removed from your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ")";
     public String Buy_OwnerHint = ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + "%player" + ChatColor.DARK_GREEN + " bought " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " from your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + "%price" + "$";
@@ -216,7 +211,6 @@ public class Language extends Config {
     public String Command_Name_TooLong = ChatColor.RED + "Name length must be under %amount chars";
     public String Command_Name_NotOwner = ChatColor.RED + "You are not an owner in this shop";
     public String Command_Name_NotInRegion = ChatColor.RED + "You are not inside a shop";
-    public String Command_Name_Success = ChatColor.GOLD + "Shop has been renamed";
 
     //Remove Command
     public String Command_Remove_HelpText = ChatColor.GOLD + "/shop remove " + ChatColor.RED + "shopItemID" + ChatColor.RESET + ": Remove the "+ ChatColor.RED + "shopItemID" + ChatColor.RESET + " out of the Shop";
@@ -253,7 +247,7 @@ public class Language extends Config {
     //Shop Sign
     public String Sign_Shop_NoChest = ChatColor.RED + "There is no Chest around the Sign";
     public String Sign_Shop_InvalidAmount = ChatColor.RED + "The amount (2nd Line) is not a Number";
-    public String Sign_Shop_NoValidBuySellLine = ChatColor.RED + "The Buy/Sell Line is invalid. It must be <buy>:<sell>";
+    public String Sign_Shop_NoValidBuySellLine = ChatColor.RED + "The Buy/Sell Line is invalid. It must be <sell>:<buy>";
     public String Sign_Shop_InvalidBuySell = ChatColor.RED + "The Buy/Sell value must be a floating Number. For example 1.0 or 1.7";
     public String Sign_Shop_ChestIsEmpty = ChatColor.RED + "The Chest is empty. First add items into the Chest and then make the Sign.";
     public ArrayList<String> Sign_Shop_SignText = new ArrayList<String>();
@@ -271,11 +265,4 @@ public class Language extends Config {
     public String Command_Transaction_InvalidPage = ChatColor.RED + "Invalid page";
     public ArrayList<String> Command_Transcation_Header = new ArrayList<String>();
     public String Command_Transaction_DateFormat = "dd.MM.yy HH:mm:ss";
-
-    //Group Command
-    public String Command_Group_HelpText = ChatColor.GOLD + "/shop admin group " + ChatColor.RED + "id group" + ChatColor.RESET + ": Set the group of the shop to " + ChatColor.RED + "group";
-    public String Command_Group_NotFound = ChatColor.RED + "The group you have selected could not be found";
-    public String Command_Group_InvalidID = ChatColor.RED + "The ID you have given is invalid. r:<id> or c:<id>";
-    public String Command_Group_IDNotFound = ChatColor.RED + "The ID you have given has not been found.";
-    public String Command_Group_Success = ChatColor.GOLD + "Shop has been assigned to the new Group";
 }
