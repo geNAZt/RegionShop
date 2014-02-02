@@ -2,8 +2,8 @@ package net.cubespace.RegionShop.Config.Files;
 
 import net.cubespace.RegionShop.Bukkit.Plugin;
 import net.cubespace.RegionShop.Config.Config;
-import net.cubespace.RegionShop.Config.Sub.Group;
-import net.cubespace.RegionShop.Config.Sub.GroupRentMode;
+import net.cubespace.RegionShop.Config.Files.Sub.Group;
+import net.cubespace.RegionShop.Config.Files.Sub.GroupRentMode;
 
 import java.io.File;
 import java.util.ArrayList;

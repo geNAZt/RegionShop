@@ -13,7 +13,7 @@ import java.sql.Date;
 public class Region implements ItemStorageHolder {
     @DatabaseField(generatedId = true)
     private Integer id;
-    @DatabaseField(foreign = true, columnName = "itemstorage_id")
+    @DatabaseField(foreign = true, columnName = "itemstorage_id", foreignAutoRefresh=true, maxForeignAutoRefreshLevel=3)
     private ItemStorage itemStorage;
     @Column
     private String name;
@@ -37,11 +37,11 @@ public class Region implements ItemStorageHolder {
     private Double maxY;
     @Column
     private Double maxZ;
-    @ForeignCollectionField(eager = false)
+    @ForeignCollectionField(eager = true)
     private ForeignCollection<CustomerSign> customerSigns;
-    @ForeignCollectionField(eager = false)
+    @ForeignCollectionField(eager = true)
     private ForeignCollection<PlayerOwnsRegion> owners;
-    @ForeignCollectionField(eager = false)
+    @ForeignCollectionField(eager = true)
     private ForeignCollection<PlayerMembersRegion> members;
 
     public Integer getId() {

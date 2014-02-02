@@ -11,11 +11,11 @@ import javax.persistence.Entity;
 public class ItemStorage {
     @DatabaseField(generatedId = true)
     private Integer id;
-    @ForeignCollectionField(eager = false)
+    @ForeignCollectionField(eager = true)
     private ForeignCollection<Region> regions;
-    @ForeignCollectionField
+    @ForeignCollectionField(eager = true)
     private ForeignCollection<Chest> chests;
-    @ForeignCollectionField
+    @ForeignCollectionField(eager = true)
     private ForeignCollection<Items> items;
     @Column
     private String setting;

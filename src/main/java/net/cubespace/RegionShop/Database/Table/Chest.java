@@ -1,7 +1,10 @@
 package net.cubespace.RegionShop.Database.Table;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import net.cubespace.RegionShop.Database.ItemStorageHolder;
+import net.cubespace.RegionShop.Database.PlayerOwns;
 
 import javax.persistence.*;
 
@@ -9,7 +12,7 @@ import javax.persistence.*;
 public class Chest implements ItemStorageHolder {
     @DatabaseField(generatedId = true)
     private Integer id;
-    @DatabaseField(foreign = true, columnName = "itemstorage_id")
+    @DatabaseField(foreign = true, columnName = "itemstorage_id", foreignAutoRefresh=true, maxForeignAutoRefreshLevel=3)
     private ItemStorage itemStorage;
     @Column
     private String name;
@@ -27,8 +30,8 @@ public class Chest implements ItemStorageHolder {
     private Integer signY;
     @Column
     private Integer signZ;
-    @DatabaseField(foreign = true, columnName = "owner_id")
-    private Player owner;
+    @ForeignCollectionField(eager = true)
+    private ForeignCollection<PlayerOwnsChest> owners;
 
     public Integer getId() {
         return id;
@@ -110,11 +113,11 @@ public class Chest implements ItemStorageHolder {
         this.signZ = signZ;
     }
 
-    public Player getOwner() {
-        return owner;
+    public ForeignCollection<PlayerOwnsChest> getOwners() {
+        return owners;
     }
 
-    public void setOwner(Player owner) {
-        this.owner = owner;
+    public void setOwners(ForeignCollection<PlayerOwnsChest> owners) {
+        this.owners = owners;
     }
 }

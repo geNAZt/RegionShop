@@ -17,9 +17,9 @@ public class CustomerSign {
     private Integer y;
     @Column
     private Integer z;
-    @DatabaseField(foreign = true, columnName = "region_id")
+    @DatabaseField(foreign = true, columnName = "region_id", foreignAutoRefresh=true, maxForeignAutoRefreshLevel=3)
     protected Region region;
-    @DatabaseField(foreign = true, columnName = "item_id")
+    @DatabaseField(foreign = true, columnName = "item_id", foreignAutoRefresh=true, maxForeignAutoRefreshLevel=3)
     protected Items item;
 
     public Integer getId() {

@@ -1,6 +1,7 @@
 package net.cubespace.RegionShop.Database.Table;
 
 import com.j256.ormlite.field.DatabaseField;
+import net.cubespace.RegionShop.Database.PlayerOwns;
 
 import javax.persistence.Entity;
 
@@ -8,12 +9,12 @@ import javax.persistence.Entity;
  * @author geNAZt (fabian.fassbender42@googlemail.com)
  */
 @Entity()
-public class PlayerOwnsRegion {
+public class PlayerOwnsRegion implements PlayerOwns {
     @DatabaseField(generatedId = true)
     private int id;
-    @DatabaseField(foreign = true, columnName = "player_id")
+    @DatabaseField(foreign = true, columnName = "player_id", foreignAutoRefresh=true, maxForeignAutoRefreshLevel=3)
     private Player player;
-    @DatabaseField(foreign = true, columnName = "region_id")
+    @DatabaseField(foreign = true, columnName = "region_id", foreignAutoRefresh=true, maxForeignAutoRefreshLevel=3)
     private Region region;
 
     public Player getPlayer() {

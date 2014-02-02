@@ -1,4 +1,4 @@
-package net.cubespace.RegionShop.Config.Sub;
+package net.cubespace.RegionShop.Config.Files.Sub;
 
 /**
  * Created for YEAHWH.AT

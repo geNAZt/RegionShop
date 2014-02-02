@@ -11,11 +11,11 @@ import javax.persistence.Entity;
 public class Items {
     @DatabaseField(generatedId = true)
     private Integer id;
-    @DatabaseField(foreign = true, columnName = "itemstorage_id")
+    @DatabaseField(foreign = true, columnName = "itemstorage_id", foreignAutoRefresh=true, maxForeignAutoRefreshLevel=3)
     protected ItemStorage itemStorage;
-    @DatabaseField(foreign = true, columnName = "itemmeta_id")
+    @DatabaseField(foreign = true, columnName = "itemmeta_id", foreignAutoRefresh=true, maxForeignAutoRefreshLevel=3)
     protected ItemMeta meta;
-    @ForeignCollectionField(eager = false)
+    @ForeignCollectionField(eager = true)
     protected ForeignCollection<Enchantment> enchantments;
     @Column
     private Float buy;

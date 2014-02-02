@@ -13,7 +13,9 @@ public class Player {
     @DatabaseField(unique = true)
     private String name;
     @ForeignCollectionField(eager = false)
-    private ForeignCollection<Chest> ownsChest;
+    private ForeignCollection<PlayerOwnsChest> ownsChest;
+    @ForeignCollectionField(eager = false)
+    private ForeignCollection<PlayerOwnsRegion> ownsRegion;
 
     public Integer getId() {
         return id;
@@ -31,11 +33,19 @@ public class Player {
         this.name = name;
     }
 
-    public ForeignCollection<Chest> getOwnsChest() {
+    public ForeignCollection<PlayerOwnsChest> getOwnsChest() {
         return ownsChest;
     }
 
-    public void setOwnsChest(ForeignCollection<Chest> ownsChest) {
+    public void setOwnsChest(ForeignCollection<PlayerOwnsChest> ownsChest) {
         this.ownsChest = ownsChest;
+    }
+
+    public ForeignCollection<PlayerOwnsRegion> getOwnsRegion() {
+        return ownsRegion;
+    }
+
+    public void setOwnsRegion(ForeignCollection<PlayerOwnsRegion> ownsRegion) {
+        this.ownsRegion = ownsRegion;
     }
 }

@@ -11,9 +11,9 @@ import javax.persistence.Entity;
 public class PlayerMembersRegion {
     @DatabaseField(generatedId = true)
     private int id;
-    @DatabaseField(foreign = true, columnName = "player_id")
+    @DatabaseField(foreign = true, columnName = "player_id", foreignAutoRefresh=true, maxForeignAutoRefreshLevel=3)
     private Player player;
-    @DatabaseField(foreign = true, columnName = "region_id")
+    @DatabaseField(foreign = true, columnName = "region_id", foreignAutoRefresh=true, maxForeignAutoRefreshLevel=3)
     private Region region;
 
     public Player getPlayer() {

@@ -1,4 +1,4 @@
-package net.cubespace.RegionShop.Config.Sub;
+package net.cubespace.RegionShop.Config.Files.Sub;
 
 import net.cubespace.RegionShop.Config.Config;
 

@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class Enchantment {
     @DatabaseField(generatedId = true)
     private Integer id;
-    @DatabaseField(foreign = true, columnName = "item_id")
+    @DatabaseField(foreign = true, columnName = "item_id", foreignAutoRefresh=true, maxForeignAutoRefreshLevel=3)
     private Items item;
     @Column
     private Integer enchId;

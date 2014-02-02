@@ -5,6 +5,9 @@ import net.cubespace.RegionShop.Bukkit.Listener.PlayerMove;
 import net.cubespace.RegionShop.Bukkit.Listener.WGChanges;
 import net.cubespace.RegionShop.Data.Parser.ItemDB;
 import net.cubespace.RegionShop.Data.Tasks.DetectWGChanges;
+import net.cubespace.RegionShop.Data.Tasks.IntegrateServershop;
+import net.cubespace.RegionShop.Data.Tasks.PriceRecalculateTask;
+import net.cubespace.RegionShop.Interface.CLI.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -33,7 +36,12 @@ public class Plugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
 
         //Start the needed Tasks
-        getServer().getScheduler().runTaskTimerAsynchronously(this, new DetectWGChanges(), 20, 20);
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new DetectWGChanges(), 5 * 20, 5 * 20);
+        getServer().getScheduler().runTaskLaterAsynchronously(this, new IntegrateServershop(), 10 * 20);
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new PriceRecalculateTask(), 5 * 20, 5 * 20);
+
+        //Command
+        getCommand("shop").setExecutor(new CommandExecutor());
     }
 
     /**

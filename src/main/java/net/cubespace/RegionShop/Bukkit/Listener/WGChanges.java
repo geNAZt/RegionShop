@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 public class WGChanges implements Listener {
     @EventHandler
     public void onWGRegionCreate(final WGNewRegionEvent event) {
+        Plugin.getInstance().getLogger().info("Got new Region");
         Plugin.getInstance().getServer().getScheduler().runTaskAsynchronously(Plugin.getInstance(), new Runnable() {
             @Override
             public void run() {
@@ -24,6 +25,7 @@ public class WGChanges implements Listener {
 
     @EventHandler
     public void onWGRegionChange(final WGChangeRegionEvent event) {
+        Plugin.getInstance().getLogger().info("Got changed Region");
         Plugin.getInstance().getServer().getScheduler().runTaskAsynchronously(Plugin.getInstance(), new Runnable() {
             @Override
             public void run() {
@@ -34,6 +36,7 @@ public class WGChanges implements Listener {
 
     @EventHandler
     public void onWGRemoveRegion(final WGRemoveRegionEvent event) {
+        Plugin.getInstance().getLogger().info("Got removed Region");
         Plugin.getInstance().getServer().getScheduler().runTaskAsynchronously(Plugin.getInstance(), new Runnable() {
             @Override
             public void run() {

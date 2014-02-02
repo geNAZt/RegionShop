@@ -2,11 +2,13 @@ package net.cubespace.RegionShop.Config.Files;
 
 import net.cubespace.RegionShop.Bukkit.Plugin;
 import net.cubespace.RegionShop.Config.Config;
+import net.cubespace.RegionShop.Config.Files.Sub.Location;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,4 +37,7 @@ public class Main extends Config {
     public String Chat_prefix = "[RS] ";
     public ArrayList<String> World_enabledWorlds = new ArrayList<String>();
     public String Expert_WGRegex = "regionshop";
+    public Boolean Expert_OnlyASCII = true;
+    public Integer Expert_MaxShopName = 30;
+    public HashMap<String, Location> Shop_Teleport = new HashMap<String, Location>();
 }
