@@ -81,12 +81,12 @@ public class Logger {
     }
 
     /**
-     * This function tells Bukkit to log debug messages, but only if System Property "net.cubespace.RegionShop.Util.Logger.debug" is true
+     * This function tells Bukkit to log debug messages, but only if System Property "logger.debug" is true
      *
      * @param message The message which will be printed
      */
     public static void debug(String message) {
-        if(System.getenv("logger.debug") != null && System.getenv("logger.debug").equals("true")) {
+        if(System.getProperty("logger.debug") != null && System.getProperty("logger.debug").equals("true")) {
             Plugin.getInstance().getLogger().log(Level.INFO, message);
         }
     }

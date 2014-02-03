@@ -1,7 +1,5 @@
 package net.cubespace.RegionShop.Data.Tasks;
 
-import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.Where;
 import net.cubespace.RegionShop.Bukkit.Plugin;
 import net.cubespace.RegionShop.Config.ConfigManager;
 import net.cubespace.RegionShop.Config.Files.Sub.Item;
@@ -24,17 +22,23 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class PriceRecalculateTask extends BukkitRunnable {
     private HashMap<Integer, HashMap<String, ArrayList<Integer>>> recalcCache = new HashMap<Integer, HashMap<String, ArrayList<Integer>>>();
+    private List<Item> items = new ArrayList<Item>();
+
+    public PriceRecalculateTask(List<Item> items) {
+        this.items = items;
+    }
 
     private void prepareCache(Integer id) {
-        if(!recalcCache.containsKey(id)) {
+        if (!recalcCache.containsKey(id)) {
             HashMap<String, ArrayList<Integer>> newArrayList = new HashMap<String, ArrayList<Integer>>();
-            newArrayList.put("buy", new ArrayList<Integer>(720));
-            newArrayList.put("sell", new ArrayList<Integer>(720));
+            newArrayList.put("buy", new ArrayList<Integer>());
+            newArrayList.put("sell", new ArrayList<Integer>());
 
-            for(Integer i = 0; i < 720; i++) {
+            for (Integer i = 0; i < 720; i++) {
                 newArrayList.get("buy").add(0);
                 newArrayList.get("sell").add(0);
             }
@@ -44,14 +48,14 @@ public class PriceRecalculateTask extends BukkitRunnable {
     }
 
     private void addToCache(Integer id, Integer buy, Integer sell) {
-        if(recalcCache.containsKey(id)) {
+        if (recalcCache.containsKey(id)) {
             HashMap<String, ArrayList<Integer>> newArrayList = recalcCache.get(id);
 
-            if(newArrayList.get("buy").size() > 720) {
+            if (newArrayList.get("buy").size() > 720) {
                 newArrayList.get("buy").remove(0);
             }
 
-            if(newArrayList.get("sell").size() > 720) {
+            if (newArrayList.get("sell").size() > 720) {
                 newArrayList.get("sell").remove(0);
             }
 
@@ -61,15 +65,15 @@ public class PriceRecalculateTask extends BukkitRunnable {
     }
 
     private Integer getAverage(Integer id, String key) {
-        if(recalcCache.containsKey(id)) {
+        if (recalcCache.containsKey(id)) {
             Integer amount = 0;
             ArrayList<Integer> newArrayList = recalcCache.get(id).get(key);
 
-            for(Integer curAmount : newArrayList) {
+            for (Integer curAmount : newArrayList) {
                 amount += curAmount;
             }
 
-            return Math.round(amount / newArrayList.size());
+            return Math.round(amount / 720);
         }
 
         return 0;
@@ -77,158 +81,155 @@ public class PriceRecalculateTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        for (final ServerShop shop : ConfigManager.servershop.ServerShops) {
-            Region region = null;
+        int lastItemStorageId = 0;
+        for (Item item : items) {
+            Items itemInShop = null;
             try {
-                region = Database.getDAO(Region.class).queryBuilder().where().eq("name", shop.Region).queryForFirst();
+                itemInShop = Database.getDAO(Items.class).queryForId(item.databaseID);
             } catch (SQLException e) {
-                Logger.error("Could not get Region", e);
+                Logger.error("Could not get Item", e);
             }
 
-            if(region == null) continue;
+            if (itemInShop == null) {
+                Logger.info("No item found to update");
 
-            for (Item item : shop.Items) {
-                Items itemInShop = null;
-                try {
-                    ItemMeta itemMeta = Database.getDAO(ItemMeta.class).queryBuilder().
-                            where().
-                            eq("itemID", item.itemID).
-                            and().
-                            eq("dataValue", item.dataValue).queryForFirst();
+                continue;
+            }
 
-                    if(itemMeta == null) continue;
+            Logger.debug("Item recalc for Item: " + itemInShop.getMeta().getId() + ":" + itemInShop.getMeta().getDataValue());
 
-                    itemInShop = Database.getDAO(Items.class).queryBuilder().
-                            where().
-                            eq("itemstorage_id", region.getItemStorage().getId()).
-                            and().
-                            eq("itemmeta_id", itemMeta.getId()).queryForFirst();
-                } catch (SQLException e) {
-                    Logger.error("Could not get Item", e);
+            prepareCache(itemInShop.getId());
+
+            Integer sold = (itemInShop.getSold()) * 720;
+            Integer bought = (itemInShop.getBought()) * 720;
+
+            addToCache(itemInShop.getId(), bought, sold);
+
+            sold = getAverage(itemInShop.getId(), "sell");
+            bought = getAverage(itemInShop.getId(), "buy");
+
+            Logger.debug("Item Recalc: " + bought + " / " + sold);
+
+            Float sellPriceDiff = (float) sold / item.maxItemRecalc;
+            Float buyPriceDiff;
+
+            if (bought > 0) {
+                buyPriceDiff = (float) bought / item.maxItemRecalc;
+            } else {
+                buyPriceDiff = 2.0F;
+            }
+
+            if (sellPriceDiff > 1.0) {
+                //Preis geht rauf
+                if (sellPriceDiff > item.limitSellPriceFactor) {
+                    sellPriceDiff = item.limitSellPriceFactor;
                 }
-
-                if (itemInShop == null) continue;
-
-                prepareCache(itemInShop.getId());
-
-                Integer sold = (itemInShop.getSold()) * 720;
-                Integer bought = (itemInShop.getBought()) * 720;
-
-                addToCache(itemInShop.getId(), bought, sold);
-
-                sold = getAverage(itemInShop.getId(), "sell");
-                bought = getAverage(itemInShop.getId(), "buy");
-
-                Float sellPriceDiff = (float) sold / item.maxItemRecalc;
-                Float buyPriceDiff;
-
-                if (bought > 0) {
-                    buyPriceDiff = (float) item.maxItemRecalc / bought;
-                } else {
-                    buyPriceDiff = 2.0F;
+            } else {
+                //Preis geht runter
+                if (sellPriceDiff < item.limitSellPriceUnderFactor) {
+                    sellPriceDiff = item.limitSellPriceUnderFactor;
                 }
+            }
 
-                if (sellPriceDiff > 1.0) {
-                    //Preis geht rauf
-                    if (sellPriceDiff > item.limitSellPriceFactor) {
-                        sellPriceDiff = item.limitSellPriceFactor;
-                    }
-                } else {
-                    //Preis geht runter
-                    if (sellPriceDiff < item.limitSellPriceUnderFactor) {
-                        sellPriceDiff = item.limitSellPriceUnderFactor;
-                    }
+            if (buyPriceDiff > 1.0) {
+                //Abgabe geht rauf
+                buyPriceDiff = buyPriceDiff * item.limitBuyPriceFactor;
+            } else {
+                //Abgabe geht runter
+                if (buyPriceDiff < item.limitBuyPriceUnderFactor) {
+                    buyPriceDiff = item.limitBuyPriceUnderFactor;
                 }
+            }
 
-                if (buyPriceDiff > 1.0) {
-                    //Abgabe geht rauf
-                    buyPriceDiff = buyPriceDiff * item.limitBuyPriceFactor;
-                } else {
-                    //Abgabe geht runter
-                    if (buyPriceDiff < item.limitBuyPriceUnderFactor) {
-                        buyPriceDiff = item.limitBuyPriceUnderFactor;
-                    }
-                }
+            Logger.debug("Diffs: " + buyPriceDiff + " / " + sellPriceDiff);
 
-                Float newSellPrice = Math.round(item.sell * sellPriceDiff * 100) / 100.0F;
-                Float newBuyPrice = Math.round(item.buy * buyPriceDiff * 100) / 100.0F;
+            Float newSellPrice = Math.round(item.sell * sellPriceDiff * 100) / 100.0F;
+            Float newBuyPrice = Math.round(item.buy * buyPriceDiff * 100) / 100.0F;
 
-                itemInShop.setBuy(newBuyPrice);
-                itemInShop.setSell(newSellPrice);
-                itemInShop.setCurrentAmount(99999);
-                itemInShop.setBought(0);
-                itemInShop.setSold(0);
+            itemInShop.setBuy(newBuyPrice);
+            itemInShop.setSell(newSellPrice);
+            itemInShop.setCurrentAmount(99999);
+            itemInShop.setBought(0);
+            itemInShop.setSold(0);
 
-                try {
-                    Database.getDAO(Items.class).update(itemInShop);
-                } catch (SQLException e) {
-                    Logger.error("Could not update Item", e);
-                }
+            Logger.debug("New Price: " + newBuyPrice + " / " + newSellPrice);
 
-                //Check if Item has a Sign
-                CustomerSign customerSign = null;
-                try {
-                    customerSign = Database.getDAO(CustomerSign.class).queryBuilder().
-                            where().
-                            eq("item_id", itemInShop.getId()).
-                            queryForFirst();
-                } catch (SQLException e) {
-                    Logger.error("Could not get Customer Sign", e);
-                }
+            try {
+                Database.getDAO(Items.class).update(itemInShop);
+            } catch (SQLException e) {
+                Logger.error("Could not update Item", e);
+            }
 
-                final Items items = itemInShop;
+            //Check if Item has a Sign
+            CustomerSign customerSign = null;
+            try {
+                customerSign = Database.getDAO(CustomerSign.class).queryBuilder().
+                        where().
+                        eq("item_id", itemInShop.getId()).
+                        queryForFirst();
+            } catch (SQLException e) {
+                Logger.error("Could not get Customer Sign", e);
+            }
 
-                if (customerSign != null) {
-                    final CustomerSign syncCustomerSign = customerSign;
-                    Plugin.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(Plugin.getInstance(), new Runnable() {
-                        @Override
-                        public void run() {
-                            Block block = Plugin.getInstance().getServer().getWorld(syncCustomerSign.getRegion().getWorld()).getBlockAt(syncCustomerSign.getX(), syncCustomerSign.getY(), syncCustomerSign.getZ());
-                            if (block.getType().equals(Material.SIGN_POST) || block.getType().equals(Material.WALL_SIGN)) {
-                                Sign sign = (Sign) block.getState();
+            final Items items = itemInShop;
 
-                                //Get the nice name
-                                ItemStack itemStack = ItemRepository.fromDBItem(items);
+            if (customerSign != null) {
+                final CustomerSign syncCustomerSign = customerSign;
+                Plugin.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(Plugin.getInstance(), new Runnable() {
+                    @Override
+                    public void run() {
+                        Block block = Plugin.getInstance().getServer().getWorld(syncCustomerSign.getRegion().getWorld()).getBlockAt(syncCustomerSign.getX(), syncCustomerSign.getY(), syncCustomerSign.getZ());
+                        if (block.getType().equals(Material.SIGN_POST) || block.getType().equals(Material.WALL_SIGN)) {
+                            Sign sign = (Sign) block.getState();
 
-                                String dataName = ItemName.getDataName(itemStack);
-                                String niceItemName;
-                                if(dataName.endsWith(" ")) {
-                                    niceItemName = dataName + ItemName.nicer(itemStack.getType().toString());
-                                } else if(!dataName.equals("")) {
-                                    niceItemName = dataName;
-                                } else {
-                                    niceItemName = ItemName.nicer(itemStack.getType().toString());
-                                }
+                            //Get the nice name
+                            ItemStack itemStack = ItemRepository.fromDBItem(items);
 
-                                if (itemStack.getItemMeta().hasDisplayName()) {
-                                    niceItemName = "(" + itemStack.getItemMeta().getDisplayName() + ")";
-                                }
-
-                                for (Integer line = 0; line < 4; line++) {
-                                    sign.setLine(line, ConfigManager.language.Sign_Customer_SignText.get(line).
-                                            replace("%id", items.getId().toString()).
-                                            replace("%itemname", ItemName.nicer(niceItemName)).
-                                            replace("%amount", items.getUnitAmount().toString()).
-                                            replace("%sell", items.getSell().toString()).
-                                            replace("%buy", items.getBuy().toString()));
-                                }
-
-                                sign.update();
+                            String dataName = ItemName.getDataName(itemStack);
+                            String niceItemName;
+                            if (dataName.endsWith(" ")) {
+                                niceItemName = dataName + ItemName.nicer(itemStack.getType().toString());
+                            } else if (!dataName.equals("")) {
+                                niceItemName = dataName;
+                            } else {
+                                niceItemName = ItemName.nicer(itemStack.getType().toString());
                             }
+
+                            if (itemStack.getItemMeta().hasDisplayName()) {
+                                niceItemName = "(" + itemStack.getItemMeta().getDisplayName() + ")";
+                            }
+
+                            for (Integer line = 0; line < 4; line++) {
+                                sign.setLine(line, ConfigManager.language.Sign_Customer_SignText.get(line).
+                                        replace("%id", items.getId().toString()).
+                                        replace("%itemname", ItemName.nicer(niceItemName)).
+                                        replace("%amount", items.getUnitAmount().toString()).
+                                        replace("%sell", items.getSell().toString()).
+                                        replace("%buy", items.getBuy().toString()));
+                            }
+
+                            sign.update();
                         }
-                    });
-                }
+                    }
+                });
             }
 
-            //Reset the ItemStorage to avoid "Shop is full you cant sell"
-            try {
-                ItemStorage itemStorage = Database.getDAO(ItemStorage.class).queryBuilder().where().eq("id", region.getItemStorage().getId()).queryForFirst();
-                itemStorage.setItemAmount(0);
-                Database.getDAO(ItemStorage.class).update(itemStorage);
-            } catch (SQLException e) {
-                Logger.error("Could not reset ItemStorage", e);
+            if (lastItemStorageId != itemInShop.getItemStorage().getId()) {
+                //Reset the ItemStorage to avoid "Shop is full you cant sell"
+                try {
+                    itemInShop.getItemStorage().setItemAmount(0);
+                    Database.getDAO(ItemStorage.class).update(itemInShop.getItemStorage());
+                } catch (SQLException e) {
+                    Logger.error("Could not reset ItemStorage", e);
+                }
+
+                lastItemStorageId = itemInShop.getItemStorage().getId();
             }
         }
+
+
+
+
     }
 }
 

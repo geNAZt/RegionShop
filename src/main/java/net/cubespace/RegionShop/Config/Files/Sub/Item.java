@@ -1,6 +1,7 @@
 package net.cubespace.RegionShop.Config.Files.Sub;
 
 public class Item {
+    public Integer databaseID;
     public Integer itemID;
     public Short dataValue;
     public Float buy;
