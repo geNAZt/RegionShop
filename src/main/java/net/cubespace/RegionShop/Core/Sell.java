@@ -144,7 +144,7 @@ public class Sell {
 
         Float price = itemStack.getAmount() * item.getBuy();
 
-        if (VaultBridge.has(item.getOwner(), price) || region.getItemStorage().isServershop()) {
+        if (region.getItemStorage().isServershop() || VaultBridge.has(item.getOwner(), price)) {
             String dataName = ItemName.getDataName(itemStack);
             String niceItemName;
             if(dataName.endsWith(" ")) {
