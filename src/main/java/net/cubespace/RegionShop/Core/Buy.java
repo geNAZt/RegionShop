@@ -45,10 +45,9 @@ public class Buy {
 
         final int amountWished = wishAmount;
 
-        final Economy eco = VaultBridge.economy;
         Float price = (((float) wishAmount / (float) item.getUnitAmount()) * item.getSell());
 
-        if (eco.has(player.getName(), price)) {
+        if (VaultBridge.has(player.getName(), price)) {
             Plugin.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(Plugin.getInstance(), new Runnable() {
                 @Override
                 public void run() {
@@ -102,7 +101,7 @@ public class Buy {
                                             replace("%price", String.valueOf(newPrice)));
                                 }
 
-                                eco.depositPlayer(item.getOwner(), newPrice);
+                                VaultBridge.depositPlayer(item.getOwner(), newPrice);
 
                                 if (item.getCurrentAmount() == 0) {
                                     if (onOwner != null) {
@@ -115,7 +114,7 @@ public class Buy {
                                 TransactionRepository.generateTransaction(owner, Transaction.TransactionType.SELL, region.getName(), player.getWorld().getName(), player.getName(), item.getMeta().getItemID(), internalAmountWishedAsync, 0.0, item.getSell().doubleValue(), item.getUnitAmount());
                             }
 
-                            eco.withdrawPlayer(player.getName(), newPrice);
+                            VaultBridge.withdrawPlayer(player.getName(), newPrice);
                             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Buy_PlayerHint.
                                     replace("%player", player.getDisplayName()).
                                     replace("%amount", String.valueOf(internalAmountWishedAsync)).

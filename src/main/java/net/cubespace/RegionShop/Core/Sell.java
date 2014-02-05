@@ -49,10 +49,9 @@ public class Sell {
         //Check all items
         for(final Items item : items) {
             if (item != null && item.getBuy() > 0) {
-                Economy eco = VaultBridge.economy;
                 Float price = itemStack.getAmount() * item.getBuy();
 
-                if (eco.has(item.getOwner(), itemStack.getAmount() * item.getBuy()) || region.getItemStorage().isServershop()) {
+                if (VaultBridge.has(item.getOwner(), itemStack.getAmount() * item.getBuy()) || region.getItemStorage().isServershop()) {
                     String dataName = ItemName.getDataName(itemStack);
                     String niceItemName;
                     if(dataName.endsWith(" ")) {
@@ -79,10 +78,10 @@ public class Sell {
                             TransactionRepository.generateTransaction(owner, Transaction.TransactionType.BUY, region.getName(), player.getWorld().getName(), player.getName(), item.getMeta().getItemID(), itemStack.getAmount(), item.getBuy().doubleValue(), 0.0, item.getUnitAmount());
                         }
 
-                        eco.withdrawPlayer(item.getOwner(), itemStack.getAmount() * item.getBuy());
+                        VaultBridge.withdrawPlayer(item.getOwner(), itemStack.getAmount() * item.getBuy());
                     }
 
-                    eco.depositPlayer(player.getName(), itemStack.getAmount() * item.getBuy());
+                    VaultBridge.depositPlayer(player.getName(), itemStack.getAmount() * item.getBuy());
                     player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sell_PlayerHint.
                             replace("%player", player.getDisplayName()).
                             replace("%amount", ((Integer) itemStack.getAmount()).toString()).
@@ -143,10 +142,9 @@ public class Sell {
             return;
         }
 
-        Economy eco = VaultBridge.economy;
         Float price = itemStack.getAmount() * item.getBuy();
 
-        if (eco.has(item.getOwner(), price) || region.getItemStorage().isServershop()) {
+        if (VaultBridge.has(item.getOwner(), price) || region.getItemStorage().isServershop()) {
             String dataName = ItemName.getDataName(itemStack);
             String niceItemName;
             if(dataName.endsWith(" ")) {
@@ -182,10 +180,10 @@ public class Sell {
                             item.getUnitAmount());
                 }
 
-                eco.withdrawPlayer(item.getOwner(), price);
+                VaultBridge.withdrawPlayer(item.getOwner(), price);
             }
 
-            eco.depositPlayer(player.getName(), price);
+            VaultBridge.depositPlayer(player.getName(), price);
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sell_PlayerHint.
                     replace("%player", player.getDisplayName()).
                     replace("%amount", ((Integer) itemStack.getAmount()).toString()).
