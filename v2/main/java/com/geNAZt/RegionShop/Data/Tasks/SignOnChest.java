@@ -42,16 +42,25 @@ public class SignOnChest extends BukkitRunnable {
                     Sign sign = (Sign) Bukkit.getWorld(chest.getWorld()).getBlockAt(chest.getSignX(), chest.getSignY(), chest.getSignZ()).getState();
 
                     //Get the nice name
-                    String itemName = ItemName.getDataName(itemStack) + itemStack.getType().toString();
+                    String dataName = ItemName.getDataName(itemStack);
+                    String niceItemName;
+                    if(dataName.endsWith(" ")) {
+                        niceItemName = dataName + ItemName.nicer(itemStack.getType().toString());
+                    } else if(!dataName.equals("")) {
+                        niceItemName = dataName;
+                    } else {
+                        niceItemName = ItemName.nicer(itemStack.getType().toString());
+                    }
+
                     if (itemStack.getItemMeta().hasDisplayName()) {
-                        itemName += "(" + itemStack.getItemMeta().getDisplayName() + ")";
+                        niceItemName += "(" + itemStack.getItemMeta().getDisplayName() + ")";
                     }
 
 
                     for (Integer line = 0; line < 4; line++) {
                         sign.setLine(line, ConfigManager.language.Sign_Shop_SignText.get(line).
                                 replace("%player", chest.getOwners().iterator().next().getName()).
-                                replace("%itemname", ItemName.nicer(itemName)).
+                                replace("%itemname", ItemName.nicer(niceItemName)).
                                 replace("%amount", items.getUnitAmount().toString()).
                                 replace("%sell", items.getSell().toString()).
                                 replace("%buy", items.getBuy().toString()));

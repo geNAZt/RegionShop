@@ -75,15 +75,24 @@ public class Customer implements SignCommand {
 
         //Get the nice name
         ItemStack itemStack = Item.fromDBItem(item);
-        String itemName = ItemName.getDataName(itemStack) + itemStack.getType().toString();
+        String dataName = ItemName.getDataName(itemStack);
+        String niceItemName;
+        if(dataName.endsWith(" ")) {
+            niceItemName = dataName + ItemName.nicer(itemStack.getType().toString());
+        } else if(!dataName.equals("")) {
+            niceItemName = dataName;
+        } else {
+            niceItemName = ItemName.nicer(itemStack.getType().toString());
+        }
+
         if (itemStack.getItemMeta().hasDisplayName()) {
-            itemName = "(" + itemStack.getItemMeta().getDisplayName() + ")";
+            niceItemName += "(" + itemStack.getItemMeta().getDisplayName() + ")";
         }
 
         for(Integer line = 0; line < 4; line++) {
             event.setLine(line, ConfigManager.language.Sign_Customer_SignText.get(line).
                     replace("%id", item.getId().toString()).
-                    replace("%itemname", ItemName.nicer(itemName)).
+                    replace("%itemname", ItemName.nicer(niceItemName)).
                     replace("%amount", item.getUnitAmount().toString()).
                     replace("%sell", item.getSell().toString()).
                     replace("%buy", item.getBuy().toString()));

@@ -30,7 +30,6 @@ public class ItemName {
     }
 
     public static String getDataName(ItemStack item) {
-        Integer itemId = item.getType().getId();
         Material itemMat = item.getType();
 
         //Saplings / Wood / Leaves
@@ -51,6 +50,118 @@ public class ItemName {
 
             if(data.getData() == 3) {
                 return "Jungle ";
+            }
+
+            if(data.getData() == 4) {
+                return "Acacia ";
+            }
+
+            if(data.getData() == 5) {
+                return "Dark Oak ";
+            }
+        }
+
+        //Logs
+        if (itemMat.equals(Material.LOG)) {
+            MaterialData data = item.getData();
+
+            if(data.getData() == 0) {
+                return "Oak ";
+            }
+
+            if(data.getData() == 1) {
+                return "Spruce ";
+            }
+
+            if(data.getData() == 2) {
+                return "Birch ";
+            }
+
+            if(data.getData() == 3) {
+                return "Jungle ";
+            }
+        }
+
+        //New Logs
+        if (itemMat.getId() == 162) {
+            MaterialData data = item.getData();
+
+            if(data.getData() == 0) {
+                return "Acacia ";
+            }
+
+            if(data.getData() == 1) {
+                return "Dark Oak ";
+            }
+        }
+
+        //Flowers
+        if (itemMat.equals(Material.RED_ROSE)) {
+            MaterialData data = item.getData();
+
+            if(data.getData() == 0) {
+                return "Poppy";
+            }
+
+            if(data.getData() == 1) {
+                return "Blue Orchid";
+            }
+
+            if(data.getData() == 2) {
+                return "Allium";
+            }
+
+            if(data.getData() == 3) {
+                return "Azure Bluet";
+            }
+
+            if(data.getData() == 4) {
+                return "Red Tulip";
+            }
+
+            if(data.getData() == 5) {
+                return "Orange Tulip";
+            }
+
+            if(data.getData() == 6) {
+                return "White Tulip";
+            }
+
+            if(data.getData() == 7) {
+                return "Pink Tulip";
+            }
+
+            if(data.getData() == 8) {
+                return "Oxeye Daisy";
+            }
+        }
+
+        //Big Flowers
+        if (itemMat.getId() == 175) {
+            MaterialData data = item.getData();
+
+            if(data.getData() == 0) {
+                return "Sunflower";
+            }
+
+            if(data.getData() == 1) {
+                return "Lilac";
+            }
+
+            if(data.getData() == 2) {
+                return "Double Tallgrass";
+            }
+
+            if(data.getData() == 3) {
+                return "Large Fern";
+            }
+
+            if(data.getData() == 4) {
+                return "Rose Bush";
+            }
+
+            if(data.getData() == 5) {
+                return "Peony";
             }
         }
 
@@ -172,8 +283,8 @@ public class ItemName {
             return nicer(dye.getColor().toString());
         }
 
-        //Carpet
-        if (itemMat.getId() == 171) {
+        //Carpet / Glass / Glass pane
+        if (itemMat.getId() == 171 || itemMat.getId() == 95 || itemMat.getId() == 160) {
             switch(item.getData().getData()) {
                 case 1:
                     return "Orange ";

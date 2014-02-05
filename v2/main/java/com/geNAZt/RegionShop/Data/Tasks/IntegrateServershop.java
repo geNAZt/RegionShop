@@ -4,10 +4,15 @@ import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Config.Sub.Item;
 import com.geNAZt.RegionShop.Config.Sub.ServerShop;
 import com.geNAZt.RegionShop.Database.Database;
+import com.geNAZt.RegionShop.Database.Table.CustomerSign;
 import com.geNAZt.RegionShop.Database.Table.ItemStorage;
 import com.geNAZt.RegionShop.Database.Table.Items;
 import com.geNAZt.RegionShop.Database.Table.Region;
 import com.geNAZt.RegionShop.Util.Logger;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -78,8 +83,23 @@ public class IntegrateServershop extends BukkitRunnable {
                     }
                 }
 
-                //Not found => create
+                //Not found => delete
                 if(!found) {
+                    CustomerSign customerSign = Database.getServer().find(CustomerSign.class).where().eq("item", items).findUnique();
+                    if(customerSign != null) {
+                        Bukkit.getWorld(customerSign.getRegion().getWorld()).getBlockAt(customerSign.getX(), customerSign.getY(), customerSign.getZ()).setType(Material.AIR);
+
+                        for (final Entity ent : Bukkit.getWorld(customerSign.getRegion().getWorld()).getEntities()) {
+                            //Get the location of this Entity
+                            Location entLocation = ent.getLocation();
+                            if (entLocation.getBlockZ() == customerSign.getZ() && entLocation.getBlockY() == customerSign.getY() - 1 && entLocation.getBlockX() == customerSign.getX()) {
+                                ent.remove();
+                            }
+                        }
+
+                        Database.getServer().delete(customerSign);
+                    }
+
                     Database.getServer().delete(items);
                 }
             }

@@ -65,17 +65,24 @@ public class Set implements CLICommand {
 
             ItemStack itemStack = Item.fromDBItem(item);
 
-            String itemName;
-            if (itemStack.getItemMeta().hasDisplayName()) {
-                itemName = ItemName.getDataName(itemStack) + itemStack.getItemMeta().getDisplayName();
+            String dataName = ItemName.getDataName(itemStack);
+            String niceItemName;
+            if(dataName.endsWith(" ")) {
+                niceItemName = dataName + ItemName.nicer(itemStack.getType().toString());
+            } else if(!dataName.equals("")) {
+                niceItemName = dataName;
             } else {
-                itemName = ItemName.getDataName(itemStack) + itemStack.getType().toString();
+                niceItemName = ItemName.nicer(itemStack.getType().toString());
+            }
+
+            if (itemStack.getItemMeta().hasDisplayName()) {
+                niceItemName += "(" + itemStack.getItemMeta().getDisplayName() + ")";
             }
 
             Region region = item.getItemStorage().getRegions().iterator().next();
 
             Transaction.generateTransaction(player, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.ADD, region.getName(), region.getWorld(), player.getName(), item.getMeta().getId().getItemID(), item.getUnitAmount(), item.getSell().doubleValue(), item.getBuy().doubleValue(), item.getUnitAmount());
-            player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Set_Success.replace("%itemname", ItemName.nicer(itemName)).replace("%sell", item.getSell().toString()).replace("%buy", item.getBuy().toString()).replace("%amount", item.getUnitAmount().toString()));
+            player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Set_Success.replace("%itemname", ItemName.nicer(niceItemName)).replace("%sell", item.getSell().toString()).replace("%buy", item.getBuy().toString()).replace("%amount", item.getUnitAmount().toString()));
         }
     }
 }

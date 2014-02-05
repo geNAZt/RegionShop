@@ -1,5 +1,6 @@
 package com.geNAZt.RegionShop.Core;
 
+import com.avaje.ebean.SqlUpdate;
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.ItemStorageHolder;
@@ -25,7 +26,7 @@ import java.util.Map;
  * Date: 18.09.13
  */
 public class Buy {
-    public static void buy(Items item, Player player, ItemStorageHolder region, Integer wishAmount) {
+    public static void buy(final Items item, Player player, final ItemStorageHolder region, Integer wishAmount) {
         if (item.getOwner().toLowerCase().equals(player.getName().toLowerCase())) {
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Buy_NotYourItems);
             return;
@@ -63,7 +64,15 @@ public class Buy {
 
             price = (((float) wishAmount / (float) item.getUnitAmount()) * item.getSell());
 
-            String niceItemName = ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString());
+            String dataName = ItemName.getDataName(iStack);
+            String niceItemName;
+            if(dataName.endsWith(" ")) {
+                niceItemName = dataName + ItemName.nicer(iStack.getType().toString());
+            } else if(!dataName.equals("")) {
+                niceItemName = dataName;
+            } else {
+                niceItemName = ItemName.nicer(iStack.getType().toString());
+            }
 
             item.setCurrentAmount(item.getCurrentAmount() - wishAmount);
 
@@ -108,11 +117,22 @@ public class Buy {
 
             item.setSold(item.getSold() + wishAmount);
 
-            ItemStorage itemStorage = region.getItemStorage();
-            itemStorage.setItemAmount(itemStorage.getItemAmount() - wishAmount);
+            final Integer amount = wishAmount;
+            RegionShopPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(RegionShopPlugin.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    ItemStorage itemStorage = region.getItemStorage();
+                    itemStorage.setItemAmount(itemStorage.getItemAmount() - amount);
 
-            Database.getServer().update(itemStorage);
-            Database.getServer().update(item);
+                    SqlUpdate update = Database.getServer().createSqlUpdate("UPDATE rs_itemstorage SET item_amount=:amount WHERE id=:id")
+                            .setParameter("amount", itemStorage.getItemAmount())
+                            .setParameter("id", itemStorage.getId());
+
+                    update.execute();
+
+                    Database.getServer().update(item);
+                }
+            });
 
             Transaction.generateTransaction(player, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.BUY, region.getName(), player.getWorld().getName(), item.getOwner(), item.getMeta().getId().getItemID(), wishAmount, item.getSell().doubleValue(), 0.0, item.getUnitAmount());
         } else {

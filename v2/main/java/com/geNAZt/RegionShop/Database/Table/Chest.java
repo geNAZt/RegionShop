@@ -1,10 +1,15 @@
 package com.geNAZt.RegionShop.Database.Table;
 
 import com.avaje.ebean.annotation.CacheStrategy;
-import com.avaje.ebean.annotation.CacheTuning;
 import com.geNAZt.RegionShop.Database.ItemStorageHolder;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
 import java.util.List;
 
 /**
@@ -15,6 +20,7 @@ import java.util.List;
 
 @Entity()
 @Table(name = "rs_chest")
+@CacheStrategy(useBeanCache = true)
 public class Chest implements ItemStorageHolder {
     @Id
     @Version

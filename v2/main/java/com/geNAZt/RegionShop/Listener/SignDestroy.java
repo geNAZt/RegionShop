@@ -4,8 +4,11 @@ import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Database.Database;
 import com.geNAZt.RegionShop.Database.Table.Chest;
 import com.geNAZt.RegionShop.Database.Table.CustomerSign;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -88,11 +91,27 @@ public class SignDestroy implements Listener {
                 if(customerSign != null) {
                     if(playerBreak) {
                         if(customerSign.getOwner().equals(event1.getPlayer().getName().toLowerCase()) || event1.getPlayer().hasPermission("rs.bypass.destroy.customersign")) {
+                            for (final Entity ent : Bukkit.getWorld(customerSign.getRegion().getWorld()).getEntities()) {
+                                //Get the location of this Entity
+                                Location entLocation = ent.getLocation();
+                                if (entLocation.getBlockZ() == customerSign.getZ() && entLocation.getBlockY() == customerSign.getY() - 1 && entLocation.getBlockX() == customerSign.getX()) {
+                                    ent.remove();
+                                }
+                            }
+
                             Database.getServer().delete(customerSign);
                         } else {
                             event1.setCancelled(true);
                         }
                     } else {
+                        for (final Entity ent : Bukkit.getWorld(customerSign.getRegion().getWorld()).getEntities()) {
+                            //Get the location of this Entity
+                            Location entLocation = ent.getLocation();
+                            if (entLocation.getBlockZ() == customerSign.getZ() && entLocation.getBlockY() == customerSign.getY() - 1 && entLocation.getBlockX() == customerSign.getX()) {
+                                ent.remove();
+                            }
+                        }
+
                         Database.getServer().delete(customerSign);
                     }
                 }

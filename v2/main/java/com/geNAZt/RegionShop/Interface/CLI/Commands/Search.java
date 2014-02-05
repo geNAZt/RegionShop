@@ -73,9 +73,17 @@ public class Search implements CLICommand {
             for(Items item : items) {
                 ItemStack iStack = Item.fromDBItem(item);
 
-                String searchString = ItemName.getDataName(iStack) + ItemName.nicer(iStack.getType().toString());
+                String dataName = ItemName.getDataName(iStack);
+                String niceItemName;
+                if(dataName.endsWith(" ")) {
+                    niceItemName = dataName + ItemName.nicer(iStack.getType().toString());
+                } else if(!dataName.equals("")) {
+                    niceItemName = dataName;
+                } else {
+                    niceItemName = ItemName.nicer(iStack.getType().toString());
+                }
 
-                Matcher m = r.matcher(searchString);
+                Matcher m = r.matcher(niceItemName);
 
                 if((parsedItem != null && item.getMeta().getId().getItemID().equals(parsedItem.itemID) && item.getMeta().getId().getDataValue().equals(parsedItem.dataValue))) {
                     result.put(item, iStack);

@@ -2,13 +2,8 @@ package com.geNAZt.RegionShop.Interface.Sign.Commands;
 
 import com.geNAZt.RegionShop.Config.ConfigManager;
 import com.geNAZt.RegionShop.Core.Add;
-import com.geNAZt.RegionShop.Core.Equip;
-import com.geNAZt.RegionShop.Data.Storage.InRegion;
 import com.geNAZt.RegionShop.Database.Database;
-import com.geNAZt.RegionShop.Database.Model.Item;
-import com.geNAZt.RegionShop.Database.Table.CustomerSign;
 import com.geNAZt.RegionShop.Database.Table.Items;
-import com.geNAZt.RegionShop.Database.Table.Region;
 import com.geNAZt.RegionShop.Interface.Sign.Command;
 import com.geNAZt.RegionShop.Interface.Sign.SignCommand;
 import com.geNAZt.RegionShop.Util.ChestFinder;
@@ -16,14 +11,10 @@ import com.geNAZt.RegionShop.Util.ItemName;
 import com.geNAZt.RegionShop.Util.NMS;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
-import org.bukkit.block.DoubleChest;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-import sun.misc.Regexp;
 
 import java.util.ListIterator;
 import java.util.regex.Matcher;
@@ -149,15 +140,24 @@ public class Shop implements SignCommand {
 
         //Change the Sign
         //Get the nice name
-        String itemName = ItemName.getDataName(firstItemStack) + firstItemStack.getType().toString();
+        String dataName = ItemName.getDataName(itemStack);
+        String niceItemName;
+        if(dataName.endsWith(" ")) {
+            niceItemName = dataName + ItemName.nicer(itemStack.getType().toString());
+        } else if(!dataName.equals("")) {
+            niceItemName = dataName;
+        } else {
+            niceItemName = ItemName.nicer(itemStack.getType().toString());
+        }
+
         if (firstItemStack.getItemMeta().hasDisplayName()) {
-            itemName = "(" + firstItemStack.getItemMeta().getDisplayName() + ")";
+            niceItemName += "(" + firstItemStack.getItemMeta().getDisplayName() + ")";
         }
 
         for(Integer line = 0; line < 4; line++) {
             event.setLine(line, ConfigManager.language.Sign_Shop_SignText.get(line).
                     replace("%player",  event.getPlayer().getName()).
-                    replace("%itemname", ItemName.nicer(itemName)).
+                    replace("%itemname", ItemName.nicer(niceItemName)).
                     replace("%amount", amount.toString()).
                     replace("%sell", sell.toString()).
                     replace("%buy", buy.toString()));

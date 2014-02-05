@@ -30,8 +30,6 @@ public class ShowcaseRefresh extends BukkitRunnable {
 
     @Override
     public void run() {
-        RegionShopPlugin.getInstance().getLogger().info("Checking for Showcase Entities");
-
         //Loop through all Worlds
         for (final World world : Bukkit.getWorlds()) {
             //Get all DB Entries which could have a Showcase in this World

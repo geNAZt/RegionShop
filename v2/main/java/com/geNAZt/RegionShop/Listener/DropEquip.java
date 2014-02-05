@@ -35,14 +35,21 @@ public class DropEquip implements Listener {
                 if(mode != -1) {
                     event.getItemDrop().remove();
 
-                    String itemName;
-                    if (droppedItem.getItemMeta().hasDisplayName()) {
-                        itemName = ItemName.getDataName(droppedItem) + droppedItem.getItemMeta().getDisplayName();
+                    String dataName = ItemName.getDataName(droppedItem);
+                    String niceItemName;
+                    if(dataName.endsWith(" ")) {
+                        niceItemName = dataName + ItemName.nicer(droppedItem.getType().toString());
+                    } else if(!dataName.equals("")) {
+                        niceItemName = dataName;
                     } else {
-                        itemName = ItemName.getDataName(droppedItem) + droppedItem.getType().toString();
+                        niceItemName = ItemName.nicer(droppedItem.getType().toString());
                     }
 
-                    event.getPlayer().sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Equip_Add_Item.replace("%item", ItemName.nicer(itemName)));
+                    if (droppedItem.getItemMeta().hasDisplayName()) {
+                        niceItemName += "(" + droppedItem.getItemMeta().getDisplayName() + ")";
+                    }
+
+                    event.getPlayer().sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Equip_Add_Item.replace("%item", ItemName.nicer(niceItemName)));
                 }
             }
         }

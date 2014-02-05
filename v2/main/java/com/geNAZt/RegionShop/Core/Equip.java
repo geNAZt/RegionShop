@@ -7,7 +7,7 @@ import com.geNAZt.RegionShop.Database.ItemStorageHolder;
 import com.geNAZt.RegionShop.Database.Model.Item;
 import com.geNAZt.RegionShop.Database.Model.Transaction;
 import com.geNAZt.RegionShop.Database.Table.Items;
-import com.geNAZt.RegionShop.Database.Table.Region;
+import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,7 +27,7 @@ public class Equip {
             return -1;
         }
 
-        Items dbItem = Database.getServer().find(Items.class).
+        final Items dbItem = Database.getServer().find(Items.class).
                 where().
                     conjunction().
                         eq("itemStorage", shop.getItemStorage()).
@@ -43,22 +43,31 @@ public class Equip {
             dbItem.setCurrentAmount(dbItem.getCurrentAmount() + item.getAmount());
             dbItem.getItemStorage().setItemAmount(dbItem.getItemStorage().getItemAmount() + item.getAmount());
 
-            Database.getServer().update(dbItem.getItemStorage());
-            Database.getServer().update(dbItem);
+            RegionShopPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(RegionShopPlugin.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    Database.getServer().update(dbItem.getItemStorage());
+                    Database.getServer().update(dbItem);             }
+            });
 
             Transaction.generateTransaction(player, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.EQUIP, shop.getName(), shop.getWorld(), dbItem.getOwner(), dbItem.getMeta().getId().getItemID(), item.getAmount(), dbItem.getSell().doubleValue(), dbItem.getBuy().doubleValue(), dbItem.getUnitAmount());
 
             return 0;
         } else {
-            dbItem = Item.toDBItem(item, shop, player.getName(), 0.0F, 0.0F, 0);
+            final Items newDbItem = Item.toDBItem(item, shop, player.getName(), 0.0F, 0.0F, 0);
 
-            dbItem.getItemStorage().setItemAmount(dbItem.getItemStorage().getItemAmount() + item.getAmount());
+            newDbItem.getItemStorage().setItemAmount(newDbItem.getItemStorage().getItemAmount() + item.getAmount());
 
-            Database.getServer().update(dbItem.getItemStorage());
+            RegionShopPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(RegionShopPlugin.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    Database.getServer().update(newDbItem.getItemStorage());
+                }
+            });
 
-            Transaction.generateTransaction(player, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.EQUIP, shop.getName(), player.getWorld().getName(), player.getName(), dbItem.getMeta().getId().getItemID(), item.getAmount(), 0.0, 0.0, 0);
+            Transaction.generateTransaction(player, com.geNAZt.RegionShop.Database.Table.Transaction.TransactionType.EQUIP, shop.getName(), player.getWorld().getName(), player.getName(), newDbItem.getMeta().getId().getItemID(), item.getAmount(), 0.0, 0.0, 0);
 
-            return dbItem.getId();
+            return newDbItem.getId();
         }
     }
 }

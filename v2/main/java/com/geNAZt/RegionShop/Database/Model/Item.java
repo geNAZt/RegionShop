@@ -5,6 +5,7 @@ import com.geNAZt.RegionShop.Database.ItemStorageHolder;
 import com.geNAZt.RegionShop.Database.Table.ItemMeta;
 import com.geNAZt.RegionShop.Database.Table.ItemMetaID;
 import com.geNAZt.RegionShop.Database.Table.Items;
+import com.geNAZt.RegionShop.RegionShopPlugin;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
@@ -41,6 +42,12 @@ public class Item {
     }
 
     public static ItemStack fromDBItem(Items item) {
+        if(Material.getMaterial(item.getMeta().getId().getItemID()) == null) {
+            RegionShopPlugin.getInstance().getLogger().warning("Found an Item which is not in Bukkit: " + item.getId());
+
+            return new ItemStack(Material.AIR);
+        }
+
         ItemStack iStack = new ItemStack(Material.getMaterial(item.getMeta().getId().getItemID()), 1);
 
         if(item.getMeta().getId().getDataValue() > 0) {
@@ -88,7 +95,7 @@ public class Item {
         newItem.setCurrentAmount(item.getAmount());
         newItem.setDurability(item.getDurability());
         newItem.setOwner(owner);
-        newItem.setCustomName((item.getItemMeta().hasDisplayName()) ? item.getItemMeta().getDisplayName() : null);
+        newItem.setCustomName((item.getItemMeta() != null && item.getItemMeta().hasDisplayName()) ? item.getItemMeta().getDisplayName() : null);
 
         newItem.setBuy(buy);
         newItem.setSell(sell);

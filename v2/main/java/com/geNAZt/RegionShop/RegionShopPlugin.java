@@ -70,7 +70,7 @@ public class RegionShopPlugin extends JavaPlugin {
         }
 
         getServer().getScheduler().runTaskTimerAsynchronously(this, new DetectWGChanges(this), 20, ConfigManager.expert.Timer_DetectWGChanges);
-        getServer().getScheduler().runTaskTimerAsynchronously(this, new PriceRecalculateTask(), 60 * 20, 60 * 20);
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new PriceRecalculateTask(), 5 * 20, 5 * 20);
         getServer().getScheduler().runTaskLaterAsynchronously(this, new IntegrateServershop(), 100);
         getServer().getScheduler().runTaskTimerAsynchronously(this, new SignOnChest(), ConfigManager.expert.Timer_DisplayItemTask, ConfigManager.expert.Timer_DisplayItemTask);
         getServer().getScheduler().runTaskTimerAsynchronously(this, new CacheWarming(), 20, ConfigManager.expert.Timer_CacheWarmingTask);
