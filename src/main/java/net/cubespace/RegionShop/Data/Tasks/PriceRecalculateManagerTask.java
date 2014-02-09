@@ -71,7 +71,7 @@ public class PriceRecalculateManagerTask extends BukkitRunnable {
         for(int i = 0; i < amountThreads; i++) {
             ArrayList<Item> currentThread = new ArrayList<Item>();
             for(Item items1 : items) {
-                if (currentThread.size() > (items.size() / amountThreads)) {
+                if (currentThread.size() > Math.ceil(items.size() / (double)amountThreads)) {
                     Plugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(Plugin.getInstance(), new PriceRecalculateTask(new ArrayList<Item>(currentThread)), 5 * 20, 5 * 20);
                     currentThread = new ArrayList<Item>();
                 } else {
