@@ -226,10 +226,6 @@ public class PriceRecalculateTask extends BukkitRunnable {
                 lastItemStorageId = itemInShop.getItemStorage().getId();
             }
         }
-
-
-
-
     }
 }
 
