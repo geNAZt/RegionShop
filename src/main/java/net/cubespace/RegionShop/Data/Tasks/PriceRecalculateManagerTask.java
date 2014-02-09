@@ -68,7 +68,6 @@ public class PriceRecalculateManagerTask extends BukkitRunnable {
         Logger.info("Recalc found " + items.size() + " Items which should be recalced");
 
         Integer amountThreads = ((Double) Math.ceil(items.size() / (double) 20)).intValue();
-
             ArrayList<Item> currentThread = new ArrayList<Item>();
             for(Item items1 : items) {
                 if (currentThread.size() > Math.ceil(items.size() / (double)amountThreads)) {

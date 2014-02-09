@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.cubespace</groupId>
     <artifactId>RegionShop</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
     <build>
         <finalName>${project.artifactId}</finalName>
         <defaultGoal>clean install</defaultGoal>

@@ -39,7 +39,7 @@ public class Search implements CLICommand {
 
         Player player = (Player) sender;
 
-        String search = StringUtils.join(args, "_");
+        String search = StringUtils.join(args, " ");
 
         ConcurrentHashMap<Items, ItemStack> result = new ConcurrentHashMap<Items, ItemStack>();
         Pattern r = Pattern.compile("(.*)" + search + "(.*)", Pattern.CASE_INSENSITIVE);
@@ -57,8 +57,6 @@ public class Search implements CLICommand {
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_Search_NoHit);
             return;
         }
-
-
 
         List<Items> items = new ArrayList<Items>();
 
