@@ -134,6 +134,10 @@ public class PriceRecalculateTask extends BukkitRunnable {
             if (buyPriceDiff > 1.0) {
                 //Abgabe geht rauf
                 buyPriceDiff = buyPriceDiff * item.limitBuyPriceFactor;
+
+                if(buyPriceDiff > item.limitBuyPriceFactor) {
+                    buyPriceDiff = item.limitBuyPriceFactor;
+                }
             } else {
                 //Abgabe geht runter
                 if (buyPriceDiff < item.limitBuyPriceUnderFactor) {
