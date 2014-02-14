@@ -25,7 +25,7 @@ public class Result implements CLICommand {
 
         Integer page = 1;
 
-        if(args.length > 1) {
+        if(args.length >= 1) {
             try {
                 page = Integer.parseInt(args[0]);
             } catch (NumberFormatException e) {
