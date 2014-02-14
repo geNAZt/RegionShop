@@ -100,8 +100,8 @@ public class PriceRecalculateTask extends BukkitRunnable {
 
             prepareCache(itemInShop.getId());
 
-            Integer sold = (itemInShop.getSold()) * 720;
-            Integer bought = (itemInShop.getBought()) * 720;
+            Integer sold = (itemInShop.getSold());
+            Integer bought = (itemInShop.getBought());
 
             addToCache(itemInShop.getId(), bought, sold);
 
