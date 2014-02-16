@@ -5,6 +5,7 @@ import net.cubespace.RegionShop.Config.ConfigManager;
 import net.cubespace.RegionShop.Core.Add;
 import net.cubespace.RegionShop.Database.Database;
 import net.cubespace.RegionShop.Database.Repository.ChestRepository;
+import net.cubespace.RegionShop.Database.Repository.ItemRepository;
 import net.cubespace.RegionShop.Database.Table.ItemStorage;
 import net.cubespace.RegionShop.Database.Table.Items;
 import net.cubespace.RegionShop.Interface.Sign.Command;
@@ -123,20 +124,14 @@ public class Shop implements SignCommand {
             }
         }
 
-        Items item = chest1.getItemStorage().getItems().iterator().next();
-        item.setCurrentAmount(itemAmount);
-        try {
-            Database.getDAO(Items.class).update(item);
-        } catch (SQLException e) {
-            Logger.warn("Could not update Chests Item", e);
+        if(firstItemStack == null) {
+            event.getPlayer().sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sign_Shop_ChestIsEmpty);
+            event.getBlock().breakNaturally();
+            return;
         }
 
-        item.getItemStorage().setItemAmount(itemAmount);
-        try {
-            Database.getDAO(ItemStorage.class).update(item.getItemStorage());
-        } catch (SQLException e) {
-            Logger.warn("Could not update Chests ItemStorage", e);
-        }
+        firstItemStack.setAmount(itemAmount);
+        ItemRepository.toDBItem(firstItemStack, chest1, event.getPlayer().getName(), buy, sell, amount);
 
         //Create an itemdrop over the chest
         final ItemStack syncItem = firstItemStack.clone();
