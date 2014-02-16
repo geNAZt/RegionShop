@@ -50,6 +50,7 @@ public class Database {
             daos.put(Chest.class, DaoManager.createDao(connectionSource, Chest.class));
             daos.put(PlayerMembersRegion.class, DaoManager.createDao(connectionSource, PlayerMembersRegion.class));
             daos.put(PlayerOwnsRegion.class, DaoManager.createDao(connectionSource, PlayerOwnsRegion.class));
+            daos.put(PlayerOwnsChest.class, DaoManager.createDao(connectionSource, PlayerOwnsChest.class));
 
             //Create the tables if not existing
             for(Map.Entry<Class<?>, Dao> dao : daos.entrySet()) {
