@@ -24,6 +24,8 @@ import java.util.List;
 
 public class Sell {
     public static void sell(final ItemStack itemStack, List<Items> items, Player player, final ItemStorageHolder region) {
+        player.getInventory().removeItem(itemStack);
+
         ForeignCollection<PlayerOwns> playerList = region.getOwners();
         boolean isOwner = false;
 
@@ -35,6 +37,7 @@ public class Sell {
 
         if(isOwner) {
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sell_NotYourItem);
+            player.getInventory().setItemInHand(itemStack);
             return;
         }
 
@@ -42,6 +45,7 @@ public class Sell {
         Group group = ConfigManager.groups.getGroup(region.getItemStorage().getSetting());
         if(region.getItemStorage().getItemAmount() + itemStack.getAmount() >= group.Storage) {
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sell_FullStorage);
+            player.getInventory().setItemInHand(itemStack);
 
             return;
         }
@@ -90,7 +94,6 @@ public class Sell {
                             replace("%price", price.toString()).
                             replace("%owner", item.getOwner()));
 
-                    player.getInventory().removeItem(itemStack);
                     item.setCurrentAmount(item.getCurrentAmount() + itemStack.getAmount());
                     item.setBought(item.getBought() + itemStack.getAmount());
 
@@ -113,9 +116,12 @@ public class Sell {
 
         //No item found :(
         player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sell_OwnerHasNotEnoughMoney);
+        player.getInventory().setItemInHand(itemStack);
     }
 
     public static void sell(final ItemStack itemStack, final Items item, Player player, final ItemStorageHolder region) {
+        player.getInventory().removeItem(itemStack);
+
         ForeignCollection<PlayerOwns> playerList = region.getOwners();
         boolean isOwner = false;
 
@@ -127,17 +133,20 @@ public class Sell {
 
         if(isOwner) {
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sell_NotYourItem);
+            player.getInventory().setItemInHand(itemStack);
             return;
         }
 
         if(item.getBuy() <= 0.0) {
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sell_DoesNotBuy);
+            player.getInventory().setItemInHand(itemStack);
             return;
         }
 
         Group group = ConfigManager.groups.getGroup(region.getItemStorage().getSetting());
         if(region.getItemStorage().getItemAmount() + itemStack.getAmount() >= group.Storage) {
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sell_FullStorage);
+            player.getInventory().setItemInHand(itemStack);
 
             return;
         }
@@ -192,7 +201,6 @@ public class Sell {
                     replace("%price", price.toString().
                     replace("%owner", item.getOwner())));
 
-            player.getInventory().removeItem(itemStack);
             item.setCurrentAmount(item.getCurrentAmount() + itemStack.getAmount());
             item.setBought(item.getBought() + itemStack.getAmount());
 
@@ -219,6 +227,7 @@ public class Sell {
 
         } else {
             player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sell_OwnerHasNotEnoughMoney);
+            player.getInventory().setItemInHand(itemStack);
         }
     }
 }
