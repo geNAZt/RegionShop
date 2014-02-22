@@ -7,7 +7,9 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 public class PretendDisplaysToPickup implements Listener {
     @EventHandler
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-        if(event.getItem().getItemStack().hasItemMeta() && event.getItem().getItemStack().getItemMeta().getDisplayName().contains("RegionShop")) {
+        if(event.getItem().getItemStack().hasItemMeta() &&
+           event.getItem().getItemStack().getItemMeta().hasDisplayName() &&
+           event.getItem().getItemStack().getItemMeta().getDisplayName().contains("RegionShop")) {
             event.setCancelled(true);
         }
     }

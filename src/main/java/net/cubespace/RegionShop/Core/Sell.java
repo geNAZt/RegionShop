@@ -14,7 +14,6 @@ import net.cubespace.RegionShop.Database.Table.Transaction;
 import net.cubespace.RegionShop.Util.ItemName;
 import net.cubespace.RegionShop.Util.Logger;
 import net.cubespace.RegionShop.Util.VaultBridge;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -168,14 +167,14 @@ public class Sell {
                 OfflinePlayer owner = Plugin.getInstance().getServer().getOfflinePlayer(item.getOwner());
 
                 if (owner != null) {
-                    if(owner.isOnline()) {
+                    /*if(owner.isOnline()) {
                         Plugin.getInstance().getServer().getPlayer(item.getOwner()).sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sell_OwnerHint.
                                 replace("%player", player.getDisplayName()).
                                 replace("%amount", ((Integer) itemStack.getAmount()).toString()).
                                 replace("%item", niceItemName).
                                 replace("%shop", region.getName()).
                                 replace("%price", price.toString()));
-                    }
+                    }*/
 
                     TransactionRepository.generateTransaction(owner,
                             Transaction.TransactionType.BUY,

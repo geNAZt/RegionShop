@@ -19,7 +19,7 @@ public class Shop implements Listener {
         Plugin.getInstance().getServer().getScheduler().runTaskAsynchronously(Plugin.getInstance(), new Runnable() {
             @Override
             public void run() {
-                Chest chest = ChestRepository.get(event.getBlock(), event.getParent().getPlayer().getWorld());
+                Chest chest = ChestRepository.getViaSign(event.getBlock(), event.getParent().getPlayer().getWorld());
 
                 if(chest == null) return;
 

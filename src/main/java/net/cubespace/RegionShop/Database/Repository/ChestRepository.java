@@ -1,22 +1,19 @@
 package net.cubespace.RegionShop.Database.Repository;
 
 import com.j256.ormlite.dao.ForeignCollection;
+import net.cubespace.RegionShop.Bukkit.Plugin;
 import net.cubespace.RegionShop.Config.ConfigManager;
 import net.cubespace.RegionShop.Database.Database;
 import net.cubespace.RegionShop.Database.Table.Chest;
 import net.cubespace.RegionShop.Database.Table.ItemStorage;
 import net.cubespace.RegionShop.Database.Table.Items;
 import net.cubespace.RegionShop.Database.Table.PlayerOwnsChest;
-import net.cubespace.RegionShop.Database.Table.PlayerOwnsRegion;
-import net.cubespace.RegionShop.Database.Table.Region;
 import net.cubespace.RegionShop.Util.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
-import org.bukkit.inventory.ItemStack;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -117,36 +114,52 @@ public class ChestRepository {
         }
     }
 
+    public static net.cubespace.RegionShop.Database.Table.Chest getViaSign(Block chest, World world) {
+        try {
+            return Database.getDAO(Chest.class).queryBuilder().
+                    where().
+                    eq("signX", chest.getX()).
+                    and().
+                    eq("signY", chest.getY()).
+                    and().
+                    eq("signZ", chest.getZ()).
+                    and().
+                    eq("world", world.getName()).
+                    queryForFirst();
+        } catch (SQLException e) {
+            Logger.error("Could not get Chest", e);
+            return null;
+        }
+    }
+
     //Check if Chest is already in the database
     public static boolean isStored(Block chest, World world) {
         return get(chest, world) != null;
     }
 
-    public static void remove(net.cubespace.RegionShop.Database.Table.Chest chest) {
-        //Get all items
-        Items item = chest.getItemStorage().getItems().iterator().next();
+    public static void remove(final net.cubespace.RegionShop.Database.Table.Chest chest) {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Plugin.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                Block chest1 = Bukkit.getWorld(chest.getWorld()).getBlockAt(chest.getChestX(), chest.getChestY(), chest.getChestZ());
 
-        //Get the chest
-        Block chest1 = Bukkit.getWorld(chest.getWorld()).getBlockAt(chest.getChestX(), chest.getChestY(), chest.getChestZ());
-
-        try {
-            if (chest1.getType().equals(Material.CHEST)) {
-                //Remove the ItemDrop above it
-                for (Entity ent : Bukkit.getWorld(chest.getWorld()).getEntities()) {
-                    if (ent.getLocation().getBlockY() == chest1.getY() + 1 && ent.getLocation().getBlockX() == chest1.getX() && ent.getLocation().getBlockZ() == chest1.getZ()) {
-                        ent.remove();
+                if (chest1.getType().equals(Material.CHEST)) {
+                    //Remove the ItemDrop above it
+                    for (Entity ent : Bukkit.getWorld(chest.getWorld()).getEntities()) {
+                        if (ent.getLocation().getBlockY() == chest1.getY() + 1 && ent.getLocation().getBlockX() == chest1.getX() && ent.getLocation().getBlockZ() == chest1.getZ()) {
+                            ent.remove();
+                        }
                     }
                 }
-
             }
+        });
 
-            Database.getDAO(Items.class).delete(item);
-            Database.getDAO(PlayerOwnsChest.class).delete(Database.getDAO(PlayerOwnsChest.class).queryBuilder().where().eq("id", chest.getId()).query());
-            Database.getDAO(Chest.class).delete(chest);
+        try {
+            Database.getDAO(Items.class).delete(chest.getItemStorage().getItems());
             Database.getDAO(ItemStorage.class).delete(chest.getItemStorage());
-
-        } catch (RuntimeException e) {
-        } catch (SQLException e) {
+            Database.getDAO(PlayerOwnsChest.class).delete(chest.getOwners());
+            Database.getDAO(Chest.class).delete(chest);
+        } catch (Exception e) {
             Logger.error("could not delete chest", e);
         }
     }

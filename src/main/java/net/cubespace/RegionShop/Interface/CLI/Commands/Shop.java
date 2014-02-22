@@ -77,7 +77,14 @@ public class Shop implements CLICommand {
                 id = Integer.parseInt(name);
 
                 Chest chest = Database.getDAO(Chest.class).queryBuilder().where().eq("id", id).queryForFirst();
-                Location location = new Location(Bukkit.getWorld(chest.getWorld()), chest.getChestX(), chest.getChestY() + 2, chest.getChestZ());
+
+                if (chest == null) {
+                    sender.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_NotKnown);
+
+                    return;
+                }
+
+                Location location = new Location(Bukkit.getWorld(chest.getWorld()), chest.getChestX(), chest.getChestY(), chest.getChestZ());
 
                 player.teleport(location);
             } catch(NumberFormatException e) {

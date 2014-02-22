@@ -85,7 +85,7 @@ public class Language extends Config {
     public String Sell_DoesNotBuy = ChatColor.RED + "This shop does not buy this item";
     public String Sell_OwnerHint = ChatColor.DARK_GREEN + "Player " + ChatColor.GREEN + "%player" + ChatColor.DARK_GREEN + " has sold " + ChatColor.GREEN + "%amount %item" + ChatColor.DARK_GREEN + " to your shop (" + ChatColor.GREEN + "%shop" + ChatColor.DARK_GREEN + ") for " + ChatColor.GREEN + "%price" + "$";
     public String Sell_PlayerHint = ChatColor.DARK_GREEN + "You have sold " + ChatColor.GREEN + "%amount" + " " + "%item" + ChatColor.DARK_GREEN + " for " + ChatColor.GREEN + "%price" + "$" + ChatColor.DARK_GREEN + " to shop";
-    public String Sell_OwnerHasNotEnoughMoney = ChatColor.RED + "The ItemMetaRepository Owner has not enough Money";
+    public String Sell_OwnerHasNotEnoughMoney = ChatColor.RED + "The Shop Owner has not enough Money";
     public String Sell_FullStorage = ChatColor.RED + "You can not sell to this Shop. It is full";
     public String Sell_NotYourItem = ChatColor.RED + "You can't sell into Shops you own. Please use /shop equip or /shop add";
 

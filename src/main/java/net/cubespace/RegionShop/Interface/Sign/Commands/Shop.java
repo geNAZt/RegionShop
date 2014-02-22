@@ -3,16 +3,11 @@ package net.cubespace.RegionShop.Interface.Sign.Commands;
 import net.cubespace.RegionShop.Bukkit.Plugin;
 import net.cubespace.RegionShop.Config.ConfigManager;
 import net.cubespace.RegionShop.Core.Add;
-import net.cubespace.RegionShop.Database.Database;
 import net.cubespace.RegionShop.Database.Repository.ChestRepository;
-import net.cubespace.RegionShop.Database.Repository.ItemRepository;
-import net.cubespace.RegionShop.Database.Table.ItemStorage;
-import net.cubespace.RegionShop.Database.Table.Items;
 import net.cubespace.RegionShop.Interface.Sign.Command;
 import net.cubespace.RegionShop.Interface.Sign.SignCommand;
 import net.cubespace.RegionShop.Util.ChestFinder;
 import net.cubespace.RegionShop.Util.ItemName;
-import net.cubespace.RegionShop.Util.Logger;
 import net.cubespace.RegionShop.Util.NMS;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -21,7 +16,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import java.sql.SQLException;
 import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -129,9 +123,6 @@ public class Shop implements SignCommand {
             event.getBlock().breakNaturally();
             return;
         }
-
-        firstItemStack.setAmount(itemAmount);
-        ItemRepository.toDBItem(firstItemStack, chest1, event.getPlayer().getName(), buy, sell, amount);
 
         //Create an itemdrop over the chest
         final ItemStack syncItem = firstItemStack.clone();

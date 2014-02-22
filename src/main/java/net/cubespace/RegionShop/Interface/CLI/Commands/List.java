@@ -63,7 +63,7 @@ public class List implements CLICommand {
             Integer curPage = page - 1;
 
             //Check if Valid page
-            if (curPage < 0 || (curPage * 7 > regionList.size() - 7 && regionList.size() != 0)) {
+            if (curPage < 0 || (curPage * 7 > 7 + regionList.size() - 7 && regionList.size() != 0)) {
                 player.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Command_List_InvalidPage);
                 return;
             }

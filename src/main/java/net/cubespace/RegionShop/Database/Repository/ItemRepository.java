@@ -35,7 +35,7 @@ public class ItemRepository {
         }
 
         ForeignCollection<net.cubespace.RegionShop.Database.Table.Enchantment> enchants = item.getEnchantments();
-        if(enchants.size() > 0) {
+        if(enchants != null && enchants.size() > 0) {
             for(net.cubespace.RegionShop.Database.Table.Enchantment ench : enchants) {
                 Enchantment enchObj = new EnchantmentWrapper(ench.getEnchId()).getEnchantment();
                 iStack.addEnchantment(enchObj, ench.getEnchLvl());
@@ -90,6 +90,8 @@ public class ItemRepository {
             }
         }
 
+        newItem.setEnchantments(foreignCollection);
+
         try {
             Database.getDAO(Items.class).create(newItem);
         } catch (SQLException e) {
@@ -99,6 +101,7 @@ public class ItemRepository {
         }
 
         region.getItemStorage().setItemAmount(region.getItemStorage().getItemAmount() + item.getAmount());
+        region.getItemStorage().getItems().add(newItem);
 
         try {
             Database.getDAO(ItemStorage.class).update(region.getItemStorage());

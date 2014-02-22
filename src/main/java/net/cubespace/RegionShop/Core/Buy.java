@@ -13,7 +13,6 @@ import net.cubespace.RegionShop.Util.ItemName;
 import net.cubespace.RegionShop.Util.Logger;
 import net.cubespace.RegionShop.Util.MailBridge;
 import net.cubespace.RegionShop.Util.VaultBridge;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -90,15 +89,6 @@ public class Buy {
 
                                 if (owner.isOnline()) {
                                     onOwner = (Player) owner;
-                                }
-
-                                if (onOwner != null) {
-                                    onOwner.sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Buy_OwnerHint.
-                                            replace("%player", player.getDisplayName()).
-                                            replace("%amount", String.valueOf(internalAmountWishedAsync)).
-                                            replace("%item", niceItemName).
-                                            replace("%shop", region.getName()).
-                                            replace("%price", String.valueOf(newPrice)));
                                 }
 
                                 VaultBridge.depositPlayer(item.getOwner(), newPrice);

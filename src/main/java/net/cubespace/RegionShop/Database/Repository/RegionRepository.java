@@ -5,7 +5,9 @@ import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.cubespace.RegionShop.Config.ConfigManager;
 import net.cubespace.RegionShop.Database.Database;
+import net.cubespace.RegionShop.Database.Table.CustomerSign;
 import net.cubespace.RegionShop.Database.Table.ItemStorage;
+import net.cubespace.RegionShop.Database.Table.Items;
 import net.cubespace.RegionShop.Database.Table.PlayerMembersRegion;
 import net.cubespace.RegionShop.Database.Table.PlayerOwnsRegion;
 import net.cubespace.RegionShop.Database.Table.Region;
@@ -236,9 +238,16 @@ public class RegionRepository {
         Region region1 = get(region, world);
 
         try {
+            if (region1.getCustomerSigns().size() > 0) {
+                Database.getDAO(CustomerSign.class).delete(region1.getCustomerSigns());
+            }
+
             Database.getDAO(PlayerMembersRegion.class).delete(region1.getMembers());
             Database.getDAO(PlayerOwnsRegion.class).delete(region1.getOwners());
+            Database.getDAO(Items.class).delete(region1.getItemStorage().getItems());
+            Database.getDAO(ItemStorage.class).delete(region1.getItemStorage());
             Database.getDAO(Region.class).delete(region1);
+
             return true;
         } catch (SQLException e) {
             Logger.error("Could not remove Region", e);

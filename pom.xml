@@ -97,8 +97,6 @@
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
             <version>5.8.1-SNAPSHOT</version>
-            <scope>compile</scope>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.bukkit</groupId>
