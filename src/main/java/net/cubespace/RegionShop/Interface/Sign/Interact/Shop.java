@@ -39,7 +39,7 @@ public class Shop implements Listener {
                     }
 
                     Sell.sell(itemStack, item, event.getParent().getPlayer(), chest);
-                } else if(event.getParent().getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getParent().getPlayer().hasPermission("rs.shop.sign.buy")) {
+                } else if(event.getParent().getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getParent().getPlayer().hasPermission("rs.sign.shop.buy")) {
                     Items item = chest.getItemStorage().getItems().iterator().next();
                     Buy.buy(item, event.getParent().getPlayer(), chest, item.getUnitAmount());
                 }
