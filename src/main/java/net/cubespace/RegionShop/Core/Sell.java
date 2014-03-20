@@ -188,8 +188,8 @@ public class Sell {
                     replace("%amount", ((Integer) itemStack.getAmount()).toString()).
                     replace("%item", niceItemName).
                     replace("%shop", region.getName()).
-                    replace("%price", price.toString().
-                    replace("%owner", item.getOwner())));
+                    replace("%price", price.toString()).
+                    replace("%owner", item.getOwner()));
 
             item.setCurrentAmount(item.getCurrentAmount() + itemStack.getAmount());
             item.setBought(item.getBought() + itemStack.getAmount());
