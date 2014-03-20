@@ -52,7 +52,7 @@ public class Sell {
         //Check all items
         for(final Items item : items) {
             if (item != null && item.getBuy() > 0) {
-                Float price = itemStack.getAmount() * item.getBuy();
+                Float price = (itemStack.getAmount() / item.getUnitAmount()) * item.getBuy();
 
                 if (region.getItemStorage().isServershop() || VaultBridge.has(item.getOwner(), itemStack.getAmount() * item.getBuy()) ) {
                     String dataName = ItemName.getDataName(itemStack);
@@ -150,7 +150,7 @@ public class Sell {
             return;
         }
 
-        Float price = itemStack.getAmount() * item.getBuy();
+        Float price = (itemStack.getAmount() / item.getUnitAmount() ) * item.getBuy();
 
         if (region.getItemStorage().isServershop() || VaultBridge.has(item.getOwner(), price)) {
             String dataName = ItemName.getDataName(itemStack);
@@ -167,15 +167,6 @@ public class Sell {
                 OfflinePlayer owner = Plugin.getInstance().getServer().getOfflinePlayer(item.getOwner());
 
                 if (owner != null) {
-                    /*if(owner.isOnline()) {
-                        Plugin.getInstance().getServer().getPlayer(item.getOwner()).sendMessage(ConfigManager.main.Chat_prefix + ConfigManager.language.Sell_OwnerHint.
-                                replace("%player", player.getDisplayName()).
-                                replace("%amount", ((Integer) itemStack.getAmount()).toString()).
-                                replace("%item", niceItemName).
-                                replace("%shop", region.getName()).
-                                replace("%price", price.toString()));
-                    }*/
-
                     TransactionRepository.generateTransaction(owner,
                             Transaction.TransactionType.BUY,
                             region.getName(),
